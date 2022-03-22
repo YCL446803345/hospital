@@ -1,4 +1,4 @@
-package com.woniu.server;
+package com.woniu.service;
 
 public interface HospitalizationBillServer {
     //生成住院账单

@@ -1,21 +1,16 @@
-package com.woniu.server.impl;
+package com.woniu.service.impl;
 
 import com.woniu.entity.HospitalizationBill;
-import com.woniu.entity.MedicalAdvice;
 import com.woniu.entity.Patient;
-import com.woniu.entity.PrescriptionBill;
 import com.woniu.mapper.*;
-import com.woniu.server.HospitalizationBillServer;
+import com.woniu.service.HospitalizationBillServer;
 import com.woniu.util.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.function.Consumer;
 
 @Service
 @Transactional

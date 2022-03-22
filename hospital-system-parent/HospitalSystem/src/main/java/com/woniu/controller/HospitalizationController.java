@@ -1,6 +1,6 @@
 package com.woniu.controller;
 
-import com.woniu.server.HospitalizationBillServer;
+import com.woniu.service.HospitalizationBillServer;
 import com.woniu.util.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
