@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="66a1b5de-1e08-4a79-910d-4759cf73af82" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../hospital/src/components/hr/HumanAffairs .vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../hospital/src/router/router.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../前端/hospital/.babelrc" beforeDir="false" afterPath="$PROJECT_DIR$/../hospital/.babelrc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../前端/hospital/.editorconfig" beforeDir="false" afterPath="$PROJECT_DIR$/../hospital/.editorconfig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../前端/hospital/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../hospital/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../前端/hospital/.postcssrc.js" beforeDir="false" afterPath="$PROJECT_DIR$/../hospital/.postcssrc.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../前端/hospital/build/build.js" beforeDir="false" afterPath="$PROJECT_DIR$/../hospital/build/build.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../前端/hospital/build/check-versions.js" beforeDir="false" afterPath="$PROJECT_DIR$/../hospital/build/check-versions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../前端/hospital/build/logo.png" beforeDir="false" afterPath="$PROJECT_DIR$/../hospital/build/logo.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../前端/hospital/build/utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/../hospital/build/utils.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../前端/hospital/build/vue-loader.conf.js" beforeDir="false" afterPath="$PROJECT_DIR$/../hospital/build/vue-loader.conf.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../前端/hospital/build/webpack.base.conf.js" beforeDir="false" afterPath="$PROJECT_DIR$/../hospital/build/webpack.base.conf.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../前端/hospital/build/webpack.dev.conf.js" beforeDir="false" afterPath="$PROJECT_DIR$/../hospital/build/webpack.dev.conf.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../前端/hospital/build/webpack.prod.conf.js" beforeDir="false" afterPath="$PROJECT_DIR$/../hospital/build/webpack.prod.conf.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../前端/hospital/config/dev.env.js" beforeDir="false" afterPath="$PROJECT_DIR$/../hospital/config/dev.env.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../前端/hospital/config/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../hospital/config/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../前端/hospital/config/prod.env.js" beforeDir="false" afterPath="$PROJECT_DIR$/../hospital/config/prod.env.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../前端/hospital/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../hospital/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../前端/hospital/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../hospital/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../前端/hospital/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../hospital/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../前端/hospital/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../hospital/src/App.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../前端/hospital/src/assets/css/commons.css" beforeDir="false" afterPath="$PROJECT_DIR$/../hospital/src/assets/css/commons.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../前端/hospital/src/components/entry/Entry.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../hospital/src/components/entry/Entry.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../前端/hospital/src/components/home/Home.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../hospital/src/components/home/Home.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../前端/hospital/src/components/login/UserLogin.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../hospital/src/components/login/UserLogin.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../前端/hospital/src/components/login/WorkersLogin.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../hospital/src/components/login/WorkersLogin.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../前端/hospital/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/../hospital/src/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../前端/hospital/src/uitls/axiosUtil.js" beforeDir="false" afterPath="$PROJECT_DIR$/../hospital/src/uitls/axiosUtil.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../前端/hospital/static/.gitkeep" beforeDir="false" afterPath="$PROJECT_DIR$/../hospital/static/.gitkeep" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="localRepository" value="D:\localRepository" />
+        <option name="mavenHome" value="D:\apache-maven-3.6.3" />
+        <option name="userSettingsFile" value="D:\apache-maven-3.6.3\conf\settings.xml" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="26btwGKCV5ziSVZcpEvsSsjfOjp" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RequestMappingsPanelOrder0" value="0" />
+    <property name="RequestMappingsPanelOrder1" value="1" />
+    <property name="RequestMappingsPanelWidth0" value="75" />
+    <property name="RequestMappingsPanelWidth1" value="75" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="MavenSettings" />
+  </component>
+  <component name="ReactorSettings">
+    <option name="notificationShown" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\spring_vue\hospital-system-parent\HospitalSystem\src\main\java\com\woniu\exception" />
+      <recent name="D:\spring_vue\hospital-system-parent\HospitalSystem\src\main\resources" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.woniu.config" />
+      <recent name="com.woniu.filter" />
+      <recent name="com.woniu.util" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Spring Boot.HospitalSystemApplication">
+    <configuration name="HospitalSystemApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="HospitalSystem" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.woniu.HospitalSystemApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="HospitalSystemParentApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="hospital-system-parent" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.woniu.HospitalSystemParentApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="66a1b5de-1e08-4a79-910d-4759cf73af82" name="Default Changelist" comment="" />
+      <created>1647704350940</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1647704350940</updated>
+      <workItem from="1647704352091" duration="3051000" />
+      <workItem from="1647757819934" duration="12859000" />
+      <workItem from="1647791710207" duration="582000" />
+      <workItem from="1647793263789" duration="277000" />
+      <workItem from="1647825968678" duration="21000" />
+      <workItem from="1647825992984" duration="8930000" />
+      <workItem from="1647844009854" duration="17175000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$PROJECT_DIR$/../../localRepository/org/springframework/security/spring-security-core/5.3.6.RELEASE/spring-security-core-5.3.6.RELEASE.jar!/org/springframework/security/authentication/dao/AbstractUserDetailsAuthenticationProvider.class</url>
+          <line>78</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="com.woniu.entity.Perms" memberName="children" />
+      </pinned-members>
+    </pin-to-top-manager>
+  </component>
+</project>

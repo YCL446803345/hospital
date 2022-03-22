@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+
+    <!-- 数据库驱动包位置 -->
+    <classPathEntry location="D:\localRepository\mysql\mysql-connector-java\8.0.19\mysql-connector-java-8.0.19.jar"/>
+
+    <context id="root" targetRuntime="MyBatis3">
+
+        <!-- 解决覆盖生成 XML 文件的 Bug -->
+        <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin"/>
+
+        <commentGenerator>
+            <!-- 去掉注解中的生成日期 -->
+            <property name="suppressDate" value="true"/>
+            <!--关闭注释 -->
+            <property name="suppressAllComments" value="true"/>
+
+        </commentGenerator>
+
+        <!--数据库链接地址账号密码-->
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://192.172.0.5:3306/HOSPITAL?serverTimezone=Asia/Shanghai&amp;characterEncoding=UTF-8"
+                        userId="root"
+                        password="root">
+        </jdbcConnection>
+
+        <javaTypeResolver>
+            <!--
+            true： 无论什么情况，都是使用 BigDecimal 对应 DECIMAL 和 NUMERIC 数据类型
+            false： 默认值,
+                scale>0;length>18：使用 BigDecimal;
+                scale=0;length[10,18]：使用 Long；
+                scale=0;length[5,9]：使用 Integer；
+                scale=0;length<5：使用 Short；
+            -->
+            <property name="forceBigDecimals" value="true"/>
+        </javaTypeResolver>
+
+        <!-- PO 类的相关设置 -->
+        <javaModelGenerator targetProject="src/main/java"
+                            targetPackage="com.woniu.entity">
+            <!-- 在 targetPackage 的基础上，根据数据库的 schema 再生成一层 package，最终生成的类放在这个 package下，默认为false  -->
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+            <!--            保证生成当前数据库的表-->
+            <property name="nullCategoryMeansCurrent" value="true"/>
+        </javaModelGenerator>
+
+        <!-- Mapper.xml 配置文件的相关设置 -->
+        <sqlMapGenerator targetProject="src/main/resources"
+                         targetPackage="com/woniu/mapper">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+
+        <!-- DAO 接口的相关设置-->
+        <javaClientGenerator targetProject="src/main/java"
+                             targetPackage="com.woniu.mapper"
+                             type="XMLMAPPER">
+            <property name="enableSubPackages" value="false"/>
+        </javaClientGenerator>
+
+        <!--生成对应表及类名-->
+        <!--
+             schema即为数据库名 tableName为对应的数据库表 domainObjectName是要生成的实体类
+             更改tableName和domainObjectName就可以
+        -->
+
+        <table tableName="HOS_bed" schema="HOSPITAL"
+               domainObjectName="Bed"
+               enableCountByExample="true"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+        />
+        <table tableName="HOS_case" schema="HOSPITAL"
+               domainObjectName="Case"
+               enableCountByExample="true"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+        />
+        <table tableName="HOS_consultation_application" schema="HOSPITAL"
+               domainObjectName="ConsultationApplication"
+               enableCountByExample="true"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+        />
+        <table tableName="HOS_consultation_categor" schema="HOSPITAL"
+               domainObjectName="ConsultationCategor"
+               enableCountByExample="true"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+        />
+        <table tableName="HOS_consultation_emergency" schema="HOSPITAL"
+               domainObjectName="ConsultationEmergency"
+               enableCountByExample="true"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+        />
+        <table tableName="HOS_dept" schema="HOSPITAL"
+               domainObjectName="Dept"
+               enableCountByExample="true"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+        />
+        <table tableName="HOS_drug" schema="HOSPITAL"
+               domainObjectName="Drug"
+               enableCountByExample="true"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+        />
+        <table tableName="HOS_drug_out" schema="HOSPITAL"
+               domainObjectName="DrugOut"
+               enableCountByExample="true"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+        />
+        <table tableName="HOS_drugout_bill" schema="HOSPITAL"
+               domainObjectName="DrugOutBill"
+               enableCountByExample="true"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+        />
+        <table tableName="HOS_hospitalization_bill" schema="HOSPITAL"
+               domainObjectName="HospitalizationBill"
+               enableCountByExample="true"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+        />
+        <table tableName="HOS_in_hospital_table" schema="HOSPITAL"
+               domainObjectName="InHospitalTable"
+               enableCountByExample="true"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+        />
+        <table tableName="HOS_leave_hospital" schema="HOSPITAL"
+               domainObjectName="LeaveHospital"
+               enableCountByExample="true"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+        />
+        <table tableName="HOS_medical_advice" schema="HOSPITAL"
+               domainObjectName="MedicalAdvice"
+               enableCountByExample="true"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+        />
+        <table tableName="HOS_medical_advice_bill" schema="HOSPITAL"
+               domainObjectName="MedicalAdviceBill"
+               enableCountByExample="true"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+        />
+        <table tableName="HOS_nursing_record" schema="HOSPITAL"
+               domainObjectName="NursingRecord"
+               enableCountByExample="true"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+        />
+        <table tableName="HOS_out_drug_record" schema="HOSPITAL"
+               domainObjectName="OutDrugRecord"
+               enableCountByExample="true"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+        />
+        <table tableName="HOS_patient" schema="HOSPITAL"
+               domainObjectName="Patient"
+               enableCountByExample="true"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+        />
+        <table tableName="HOS_perms" schema="HOSPITAL"
+               domainObjectName="Perms"
+               enableCountByExample="true"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+        />
+        <table tableName="HOS_prescription" schema="HOSPITAL"
+               domainObjectName="Prescription"
+               enableCountByExample="true"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+        />
+        <table tableName="HOS_prescription_bill" schema="HOSPITAL"
+               domainObjectName="PrescriptionBill"
+               enableCountByExample="true"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+        />
+        <table tableName="HOS_prescription_drug" schema="HOSPITAL"
+               domainObjectName="PrescriptionDrug"
+               enableCountByExample="true"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+        />
+        <table tableName="HOS_project" schema="HOSPITAL"
+               domainObjectName="Project"
+               enableCountByExample="true"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+        />
+        <table tableName="HOS_role" schema="HOSPITAL"
+               domainObjectName="Role"
+               enableCountByExample="true"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+        />
+        <table tableName="HOS_role_perm" schema="HOSPITAL"
+               domainObjectName="RolePerm"
+               enableCountByExample="true"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+        />
+        <table tableName="HOS_scheduling" schema="HOSPITAL"
+               domainObjectName="Scheduling"
+               enableCountByExample="true"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+        />
+        <table tableName="HOS_send_drug_record" schema="HOSPITAL"
+               domainObjectName="SendDrugRecord"
+               enableCountByExample="true"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+        />
+        <table tableName="HOS_user" schema="HOSPITAL"
+               domainObjectName="User"
+               enableCountByExample="true"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+        />
+        <table tableName="HOS_worker" schema="HOSPITAL"
+               domainObjectName="Worker"
+               enableCountByExample="true"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+        />
+        <table tableName="HOS_worker_perms" schema="HOSPITAL"
+               domainObjectName="WorkerPerms"
+               enableCountByExample="true"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+        />
+    </context>
+</generatorConfiguration>
