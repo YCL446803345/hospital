@@ -12,6 +12,7 @@ public interface PatientService {
     void updateDoctorOrNurse(Patient patient);
 
 
+
     void updateBalance (Float o,Integer id);
 
     PageInfo<Patient> findPatientsWithNotBed(Patient patient, Integer pageNum, Integer pageSize);
@@ -19,5 +20,9 @@ public interface PatientService {
     void updateBedByPatientWithOutBed(Patient patient);
 
     void stopUseBed(Patient patient);
+
+
+    //医生站分页模糊查询患者列表
+    PageInfo<Patient> queryPatient(Patient patient, Integer pageNum, Integer pageSize);
 
 }

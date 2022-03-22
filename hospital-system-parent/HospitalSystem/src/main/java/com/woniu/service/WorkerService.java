@@ -20,8 +20,10 @@ public interface WorkerService {
 
     void updateWorker(Worker worker);
 
+
     List<Worker> findDoctorsByDepeId(Integer deptId);
 
     List<Worker> findNursesByDepeId(Integer deptId);
+
 
 }

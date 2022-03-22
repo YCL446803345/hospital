@@ -273,4 +273,20 @@
       spare3 = #{spare3,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <!--queryLeaveHospitalList-->
+  <!--医生站分页模糊查询预约住院申请列表-->
+  <select id="queryLeaveHospitalList" resultType="LeaveHospital">
+    select w.name doctorName,p.name patientName,l.leave_status,l.leave_time,l.leave_description
+    from HOS_leave_hospital l
+    inner join HOS_worker w on l.doctor_id = w.id
+    inner join HOS_patient p on l.patient_id = p.id
+    <where>
+      <if test="doctorId != null">l.doctor_id = #{doctorId}</if>
+      <if test="patientId != null">l.patient_id = #{patientId}</if>
+      <if test="leaveStatus != null">l.leave_status = #{leaveStatus}</if>
+      <if test="startDate != null and startDate != ''">and l.leave_time &gt;= #{startDate}</if>
+      <if test="endDate != null and endDate != ''">and l.leave_time &lt;= #{endDate}</if>
+    </where> order by l.leave_time desc
+  </select>
 </mapper>

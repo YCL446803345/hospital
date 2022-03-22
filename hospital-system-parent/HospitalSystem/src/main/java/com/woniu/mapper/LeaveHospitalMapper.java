@@ -4,7 +4,9 @@ import com.woniu.entity.LeaveHospital;
 import com.woniu.entity.LeaveHospitalExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface LeaveHospitalMapper {
     long countByExample(LeaveHospitalExample example);
 
@@ -27,4 +29,7 @@ public interface LeaveHospitalMapper {
     int updateByPrimaryKeySelective(LeaveHospital record);
 
     int updateByPrimaryKey(LeaveHospital record);
+
+    //医生站分页模糊查询出院申请列表
+    List<LeaveHospital> queryLeaveHospitalList(LeaveHospital leaveHospital);
 }
