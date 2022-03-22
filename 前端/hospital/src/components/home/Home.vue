@@ -72,9 +72,17 @@ export default {
       changeCollapse: function () { // 更改左侧导航栏展示状态
                 this.isCollapse = !this.isCollapse;
       },
-      logout(){
-
-      }
+       //退出
+       logout(){
+          this.$confirm('是否退出本系统?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+           window.localStorage.removeItem("tokenStr");
+           this.$router.push("/gotoWorkesLogin");
+        })
+       },
    },
    created(){
       //从本地浏览器拿名字

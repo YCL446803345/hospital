@@ -25,4 +25,5 @@ public class DeptController {
         List<Dept> deptList = deptService.findDeptList();
         return new ResponseResult<List<Dept>>(deptList,"OK",200);
     }
+
 }
