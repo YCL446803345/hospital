@@ -9,6 +9,9 @@ import axios from './uitls/axiosUtil.js'
 //安装element
 Vue.use(Element)
 
+// 导入font-awesome(导入就可以直接用了)
+// import 'font-awesome/scss/font-awesome.scss'
+
 Vue.config.productionTip = false
 
 //为VUE实例创建axios的共享的属性

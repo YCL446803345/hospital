@@ -68,195 +68,195 @@
              更改tableName和domainObjectName就可以
         -->
 
-        <table tableName="HOS_bed" schema="HOSPITAL"
-               domainObjectName="Bed"
-               enableCountByExample="true"
-               enableUpdateByExample="true"
-               enableDeleteByExample="true"
-               enableSelectByExample="true"
-        />
-        <table tableName="HOS_case" schema="HOSPITAL"
-               domainObjectName="Case"
-               enableCountByExample="true"
-               enableUpdateByExample="true"
-               enableDeleteByExample="true"
-               enableSelectByExample="true"
-        />
-        <table tableName="HOS_consultation_application" schema="HOSPITAL"
-               domainObjectName="ConsultationApplication"
-               enableCountByExample="true"
-               enableUpdateByExample="true"
-               enableDeleteByExample="true"
-               enableSelectByExample="true"
-        />
-        <table tableName="HOS_consultation_categor" schema="HOSPITAL"
-               domainObjectName="ConsultationCategor"
-               enableCountByExample="true"
-               enableUpdateByExample="true"
-               enableDeleteByExample="true"
-               enableSelectByExample="true"
-        />
-        <table tableName="HOS_consultation_emergency" schema="HOSPITAL"
-               domainObjectName="ConsultationEmergency"
-               enableCountByExample="true"
-               enableUpdateByExample="true"
-               enableDeleteByExample="true"
-               enableSelectByExample="true"
-        />
-        <table tableName="HOS_dept" schema="HOSPITAL"
-               domainObjectName="Dept"
-               enableCountByExample="true"
-               enableUpdateByExample="true"
-               enableDeleteByExample="true"
-               enableSelectByExample="true"
-        />
-        <table tableName="HOS_drug" schema="HOSPITAL"
-               domainObjectName="Drug"
-               enableCountByExample="true"
-               enableUpdateByExample="true"
-               enableDeleteByExample="true"
-               enableSelectByExample="true"
-        />
-        <table tableName="HOS_drug_out" schema="HOSPITAL"
-               domainObjectName="DrugOut"
-               enableCountByExample="true"
-               enableUpdateByExample="true"
-               enableDeleteByExample="true"
-               enableSelectByExample="true"
-        />
-        <table tableName="HOS_drugout_bill" schema="HOSPITAL"
-               domainObjectName="DrugOutBill"
-               enableCountByExample="true"
-               enableUpdateByExample="true"
-               enableDeleteByExample="true"
-               enableSelectByExample="true"
-        />
-        <table tableName="HOS_hospitalization_bill" schema="HOSPITAL"
-               domainObjectName="HospitalizationBill"
-               enableCountByExample="true"
-               enableUpdateByExample="true"
-               enableDeleteByExample="true"
-               enableSelectByExample="true"
-        />
-        <table tableName="HOS_in_hospital_table" schema="HOSPITAL"
-               domainObjectName="InHospitalTable"
-               enableCountByExample="true"
-               enableUpdateByExample="true"
-               enableDeleteByExample="true"
-               enableSelectByExample="true"
-        />
-        <table tableName="HOS_leave_hospital" schema="HOSPITAL"
-               domainObjectName="LeaveHospital"
-               enableCountByExample="true"
-               enableUpdateByExample="true"
-               enableDeleteByExample="true"
-               enableSelectByExample="true"
-        />
-        <table tableName="HOS_medical_advice" schema="HOSPITAL"
-               domainObjectName="MedicalAdvice"
-               enableCountByExample="true"
-               enableUpdateByExample="true"
-               enableDeleteByExample="true"
-               enableSelectByExample="true"
-        />
-        <table tableName="HOS_medical_advice_bill" schema="HOSPITAL"
-               domainObjectName="MedicalAdviceBill"
-               enableCountByExample="true"
-               enableUpdateByExample="true"
-               enableDeleteByExample="true"
-               enableSelectByExample="true"
-        />
-        <table tableName="HOS_nursing_record" schema="HOSPITAL"
-               domainObjectName="NursingRecord"
-               enableCountByExample="true"
-               enableUpdateByExample="true"
-               enableDeleteByExample="true"
-               enableSelectByExample="true"
-        />
-        <table tableName="HOS_out_drug_record" schema="HOSPITAL"
-               domainObjectName="OutDrugRecord"
-               enableCountByExample="true"
-               enableUpdateByExample="true"
-               enableDeleteByExample="true"
-               enableSelectByExample="true"
-        />
-        <table tableName="HOS_patient" schema="HOSPITAL"
-               domainObjectName="Patient"
-               enableCountByExample="true"
-               enableUpdateByExample="true"
-               enableDeleteByExample="true"
-               enableSelectByExample="true"
-        />
-        <table tableName="HOS_perms" schema="HOSPITAL"
-               domainObjectName="Perms"
-               enableCountByExample="true"
-               enableUpdateByExample="true"
-               enableDeleteByExample="true"
-               enableSelectByExample="true"
-        />
-        <table tableName="HOS_prescription" schema="HOSPITAL"
-               domainObjectName="Prescription"
-               enableCountByExample="true"
-               enableUpdateByExample="true"
-               enableDeleteByExample="true"
-               enableSelectByExample="true"
-        />
-        <table tableName="HOS_prescription_bill" schema="HOSPITAL"
-               domainObjectName="PrescriptionBill"
-               enableCountByExample="true"
-               enableUpdateByExample="true"
-               enableDeleteByExample="true"
-               enableSelectByExample="true"
-        />
-        <table tableName="HOS_prescription_drug" schema="HOSPITAL"
-               domainObjectName="PrescriptionDrug"
-               enableCountByExample="true"
-               enableUpdateByExample="true"
-               enableDeleteByExample="true"
-               enableSelectByExample="true"
-        />
-        <table tableName="HOS_project" schema="HOSPITAL"
-               domainObjectName="Project"
-               enableCountByExample="true"
-               enableUpdateByExample="true"
-               enableDeleteByExample="true"
-               enableSelectByExample="true"
-        />
-        <table tableName="HOS_role" schema="HOSPITAL"
-               domainObjectName="Role"
-               enableCountByExample="true"
-               enableUpdateByExample="true"
-               enableDeleteByExample="true"
-               enableSelectByExample="true"
-        />
-        <table tableName="HOS_role_perm" schema="HOSPITAL"
-               domainObjectName="RolePerm"
-               enableCountByExample="true"
-               enableUpdateByExample="true"
-               enableDeleteByExample="true"
-               enableSelectByExample="true"
-        />
-        <table tableName="HOS_scheduling" schema="HOSPITAL"
-               domainObjectName="Scheduling"
-               enableCountByExample="true"
-               enableUpdateByExample="true"
-               enableDeleteByExample="true"
-               enableSelectByExample="true"
-        />
-        <table tableName="HOS_send_drug_record" schema="HOSPITAL"
-               domainObjectName="SendDrugRecord"
-               enableCountByExample="true"
-               enableUpdateByExample="true"
-               enableDeleteByExample="true"
-               enableSelectByExample="true"
-        />
-        <table tableName="HOS_user" schema="HOSPITAL"
-               domainObjectName="User"
-               enableCountByExample="true"
-               enableUpdateByExample="true"
-               enableDeleteByExample="true"
-               enableSelectByExample="true"
-        />
+<!--        <table tableName="HOS_bed" schema="HOSPITAL"-->
+<!--               domainObjectName="Bed"-->
+<!--               enableCountByExample="true"-->
+<!--               enableUpdateByExample="true"-->
+<!--               enableDeleteByExample="true"-->
+<!--               enableSelectByExample="true"-->
+<!--        />-->
+<!--        <table tableName="HOS_case" schema="HOSPITAL"-->
+<!--               domainObjectName="Case"-->
+<!--               enableCountByExample="true"-->
+<!--               enableUpdateByExample="true"-->
+<!--               enableDeleteByExample="true"-->
+<!--               enableSelectByExample="true"-->
+<!--        />-->
+<!--        <table tableName="HOS_consultation_application" schema="HOSPITAL"-->
+<!--               domainObjectName="ConsultationApplication"-->
+<!--               enableCountByExample="true"-->
+<!--               enableUpdateByExample="true"-->
+<!--               enableDeleteByExample="true"-->
+<!--               enableSelectByExample="true"-->
+<!--        />-->
+<!--        <table tableName="HOS_consultation_categor" schema="HOSPITAL"-->
+<!--               domainObjectName="ConsultationCategor"-->
+<!--               enableCountByExample="true"-->
+<!--               enableUpdateByExample="true"-->
+<!--               enableDeleteByExample="true"-->
+<!--               enableSelectByExample="true"-->
+<!--        />-->
+<!--        <table tableName="HOS_consultation_emergency" schema="HOSPITAL"-->
+<!--               domainObjectName="ConsultationEmergency"-->
+<!--               enableCountByExample="true"-->
+<!--               enableUpdateByExample="true"-->
+<!--               enableDeleteByExample="true"-->
+<!--               enableSelectByExample="true"-->
+<!--        />-->
+<!--        <table tableName="HOS_dept" schema="HOSPITAL"-->
+<!--               domainObjectName="Dept"-->
+<!--               enableCountByExample="true"-->
+<!--               enableUpdateByExample="true"-->
+<!--               enableDeleteByExample="true"-->
+<!--               enableSelectByExample="true"-->
+<!--        />-->
+<!--        <table tableName="HOS_drug" schema="HOSPITAL"-->
+<!--               domainObjectName="Drug"-->
+<!--               enableCountByExample="true"-->
+<!--               enableUpdateByExample="true"-->
+<!--               enableDeleteByExample="true"-->
+<!--               enableSelectByExample="true"-->
+<!--        />-->
+<!--        <table tableName="HOS_drug_out" schema="HOSPITAL"-->
+<!--               domainObjectName="DrugOut"-->
+<!--               enableCountByExample="true"-->
+<!--               enableUpdateByExample="true"-->
+<!--               enableDeleteByExample="true"-->
+<!--               enableSelectByExample="true"-->
+<!--        />-->
+<!--        <table tableName="HOS_drugout_bill" schema="HOSPITAL"-->
+<!--               domainObjectName="DrugOutBill"-->
+<!--               enableCountByExample="true"-->
+<!--               enableUpdateByExample="true"-->
+<!--               enableDeleteByExample="true"-->
+<!--               enableSelectByExample="true"-->
+<!--        />-->
+<!--        <table tableName="HOS_hospitalization_bill" schema="HOSPITAL"-->
+<!--               domainObjectName="HospitalizationBill"-->
+<!--               enableCountByExample="true"-->
+<!--               enableUpdateByExample="true"-->
+<!--               enableDeleteByExample="true"-->
+<!--               enableSelectByExample="true"-->
+<!--        />-->
+<!--        <table tableName="HOS_in_hospital_table" schema="HOSPITAL"-->
+<!--               domainObjectName="InHospitalTable"-->
+<!--               enableCountByExample="true"-->
+<!--               enableUpdateByExample="true"-->
+<!--               enableDeleteByExample="true"-->
+<!--               enableSelectByExample="true"-->
+<!--        />-->
+<!--        <table tableName="HOS_leave_hospital" schema="HOSPITAL"-->
+<!--               domainObjectName="LeaveHospital"-->
+<!--               enableCountByExample="true"-->
+<!--               enableUpdateByExample="true"-->
+<!--               enableDeleteByExample="true"-->
+<!--               enableSelectByExample="true"-->
+<!--        />-->
+<!--        <table tableName="HOS_medical_advice" schema="HOSPITAL"-->
+<!--               domainObjectName="MedicalAdvice"-->
+<!--               enableCountByExample="true"-->
+<!--               enableUpdateByExample="true"-->
+<!--               enableDeleteByExample="true"-->
+<!--               enableSelectByExample="true"-->
+<!--        />-->
+<!--        <table tableName="HOS_medical_advice_bill" schema="HOSPITAL"-->
+<!--               domainObjectName="MedicalAdviceBill"-->
+<!--               enableCountByExample="true"-->
+<!--               enableUpdateByExample="true"-->
+<!--               enableDeleteByExample="true"-->
+<!--               enableSelectByExample="true"-->
+<!--        />-->
+<!--        <table tableName="HOS_nursing_record" schema="HOSPITAL"-->
+<!--               domainObjectName="NursingRecord"-->
+<!--               enableCountByExample="true"-->
+<!--               enableUpdateByExample="true"-->
+<!--               enableDeleteByExample="true"-->
+<!--               enableSelectByExample="true"-->
+<!--        />-->
+<!--        <table tableName="HOS_out_drug_record" schema="HOSPITAL"-->
+<!--               domainObjectName="OutDrugRecord"-->
+<!--               enableCountByExample="true"-->
+<!--               enableUpdateByExample="true"-->
+<!--               enableDeleteByExample="true"-->
+<!--               enableSelectByExample="true"-->
+<!--        />-->
+<!--        <table tableName="HOS_patient" schema="HOSPITAL"-->
+<!--               domainObjectName="Patient"-->
+<!--               enableCountByExample="true"-->
+<!--               enableUpdateByExample="true"-->
+<!--               enableDeleteByExample="true"-->
+<!--               enableSelectByExample="true"-->
+<!--        />-->
+<!--        <table tableName="HOS_perms" schema="HOSPITAL"-->
+<!--               domainObjectName="Perms"-->
+<!--               enableCountByExample="true"-->
+<!--               enableUpdateByExample="true"-->
+<!--               enableDeleteByExample="true"-->
+<!--               enableSelectByExample="true"-->
+<!--        />-->
+<!--        <table tableName="HOS_prescription" schema="HOSPITAL"-->
+<!--               domainObjectName="Prescription"-->
+<!--               enableCountByExample="true"-->
+<!--               enableUpdateByExample="true"-->
+<!--               enableDeleteByExample="true"-->
+<!--               enableSelectByExample="true"-->
+<!--        />-->
+<!--        <table tableName="HOS_prescription_bill" schema="HOSPITAL"-->
+<!--               domainObjectName="PrescriptionBill"-->
+<!--               enableCountByExample="true"-->
+<!--               enableUpdateByExample="true"-->
+<!--               enableDeleteByExample="true"-->
+<!--               enableSelectByExample="true"-->
+<!--        />-->
+<!--        <table tableName="HOS_prescription_drug" schema="HOSPITAL"-->
+<!--               domainObjectName="PrescriptionDrug"-->
+<!--               enableCountByExample="true"-->
+<!--               enableUpdateByExample="true"-->
+<!--               enableDeleteByExample="true"-->
+<!--               enableSelectByExample="true"-->
+<!--        />-->
+<!--        <table tableName="HOS_project" schema="HOSPITAL"-->
+<!--               domainObjectName="Project"-->
+<!--               enableCountByExample="true"-->
+<!--               enableUpdateByExample="true"-->
+<!--               enableDeleteByExample="true"-->
+<!--               enableSelectByExample="true"-->
+<!--        />-->
+<!--        <table tableName="HOS_role" schema="HOSPITAL"-->
+<!--               domainObjectName="Role"-->
+<!--               enableCountByExample="true"-->
+<!--               enableUpdateByExample="true"-->
+<!--               enableDeleteByExample="true"-->
+<!--               enableSelectByExample="true"-->
+<!--        />-->
+<!--        <table tableName="HOS_role_perm" schema="HOSPITAL"-->
+<!--               domainObjectName="RolePerm"-->
+<!--               enableCountByExample="true"-->
+<!--               enableUpdateByExample="true"-->
+<!--               enableDeleteByExample="true"-->
+<!--               enableSelectByExample="true"-->
+<!--        />-->
+<!--        <table tableName="HOS_scheduling" schema="HOSPITAL"-->
+<!--               domainObjectName="Scheduling"-->
+<!--               enableCountByExample="true"-->
+<!--               enableUpdateByExample="true"-->
+<!--               enableDeleteByExample="true"-->
+<!--               enableSelectByExample="true"-->
+<!--        />-->
+<!--        <table tableName="HOS_send_drug_record" schema="HOSPITAL"-->
+<!--               domainObjectName="SendDrugRecord"-->
+<!--               enableCountByExample="true"-->
+<!--               enableUpdateByExample="true"-->
+<!--               enableDeleteByExample="true"-->
+<!--               enableSelectByExample="true"-->
+<!--        />-->
+<!--        <table tableName="HOS_user" schema="HOSPITAL"-->
+<!--               domainObjectName="User"-->
+<!--               enableCountByExample="true"-->
+<!--               enableUpdateByExample="true"-->
+<!--               enableDeleteByExample="true"-->
+<!--               enableSelectByExample="true"-->
+<!--        />-->
         <table tableName="HOS_worker" schema="HOSPITAL"
                domainObjectName="Worker"
                enableCountByExample="true"
@@ -264,12 +264,12 @@
                enableDeleteByExample="true"
                enableSelectByExample="true"
         />
-        <table tableName="HOS_worker_perms" schema="HOSPITAL"
-               domainObjectName="WorkerPerms"
-               enableCountByExample="true"
-               enableUpdateByExample="true"
-               enableDeleteByExample="true"
-               enableSelectByExample="true"
-        />
+<!--        <table tableName="HOS_worker_perms" schema="HOSPITAL"-->
+<!--               domainObjectName="WorkerPerms"-->
+<!--               enableCountByExample="true"-->
+<!--               enableUpdateByExample="true"-->
+<!--               enableDeleteByExample="true"-->
+<!--               enableSelectByExample="true"-->
+<!--        />-->
     </context>
 </generatorConfiguration>

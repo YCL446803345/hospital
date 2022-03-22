@@ -1,14 +1,5 @@
 package com.woniu.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
 public class Worker {
     private Integer id;
 
@@ -28,17 +19,15 @@ public class Worker {
 
     private String status;
 
-  private String spare1;
+    private String spare1;
 
     private String spare2;
 
-    private String roleName;
-
-    private String deptName;
-
     private String spare3;
 
-
+    public Integer getId() {
+        return id;
+    }
 
     public void setId(Integer id) {
         this.id = id;

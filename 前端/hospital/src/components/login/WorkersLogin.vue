@@ -1,25 +1,25 @@
 <template>
-
-  <div class="login" clearfix>
-    <div class="login-wrap">
-      <el-row type="flex" justify="center">
-        <el-form ref="loginForm" :model="worker" :rules="rules"  status-icon label-width="80px">
-          <h3>登录</h3>
-          <hr>
-          <el-form-item prop="account" label="用户名">
-            <el-input v-model="worker.account" placeholder="请输入用户名" prefix-icon></el-input>
+  
+<div class="login">
+      <img :src="imgSrc" width="100%" height="100%" alt="" />
+      <div class="loginPart">
+        <h2>用户登录</h2>
+        <el-form ref="loginForm" :model="worker" :rules="rules">
+          <el-form-item prop="account">
+          <div class="inputElement" >
+            <el-input v-model="worker.account" placeholder="请输入用户名/手机号" prop="account"></el-input>
+          </div>
           </el-form-item>
-          <el-form-item id="password" prop="password" label="密码">
-            <el-input v-model="worker.password" show-password placeholder="请输入密码"></el-input>
+          <el-form-item prop="password">
+          <div class="inputElement" >
+            <el-input v-model="worker.password" placeholder="请输入密码" prop="password"></el-input>
+          </div>
           </el-form-item>
-          <router-link to="/">找回密码</router-link>
-          <router-link to="/register">注册账号</router-link>
-          <el-form-item>
-            <el-button type="primary" icon="el-icon-upload" @click="doLogin('loginForm')">登 录</el-button>
-          </el-form-item>
+          <div align="center">
+          <el-button type="primary" icon="el-icon-upload" @click="doLogin('loginForm')" >登录</el-button>
+          </div>
         </el-form>
-      </el-row>
-    </div>
+      </div>
   </div>
 
 </template>
@@ -29,6 +29,7 @@ import qs from 'qs'
 export default {
    data() {
       return {
+      imgSrc:require("../../assets/css/image/医院背景.jpg"),   //背景图片
       worker: {
         account: "",
         password: ""
@@ -105,45 +106,56 @@ export default {
 
 <style>
 
-.login {
-  width: 100%;
-  height: 740px;
-  /* background: url("../assets/images/bg1.png") no-repeat; */
-  background-size: cover;
-  overflow: hidden;
-}
-.login-wrap {
-  /* background: url("../assets/images/login_bg.png") no-repeat; */
-  background-size: cover;
-  width: 400px;
-  height: 300px;
-  margin: 215px auto;
-  overflow: hidden;
-  padding-top: 10px;
-  line-height: 40px;
-}
-#password {
-  margin-bottom: 5px;
-}
-h3 {
-  color: #0babeab8;
-  font-size: 24px;
-}
-hr {
-  background-color: #444;
-  margin: 20px auto;
-}
-a {
-  text-decoration: none;
-  color: #aaa;
-  font-size: 15px;
-}
-a:hover {
-  color: coral;
-}
-.el-button {
-  width: 80%;
-  margin-left: -50px;
-}
+.loginPart{
+    position:absolute;
+    /*定位方式绝对定位absolute*/
+    top:50%;
+    left:50%;
+    /*顶和高同时设置50%实现的是同时水平垂直居中效果*/
+    transform:translate(-50%,-50%);
+    /*实现块元素百分比下居中*/
+    width:450px;
+    padding:50px;
+    background: rgba(0,0,0,.5);
+    /*背景颜色为黑色，透明度为0.8*/
+    box-sizing:border-box;
+    /*box-sizing设置盒子模型的解析模式为怪异盒模型，
+    将border和padding划归到width范围内*/
+    box-shadow: 0px 15px 25px rgba(0,0,0,.5);
+    /*边框阴影  水平阴影0 垂直阴影15px 模糊25px 颜色黑色透明度0.5*/
+    border-radius:15px;
+    /*边框圆角，四个角均为15px*/
+  }
+  .loginPart h2{
+    margin:0 0 30px;
+    padding:0;
+    color: #fff;
+    text-align:center;
+    /*文字居中*/
+  }
+  .loginPart .inputbox{
+    position:relative;
+  }
+  .loginPart .inputElement input{
+    width: 100%;
+    padding:10px 0;
+    font-size:16px;
+    color:#fff;
+    letter-spacing: 1px;
+    /*字符间的间距1px*/
+    margin-bottom: 30px;
+    border:none;
+    border-bottom: 1px solid #fff;
+    outline:none;
+    /*outline用于绘制元素周围的线
+    outline：none在这里用途是将输入框的边框的线条使其消失*/
+    background: transparent;
+    /*背景颜色为透明*/
+  }
+
+  .login{
+    width:100%;
+    height:100%;
+  }
 
 </style>

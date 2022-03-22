@@ -4,7 +4,9 @@ import com.woniu.entity.PrescriptionBill;
 import com.woniu.entity.PrescriptionBillExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface PrescriptionBillMapper {
     long countByExample(PrescriptionBillExample example);
 

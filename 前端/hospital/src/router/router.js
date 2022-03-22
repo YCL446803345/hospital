@@ -1,8 +1,6 @@
 
 import Vue from 'vue' //导入node_modules中vue.js库文件
 import VueRouter from 'vue-router' //导入node_modules中vue-router.js库文件
-import Vue from 'vue'   //导入node_modules中vue.js库文件
-import VueRouter from 'vue-router'  //导入node_modules中vue-router.js库文件
 //import patientInfo from '../components/patient/patientInfo'
 //import patientChangeDoctorOrBed from '../components/patient/PatientChangeDoctorOrBed'
 
@@ -21,7 +19,7 @@ import DrugInfo from '../components/home/drugHome/DrugInfo'   //药品信息列�
 
 
 //人事组件
-import HumanAffairs from '../components/home/hrHome/HumanAffairs' // 职工信息列表
+import HumanAffairs from '../components/home/hrHome/HumanAffairs ' // 职工信息列表
 
 
 //配置路由规则

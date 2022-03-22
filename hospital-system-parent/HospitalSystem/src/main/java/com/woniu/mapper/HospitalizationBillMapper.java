@@ -4,7 +4,9 @@ import com.woniu.entity.HospitalizationBill;
 import com.woniu.entity.HospitalizationBillExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface HospitalizationBillMapper {
     long countByExample(HospitalizationBillExample example);
 
