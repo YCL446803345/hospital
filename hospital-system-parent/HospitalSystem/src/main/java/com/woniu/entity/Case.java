@@ -1,7 +1,16 @@
 package com.woniu.entity;
 
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.util.Date;
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+//病例表
 public class Case {
     private Integer id;
 
@@ -9,6 +18,8 @@ public class Case {
 
     private String caseDescription;
 
+    @DateTimeFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
     private Date createTime;
 
     private String spare1;
@@ -17,59 +28,5 @@ public class Case {
 
     private String spare3;
 
-    public Integer getId() {
-        return id;
-    }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getAdviceId() {
-        return adviceId;
-    }
-
-    public void setAdviceId(Integer adviceId) {
-        this.adviceId = adviceId;
-    }
-
-    public String getCaseDescription() {
-        return caseDescription;
-    }
-
-    public void setCaseDescription(String caseDescription) {
-        this.caseDescription = caseDescription == null ? null : caseDescription.trim();
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getSpare1() {
-        return spare1;
-    }
-
-    public void setSpare1(String spare1) {
-        this.spare1 = spare1 == null ? null : spare1.trim();
-    }
-
-    public String getSpare2() {
-        return spare2;
-    }
-
-    public void setSpare2(String spare2) {
-        this.spare2 = spare2 == null ? null : spare2.trim();
-    }
-
-    public String getSpare3() {
-        return spare3;
-    }
-
-    public void setSpare3(String spare3) {
-        this.spare3 = spare3 == null ? null : spare3.trim();
-    }
 }

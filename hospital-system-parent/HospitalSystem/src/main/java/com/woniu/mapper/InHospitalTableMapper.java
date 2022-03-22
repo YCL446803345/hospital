@@ -4,7 +4,9 @@ import com.woniu.entity.InHospitalTable;
 import com.woniu.entity.InHospitalTableExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface InHospitalTableMapper {
     long countByExample(InHospitalTableExample example);
 
@@ -27,4 +29,8 @@ public interface InHospitalTableMapper {
     int updateByPrimaryKeySelective(InHospitalTable record);
 
     int updateByPrimaryKey(InHospitalTable record);
+
+    //医生站分页模糊查询住院申请列表
+    List<InHospitalTable> queryInHospitalTableList(InHospitalTable inHospitalTable);
+
 }

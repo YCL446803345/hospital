@@ -1,7 +1,16 @@
 package com.woniu.entity;
 
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.util.Date;
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+//出院申请表
 public class LeaveHospital {
     private Integer id;
 
@@ -11,9 +20,27 @@ public class LeaveHospital {
 
     private Integer leaveStatus;
 
+    @DateTimeFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
     private Date leaveTime;
 
     private String leaveDescription;
+
+    //外键医生名
+    private String doctorName;
+
+    //外键患者名
+    private String patientName;
+
+    //模糊时间查询开始时间
+    @DateTimeFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
+    private Date startDate;
+
+    //模糊时间查询结束时间
+    @DateTimeFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
+    private Date endDate;
 
     private String spare1;
 
@@ -21,75 +48,5 @@ public class LeaveHospital {
 
     private String spare3;
 
-    public Integer getId() {
-        return id;
-    }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getDoctorId() {
-        return doctorId;
-    }
-
-    public void setDoctorId(Integer doctorId) {
-        this.doctorId = doctorId;
-    }
-
-    public Integer getPatientId() {
-        return patientId;
-    }
-
-    public void setPatientId(Integer patientId) {
-        this.patientId = patientId;
-    }
-
-    public Integer getLeaveStatus() {
-        return leaveStatus;
-    }
-
-    public void setLeaveStatus(Integer leaveStatus) {
-        this.leaveStatus = leaveStatus;
-    }
-
-    public Date getLeaveTime() {
-        return leaveTime;
-    }
-
-    public void setLeaveTime(Date leaveTime) {
-        this.leaveTime = leaveTime;
-    }
-
-    public String getLeaveDescription() {
-        return leaveDescription;
-    }
-
-    public void setLeaveDescription(String leaveDescription) {
-        this.leaveDescription = leaveDescription == null ? null : leaveDescription.trim();
-    }
-
-    public String getSpare1() {
-        return spare1;
-    }
-
-    public void setSpare1(String spare1) {
-        this.spare1 = spare1 == null ? null : spare1.trim();
-    }
-
-    public String getSpare2() {
-        return spare2;
-    }
-
-    public void setSpare2(String spare2) {
-        this.spare2 = spare2 == null ? null : spare2.trim();
-    }
-
-    public String getSpare3() {
-        return spare3;
-    }
-
-    public void setSpare3(String spare3) {
-        this.spare3 = spare3 == null ? null : spare3.trim();
-    }
 }

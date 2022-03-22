@@ -350,4 +350,17 @@
       spare3 = #{spare3,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <!--queryInHospitalTableList-->
+  <!--医生站分页模糊查询预约住院申请列表-->
+  <select id="queryInHospitalTableList" resultType="InHospitalTable">
+    select i.patient_name,i.patient_sex,i.patient_age,i.telephone,d.name deptName from HOS_in_hospital_table i
+    inner join HOS_dept d on i.dept_id = d.id
+    <where>
+      <if test="deptId != null">p.dept_id = #{deptId}</if>
+      <if test="patientName != null and patientName != ''">and i.patient_name like concat('%', #{patientName}, '%')</if>
+      <if test="startDate != null and startDate != ''">and i.in_hosptial_time &gt;= #{startDate}</if>
+      <if test="endDate != null and endDate != ''">and i.in_hosptial_time &lt;= #{endDate}</if>
+    </where> order by i.in_hosptial_time desc
+  </select>
 </mapper>

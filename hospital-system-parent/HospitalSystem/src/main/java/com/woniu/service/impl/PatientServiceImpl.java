@@ -39,4 +39,12 @@ public class PatientServiceImpl implements PatientService {
     public void updateDoctorOrNurse(Patient patient) {
         patientMapper.updateDoctorOrNurse(patient);
     }
+
+    //分页模糊查询患者列表
+    public PageInfo<Patient> queryPatient(Patient patient, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Patient> patientList = patientMapper.queryPatientList(patient);
+        PageInfo<Patient> patientPageInfo = new PageInfo<>(patientList);
+        return patientPageInfo;
+    }
 }

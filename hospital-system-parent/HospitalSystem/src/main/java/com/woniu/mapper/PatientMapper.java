@@ -49,4 +49,7 @@ public interface PatientMapper {
 
     @Update("update HOS_patient set doctor_id=#{doctorId},nurse_id=#{nurseId} where id=#{id}")
     void updateDoctorOrNurse(Patient patient);
+
+    //医生站分页模糊查询患者列表
+    List<Patient> queryPatientList(Patient patient);
 }

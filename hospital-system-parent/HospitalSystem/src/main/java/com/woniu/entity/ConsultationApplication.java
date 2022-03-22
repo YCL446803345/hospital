@@ -1,14 +1,24 @@
 package com.woniu.entity;
 
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.util.Date;
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+//会诊申请表
 public class ConsultationApplication {
     private Integer id;
 
     private Integer doctorId;
 
     private Integer patientId;
-
+    @DateTimeFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
     private Date consultationDate;
 
     private String reason;
@@ -20,6 +30,22 @@ public class ConsultationApplication {
     private Integer consultationCategoryId;
 
     private String status;
+    //外键医生名
+    private String doctorName;
+    //外键患者名
+    private String patientName;
+    //外键会诊紧急情况名
+    private String consultationEmergencyName;
+    //外键会诊类别名
+    private String consultationCategoryName;
+    //模糊时间查询开始时间
+    @DateTimeFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
+    private Date startDate;
+    //模糊时间查询结束时间
+    @DateTimeFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
+    private Date endDate;
 
     private String spare3;
 
@@ -27,99 +53,5 @@ public class ConsultationApplication {
 
     private String spare1;
 
-    public Integer getId() {
-        return id;
-    }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getDoctorId() {
-        return doctorId;
-    }
-
-    public void setDoctorId(Integer doctorId) {
-        this.doctorId = doctorId;
-    }
-
-    public Integer getPatientId() {
-        return patientId;
-    }
-
-    public void setPatientId(Integer patientId) {
-        this.patientId = patientId;
-    }
-
-    public Date getConsultationDate() {
-        return consultationDate;
-    }
-
-    public void setConsultationDate(Date consultationDate) {
-        this.consultationDate = consultationDate;
-    }
-
-    public String getReason() {
-        return reason;
-    }
-
-    public void setReason(String reason) {
-        this.reason = reason == null ? null : reason.trim();
-    }
-
-    public String getDesc() {
-        return desc;
-    }
-
-    public void setDesc(String desc) {
-        this.desc = desc == null ? null : desc.trim();
-    }
-
-    public Integer getConsultationEmergencyId() {
-        return consultationEmergencyId;
-    }
-
-    public void setConsultationEmergencyId(Integer consultationEmergencyId) {
-        this.consultationEmergencyId = consultationEmergencyId;
-    }
-
-    public Integer getConsultationCategoryId() {
-        return consultationCategoryId;
-    }
-
-    public void setConsultationCategoryId(Integer consultationCategoryId) {
-        this.consultationCategoryId = consultationCategoryId;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status == null ? null : status.trim();
-    }
-
-    public String getSpare3() {
-        return spare3;
-    }
-
-    public void setSpare3(String spare3) {
-        this.spare3 = spare3 == null ? null : spare3.trim();
-    }
-
-    public String getSpare2() {
-        return spare2;
-    }
-
-    public void setSpare2(String spare2) {
-        this.spare2 = spare2 == null ? null : spare2.trim();
-    }
-
-    public String getSpare1() {
-        return spare1;
-    }
-
-    public void setSpare1(String spare1) {
-        this.spare1 = spare1 == null ? null : spare1.trim();
-    }
 }
