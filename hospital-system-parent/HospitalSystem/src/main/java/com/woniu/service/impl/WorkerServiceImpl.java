@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,6 +23,7 @@ public class WorkerServiceImpl implements WorkerService {
 
 
     @Override
+
     public List<Worker> findWorkerList(String account, Integer roleId,Integer deptId) {
         WorkerExample workerExample = new WorkerExample();
         WorkerExample.Criteria criteria = workerExample.createCriteria();
@@ -52,5 +54,31 @@ public class WorkerServiceImpl implements WorkerService {
     @Override
     public void updateWorker(Worker worker) {
         workerMapper.updateByPrimaryKeySelective(worker);
+	}
+    public List<Worker> findDoctorsByDepeId(Integer deptId) {
+        WorkerExample workerExample = new WorkerExample();
+        WorkerExample.Criteria criteria = workerExample.createCriteria();
+        ArrayList<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(5);
+        criteria.andRoleIdIn(list);
+        criteria.andDeptIdEqualTo(deptId);
+        return workerMapper.selectByExample(workerExample);
     }
+
+    @Override
+    public List<Worker> findNursesByDepeId(Integer deptId) {
+        WorkerExample workerExample = new WorkerExample();
+        WorkerExample.Criteria criteria = workerExample.createCriteria();
+        ArrayList<Integer> list = new ArrayList<>();
+        list.add(2);
+        list.add(4);
+        criteria.andRoleIdIn(list);
+        criteria.andDeptIdEqualTo(deptId);
+        return workerMapper.selectByExample(workerExample);
+
+    }
+
+
+
 }

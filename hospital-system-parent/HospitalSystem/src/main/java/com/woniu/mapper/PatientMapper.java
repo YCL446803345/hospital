@@ -51,4 +51,21 @@ public interface PatientMapper {
 
     @Update("update HOS_patient set doctor_id=#{doctorId},nurse_id=#{nurseId} where id=#{id}")
     void updateDoctorOrNurse(Patient patient);
+
+    @Select("<script>" +
+            "select p.id id,p.name name,no,age,card_id cardId,appointmentt_time appointtTime,base_desc baseDesc,phone,p.gender gender,p.dept_id deptId,\n" +
+            "d.name deptName from  HOS_patient p ,HOS_dept d where p.dept_id=d.id and bed_id is null " +
+            "<if test='name!=null and name != \"\"'>and p.name like '%${name}%'</if>" +
+            "<if test='no!=null and no != \"\"'>and p.no like '%${no}%'</if>" +
+            "<if test='cardId!=null and cardId != \"\"'>and p.card_id like '%${cardId}%'</if>" +
+            "<if test='gender!=null and gender != \"\"'>and p.gender = #{gender}</if>" +
+            "<if test='status!=null and status != \"\"'>and p.status = #{status}</if>" +
+            "</script>")
+    List<Patient> findPatientsWithNotBed(Patient patient);
+
+    @Update("update HOS_patient set dept_id=#{deptId},bed_id=#{bedId},doctor_id=9,nurse_id=9 where id=#{id}")
+    void updateBedByPatientWithOutBed(Patient patient);
+
+    @Update("update HOS_patient set dept_id=#{deptId},bed_id=null,doctor_id=9,nurse_id=9 where id=#{id}")
+    void stopUseBed(Patient patient);
 }
