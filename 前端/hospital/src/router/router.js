@@ -1,8 +1,5 @@
-
 import Vue from 'vue' //导入node_modules中vue.js库文件
 import VueRouter from 'vue-router' //导入node_modules中vue-router.js库文件
-import Vue from 'vue'   //导入node_modules中vue.js库文件
-import VueRouter from 'vue-router'  //导入node_modules中vue-router.js库文件
 //import patientInfo from '../components/patient/patientInfo'
 //import patientChangeDoctorOrBed from '../components/patient/PatientChangeDoctorOrBed'
 
@@ -17,11 +14,11 @@ import Home from '../components/home/Home' //职工主界面+导航栏
 
 
 //药房组件
-import DrugInfo from '../components/home/drugHome/DrugInfo'   //药品信息列表
+import DrugInfo from '../components/home/drugHome/DrugInfo' //药品信息列表
 
 
 //人事组件
-import HumanAffairs from '../components/home/hrHome/HumanAffairs' // 职工信息列表
+import HumanAffairs from '../components/home/hrHome/HumanAffairs ' // 职工信息列表
 
 
 //配置路由规则
@@ -34,18 +31,19 @@ var router = new VueRouter({
         { path: "/gotoWorkesLogin", component: WorkersLogin },
         //菜单栏路由
         {
-            path:"/gotoHome",component:Home,
-            children:[
-                {path:"/medicine/home",component:DrugInfo},
-				{ path: "/worker/list", component: HumanAffairs},
-				//吴博文组件，待修改
-		        //{path: "/patientInfo", component: patientInfo},
-		        //{path:"/patientChangeDoctorOrBed",component:patientChangeDoctorOrBed},
-		        //{path:"/gotoUserLogin",component:UserLogin},
-		        //{path:"/gotoWorkesLogin",component:WorkersLogin},
+            path: "/gotoHome",
+            component: Home,
+            children: [
+                { path: "/medicine/home", component: DrugInfo },
+                { path: "/worker/list", component: HumanAffairs },
+                //吴博文组件，待修改
+                //{path: "/patientInfo", component: patientInfo},
+                //{path:"/patientChangeDoctorOrBed",component:patientChangeDoctorOrBed},
+                //{path:"/gotoUserLogin",component:UserLogin},
+                //{path:"/gotoWorkesLogin",component:WorkersLogin},
             ]
         }
-        
+
 
 
     ]
