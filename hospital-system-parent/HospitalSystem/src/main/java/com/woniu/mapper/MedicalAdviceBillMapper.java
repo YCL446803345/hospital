@@ -6,7 +6,9 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface MedicalAdviceBillMapper {
     long countByExample(MedicalAdviceBillExample example);
 
@@ -24,7 +26,7 @@ public interface MedicalAdviceBillMapper {
 
     @Select("select mab.money\n" +
             "from HOS_patient p,HOS_medical_advice ma,HOS_medical_advice_bill mab\n" +
-            "where p.id = ma.patient_id and ma.id = mab.medical_advice_id and p.id = #{id}")
+            "where p.id = ma.patient_id and ma.id = mab.medical_advice_id and p.id = #{id} and status = 1")
     List<Float> selectMoneyByPatientId (Integer id);
 
     @Update("update \n" +

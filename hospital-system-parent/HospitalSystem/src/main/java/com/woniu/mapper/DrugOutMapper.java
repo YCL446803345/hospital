@@ -4,7 +4,9 @@ import com.woniu.entity.DrugOut;
 import com.woniu.entity.DrugOutExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface DrugOutMapper {
     long countByExample(DrugOutExample example);
 

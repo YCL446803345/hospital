@@ -25,8 +25,8 @@ public class Patient {
     private Integer deptId;
 
     private Integer bedId;
-    @DateTimeFormat(pattern="yyyy-MM-dd")
-    @JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:SS")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:SS",timezone="GMT+8")
     private Date appointmenttTime;
 
     private String baseDesc;
@@ -36,8 +36,8 @@ public class Patient {
     private Integer nurseId;
 
     private String status;
-    @DateTimeFormat(pattern="yyyy-MM-dd")
-    @JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:SS")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:SS",timezone="GMT+8")
     private Date endTime;
 
     private String nurseName;

@@ -36,26 +36,13 @@ public class PayController {
 //    private final String NOTIFY_URL = "http://localhost:8081/#/register/manager";
     //支付宝同步通知路径,也就是当付款完毕后跳转本项目的页面,可以不是公网地址
     private String RETURN_URL = "http://localhost:8080/returnUrl";
-    private Patient patient;
 
 //    @Autowired
 //    private CashierCostService cashierCostService;
 
 
     @PostMapping("/pay")
-    public void alipay(HttpServletResponse httpResponse, String dept, String doctor) throws IOException, ParseException {
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-//        Date date = null;
-//        try {
-//            date = sdf.parse(time);
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-
-//        patient.setTime(date);
-//        this.patient = patient;
-//        SecureRandom r = new SecureRandom();
-        //实例化客户端,填入所需参数
+    public void alipay(HttpServletResponse httpResponse) throws IOException{
         AlipayClient alipayClient = new DefaultAlipayClient(GATEWAY_URL, APP_ID, APP_PRIVATE_KEY, FORMAT, CHARSET, ALIPAY_PUBLIC_KEY, SIGN_TYPE);
         AlipayTradePagePayRequest request = new AlipayTradePagePayRequest();
 
