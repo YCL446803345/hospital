@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.woniu.mapper.WorkerMapper">
+
   <resultMap id="BaseResultMap" type="com.woniu.entity.Worker">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
@@ -38,6 +39,7 @@
                   </foreach>
                 </when>
               </choose>
+
             </foreach>
           </trim>
         </if>
@@ -68,6 +70,7 @@
                 </when>
               </choose>
             </foreach>
+
           </trim>
         </if>
       </foreach>
@@ -209,6 +212,7 @@
         id = #{record.id,jdbcType=INTEGER},
       </if>
       <if test="record.name != null">
+
         name = #{record.name,jdbcType=VARCHAR},
       </if>
       <if test="record.account != null">
@@ -219,11 +223,11 @@
       </if>
       <if test="record.roleId != null">
         role_id = #{record.roleId,jdbcType=INTEGER},
-      </if>
-      <if test="record.deptId != null">
         dept_id = #{record.deptId,jdbcType=INTEGER},
+
       </if>
       <if test="record.gender != null">
+
         gender = #{record.gender,jdbcType=CHAR},
       </if>
       <if test="record.salary != null">
@@ -237,6 +241,7 @@
       </if>
       <if test="record.spare2 != null">
         spare2 = #{record.spare2,jdbcType=VARCHAR},
+
       </if>
       <if test="record.spare3 != null">
         spare3 = #{record.spare3,jdbcType=VARCHAR},
@@ -318,4 +323,5 @@
       spare3 = #{spare3,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
 </mapper>

@@ -4,7 +4,9 @@ import com.woniu.entity.OutDrugRecord;
 import com.woniu.entity.OutDrugRecordExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface OutDrugRecordMapper {
     long countByExample(OutDrugRecordExample example);
 

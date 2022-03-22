@@ -11,4 +11,6 @@ public interface PatientService {
     void updateBed(Patient patient);
 
     void updateDoctorOrNurse(Patient patient);
+
+    void updateBalance (Float o,Integer id);
 }

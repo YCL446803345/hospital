@@ -39,4 +39,11 @@ public class PatientServiceImpl implements PatientService {
     public void updateDoctorOrNurse(Patient patient) {
         patientMapper.updateDoctorOrNurse(patient);
     }
+
+    @Override
+    public void updateBalance (Float o,Integer id) {
+        Patient patient = patientMapper.selectByPrimaryKey(id);
+        patient.setBalance(patient.getBalance()+o);
+        patientMapper.updateByPrimaryKeySelective(patient);
+    }
 }

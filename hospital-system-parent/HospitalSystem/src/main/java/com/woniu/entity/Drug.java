@@ -21,6 +21,7 @@ public class Drug {
     private String spare1;
     private String spare2;
     private String spare3;
-
+    private Integer inNum;
+    private Integer outNum;
 
 }
