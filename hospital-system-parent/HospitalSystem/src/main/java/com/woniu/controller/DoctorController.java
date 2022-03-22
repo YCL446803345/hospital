@@ -1,6 +1,5 @@
 package com.woniu.controller;
 
-import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.woniu.entity.*;
 import com.woniu.service.*;
@@ -11,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 //医生站Controller
 @RestController
