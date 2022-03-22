@@ -15,6 +15,46 @@ public class Bed {
 
     private String spare3;
 
+    private String patientName;
+
+    private String deptName;
+
+    private String patientNo;
+
+    private String patientId;
+
+    public String getPatientId() {
+        return patientId;
+    }
+
+    public void setPatientId(String patientId) {
+        this.patientId = patientId;
+    }
+
+    public String getPatientNo() {
+        return patientNo;
+    }
+
+    public void setPatientNo(String patientNo) {
+        this.patientNo = patientNo;
+    }
+
+    public String getPatientName() {
+        return patientName;
+    }
+
+    public void setPatientName(String patientName) {
+        this.patientName = patientName;
+    }
+
+    public String getDeptName() {
+        return deptName;
+    }
+
+    public void setDeptName(String deptName) {
+        this.deptName = deptName;
+    }
+
     public Integer getId() {
         return id;
     }

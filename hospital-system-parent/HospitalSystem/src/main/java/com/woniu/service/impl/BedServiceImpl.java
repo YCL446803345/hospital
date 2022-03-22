@@ -1,5 +1,7 @@
 package com.woniu.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.woniu.entity.Bed;
 import com.woniu.entity.BedExample;
 import com.woniu.entity.Patient;
@@ -28,5 +30,11 @@ public class BedServiceImpl implements BedService {
         bedMapper.changeBedStatusOff(patient);
     }
 
-
+    @Override
+    public PageInfo<Bed> findBeds(Bed bed, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<Bed> beds = bedMapper.findBeds(bed);
+        PageInfo<Bed> PageInfo = new PageInfo<>(beds);
+        return PageInfo;
+    }
 }

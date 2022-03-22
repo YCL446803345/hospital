@@ -2,18 +2,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.woniu.mapper.WorkerMapper">
   <resultMap id="BaseResultMap" type="com.woniu.entity.Worker">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="account" jdbcType="VARCHAR" property="account" />
-    <result column="password" jdbcType="VARCHAR" property="password" />
-    <result column="role_id" jdbcType="INTEGER" property="roleId" />
-    <result column="dept_id" jdbcType="INTEGER" property="deptId" />
-    <result column="gender" jdbcType="CHAR" property="gender" />
-    <result column="salary" jdbcType="VARCHAR" property="salary" />
-    <result column="status" jdbcType="CHAR" property="status" />
-    <result column="spare1" jdbcType="VARCHAR" property="spare1" />
-    <result column="spare2" jdbcType="VARCHAR" property="spare2" />
-    <result column="spare3" jdbcType="VARCHAR" property="spare3" />
+    <id column="id" jdbcType="INTEGER" property="id"/>
+    <result column="name" jdbcType="VARCHAR" property="name"/>
+    <result column="account" jdbcType="VARCHAR" property="account"/>
+    <result column="password" jdbcType="VARCHAR" property="password"/>
+    <result column="role_id" jdbcType="INTEGER" property="roleId"/>
+    <result column="dept_id" jdbcType="INTEGER" property="deptId"/>
+    <result column="gender" jdbcType="CHAR" property="gender"/>
+    <result column="salary" jdbcType="VARCHAR" property="salary"/>
+    <result column="status" jdbcType="CHAR" property="status"/>
+    <result column="spare1" jdbcType="VARCHAR" property="spare1"/>
+    <result column="spare2" jdbcType="VARCHAR" property="spare2"/>
+    <result column="spare3" jdbcType="VARCHAR" property="spare3"/>
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -33,7 +33,8 @@
                 </when>
                 <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                  <foreach close=")" collection="criterion.value" item="listItem" open="("
+                           separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -62,7 +63,8 @@
                 </when>
                 <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                  <foreach close=")" collection="criterion.value" item="listItem" open="("
+                           separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -74,7 +76,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, name, account, password, role_id, dept_id, gender, salary, status, spare1, spare2, 
+    id
+    , name, account, password, role_id, dept_id, gender, salary, status, spare1, spare2,
     spare3
   </sql>
   <select id="selectByExample" parameterType="com.woniu.entity.WorkerExample" resultMap="BaseResultMap">
@@ -82,40 +85,42 @@
     <if test="distinct">
       distinct
     </if>
-    <include refid="Base_Column_List" />
+    <include refid="Base_Column_List"/>
     from HOS_worker
     <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
+      <include refid="Example_Where_Clause"/>
     </if>
     <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
+    select
+    <include refid="Base_Column_List"/>
     from HOS_worker
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from HOS_worker
+    delete
+    from HOS_worker
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <delete id="deleteByExample" parameterType="com.woniu.entity.WorkerExample">
     delete from HOS_worker
     <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
+      <include refid="Example_Where_Clause"/>
     </if>
   </delete>
   <insert id="insert" parameterType="com.woniu.entity.Worker">
-    insert into HOS_worker (id, name, account, 
-      password, role_id, dept_id, 
-      gender, salary, status, spare1, 
-      spare2, spare3)
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, 
-      #{password,jdbcType=VARCHAR}, #{roleId,jdbcType=INTEGER}, #{deptId,jdbcType=INTEGER}, 
-      #{gender,jdbcType=CHAR}, #{salary,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, #{spare1,jdbcType=VARCHAR}, 
-      #{spare2,jdbcType=VARCHAR}, #{spare3,jdbcType=VARCHAR})
+    insert into HOS_worker (id, name, account,
+                            password, role_id, dept_id,
+                            gender, salary, status, spare1,
+                            spare2, spare3)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR},
+            #{password,jdbcType=VARCHAR}, #{roleId,jdbcType=INTEGER}, #{deptId,jdbcType=INTEGER},
+            #{gender,jdbcType=CHAR}, #{salary,jdbcType=VARCHAR}, #{status,jdbcType=CHAR},
+            #{spare1,jdbcType=VARCHAR},
+            #{spare2,jdbcType=VARCHAR}, #{spare3,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.woniu.entity.Worker">
     insert into HOS_worker
@@ -199,7 +204,7 @@
   <select id="countByExample" parameterType="com.woniu.entity.WorkerExample" resultType="java.lang.Long">
     select count(*) from HOS_worker
     <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
+      <include refid="Example_Where_Clause"/>
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
@@ -243,25 +248,25 @@
       </if>
     </set>
     <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
+      <include refid="Update_By_Example_Where_Clause"/>
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
     update HOS_worker
     set id = #{record.id,jdbcType=INTEGER},
-      name = #{record.name,jdbcType=VARCHAR},
-      account = #{record.account,jdbcType=VARCHAR},
-      password = #{record.password,jdbcType=VARCHAR},
-      role_id = #{record.roleId,jdbcType=INTEGER},
-      dept_id = #{record.deptId,jdbcType=INTEGER},
-      gender = #{record.gender,jdbcType=CHAR},
-      salary = #{record.salary,jdbcType=VARCHAR},
-      status = #{record.status,jdbcType=CHAR},
-      spare1 = #{record.spare1,jdbcType=VARCHAR},
-      spare2 = #{record.spare2,jdbcType=VARCHAR},
-      spare3 = #{record.spare3,jdbcType=VARCHAR}
+    name = #{record.name,jdbcType=VARCHAR},
+    account = #{record.account,jdbcType=VARCHAR},
+    password = #{record.password,jdbcType=VARCHAR},
+    role_id = #{record.roleId,jdbcType=INTEGER},
+    dept_id = #{record.deptId,jdbcType=INTEGER},
+    gender = #{record.gender,jdbcType=CHAR},
+    salary = #{record.salary,jdbcType=VARCHAR},
+    status = #{record.status,jdbcType=CHAR},
+    spare1 = #{record.spare1,jdbcType=VARCHAR},
+    spare2 = #{record.spare2,jdbcType=VARCHAR},
+    spare3 = #{record.spare3,jdbcType=VARCHAR}
     <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
+      <include refid="Update_By_Example_Where_Clause"/>
     </if>
   </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.woniu.entity.Worker">
@@ -305,17 +310,18 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.woniu.entity.Worker">
     update HOS_worker
-    set name = #{name,jdbcType=VARCHAR},
-      account = #{account,jdbcType=VARCHAR},
-      password = #{password,jdbcType=VARCHAR},
-      role_id = #{roleId,jdbcType=INTEGER},
-      dept_id = #{deptId,jdbcType=INTEGER},
-      gender = #{gender,jdbcType=CHAR},
-      salary = #{salary,jdbcType=VARCHAR},
-      status = #{status,jdbcType=CHAR},
-      spare1 = #{spare1,jdbcType=VARCHAR},
-      spare2 = #{spare2,jdbcType=VARCHAR},
-      spare3 = #{spare3,jdbcType=VARCHAR}
+    set name     = #{name,jdbcType=VARCHAR},
+        account  = #{account,jdbcType=VARCHAR},
+        password = #{password,jdbcType=VARCHAR},
+        role_id  = #{roleId,jdbcType=INTEGER},
+        dept_id  = #{deptId,jdbcType=INTEGER},
+        gender   = #{gender,jdbcType=CHAR},
+        salary   = #{salary,jdbcType=VARCHAR},
+        status   = #{status,jdbcType=CHAR},
+        spare1   = #{spare1,jdbcType=VARCHAR},
+        spare2   = #{spare2,jdbcType=VARCHAR},
+        spare3   = #{spare3,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
 </mapper>

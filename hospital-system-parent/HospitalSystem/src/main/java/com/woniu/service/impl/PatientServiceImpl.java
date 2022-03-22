@@ -2,6 +2,7 @@ package com.woniu.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.woniu.entity.Bed;
 import com.woniu.entity.Patient;
 import com.woniu.entity.PatientExample;
 import com.woniu.mapper.BedMapper;
@@ -29,6 +30,10 @@ public class PatientServiceImpl implements PatientService {
         return patientPageInfo;
     }
 
+    /**
+     * 修改非待床病人的床位
+     * @param patient
+     */
     @Override
     public void updateBed(Patient patient) {
         patientMapper.updateBed(patient);
@@ -38,5 +43,34 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public void updateDoctorOrNurse(Patient patient) {
         patientMapper.updateDoctorOrNurse(patient);
+    }
+
+
+    @Override
+    public PageInfo<Patient> findPatientsWithNotBed(Patient patient, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<Patient> patientList = patientMapper.findPatientsWithNotBed(patient);
+        PageInfo<Patient> patientPageInfo = new PageInfo<>(patientList);
+        return patientPageInfo;
+    }
+
+    /**
+     * 给待床病人安排床位，同时修改床位状态
+     * @param patient
+     */
+    @Override
+    public void updateBedByPatientWithOutBed(Patient patient) {
+        patientMapper.updateBedByPatientWithOutBed(patient);
+        bedMapper.changeBedStatusOn(patient);
+    }
+
+    /**
+     * 终止使用床位
+     * @param patient
+     */
+    @Override
+    public void stopUseBed(Patient patient) {
+        patientMapper.stopUseBed(patient);
+        bedMapper.changeBedStatusOff(patient);
     }
 }

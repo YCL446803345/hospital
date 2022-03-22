@@ -15,24 +15,29 @@ public class WorkerServiceImpl implements WorkerService {
     @Autowired
     private WorkerMapper workerMapper;
     @Override
-    public List<Worker> findDoctors() {
+    public List<Worker> findDoctorsByDepeId(Integer deptId) {
         WorkerExample workerExample = new WorkerExample();
         WorkerExample.Criteria criteria = workerExample.createCriteria();
         ArrayList<Integer> list = new ArrayList<>();
         list.add(1);
         list.add(5);
         criteria.andRoleIdIn(list);
+        criteria.andDeptIdEqualTo(deptId);
         return workerMapper.selectByExample(workerExample);
     }
 
     @Override
-    public List<Worker> findNurses() {
+    public List<Worker> findNursesByDepeId(Integer deptId) {
         WorkerExample workerExample = new WorkerExample();
         WorkerExample.Criteria criteria = workerExample.createCriteria();
         ArrayList<Integer> list = new ArrayList<>();
         list.add(2);
         list.add(4);
         criteria.andRoleIdIn(list);
+        criteria.andDeptIdEqualTo(deptId);
         return workerMapper.selectByExample(workerExample);
     }
+
+
+
 }

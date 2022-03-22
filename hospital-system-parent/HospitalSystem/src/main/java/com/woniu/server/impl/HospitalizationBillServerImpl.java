@@ -61,51 +61,51 @@ public class HospitalizationBillServerImpl implements HospitalizationBillServer 
      */
     @Override
     public void updateHospitalizationBill (Integer id, float money) {
-        Patient patient = patientMapper.selectByPrimaryKey(id);
-        //获取病人余额
-        Float balance = patient.getBalance();
-        //获取退药的费用
-        List<Float> floats1 = drugOutBillMapper.selectBillMoneyByPatientId(id);
-        float outTotal = 0.0f;
-        for (Float aFloat : floats1) {
-            outTotal+=aFloat;
-        }
-        //获取处方的费用
-        List<Float> floats2 = prescriptionBillMapper.selectMoneyByPatientId(id);
-        float prescriptionTotal = 0.0f;
-        for (Float aFloat : floats2) {
-            prescriptionTotal+=aFloat;
-        }
-        //获取住院费用
-        int i = timeOperation(patient.getAppointmenttTime(), new Date());
-        float timeTotal = i * DAILYFEE;
-        //获取医嘱的费用
-        List<Float> floats3 = medicalAdviceBillMapper.selectMoneyByPatientId(id);
-        float medicalAdviceTotal = 0.0f;
-        for (Float aFloat : floats3) {
-            medicalAdviceTotal+=aFloat;
-        }
-        balance = balance - outTotal - prescriptionTotal - timeTotal - medicalAdviceTotal;
-        //如果病人缴费,则费用相加
-        balance+=money;
-        Patient newPatient = new Patient();
-        newPatient.setId(id);
-        newPatient.setBalance(balance);
-        patientMapper.updateByPrimaryKeySelective(newPatient);
-        //缴费后将处方表中的状态修改为已缴费状态
-        medicalAdviceBillMapper.updateStatus(id);
-        //缴费后将医嘱表中的状态修改为已缴费状态
-        prescriptionBillMapper.updateStatus(id);
-        //缴费后将退药表中的状态修改为已缴费状态
-        drugOutBillMapper.updateStatus(id);
-        //缴费后将住院天数修改为已缴费天数
-        hospitalizationBillMapper.updateDays(i,id);
-        //缴费后修改处方缴费时间
-        prescriptionBillMapper.updateDate(TimeUtil.getNowTime(new Date()),id);
-        //缴费后修改医嘱缴费时间
-        medicalAdviceBillMapper.updateDate(TimeUtil.getNowTime(new Date()),id);
-        //缴费后修改退药时间为当前时间
-        drugOutBillMapper.updateDate(TimeUtil.getNowTime(new Date()),id);
+//        Patient patient = patientMapper.selectByPrimaryKey(id);
+//        //获取病人余额
+//        Float balance = patient.getBalance();
+//        //获取退药的费用
+//        List<Float> floats1 = drugOutBillMapper.selectBillMoneyByPatientId(id);
+//        float outTotal = 0.0f;
+//        for (Float aFloat : floats1) {
+//            outTotal+=aFloat;
+//        }
+//        //获取处方的费用
+//        List<Float> floats2 = prescriptionBillMapper.selectMoneyByPatientId(id);
+//        float prescriptionTotal = 0.0f;
+//        for (Float aFloat : floats2) {
+//            prescriptionTotal+=aFloat;
+//        }
+//        //获取住院费用
+//        int i = timeOperation(patient.getAppointmenttTime(), new Date());
+//        float timeTotal = i * DAILYFEE;
+//        //获取医嘱的费用
+//        List<Float> floats3 = medicalAdviceBillMapper.selectMoneyByPatientId(id);
+//        float medicalAdviceTotal = 0.0f;
+//        for (Float aFloat : floats3) {
+//            medicalAdviceTotal+=aFloat;
+//        }
+//        balance = balance - outTotal - prescriptionTotal - timeTotal - medicalAdviceTotal;
+//        //如果病人缴费,则费用相加
+//        balance+=money;
+//        Patient newPatient = new Patient();
+//        newPatient.setId(id);
+//        newPatient.setBalance(balance);
+//        patientMapper.updateByPrimaryKeySelective(newPatient);
+//        //缴费后将处方表中的状态修改为已缴费状态
+//        medicalAdviceBillMapper.updateStatus(id);
+//        //缴费后将医嘱表中的状态修改为已缴费状态
+//        prescriptionBillMapper.updateStatus(id);
+//        //缴费后将退药表中的状态修改为已缴费状态
+//        drugOutBillMapper.updateStatus(id);
+//        //缴费后将住院天数修改为已缴费天数
+//        hospitalizationBillMapper.updateDays(i,id);
+//        //缴费后修改处方缴费时间
+//        prescriptionBillMapper.updateDate(TimeUtil.getNowTime(new Date()),id);
+//        //缴费后修改医嘱缴费时间
+//        medicalAdviceBillMapper.updateDate(TimeUtil.getNowTime(new Date()),id);
+//        //缴费后修改退药时间为当前时间
+//        drugOutBillMapper.updateDate(TimeUtil.getNowTime(new Date()),id);
     }
 
 
@@ -115,10 +115,11 @@ public class HospitalizationBillServerImpl implements HospitalizationBillServer 
      * @return 两个日期的差值,不满一天算一天
      */
     public int timeOperation(Date date1, Date date2){
-        //计算两个时间间隔的毫秒值
-        double time1 = date2.getTime() - date1.getTime();
-        //计算天数,并强转成int类型
-        return (int) Math.ceil(time1 / 1000 / 60 / 60 / 24);
+//        //计算两个时间间隔的毫秒值
+//        double time1 = date2.getTime() - date1.getTime();
+//        //计算天数,并强转成int类型
+//        return (int) Math.ceil(time1 / 1000 / 60 / 60 / 24);
+        return 1;
     }
 
 }

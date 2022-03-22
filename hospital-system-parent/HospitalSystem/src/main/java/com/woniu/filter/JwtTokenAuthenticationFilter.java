@@ -3,7 +3,6 @@ package com.woniu.filter;
 import com.woniu.config.MyAuthenticationFailu;
 import com.woniu.exception.ToKenInvalidException;
 import com.woniu.exception.ToKenIsNullException;
-import com.woniu.mapper.UserMapper;
 import com.woniu.mapper.WorkerMapper;
 import com.woniu.util.JwtTokenUitl;
 import org.springframework.beans.factory.annotation.Autowired;

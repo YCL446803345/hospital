@@ -5,7 +5,7 @@ import com.woniu.entity.Worker;
 import java.util.List;
 
 public interface WorkerService {
-    List<Worker> findDoctors();
+    List<Worker> findDoctorsByDepeId(Integer deptId);
 
-    List<Worker> findNurses();
+    List<Worker> findNursesByDepeId(Integer deptId);
 }
