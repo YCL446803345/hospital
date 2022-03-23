@@ -65,7 +65,7 @@ var router = new VueRouter({
 
                 {path:"/drug/prescriptionList",component:DrugPre},
 
-                {path:"/pay/cost",component:costInfo}
+                {path:"/pay/cost",component:costInfo},
 
                 {path:"/doctor/PatientList",component:PatientList},
                 {path:"/doctor/consultationApplicationList",component:ConsultationApplicationList},
