@@ -20,6 +20,12 @@ import UserLogin from '../components/login/UserLogin' //用户登录组件
 import WorkersLogin from '../components/login/WorkersLogin' //职工登录组件
 import Home from '../components/home/Home' //职工主界面+导航栏
 
+//医生组件
+import PatientList from '../components/home/doctorHome/patient/PatientList' //住院患者列表
+import ConsultationApplicationList from '../components/home/doctorHome/patient/ConsultationApplicationList' //会诊列表
+import MedicalAdviceList from '../components/home/doctorHome/patient/MedicalAdviceList' //医嘱列表
+import InHospitalTableList from '../components/home/doctorHome/patient/InHospitalTableList' //预约住院列表
+import LeaveHospitalList from '../components/home/doctorHome/patient/LeaveHospitalList' //出院申请列表
 
 //药房组件
 import DrugInfo from '../components/home/drugHome/DrugInfo'   //药品信息列表
@@ -56,9 +62,16 @@ var router = new VueRouter({
 	            {path:"/nurse/waitPatientManager",component:patientWithNotBed},
 	            {path:"/nurse/bed",component:bedManager},
 
+
                 {path:"/drug/prescriptionList",component:DrugPre},
 
                 {path:"/pay/cost",component:costInfo}
+
+                {path:"/doctor/PatientList",component:PatientList},
+                {path:"/doctor/consultationApplicationList",component:ConsultationApplicationList},
+                {path:"/doctor/medicalAdviceList",component:MedicalAdviceList},
+                {path:"/doctor/inHospitalTableList",component:InHospitalTableList},
+                {path:"/doctor/leaveHospitalList",component:LeaveHospitalList},
 
             ]
         }

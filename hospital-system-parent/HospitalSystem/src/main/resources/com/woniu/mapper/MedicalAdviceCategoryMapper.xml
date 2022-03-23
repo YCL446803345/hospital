@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.woniu.mapper.LeaveHospitalMapper">
-  <resultMap id="BaseResultMap" type="com.woniu.entity.LeaveHospital">
+<mapper namespace="com.woniu.mapper.MedicalAdviceCategoryMapper">
+  <resultMap id="BaseResultMap" type="com.woniu.entity.MedicalAdviceCategory">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="doctor_id" jdbcType="INTEGER" property="doctorId" />
-    <result column="patient_id" jdbcType="INTEGER" property="patientId" />
-    <result column="leave_status" jdbcType="INTEGER" property="leaveStatus" />
-    <result column="leave_time" jdbcType="TIMESTAMP" property="leaveTime" />
-    <result column="leave_description" jdbcType="VARCHAR" property="leaveDescription" />
+    <result column="advice_category" jdbcType="VARCHAR" property="adviceCategory" />
     <result column="spare1" jdbcType="VARCHAR" property="spare1" />
     <result column="spare2" jdbcType="VARCHAR" property="spare2" />
     <result column="spare3" jdbcType="VARCHAR" property="spare3" />
@@ -71,16 +67,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, doctor_id, patient_id, leave_status, leave_time, leave_description, spare1, spare2, 
-    spare3
+    id, advice_category, spare1, spare2, spare3
   </sql>
-  <select id="selectByExample" parameterType="com.woniu.entity.LeaveHospitalExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.woniu.entity.MedicalAdviceCategoryExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from HOS_leave_hospital
+    from HOS_medical_advice_category
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -91,49 +86,33 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from HOS_leave_hospital
+    from HOS_medical_advice_category
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from HOS_leave_hospital
+    delete from HOS_medical_advice_category
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.woniu.entity.LeaveHospitalExample">
-    delete from HOS_leave_hospital
+  <delete id="deleteByExample" parameterType="com.woniu.entity.MedicalAdviceCategoryExample">
+    delete from HOS_medical_advice_category
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.woniu.entity.LeaveHospital">
-    insert into HOS_leave_hospital (id, doctor_id, patient_id, 
-      leave_status, leave_time, leave_description, 
-      spare1, spare2, spare3
-      )
-    values (#{id,jdbcType=INTEGER}, #{doctorId,jdbcType=INTEGER}, #{patientId,jdbcType=INTEGER}, 
-      #{leaveStatus,jdbcType=INTEGER}, #{leaveTime,jdbcType=TIMESTAMP}, #{leaveDescription,jdbcType=VARCHAR}, 
-      #{spare1,jdbcType=VARCHAR}, #{spare2,jdbcType=VARCHAR}, #{spare3,jdbcType=VARCHAR}
-      )
+  <insert id="insert" parameterType="com.woniu.entity.MedicalAdviceCategory">
+    insert into HOS_medical_advice_category (id, advice_category, spare1, 
+      spare2, spare3)
+    values (#{id,jdbcType=INTEGER}, #{adviceCategory,jdbcType=VARCHAR}, #{spare1,jdbcType=VARCHAR}, 
+      #{spare2,jdbcType=VARCHAR}, #{spare3,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.woniu.entity.LeaveHospital">
-    insert into HOS_leave_hospital
+  <insert id="insertSelective" parameterType="com.woniu.entity.MedicalAdviceCategory">
+    insert into HOS_medical_advice_category
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
       </if>
-      <if test="doctorId != null">
-        doctor_id,
-      </if>
-      <if test="patientId != null">
-        patient_id,
-      </if>
-      <if test="leaveStatus != null">
-        leave_status,
-      </if>
-      <if test="leaveTime != null">
-        leave_time,
-      </if>
-      <if test="leaveDescription != null">
-        leave_description,
+      <if test="adviceCategory != null">
+        advice_category,
       </if>
       <if test="spare1 != null">
         spare1,
@@ -149,20 +128,8 @@
       <if test="id != null">
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="doctorId != null">
-        #{doctorId,jdbcType=INTEGER},
-      </if>
-      <if test="patientId != null">
-        #{patientId,jdbcType=INTEGER},
-      </if>
-      <if test="leaveStatus != null">
-        #{leaveStatus,jdbcType=INTEGER},
-      </if>
-      <if test="leaveTime != null">
-        #{leaveTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="leaveDescription != null">
-        #{leaveDescription,jdbcType=VARCHAR},
+      <if test="adviceCategory != null">
+        #{adviceCategory,jdbcType=VARCHAR},
       </if>
       <if test="spare1 != null">
         #{spare1,jdbcType=VARCHAR},
@@ -175,32 +142,20 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.woniu.entity.LeaveHospitalExample" resultType="java.lang.Long">
-    select count(*) from HOS_leave_hospital
+  <select id="countByExample" parameterType="com.woniu.entity.MedicalAdviceCategoryExample" resultType="java.lang.Long">
+    select count(*) from HOS_medical_advice_category
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update HOS_leave_hospital
+    update HOS_medical_advice_category
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.doctorId != null">
-        doctor_id = #{record.doctorId,jdbcType=INTEGER},
-      </if>
-      <if test="record.patientId != null">
-        patient_id = #{record.patientId,jdbcType=INTEGER},
-      </if>
-      <if test="record.leaveStatus != null">
-        leave_status = #{record.leaveStatus,jdbcType=INTEGER},
-      </if>
-      <if test="record.leaveTime != null">
-        leave_time = #{record.leaveTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.leaveDescription != null">
-        leave_description = #{record.leaveDescription,jdbcType=VARCHAR},
+      <if test="record.adviceCategory != null">
+        advice_category = #{record.adviceCategory,jdbcType=VARCHAR},
       </if>
       <if test="record.spare1 != null">
         spare1 = #{record.spare1,jdbcType=VARCHAR},
@@ -217,13 +172,9 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update HOS_leave_hospital
+    update HOS_medical_advice_category
     set id = #{record.id,jdbcType=INTEGER},
-      doctor_id = #{record.doctorId,jdbcType=INTEGER},
-      patient_id = #{record.patientId,jdbcType=INTEGER},
-      leave_status = #{record.leaveStatus,jdbcType=INTEGER},
-      leave_time = #{record.leaveTime,jdbcType=TIMESTAMP},
-      leave_description = #{record.leaveDescription,jdbcType=VARCHAR},
+      advice_category = #{record.adviceCategory,jdbcType=VARCHAR},
       spare1 = #{record.spare1,jdbcType=VARCHAR},
       spare2 = #{record.spare2,jdbcType=VARCHAR},
       spare3 = #{record.spare3,jdbcType=VARCHAR}
@@ -231,23 +182,11 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.woniu.entity.LeaveHospital">
-    update HOS_leave_hospital
+  <update id="updateByPrimaryKeySelective" parameterType="com.woniu.entity.MedicalAdviceCategory">
+    update HOS_medical_advice_category
     <set>
-      <if test="doctorId != null">
-        doctor_id = #{doctorId,jdbcType=INTEGER},
-      </if>
-      <if test="patientId != null">
-        patient_id = #{patientId,jdbcType=INTEGER},
-      </if>
-      <if test="leaveStatus != null">
-        leave_status = #{leaveStatus,jdbcType=INTEGER},
-      </if>
-      <if test="leaveTime != null">
-        leave_time = #{leaveTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="leaveDescription != null">
-        leave_description = #{leaveDescription,jdbcType=VARCHAR},
+      <if test="adviceCategory != null">
+        advice_category = #{adviceCategory,jdbcType=VARCHAR},
       </if>
       <if test="spare1 != null">
         spare1 = #{spare1,jdbcType=VARCHAR},
@@ -261,30 +200,12 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.woniu.entity.LeaveHospital">
-    update HOS_leave_hospital
-    set doctor_id = #{doctorId,jdbcType=INTEGER},
-      patient_id = #{patientId,jdbcType=INTEGER},
-      leave_status = #{leaveStatus,jdbcType=INTEGER},
-      leave_time = #{leaveTime,jdbcType=TIMESTAMP},
-      leave_description = #{leaveDescription,jdbcType=VARCHAR},
+  <update id="updateByPrimaryKey" parameterType="com.woniu.entity.MedicalAdviceCategory">
+    update HOS_medical_advice_category
+    set advice_category = #{adviceCategory,jdbcType=VARCHAR},
       spare1 = #{spare1,jdbcType=VARCHAR},
       spare2 = #{spare2,jdbcType=VARCHAR},
       spare3 = #{spare3,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-
-  <!--queryLeaveHospitalList-->
-  <!--医生站分页模糊查询预约住院申请列表-->
-  <select id="queryLeaveHospitalList" resultType="LeaveHospital">
-    select l.id,w.name doctorName,p.name patientName,l.leave_status,l.leave_time,l.leave_description
-    from HOS_leave_hospital l
-    inner join HOS_worker w on l.doctor_id = w.id
-    inner join HOS_patient p on l.patient_id = p.id
-    <where>
-      <if test="leaveStatus != null and leaveStatus !=''">l.leave_status = #{leaveStatus}</if>
-      <if test="startDate != null and startDate != ''">and l.leave_time &gt;= #{startDate}</if>
-      <if test="endDate != null and endDate != ''">and l.leave_time &lt;= #{endDate}</if>
-    </where> order by l.leave_time desc
-  </select>
 </mapper>

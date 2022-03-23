@@ -354,11 +354,13 @@
   <!--queryInHospitalTableList-->
   <!--医生站分页模糊查询预约住院申请列表-->
   <select id="queryInHospitalTableList" resultType="InHospitalTable">
-    select i.patient_name,i.patient_sex,i.patient_age,i.telephone,d.name deptName from HOS_in_hospital_table i
+    select i.id,i.patient_name,i.patient_sex,i.patient_age,i.telephone,i.card_id,i.reason,i.in_hosptial_time,i.status,d.name deptName
+    from HOS_in_hospital_table i
     inner join HOS_dept d on i.dept_id = d.id
     <where>
-      <if test="deptId != null">p.dept_id = #{deptId}</if>
       <if test="patientName != null and patientName != ''">and i.patient_name like concat('%', #{patientName}, '%')</if>
+      <if test="cardId!=null and cardId != ''">and i.card_id like '%${cardId}%'</if>
+      <if test="patientSex!=null and patientSex != ''">and i.patient_sex = #{patientSex}</if>
       <if test="startDate != null and startDate != ''">and i.in_hosptial_time &gt;= #{startDate}</if>
       <if test="endDate != null and endDate != ''">and i.in_hosptial_time &lt;= #{endDate}</if>
     </where> order by i.in_hosptial_time desc
