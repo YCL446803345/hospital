@@ -307,18 +307,16 @@
   <!--queryMedicalAdviceList-->
   <!--医生站分页模糊查询医嘱列表-->
   <select id="queryMedicalAdviceList" resultType="MedicalAdvice">
-    select r.name workerName,p.name patientName,c.advice_category adviceCategoryName,t.name projectName,
-    m.create_time,m.advice_description,m.advice_status from HOS_medical_advice m
+    select m.id,r.name doctorName,p.name patientName,c.advice_category adviceCategoryName,t.name projectName,
+    m.create_time,m.advice_description,m.advice_status
+    from HOS_medical_advice m
     inner join HOS_worker r on m.doctor_id = r.id
     inner join HOS_patient p on m.patient_id = p.id
     inner join HOS_medical_advice_category c on m.advice_category = c.id
     inner join HOS_project t on m.project_id = t.id
     <where>
-      <if test="doctorId != null">m.doctor_id = #{doctorId}</if>
-      <if test="patientId != null"> m.patient_id = #{patientId}</if>
-      <if test="adviceCategory != null">m.advice_category = #{adviceCategory}</if>
-      <if test="projectId != null">m.project_id = #{projectId}</if>
-      <if test="adviceStatus != null">m.advice_status = #{adviceStatus}</if>
+      <if test="adviceCategory != null and adviceCategory !=''">m.advice_category = #{adviceCategory}</if>
+      <if test="adviceStatus != null and adviceStatus != ''">m.advice_status = #{adviceStatus}</if>
       <if test="startDate != null and startDate != ''">and m.create_time &gt;= #{startDate}</if>
       <if test="endDate != null and endDate != ''">and m.create_time &lt;= #{endDate}</if>
     </where> order by m.create_time desc
@@ -328,7 +326,8 @@
 <!--  医生站根据Id查询医嘱(关联查询详细)-->
   <select id="findMedicalAdviceById" resultType="MedicalAdvice">
     select m.id, r.name workerName,p.name patientName,c.advice_category adviceCategoryName,t.name projectName,
-    m.create_time,m.advice_description,m.advice_status from HOS_medical_advice m
+    m.create_time,m.advice_description,m.advice_status
+    from HOS_medical_advice m
     inner join HOS_worker r on m.doctor_id = r.id
     inner join HOS_patient p on m.patient_id = p.id
     inner join HOS_medical_advice_category c on m.advice_category = c.id

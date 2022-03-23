@@ -324,7 +324,7 @@
   <!--queryConsultationApplicationList-->
   <!--医生站分页模糊查询会诊列表-->
   <select id="queryConsultationApplicationList" resultType="ConsultationApplication">
-    select w.name doctorName,p.name patientName,ce.status consultationEmergencyName,cc.type consultationCategoryName,
+    select c.id,w.name doctorName,p.name patientName,ce.status consultationEmergencyName,cc.type consultationCategoryName,
     c.consultation_date,c.reason,c.desc,c.status
     from HOS_consultation_application c
     inner join HOS_worker w on c.doctor_id = w.id
@@ -333,13 +333,11 @@
     inner join HOS_consultation_categor cc on c.consultation_category_id = cc.id
 
     <where>
-      <if test="doctorId != null">c.doctor_id = #{doctorId}</if>
-      <if test="patientId != null"> c.patient_id = #{patientId}</if>
-      <if test="consultationEmergencyId != null">c.consultation_emergency_id = #{consultationEmergencyId}</if>
-      <if test="consultationCategoryId != null">c.consultation_category_id = #{consultationCategoryId}</if>
-      <if test="status != null">c.status = #{status}</if>
-      <if test="startDate != null and startDate != ''">and c.consultation_date &gt;= #{startDate}</if>
-      <if test="endDate != null and endDate != ''">and c.consultation_date &lt;= #{endDate}</if>
-    </where> order by c.consultation_date desc
+    <if test="consultationEmergencyId != null and consultationEmergencyId !=''">c.consultation_emergency_id = #{consultationEmergencyId}</if>
+    <if test="consultationCategoryId != null and consultationCategoryId !=''">c.consultation_category_id = #{consultationCategoryId}</if>
+    <if test="status != null and status != ''">c.status = #{status}</if>
+    <if test="startDate != null and startDate != ''">and c.consultation_date &gt;= #{startDate}</if>
+    <if test="endDate != null and endDate != ''">and c.consultation_date &lt;= #{endDate}</if>
+   </where> order by c.consultation_date desc
   </select>
 </mapper>

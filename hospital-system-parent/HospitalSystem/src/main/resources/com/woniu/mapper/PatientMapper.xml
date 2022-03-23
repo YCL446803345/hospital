@@ -433,7 +433,7 @@
   <!--queryPatientList-->
   <!--医生站分页模糊查询患者列表-->
   <select id="queryPatientList" resultType="Patient">
-    select p.name,p.no,p.age,p.phone,p.gender,d.name deptName,b.code bedCode,w1.name doctorName,w2.name nurseName,
+    select p.id,p.name,p.no,p.age,p.card_id,p.phone,p.gender,p.base_desc,p.end_time,d.name deptName,b.code bedCode,w1.name doctorName,w2.name nurseName,
     p.appointmentt_time,p.status
     from HOS_patient p
     inner join HOS_dept d on p.dept_id = d.id
@@ -442,11 +442,11 @@
     inner join HOS_worker w2 on p.nurse_id = w2.id
 
     <where>
-      <if test="doctorId != null">p.doctor_id = #{doctorId}</if>
-      <if test="nurseId != null"> p.nurse_id = #{nurseId}</if>
-      <if test="deptId != null">p.dept_id = #{deptId}</if>
-      <if test="bedId != null">p.bed_id = #{bedId}</if>
-      <if test="status != null">p.status = #{status}</if>
+      <if test="name!=null and name != ''">and p.name like '%${name}%'</if>
+      <if test="no!=null and no != ''">and p.no like '%${no}%'</if>
+      <if test="cardId!=null and cardId != ''">and p.card_id like '%${cardId}%'</if>
+      <if test="gender!=null and gender != ''">and p.gender = #{gender}</if>
+      <if test="status!=null and status != ''">and p.status = #{status}</if>
       <if test="startDate != null and startDate != ''">and p.appointmentt_time &gt;= #{startDate}</if>
       <if test="endDate != null and endDate != ''">and p.appointmentt_time &lt;= #{endDate}</if>
     </where> order by p.appointmentt_time desc

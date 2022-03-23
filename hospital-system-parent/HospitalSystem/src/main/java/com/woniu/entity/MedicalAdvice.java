@@ -31,7 +31,7 @@ public class MedicalAdvice {
     private Integer adviceStatus;
 
     //外键角色名
-    private String workerName;
+    private String doctorName;
     //外键病人名
     private String patientName;
     //外键医嘱类别名

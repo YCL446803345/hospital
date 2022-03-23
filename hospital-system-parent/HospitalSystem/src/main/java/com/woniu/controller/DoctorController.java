@@ -29,8 +29,8 @@ public class DoctorController {
 
     //分页查询出院申请列表
     @RequestMapping("doctor/getLeaveHospitalList")
-    public ResponseResult<PageInfo<LeaveHospital>> getLeaveHospitalList(@RequestParam(name = "pageNum") Integer pageNum,
-                                                                        @RequestParam(name = "pageSize") Integer pageSize,
+    public ResponseResult<PageInfo<LeaveHospital>> getLeaveHospitalList(@RequestParam(name = "pageNum", defaultValue = "1", required = false) Integer pageNum,
+                                                                        @RequestParam(name = "pageSize", defaultValue = "5", required = false) Integer pageSize,
                                                                         LeaveHospital leaveHospital) {
         ResponseResult<PageInfo<LeaveHospital>> responseResult = new ResponseResult<>();
         try {
@@ -48,8 +48,8 @@ public class DoctorController {
 
     //分页查询患者列表
     @RequestMapping("doctor/getPatientList")
-    public ResponseResult<PageInfo<Patient>> getPatientList(@RequestParam(name = "pageNum") Integer pageNum,
-                                                                    @RequestParam(name = "pageSize") Integer pageSize,
+    public ResponseResult<PageInfo<Patient>> getPatientList(@RequestParam(name = "pageNum", defaultValue = "1", required = false) Integer pageNum,
+                                                                    @RequestParam(name = "pageSize", defaultValue = "5", required = false) Integer pageSize,
                                                             Patient patient) {
         ResponseResult<PageInfo<Patient>> responseResult = new ResponseResult<>();
         try {
@@ -67,8 +67,8 @@ public class DoctorController {
 
     //分页查询预约住院申请列表
     @RequestMapping("doctor/getInHospitalTableList")
-    public ResponseResult<PageInfo<InHospitalTable>> getInHospitalTableList(@RequestParam(name = "pageNum") Integer pageNum,
-                                                            @RequestParam(name = "pageSize") Integer pageSize,
+    public ResponseResult<PageInfo<InHospitalTable>> getInHospitalTableList(@RequestParam(name = "pageNum", defaultValue = "1", required = false) Integer pageNum,
+                                                            @RequestParam(name = "pageSize", defaultValue = "5", required = false) Integer pageSize,
                                                                     InHospitalTable inHospitalTable) {
         ResponseResult<PageInfo<InHospitalTable>> responseResult = new ResponseResult<>();
         try {
@@ -126,8 +126,8 @@ public class DoctorController {
 
     //分页查询医嘱列表
     @RequestMapping("doctor/getMedicalAdviceList")
-    public ResponseResult<PageInfo<MedicalAdvice>> getMedicalAdviceList(@RequestParam(name = "pageNum") Integer pageNum,
-                                                                          @RequestParam(name = "pageSize") Integer pageSize,
+    public ResponseResult<PageInfo<MedicalAdvice>> getMedicalAdviceList(@RequestParam(name = "pageNum", defaultValue = "1", required = false) Integer pageNum,
+                                                                          @RequestParam(name = "pageSize", defaultValue = "5", required = false) Integer pageSize,
                                                                         MedicalAdvice medicalAdvice) {
         ResponseResult<PageInfo<MedicalAdvice>> responseResult = new ResponseResult<>();
         try {
@@ -145,12 +145,13 @@ public class DoctorController {
 
     //分页查询会诊列表
     @RequestMapping("doctor/getConsultationApplication")
-    public ResponseResult<PageInfo<ConsultationApplication>> getConsultationApplication(@RequestParam(name = "pageNum") Integer pageNum,
-                                                                                  @RequestParam(name = "pageSize") Integer pageSize,
+    public ResponseResult<PageInfo<ConsultationApplication>> getConsultationApplication(@RequestParam(name = "pageNum", defaultValue = "1", required = false) Integer pageNum,
+                                                                                  @RequestParam(name = "pageSize", defaultValue = "5", required = false) Integer pageSize,
                                                                                         ConsultationApplication consultationApplication) {
         ResponseResult<PageInfo<ConsultationApplication>> responseResult = new ResponseResult<>();
         try {
-            PageInfo<ConsultationApplication> consultationApplicationPageInfo = consultationApplicationService.queryConsultationApplication(consultationApplication, pageNum, pageSize);
+            PageInfo<ConsultationApplication> consultationApplicationPageInfo = consultationApplicationService.
+                    queryConsultationApplication(consultationApplication, pageNum, pageSize);
             responseResult.setData(consultationApplicationPageInfo);
             responseResult.setStatus(200);
             responseResult.setMsg("查询成功...");
