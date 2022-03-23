@@ -28,12 +28,16 @@ import InHospitalTableList from '../components/home/doctorHome/patient/InHospita
 import LeaveHospitalList from '../components/home/doctorHome/patient/LeaveHospitalList' //出院申请列表
 
 //药房组件
+
 import DrugInfo from '../components/home/drugHome/DrugInfo'   //药品信息列表
 import DrugPre from '../components/home/drugHome/DrugPrescription'  //药方列表
 
 
+
 //人事组件
-import HumanAffairs from '../components/home/hrHome/HumanAffairs ' // 职工信息列表
+import HumanAffairs from '../components/home/hrHome/HumanAffairs ' // 职工管理
+import Scheduling from '../components/home/hrHome/Scheduling' // 排班管理
+import Perms from '../components/home/hrHome/Perms' // 权限管理
 
 //收费组件
 import costInfo from '../components/home/payHome/costInfo.vue' // 费用信息列表
@@ -53,6 +57,7 @@ var router = new VueRouter({
             path: "/gotoHome",
             component: Home,
             children: [
+
                 {path: "/medicine/home", component: DrugInfo },
                 {path: "/worker/list", component: HumanAffairs },
 	            {path: "/nurse/admission", component: patientInfo},
@@ -72,6 +77,9 @@ var router = new VueRouter({
                 {path:"/doctor/medicalAdviceList",component:MedicalAdviceList},
                 {path:"/doctor/inHospitalTableList",component:InHospitalTableList},
                 {path:"/doctor/leaveHospitalList",component:LeaveHospitalList},
+				
+				{ path: "/worker/scheduling", component: Scheduling },
+                { path: "/user/perms", component: Perms },
 
             ]
         }
