@@ -2,11 +2,13 @@ package com.woniu.mapper;
 
 import com.woniu.entity.Perms;
 import com.woniu.entity.PermsExample;
-import java.util.List;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Repository
 public interface PermsMapper {
@@ -30,4 +32,17 @@ public interface PermsMapper {
             "\t\t\t\t\t\t\t\t\t\t\t\t\t\tinner join HOS_worker w on w.id=wp.worker_id\n" +
             "\t\t\t\t\t\t\t\t\t\t\t\t\t\twhere w.account=#{account} and type='m'")
     List<Perms> byNamefindPerms(String account);
+
+
+    @Select("select perms_id from HOS_worker_perms where worker_id=#{id}")
+    List<String> getPermByUserId(Integer id);
+
+    @Delete("delete from HOS_worker_perms where worker_id=#{id}")
+    void deletePermsByUserid(Integer id);
+
+    @Insert("insert into HOS_worker_perms(worker_id,perms_id)values(#{userId},#{permsId})")
+    void updatePerms(@Param("userId") Integer userId, @Param("permsId") Integer  permsId);
+
+    @Select("SELECT * FROM HOS_perms")
+    List<Perms> findAllPerms();
 }

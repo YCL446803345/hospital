@@ -22,11 +22,13 @@ import Home from '../components/home/Home' //职工主界面+导航栏
 
 
 //药房组件
-import DrugInfo from '../components/home/drugHome/DrugInfo'   //药品信息列表
+import DrugInfo from '../components/home/drugHome/DrugInfo' //药品信息列表
 
 
 //人事组件
-import HumanAffairs from '../components/home/hrHome/HumanAffairs ' // 职工信息列表
+import HumanAffairs from '../components/home/hrHome/HumanAffairs ' // 职工管理
+import Scheduling from '../components/home/hrHome/Scheduling' // 排班管理
+import Perms from '../components/home/hrHome/Perms' // 权限管理
 
 
 //配置路由规则
@@ -45,10 +47,12 @@ var router = new VueRouter({
             children: [
                 { path: "/medicine/home", component: DrugInfo },
                 { path: "/worker/list", component: HumanAffairs },
-	            {path: "/nurse/admission", component: patientInfo},
-	            {path:"/nurse/patientManager",component:patientChangeDoctorOrBed},
-	            {path:"/nurse/waitPatientManager",component:patientWithNotBed},
-	            {path:"/nurse/bed",component:bedManager},
+                { path: "/worker/scheduling", component: Scheduling },
+                { path: "/user/perms", component: Perms },
+                { path: "/nurse/admission", component: patientInfo },
+                { path: "/nurse/patientManager", component: patientChangeDoctorOrBed },
+                { path: "/nurse/waitPatientManager", component: patientWithNotBed },
+                { path: "/nurse/bed", component: bedManager },
             ]
         }
 
