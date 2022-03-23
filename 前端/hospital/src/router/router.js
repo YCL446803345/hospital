@@ -56,7 +56,7 @@ var router = new VueRouter({
 	            {path:"/nurse/waitPatientManager",component:patientWithNotBed},
 	            {path:"/nurse/bed",component:bedManager},
 
-                {path:"/drug/prescriptionList",component:DrugPre}
+                {path:"/drug/prescriptionList",component:DrugPre},
 
                 {path:"/pay/cost",component:costInfo}
 
