@@ -189,7 +189,6 @@
       //打开权限分配对话框
       openRightDialog(id) {
         this.userid = id
-        alert(id)
         this.rightDialogFormVisible = true;
     
         // 将当前用户权限勾选中
