@@ -26,8 +26,17 @@ public interface PermsMapper {
     int updateByPrimaryKeySelective(Perms record);
     int updateByPrimaryKey(Perms record);
 
+    //细粒度
     @Select("select p.* from HOS_perms p inner join HOS_worker_perms wp on p.id=wp.perms_id \n" +
             "\t\t\t\t\t\t\t\t\t\t\t\t\t\tinner join HOS_worker w on w.id=wp.worker_id\n" +
             "\t\t\t\t\t\t\t\t\t\t\t\t\t\twhere w.account=#{account} and type='m'")
     List<Perms> byNamefindPerms(String account);
+
+    //粗粒度
+//    @Select("select p.* from HOS_perms p \n" +
+//            "\t\t\t\t\t\t\t\t\t\t\t\t\tinner join HOS_role_perm rp on p.id=rp.perm_id\n" +
+//            "\t\t\t\t\t\t\t\t\t\t\t\t\tinner join HOS_role_worker rw on rw.role_id=rp.role_id\n" +
+//            "\t\t\t\t\t\t\t\t\t\t\t\t\tinner join HOS_worker w on w.id=rw.worker_id\n" +
+//            "\t\t\t\t\t\t\t\t\t\t\t\t\twhere w.account=#{account} and type='m'")
+//    List<Perms> byNamefindPerms(String account);
 }

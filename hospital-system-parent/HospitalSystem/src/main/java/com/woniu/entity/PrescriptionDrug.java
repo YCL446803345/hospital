@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,5 +23,8 @@ public class PrescriptionDrug {
     private String spare2;
 
     private String spare3;
+
+    private String drugName;
+
 
 }

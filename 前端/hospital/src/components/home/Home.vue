@@ -27,13 +27,18 @@
       </el-aside>
 
          <el-container>
-            <el-header>
+            <el-header style="height:80px;">
                <el-row style="margin: 15px 15px">
                      <el-col :span="9"><h1>成都协和医院</h1></el-col>
                      <el-col :span="9"><h1>职工后台</h1></el-col>
                      <el-col :span="6" class="col_r">
-                        <span style="color:blue;">{{'你好, '+account}}</span>
-                        <el-button type="danger" size="small" @click="logout()" >退出</el-button>
+                                 <el-dropdown @command="handleCommand">
+                                 <el-avatar shape="square"  :size="60" :fit="fits" :src="AcatarUrl"></el-avatar>
+                                 <el-dropdown-menu slot="dropdown">
+                                    <el-dropdown-item command="workerCenter">个人中心</el-dropdown-item>
+                                    <el-dropdown-item command="logout">退出</el-dropdown-item>
+                                 </el-dropdown-menu>
+                                 </el-dropdown>
                      </el-col>
                </el-row>
             </el-header>
@@ -54,6 +59,8 @@ export default {
       return {
          isCollapse: false, // 决定左侧导航栏是否展开
          // imgSrc:require("../../assets/css/image/OIP-C"),   //字体log图片
+          fits: 'scale-down',
+         AcatarUrl:require('../../assets/css/image/鸟.jpeg'), //头像图片
          account:"",
          menuDate:[]
       }
@@ -69,12 +76,12 @@ export default {
             }
         },
    methods:{
-      changeCollapse: function () { // 更改左侧导航栏展示状态
-                this.isCollapse = !this.isCollapse;
-      },
-       //退出
-       logout(){
-          this.$confirm('是否退出本系统?', '提示', {
+      handleCommand(command){
+         if (command == "workerCenter") {
+            
+         }
+         if (command == "logout") {
+                      this.$confirm('是否退出本系统?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -82,7 +89,13 @@ export default {
            window.localStorage.removeItem("tokenStr");
            this.$router.push("/gotoWorkesLogin");
         })
-       },
+         }
+
+      },
+      changeCollapse: function () { // 更改左侧导航栏展示状态
+                this.isCollapse = !this.isCollapse;
+      },
+
    },
    created(){
       //从本地浏览器拿名字
@@ -102,6 +115,7 @@ export default {
 </script>
 
 <style scoped >
+
    /*整体显示区域布局样式*/
     .el-container {
         height: 100%;

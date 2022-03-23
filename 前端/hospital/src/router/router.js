@@ -1,8 +1,6 @@
 import Vue from 'vue' //导入node_modules中vue.js库文件
 import VueRouter from 'vue-router' //导入node_modules中vue-router.js库文件
 
-//import patientInfo from '../components/patient/patientInfo'
-//import patientChangeDoctorOrBed from '../components/patient/PatientChangeDoctorOrBed'
 
 //护士相关组件
 import patientInfo from '../components/home/nurseHome/patient/patientInfo'
@@ -23,6 +21,7 @@ import Home from '../components/home/Home' //职工主界面+导航栏
 
 //药房组件
 import DrugInfo from '../components/home/drugHome/DrugInfo'   //药品信息列表
+import DrugPre from '../components/home/drugHome/DrugPrescription'  //药方列表
 
 
 //人事组件
@@ -43,12 +42,13 @@ var router = new VueRouter({
             path: "/gotoHome",
             component: Home,
             children: [
-                { path: "/medicine/home", component: DrugInfo },
-                { path: "/worker/list", component: HumanAffairs },
+                {path: "/medicine/home", component: DrugInfo },
+                {path: "/worker/list", component: HumanAffairs },
 	            {path: "/nurse/admission", component: patientInfo},
 	            {path:"/nurse/patientManager",component:patientChangeDoctorOrBed},
 	            {path:"/nurse/waitPatientManager",component:patientWithNotBed},
 	            {path:"/nurse/bed",component:bedManager},
+                {path:"/drug/prescriptionList",component:DrugPre}
             ]
         }
 
