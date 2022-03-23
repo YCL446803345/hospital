@@ -9,6 +9,8 @@ import patientInfo from '../components/home/nurseHome/patient/patientInfo'
 import patientChangeDoctorOrBed from '../components/home/nurseHome/patient/PatientChangeDoctorOrBed'
 import patientWithNotBed from '../components/home/nurseHome/patient/PatientWithNotBed'
 import bedManager from '../components/home/nurseHome/patient/BedManager'
+import patientChangeDept from '../components/home/nurseHome/patient/PatientChangeDept'
+import queryPatientInfo from '../components/home/nurseHome/patient/QueryPatientInfo'
 
 
 //Vue安装router
@@ -46,6 +48,8 @@ var router = new VueRouter({
                 { path: "/medicine/home", component: DrugInfo },
                 { path: "/worker/list", component: HumanAffairs },
 	            {path: "/nurse/admission", component: patientInfo},
+	            {path: "/nurse/changeDept", component: patientChangeDept},
+	            {path: "/nurse/information", component: queryPatientInfo},
 	            {path:"/nurse/patientManager",component:patientChangeDoctorOrBed},
 	            {path:"/nurse/waitPatientManager",component:patientWithNotBed},
 	            {path:"/nurse/bed",component:bedManager},

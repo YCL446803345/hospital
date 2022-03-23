@@ -1,5 +1,7 @@
 package com.woniu.entity;
 
+import java.util.List;
+
 public class PrescriptionBill {
     private Integer id;
 
@@ -70,4 +72,6 @@ public class PrescriptionBill {
     public void setSpare3(String spare3) {
         this.spare3 = spare3 == null ? null : spare3.trim();
     }
+
+
 }

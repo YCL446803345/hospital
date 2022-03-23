@@ -19,6 +19,16 @@ public class HospitalizationBill {
 
     private String spare2;
 
+    private Double sumMoney;
+
+    public Double getSumMoney() {
+        return sumMoney;
+    }
+
+    public void setSumMoney(Double sumMoney) {
+        this.sumMoney = sumMoney;
+    }
+
     public Integer getId() {
         return id;
     }

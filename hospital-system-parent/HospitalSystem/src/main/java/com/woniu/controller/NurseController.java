@@ -2,14 +2,8 @@
 package com.woniu.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.woniu.entity.Bed;
-import com.woniu.entity.Dept;
-import com.woniu.entity.Patient;
-import com.woniu.entity.Worker;
-import com.woniu.service.BedService;
-import com.woniu.service.DeptService;
-import com.woniu.service.PatientService;
-import com.woniu.service.WorkerService;
+import com.woniu.entity.*;
+import com.woniu.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +29,9 @@ public class NurseController {
     @Autowired
     private WorkerService workerService;
 
+    @Autowired
+    private PrescriptionBillService prescriptionBillService;
+
     /**
      * 查询非待床病人信息，安排并修改病人床位
      */
@@ -44,6 +41,38 @@ public class NurseController {
                                                           @RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize) {
         PageInfo<Patient> pageInfo = patientService.findPatients(patient, pageNum, pageSize);
         return new ResponseEntity<PageInfo<Patient>>(pageInfo, HttpStatus.OK);
+    }
+
+
+    /**
+     * 查询所有病人信息，方便护士长跟换病人科室
+     */
+    @GetMapping("/findPatientsByChangeDept")
+    @ResponseBody
+    public ResponseEntity<PageInfo<Patient>> findPatientsByChangeDept(Patient patient, @RequestParam(value = "pageNum", defaultValue = "1", required = false) Integer pageNum,
+                                                          @RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize) {
+        PageInfo<Patient> pageInfo = patientService.findPatientsByChangeDept(patient, pageNum, pageSize);
+        return new ResponseEntity<PageInfo<Patient>>(pageInfo, HttpStatus.OK);
+    }
+
+    /**
+     * 在护士站模块中更换病人科室，此时修改科室id，并将床位id，医生护士全部设置成null
+     * @return
+     */
+    @PostMapping("/updatePatientDept")
+    public void updatePatientDept(@RequestBody Patient patient) {
+        patientService.updatePatientDept(patient);
+    }
+
+
+
+    /**
+     * 在入院管理中用来修改病人信息
+     * @return
+     */
+    @PostMapping("/updatePatient")
+    public void updatePatient(@RequestBody Patient patient) {
+        patientService.updatePatient(patient);
     }
 
     /**
@@ -153,6 +182,26 @@ public class NurseController {
     @PostMapping("/updateDoctorOrNurse")
     public void updateDoctorOrNurse(@RequestBody Patient patient) {
         patientService.updateDoctorOrNurse(patient);
+    }
+
+    /**
+     * 查询病人住院费用
+     * @return
+     */
+    @PostMapping("/getHospitalizationBill")
+    public ResponseEntity<HospitalizationBill> getHospitalizationBill(@RequestBody Patient patient) {
+        HospitalizationBill hospitalizationBill = patientService.getHospitalizationBill(patient);
+        return new ResponseEntity<HospitalizationBill>(hospitalizationBill,HttpStatus.OK);
+    }
+
+    /**
+     * 查询病人处方账单
+     * @return
+     */
+    @PostMapping("/getPrescriptionBill")
+    public ResponseEntity<List<Drug>> getPrescriptionBill(@RequestBody Patient patient) {
+        final List<Drug> drugs = prescriptionBillService.getPrescriptionBill(patient);
+        return new ResponseEntity<List<Drug>>(drugs,HttpStatus.OK);
     }
 
 }

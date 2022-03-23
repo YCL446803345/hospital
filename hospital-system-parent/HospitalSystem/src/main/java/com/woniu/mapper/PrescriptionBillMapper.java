@@ -1,5 +1,7 @@
 package com.woniu.mapper;
 
+import com.woniu.entity.Drug;
+import com.woniu.entity.Patient;
 import com.woniu.entity.PrescriptionBill;
 import com.woniu.entity.PrescriptionBillExample;
 import java.util.List;
@@ -52,4 +54,14 @@ public interface PrescriptionBillMapper {
             "set pb.spare1 = #{newTime}\n" +
             "where pr.patient_id = p.id  and pr.id = pb.prescription_id and p.id=#{id}")
     void updateDate (@Param("newTime") String nowTime,@Param("id")Integer id);
+
+    @Select("select  d.name name,d.drug_type drugType,d.make_price makePrice,d.sale_price salePrice,\n" +
+            "d.specifications specifications,p.create_time createTime,pg.num num \n" +
+            "from  HOS_prescription p\n" +
+            "left join HOS_prescription_bill pb on pb.prescription_id=p.id\n" +
+            "left join HOS_patient pa on p.patient_id=pa.id\n" +
+            "left join HOS_prescription_drug pg on p.id=pg.prescription_id\n" +
+            "left join HOS_drug d on d.id=pg.drug_id\n" +
+            "where pb.id is not null and p.patient_id=#{id}")
+    List<Drug> getPrescriptionBill(Patient patient);
 }

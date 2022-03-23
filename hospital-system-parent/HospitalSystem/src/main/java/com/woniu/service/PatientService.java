@@ -1,6 +1,7 @@
 package com.woniu.service;
 
 import com.github.pagehelper.PageInfo;
+import com.woniu.entity.HospitalizationBill;
 import com.woniu.entity.Patient;
 
 
@@ -25,4 +26,11 @@ public interface PatientService {
     //医生站分页模糊查询患者列表
     PageInfo<Patient> queryPatient(Patient patient, Integer pageNum, Integer pageSize);
 
+    PageInfo<Patient> findPatientsByChangeDept(Patient patient, Integer pageNum, Integer pageSize);
+
+    void updatePatientDept(Patient patient);
+
+    void updatePatient(Patient patient);
+
+    HospitalizationBill getHospitalizationBill(Patient patient);
 }

@@ -18,7 +18,7 @@
                 </el-select>
             </el-col>
            
-            <el-col :span="1" style="margin-left:2px;">
+            <el-col :span="1.5" style="margin-left:2px;">
                 <el-button type="success" @click="search">查询</el-button>
                
             </el-col>
@@ -54,12 +54,13 @@
             <el-table-column
                 prop="deptName"
                 label="科室名"
-                width="180">
+                width="80">
             </el-table-column>
+
 
             <el-table-column
                 label="状态"
-                width="180">
+                width="80">
                  <template slot-scope="scope">
                      <el-tag :type="scope.row.status==='1'?'primary':scope.row.status==='2'?'danger':'warning'" disable-transitions>
                          {{scope.row.status==='1'?'可使用':scope.row.status==='2'?'已被用':'已预约'}}
@@ -75,7 +76,12 @@
                   @click="gotoBedInfo(scope.row.id,scope.row.deptName,scope.row.patientName,scope.row.code,scope.row.patientNo,scope.row.status,scope.row.patientId)">详细</el-button>
                   <el-button
                   size="mini"
-                  type="danger"
+                  type="danger" v-if='scope.row.status==2'
+                  @click="stopUseBed(scope.row.id,scope.row.patientId,scope.row.deptId)">停止使用</el-button>
+
+                  <el-button
+                  size="mini"
+                  type="danger" v-if='scope.row.status==1' disabled
                   @click="stopUseBed(scope.row.id,scope.row.patientId)">停止使用</el-button>
                </template>
             </el-table-column>
@@ -119,14 +125,14 @@
                 <i class="el-icon-tickets"></i>
                 使用病人
             </template>
-            {{bed.patientName}}
+            {{bed.patientName==''?'---':bed.patientName}}
             </el-descriptions-item>
             <el-descriptions-item>
             <template slot="label" >
                 <i class="el-icon-tickets"></i>
                 病人编号
             </template>
-           {{bed.patientNo}}
+           {{bed.patientNo==''?'---':bed.patientNo}}
             </el-descriptions-item>
             <el-descriptions-item>
             <template slot="label">
@@ -184,8 +190,8 @@ export default {
       this.headers={tokenStr:window.localStorage.getItem('tokenStr')};
    },
    methods:{
-       stopUseBed(bedId,id){
-           var patient={id:id,deptId:bedId}
+       stopUseBed(bedId,id,deptId){
+           var patient={id:id,bedId:bedId,deptId:deptId}
            this.$axios.post("/api/stopUseBed",patient)
             .then(res=>{
                 if(res.data.status==4001){
@@ -216,19 +222,34 @@ export default {
                 status:'',
                 patientId:''
             }
-            this.bedViewForm=true;
+            this.bedViewForm=false;
 
        },
        gotoBedInfo(id,deptName,patientName,code,no,status,patientId){
-             this.bed={
-                id:id,
-                code:code,
-                deptName:deptName,
-                patientName:patientName,
-                patientNo:no,
-                status:status,
-                patientId:patientId
-            }
+           if(patientName==null){
+                this.bed={
+                    id:id,
+                    code:code,
+                    deptName:deptName,
+                    patientName:'',
+                    patientNo:'',
+                    status:status,
+                    patientId:''
+                }
+           }else{
+               this.bed={
+                    id:id,
+                    code:code,
+                    deptName:deptName,
+                    patientName:patientName,
+                    patientNo:no,
+                    status:status,
+                    patientId:patientId
+                }
+           }
+            
+
+            console.log(this.bed)
             this.bedViewForm=true;
        },
 
