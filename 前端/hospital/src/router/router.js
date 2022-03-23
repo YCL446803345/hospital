@@ -28,6 +28,9 @@ import DrugInfo from '../components/home/drugHome/DrugInfo'   //药品信息列�
 //人事组件
 import HumanAffairs from '../components/home/hrHome/HumanAffairs ' // 职工信息列表
 
+//收费组件
+import costInfo from '../components/home/payHome/costInfo.vue' // 费用信息列表
+
 
 //配置路由规则
 var router = new VueRouter({
@@ -49,6 +52,7 @@ var router = new VueRouter({
 	            {path:"/nurse/patientManager",component:patientChangeDoctorOrBed},
 	            {path:"/nurse/waitPatientManager",component:patientWithNotBed},
 	            {path:"/nurse/bed",component:bedManager},
+                {path:"/pay/cost",component:costInfo}
             ]
         }
 

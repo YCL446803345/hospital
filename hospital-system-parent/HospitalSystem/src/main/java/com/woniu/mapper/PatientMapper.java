@@ -73,4 +73,10 @@ public interface PatientMapper {
     //医生站分页模糊查询患者列表
     List<Patient> queryPatientList(Patient patient);
 
+    @Select("<script>" +
+            "select count(0) FROM HOS_patient WHERE status NOT LIKE 9 " +
+            "<if test='name!=null and name != \"\"'>and name like '%${name}%'</if>" +
+            "<if test='no!=null and no != \"\"'>and no like '%${no}%'</if>" +
+            "</script>")
+    int selectTotal (@Param("name") String name,@Param("no") String no);
 }

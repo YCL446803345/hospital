@@ -28,6 +28,7 @@ axios.interceptors.response.use(
       localStorage.removeItem('tokenStr')
       // 重新跳转到login页面
       router.push('/login')
+      alert("出错了")
   }
 )
 
