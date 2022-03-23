@@ -54,7 +54,7 @@ public class WorkerServiceImpl implements WorkerService {
     @Override
     public void updateWorker(Worker worker) {
         workerMapper.updateByPrimaryKeySelective(worker);
-	}
+    }
     public List<Worker> findDoctorsByDepeId(Integer deptId) {
         WorkerExample workerExample = new WorkerExample();
         WorkerExample.Criteria criteria = workerExample.createCriteria();

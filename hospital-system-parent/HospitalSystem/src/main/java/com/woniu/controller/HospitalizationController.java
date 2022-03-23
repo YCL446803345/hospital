@@ -1,6 +1,9 @@
 
 package com.woniu.controller;
 
+import com.github.pagehelper.PageInfo;
+import com.woniu.entity.Bed;
+import com.woniu.entity.Cost;
 import com.woniu.service.HospitalizationBillServer;
 import com.woniu.util.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -31,13 +35,23 @@ public class HospitalizationController {
 
     /** 缴费并返回病人住院所花费的费用
      * @param id 根据id去搜索住院的病人
-     * @param money 缴费的费用
      * @return 返回值中有五个数 , 第一个是退药费用 第二个是处方费用 第三个是住院费用 第四个是医嘱费用 第五个是余额
      */
     @PostMapping("advancePayment")
-    public ResponseEntity<List<Object>> advancePayment(Integer id, float money){
-        List<Object> floats = hospitalizationBillServer.updateHospitalizationBill(id, money);
-        return new ResponseEntity<List<Object>> (floats, HttpStatus.OK);
+    public ResponseEntity<Cost> advancePayment(Integer id){
+        Cost cost = hospitalizationBillServer.updateHospitalizationBill(id);
+        return new ResponseEntity<Cost> (cost, HttpStatus.OK);
+    }
+
+    /** 病人现金缴费
+     * @param id
+     * @param money
+     * @return
+     */
+    @GetMapping("addMoney")
+    public ResponseEntity<String> addMoney(Integer id,Float money){
+        hospitalizationBillServer.updateMoney(id,money);
+        return new ResponseEntity<>("OK",HttpStatus.OK);
     }
 
     /** 按条件查询相关病人的相关数据
@@ -47,9 +61,9 @@ public class HospitalizationController {
      * 第六个是退药集合 第七个是药品集合 第八个是住院天数 第九个是医嘱集合
      */
     @GetMapping("query")
-    public ResponseEntity<List<Object>> query(int id){
-        List<Object> query = hospitalizationBillServer.query(id);
-        return new ResponseEntity<List<Object>> (query, HttpStatus.OK);
+    public ResponseEntity<Cost> query(int id){
+        Cost query = hospitalizationBillServer.query(id);
+        return new ResponseEntity<Cost> (query, HttpStatus.OK);
     }
 
     /** 查询所有在院病人所花费费用列表
@@ -57,9 +71,10 @@ public class HospitalizationController {
      * 第一个是退药费用 第二个是处方费用 第三个是住院费用 第四个是医嘱费用 第五个是余额,第六个是病人id
      */
     @GetMapping("queryAllCost")
-    public ResponseEntity<List<List>> queryAllCost(){
-        List<List> lists = hospitalizationBillServer.queryAll();
-        return new ResponseEntity<List<List>> (lists, HttpStatus.OK);
+    public ResponseEntity<PageInfo<Cost>> queryAllCost(String name,String no,@RequestParam(value = "pageNum", defaultValue = "1", required = false) Integer pageNum,
+                                                   @RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize){
+        PageInfo<Cost> lists = hospitalizationBillServer.queryAll(name,no,pageNum,pageSize);
+        return new ResponseEntity<PageInfo<Cost>> (lists, HttpStatus.OK);
     }
 
     /** 查询所有已出院病人所花费费用列表
@@ -67,18 +82,20 @@ public class HospitalizationController {
      * 第一个是退药费用 第二个是处方费用 第三个是住院费用 第四个是医嘱费用 第五个是余额,第六个是病人id
      */
     @GetMapping("queryAllOut")
-    public ResponseEntity<List<List>> queryAllOut(){
-        List<List> lists = hospitalizationBillServer.queryAllOut();
-        return new ResponseEntity<List<List>> (lists, HttpStatus.OK);
+    public ResponseEntity<PageInfo<Cost>> queryAllOut(String name,String no,@RequestParam(value = "pageNum", defaultValue = "1", required = false) Integer pageNum,
+                                                  @RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize){
+        PageInfo<Cost> pageInfo = hospitalizationBillServer.queryAllOut(name,no,pageNum,pageSize);
+        return new ResponseEntity<PageInfo<Cost>> (pageInfo, HttpStatus.OK);
     }
 
     /** 查询所有审核出院病人列表
      * @return
      */
     @GetMapping("leaveHospital")
-    public ResponseEntity<List<List>> leaveHospital(){
-        List<List> lists = hospitalizationBillServer.leaveHospital();
-        return new ResponseEntity<List<List>> (lists, HttpStatus.OK);
+    public ResponseEntity<PageInfo<Cost>> leaveHospital(String name,String no,@RequestParam(value = "pageNum", defaultValue = "1", required = false) Integer pageNum,
+                                                        @RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize){
+        PageInfo<Cost> lists = hospitalizationBillServer.leaveHospital(name,no,pageNum,pageSize);
+        return new ResponseEntity<PageInfo<Cost>> (lists, HttpStatus.OK);
     }
 
 }

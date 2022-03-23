@@ -73,6 +73,7 @@ public interface PatientMapper {
     //医生站分页模糊查询患者列表
     List<Patient> queryPatientList(Patient patient);
 
+
     /**
      * 护士站模块
      *查询所有病人信息，方便护士长跟换病人科室
@@ -100,4 +101,12 @@ public interface PatientMapper {
     @Update("update HOS_patient set name=#{name},gender=#{gender},phone=#{phone},age=#{age}," +
             "base_desc=#{baseDesc},card_id=#{cardId} where id=#{id}")
     void updatePatient(Patient patient);
+
+    @Select("<script>" +
+            "select count(0) FROM HOS_patient WHERE status NOT LIKE 9 " +
+            "<if test='name!=null and name != \"\"'>and name like '%${name}%'</if>" +
+            "<if test='no!=null and no != \"\"'>and no like '%${no}%'</if>" +
+            "</script>")
+    int selectTotal (@Param("name") String name,@Param("no") String no);
+
 }

@@ -43,7 +43,7 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain Chain) throws ServletException, IOException {
         //如果是登录请求，放行
         String uri = request.getRequestURI().toString();
-        if (uri.equals("/login")) {
+        if (uri.equals("/login") || uri.equals("/payReusult") ||uri.equals("/returnUrl")) {
             Chain.doFilter(request, response);
             return;
         }

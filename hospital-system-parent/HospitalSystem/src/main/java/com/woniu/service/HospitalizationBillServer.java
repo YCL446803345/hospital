@@ -1,5 +1,8 @@
 package com.woniu.service;
 
+import com.github.pagehelper.PageInfo;
+import com.woniu.entity.Cost;
+
 import java.util.List;
 
 public interface HospitalizationBillServer {
@@ -7,15 +10,15 @@ public interface HospitalizationBillServer {
     void addHospitalizationBill(Integer patientId,float money);
 
     //提前缴费
-    List<Object> updateHospitalizationBill (Integer id, float money);
+    Cost updateHospitalizationBill (Integer id);
 
-    List<Object> query(int id);
+    Cost query(int id);
 
-    List<List> queryAll ( );
+    PageInfo<Cost> queryAll (String name, String no, Integer pageNum, Integer pageSize);
 
-    List<List> queryAllOut ( );
+    PageInfo<Cost> queryAllOut (String name, String no, Integer pageNum, Integer pageSize);
 
-    List<List> leaveHospital ();
+    PageInfo<Cost> leaveHospital (String name, String no, Integer pageNum, Integer pageSize);
 
-
+    void updateMoney (Integer id, Float money);
 }

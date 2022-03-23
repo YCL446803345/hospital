@@ -1,6 +1,8 @@
 
 package com.woniu.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.woniu.entity.*;
 import com.woniu.mapper.*;
 import com.woniu.service.HospitalizationBillServer;
@@ -8,6 +10,7 @@ import com.woniu.util.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -69,22 +72,22 @@ public class HospitalizationBillServerImpl implements HospitalizationBillServer 
 
     /** 提前缴费,主要业务为计算费用
      * @param id 要提前缴费的病人
-     * @param money 缴费的钱
      */
     @Override
-    public List<Object> updateHospitalizationBill (Integer id, float money) {
-        List<Object> query = query(id);
-        Float outTotal = (Float)query.get(0);
-        Float prescriptionTotal = (Float)query.get(1);
-        Float timeTotal = (Float)query.get(2);
-        Float medicalAdviceTotal = (Float)query.get(3);
-        Float balance = (Float)query.get(4);
+    public Cost updateHospitalizationBill (Integer id) {
+        Cost query = query(id);
+        Float outTotal = query.getDrugOut();
+        Float prescriptionTotal = query.getPrescription();
+        Float timeTotal = query.getHospitalization();
+        Float medicalAdviceTotal = query.getMedicalAdvice();
+        Float balance = query.getBalance();
         balance = balance - outTotal - prescriptionTotal - timeTotal - medicalAdviceTotal;
         //如果病人缴费,则费用相加
-        balance+=money;
+//        balance+=money;
         Patient newPatient = new Patient();
         newPatient.setId(id);
-        newPatient.setBalance(balance);
+//        newPatient.setBalance(balance);
+        query.setPatient(newPatient);
         patientMapper.updateByPrimaryKeySelective(newPatient);
         //缴费后将处方表中的状态修改为已缴费状态
         medicalAdviceBillMapper.updateStatus(id);
@@ -100,16 +103,7 @@ public class HospitalizationBillServerImpl implements HospitalizationBillServer 
         medicalAdviceBillMapper.updateDate(TimeUtil.getNowTime(new Date()),id);
         //缴费后修改退药时间为当前时间
         drugOutBillMapper.updateDate(TimeUtil.getNowTime(new Date()),id);
-        return getFloats(outTotal, prescriptionTotal, timeTotal, medicalAdviceTotal, balance);
-//        //退药集合存入返回值
-//        floats.add(query.get(5));
-//        //处方集合存入返回值
-//        floats.add(query.get(6));
-//        //住院天数存入返回值
-//        floats.add(query.get(7));
-//        //医嘱集合存入返回值
-//        floats.add(query.get(8));
-//        return floats;
+        return query;
     }
 
 
@@ -120,22 +114,21 @@ public class HospitalizationBillServerImpl implements HospitalizationBillServer 
      * 第六个是退药集合 第七个是药品集合 第八个是住院天数 第九个是医嘱集合
      */
     @Override
-    public List<Object> query(int id){
+    public Cost query(int id){
         Patient patient = patientMapper.selectByPrimaryKey(id);
-        List<Object> patientBill = getPatientBill(patient);
+        Cost patientBill = getPatientBill(patient);
+        patientBill.setPatient(patient);
         //获取退药集合
         List<Drug> drugList = drugMapper.selectByPatientId(id);
-        patientBill.add(drugList);
+        patientBill.setDrugOutList(drugList);
         //获取药品集合
         List<Drug> drugs = drugMapper.selectDrugByPatientId(id);
-        patientBill.add(drugs);
+        patientBill.setDrugInList(drugs);
         //获取住院天数
-        Float aFloat = (Float) patientBill.get(2);
-        Integer v = (int)(aFloat / DAILYFEE);
-        patientBill.add(v);
+        patientBill.setDays((int)(patientBill.getHospitalization() / DAILYFEE));
         //获取医嘱集合
         List<Project> projects = medicalAdviceMapper.selectProjectByPatientId(id);
-        patientBill.add(projects);
+        patientBill.setProjectList(projects);
         return patientBill;
     }
 
@@ -143,59 +136,93 @@ public class HospitalizationBillServerImpl implements HospitalizationBillServer 
      * @return
      */
     @Override
-    public List<List> queryAll(){
+    public PageInfo<Cost> queryAll(String name,String no,Integer pageNum,Integer pageSize){
+        PageHelper.startPage(pageNum,pageSize);
         //查询未出院的病人
         PatientExample patientExample = new PatientExample();
         PatientExample.Criteria criteria = patientExample.createCriteria();
         criteria.andStatusNotLike("9");//规定9是已出院的
-        List<Patient> patients = patientMapper.selectByExample(patientExample);
-
-        List<List> total = new ArrayList<>();
-        for (Patient patient : patients) {
-            List<Object> patientBill = getPatientBill(patient);
-            patientBill.add(patient);
-            total.add(patientBill);
+        if(!StringUtils.isEmpty(name)){
+            criteria.andNameLike("%"+name+"%");//模糊查询
         }
-        return total;
+        if(!StringUtils.isEmpty(no)){
+            criteria.andNoLike("%"+no+"%");
+        }
+        List<Patient> patients = patientMapper.selectByExample(patientExample);
+        List<Cost> costList = new ArrayList<>();
+        for (Patient patient : patients) {
+            Cost patientBill = getPatientBill(patient);
+            patientBill.setPatient(patient);
+            costList.add(patientBill);
+        }
+        PageInfo<Cost> pageInfo = new PageInfo<Cost>(costList);
+        int total = patientMapper.selectTotal(name,no);
+        pageInfo.setTotal(total);
+        return pageInfo;
     }
 
     /** 查询所有已出院病人所花费费用列表
      * @return
      */
     @Override
-    public List<List> queryAllOut ( ) {
+    public PageInfo<Cost> queryAllOut (String name, String no, Integer pageNum, Integer pageSize) {
         PatientExample patientExample = new PatientExample();
         PatientExample.Criteria criteria = patientExample.createCriteria();
         criteria.andStatusEqualTo("9");//规定9是已出院的
+        if(!StringUtils.isEmpty(name)){
+            criteria.andNameLike("%"+name+"%");//模糊查询
+        }
+        if(!StringUtils.isEmpty(no)){
+            criteria.andNoLike("%"+no+"%");
+        }
         List<Patient> patients = patientMapper.selectByExample(patientExample);
 
 
-        List<List> total = new ArrayList<>();
+        List<Cost> costList = new ArrayList<>();
         for (Patient patient : patients) {
-            List<Object> patientBill = getPatientBill(patient);
-            patientBill.add(patient);
-            total.add(patientBill);
+            Cost patientBill = getPatientBill(patient);
+            patientBill.setPatient(patient);
+            costList.add(patientBill);
         }
-        return total;
+        PageInfo<Cost> PageInfo = new PageInfo<Cost>(costList);
+        return PageInfo;
     }
 
     /** 查询所有审核出院的病人信息
      * @return 返回有六个值,前五个分别为退药费用,处方费用,出院费用,医嘱费用,余额 第六个值为当前病人
      */
     @Override
-    public List<List> leaveHospital () {
+    public PageInfo<Cost> leaveHospital (String name, String no, Integer pageNum, Integer pageSize) {
         PatientExample patientExample = new PatientExample();
         PatientExample.Criteria criteria = patientExample.createCriteria();
         criteria.andStatusEqualTo("8");//规定8是审核出院的
+        if(!StringUtils.isEmpty(name)){
+            criteria.andNameLike("%"+name+"%");//模糊查询
+        }
+        if(!StringUtils.isEmpty(no)){
+            criteria.andNoLike("%"+no+"%");
+        }
         List<Patient> patients = patientMapper.selectByExample(patientExample);
 
-        List<List> total = new ArrayList<>();
+        List<Cost> costList = new ArrayList<>();
         for (Patient patient : patients) {
-            List<Object> bills = getPatientBill(patient);
-            bills.add(patient);
-            total.add(bills);
+            Cost patientBill = getPatientBill(patient);
+            patientBill.setPatient(patient);
+            costList.add(patientBill);
         }
-        return total;
+        PageInfo<Cost> PageInfo = new PageInfo<Cost>(costList);
+        return PageInfo;
+    }
+
+    /** 病人现金缴费
+     * @param id
+     * @param money
+     */
+    @Override
+    public void updateMoney (Integer id, Float money) {
+        Patient patient = patientMapper.selectByPrimaryKey(id);
+        patient.setBalance(patient.getBalance() + money);
+        patientMapper.updateByPrimaryKeySelective(patient);
     }
 
 
@@ -203,7 +230,7 @@ public class HospitalizationBillServerImpl implements HospitalizationBillServer 
      * @param patient 所需要查询费用的病人
      * @return
      */
-    public List<Object> getPatientBill(Patient patient){
+    public Cost getPatientBill(Patient patient){
         Integer id = patient.getId();
         //获取病人余额
         Float balance = patient.getBalance();
@@ -228,26 +255,26 @@ public class HospitalizationBillServerImpl implements HospitalizationBillServer 
         for (Float aFloat : floats3) {
             medicalAdviceTotal+=aFloat;
         }
-        return getFloats(outTotal, prescriptionTotal, timeTotal, medicalAdviceTotal,balance);
+        return new Cost(outTotal,prescriptionTotal,timeTotal,medicalAdviceTotal,patient.getBalance(),i);
     }
 
-    /** 工具方法 将五个费用包装成list
-     * @param outTotal 退药费用
-     * @param prescriptionTotal  处方费用
-     * @param timeTotal  出院费用
-     * @param medicalAdviceTotal  医嘱费用
-     * @param balance 余额
-     * @return
-     */
-    private List<Object> getFloats (float outTotal, float prescriptionTotal, float timeTotal, float medicalAdviceTotal,Float balance) {
-        List<Object> floats = new ArrayList<>();
-        floats.add(outTotal);
-        floats.add(prescriptionTotal);
-        floats.add(timeTotal);
-        floats.add(medicalAdviceTotal);
-        floats.add(balance);
-        return floats;
-    }
+//    /** 工具方法 将五个费用包装成list
+//     * @param outTotal 退药费用
+//     * @param prescriptionTotal  处方费用
+//     * @param timeTotal  出院费用
+//     * @param medicalAdviceTotal  医嘱费用
+//     * @param balance 余额
+//     * @return
+//     */
+//    private List<Object> getFloats (float outTotal, float prescriptionTotal, float timeTotal, float medicalAdviceTotal,Float balance) {
+//        List<Object> floats = new ArrayList<>();
+//        floats.add(outTotal);
+//        floats.add(prescriptionTotal);
+//        floats.add(timeTotal);
+//        floats.add(medicalAdviceTotal);
+//        floats.add(balance);
+//        return floats;
+//    }
 
 
     /** 工具方法 运算两个时间之间差多少天,

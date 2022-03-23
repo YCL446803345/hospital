@@ -59,9 +59,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors(Customizer.withDefaults());
 
         //需要放行的url在这里配置,必须要放行/login,不然会报错
-        http.authorizeRequests().antMatchers("/login")
-                .permitAll().antMatchers(HttpMethod.OPTIONS,"/**").permitAll().anyRequest().authenticated();
+        http.authorizeRequests().antMatchers("/login","/payReusult").permitAll().antMatchers("/returnUrl").permitAll()
 
+                .anyRequest().authenticated();
         // 设置登陆页、登录表单form中action的地址，也就是处理认证请求的路径
         http.formLogin().loginProcessingUrl("/login")
             //登录表单form中密码输入框input的name名，不修改的话默认是password
