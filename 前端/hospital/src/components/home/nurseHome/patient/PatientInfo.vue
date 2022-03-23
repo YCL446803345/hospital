@@ -31,7 +31,7 @@
                 <!--带搜索按钮的文本框 -->
             </el-col>
            
-            <el-col :span="1" style="margin-left:2px;">
+            <el-col :span="1.5" style="margin-left:2px;">
                 <el-button type="success" @click="search">查询</el-button>
                
             </el-col>
@@ -102,10 +102,11 @@
             <el-table-column
                 prop="phone"
                 label="手机号"
-                width="100">
+                width="120">
             </el-table-column>
 
             <el-table-column
+                prop="appointmenttTime"
                 label="入院时间"
                 width="180">
                 <template slot-scope="scope">
@@ -121,32 +122,40 @@
             </el-table-column>
 
             <el-table-column
-                prop="bedCode"
                 label="床位编号"
                 width="80">
                  <template slot-scope="scope">
-                     <el-tag :type="scope.row.bedCode==='未分配'?'danger':'primary'" disable-transitions>
-                         {{scope.row.bedCode}}
+                     <el-tag :type="scope.row.bedCode===null?'danger':'primary'" disable-transitions>
+                         {{scope.row.bedCode===null?'未分配':scope.row.bedCode}}
                      </el-tag>
                 </template>
             </el-table-column>
 
             <el-table-column
-                prop="nurseName"
                 label="护士名"
                 width="80">
+                <template slot-scope="scope">
+                     <el-tag :type="scope.row.nurseName==='未分配'?'danger':'primary'" disable-transitions>
+                         {{scope.row.nurseName}}
+                     </el-tag>
+                </template>
             </el-table-column>
 
             <el-table-column
                 prop="doctorName"
                 label="主治医生"
                 width="80">
+                <template slot-scope="scope">
+                     <el-tag :type="scope.row.doctorName==='未分配'?'danger':'primary'" disable-transitions>
+                         {{scope.row.doctorName}}
+                     </el-tag>
+                </template>
             </el-table-column>
 
             <el-table-column
                 prop="baseDesc"
                 label="病情"
-                width="80">
+                width="150">
             </el-table-column>
             
             <el-table-column label="操作">
@@ -154,11 +163,11 @@
                   <el-button
                   size="mini"
                   type="primary"
-                  @click="gotoUpdateTeacher(scope.row.id)">编辑</el-button>
-                  <el-button
+                  @click="gotoUpdatePatient(scope.row.id,scope.row.name,scope.row.gender,scope.row.cardId,scope.row.age,scope.row.baseDesc,scope.row.phone)">编辑</el-button>
+                  <!-- <el-button
                   size="mini"
                   type="danger"
-                  @click="deleteTeacher( scope.row.id)">删除</el-button>
+                  @click="deleteTeacher( scope.row.id)">删除</el-button> -->
                </template>
             </el-table-column>
         </el-table>
@@ -174,6 +183,47 @@
             @current-change='changePage'
            >
         </el-pagination>
+
+        <!-- 修改讲师 -->
+        <el-dialog :visible.sync="updatePatientForm" >
+        <h1 align="center">修改病人信息 </h1><br>
+        <el-form :model="updatePatient">
+            <el-form-item label="姓名" :label-width="formLabelWidth">
+                 <el-input v-model="updatePatient.name" autocomplete="off"></el-input>
+            </el-form-item>
+
+            <el-form-item label="身份证" :label-width="formLabelWidth">
+                 <el-input v-model="updatePatient.cardId" autocomplete="off"></el-input>
+            </el-form-item>
+
+            <el-form-item label="年龄" :label-width="formLabelWidth">
+                 <el-input v-model="updatePatient.age" autocomplete="off"></el-input>
+            </el-form-item>
+
+            <el-form-item label="性别" :label-width="formLabelWidth">
+                <el-radio v-model="updatePatient.gender" label="1" value=1>男</el-radio>
+                <el-radio v-model="updatePatient.gender" label="2" value=2>女</el-radio>
+            </el-form-item>
+
+            <el-form-item label="手机号" :label-width="formLabelWidth">
+                 <el-input v-model="updatePatient.phone" autocomplete="off"></el-input>
+            </el-form-item>
+
+             <el-form-item label="病情" :label-width="formLabelWidth">
+                 <el-input
+                        type="textarea"
+                        :autosize="{ minRows: 2, maxRows: 4}"
+                        placeholder="请输入内容"
+                        v-model="updatePatient.baseDesc"
+                        autocomplete="off">
+                </el-input>
+            </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="updatePatient1">修 改</el-button>
+                <el-button @click="closeUpdatePatient">取 消</el-button>
+            </div>
+            </el-dialog>
 
     </div>
 </template>
@@ -191,8 +241,18 @@ export default {
         total:100,
         pageNum:1,
         pageSize:5,
-        updateTeacherForm:false,
-        headers:{}
+        updatePatientForm:false,
+        headers:{},
+        updatePatient:{
+            id:'',
+            name:'',
+            gender:'',
+            cardId:'',
+            age:'',
+            baseDesc:'',
+            phone:''
+        },
+        formLabelWidth: '120px'
       }
    },
    created(){
@@ -200,10 +260,56 @@ export default {
       this.headers={tokenStr:window.localStorage.getItem('tokenStr')};
    },
    methods:{
+       updatePatient1(){
+            var patient=this.updatePatient;
+            this.$axios.post("/api/updatePatient",patient)
+            .then(res=>{
+                if(res.data.status==4001){
+                     this.$message({
+                        type: "error",
+                         message: "没有权限!",
+                          duration:2000
+                     });
+                }else{
+                     this.$message({
+                        // type: "error",
+                         message: "修改成功!",
+                         duration:2000
+                     });
+                    this.closeUpdatePatient();
+                    this.search();
+                }
+            })
+       },
+       closeUpdatePatient(){
+            this.updatePatient={
+                id:'',
+                name:'',
+                gender:'',
+                cardId:'',
+                age:'',
+                baseDesc:'',
+                phone:''
+           }
+           this.updatePatientForm=false;
+       },
+       gotoUpdatePatient(id,name,gender,cardId,age,baseDesc,phone){
+           this.updatePatient={
+                id:id,
+                name:name,
+                gender:gender,
+                cardId:cardId,
+                age:age,
+                baseDesc:baseDesc,
+                phone:phone
+           }
+           this.updatePatientForm=true;
+
+       },
       //查询病人信息列表
         search(){
             console.log("---"+this.cardId)
-            this.$axios.get("/api/findPatients",{params:{name:this.name,no:this.no,gender:this.gender,
+            this.$axios.get("/api/findPatientsByChangeDept",{params:{name:this.name,no:this.no,gender:this.gender,
                   cardId:this.cardId,status:this.status,pageNum:1,pageSize:this.pageSize}})
             .then(res=>{
                console.log(res.data);
@@ -220,7 +326,7 @@ export default {
         },
         changePage(value){
             this.pageNum=value;
-            this.$axios.get("/api/findPatients",{params:{name:this.searchName,no:this.no,gender:this.gender,
+            this.$axios.get("/api/findPatientsByChangeDept",{params:{name:this.searchName,no:this.no,gender:this.gender,
                   caedId:this.cardId,status:this.status,pageNum:this.pageNum,pageSize:this.pageSize}})
             .then(res=>{
                 this.patientList=res.data.list;
