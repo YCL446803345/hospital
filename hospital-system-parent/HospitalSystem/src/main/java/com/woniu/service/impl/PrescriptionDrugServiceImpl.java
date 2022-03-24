@@ -23,4 +23,5 @@ public class PrescriptionDrugServiceImpl implements PrescriptionDrugService {
         List<PrescriptionDrug> prescriptionDrugList = prescriptionDrugMapper.getDrugNameAndNumByPreId(pid);
         return prescriptionDrugList;
     }
+
 }

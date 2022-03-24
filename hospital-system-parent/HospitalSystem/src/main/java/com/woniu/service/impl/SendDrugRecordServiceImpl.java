@@ -3,6 +3,7 @@ package com.woniu.service.impl;
 import com.woniu.entity.SendDrugRecord;
 import com.woniu.entity.SendDrugRecordExample;
 import com.woniu.mapper.SendDrugRecordMapper;
+import com.woniu.service.PrescriptionDrugService;
 import com.woniu.service.SendDrugRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,8 @@ public class SendDrugRecordServiceImpl implements SendDrugRecordService {
 
     @Autowired
     private SendDrugRecordMapper sdrMapper;
-
+    @Autowired
+    private PrescriptionDrugService prescriptionDrugService;
     //查询发药记录
     public List<SendDrugRecord> findAllSendDrug(String name) {
         SendDrugRecordExample sendDrugRecordExample = new SendDrugRecordExample();
@@ -29,4 +31,6 @@ public class SendDrugRecordServiceImpl implements SendDrugRecordService {
         List<SendDrugRecord> sendDrugRecordList = sdrMapper.selectByExample(sendDrugRecordExample);
         return sendDrugRecordList;
     }
+
+
 }
