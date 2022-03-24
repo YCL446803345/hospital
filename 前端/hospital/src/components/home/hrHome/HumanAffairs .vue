@@ -115,25 +115,35 @@
               ></el-input>
             </el-form-item>
             
-            <el-form-item
-              label="角色"
-              :label-width="formLabelWidth"
-              prop="roleId"
-            >
-              <el-input
+          
+            <el-form-item label="角色" :label-width="formLabelWidth">
+              <el-select
                 v-model="editWorkerForm.roleId"
-                autocomplete="off"
-              ></el-input>
+                placeholder="请选择角色"
+                prop="roleId"
+              >
+                <el-option
+                  v-for="role in roleData"
+                  :key="role.id"
+                  :label="role.name"
+                  :value="role.id"
+                ></el-option>
+              </el-select>
             </el-form-item>
-            <el-form-item
-              label="部门"
-              :label-width="formLabelWidth"
-              prop="deptId"
-            >
-              <el-input
+
+            <el-form-item label="部门" :label-width="formLabelWidth">
+              <el-select
                 v-model="editWorkerForm.deptId"
-                autocomplete="off"
-              ></el-input>
+                placeholder="请选择部门"
+                prop="deptId"
+              >
+                <el-option
+                  v-for="dept in deptData"
+                  :key="dept.id"
+                  :label="dept.name"
+                  :value="dept.id"
+                ></el-option>
+              </el-select>
             </el-form-item>
             <el-form-item
               label="性别"
@@ -228,6 +238,9 @@
               pageNum: pageNum,
               pageSize: this.pageSize,
             },
+            headers: {
+										"Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+									},
           })
           .then((res) => {
             console.log(res.data);
@@ -236,13 +249,13 @@
             this.currentPage = res.data.pageNum;
             this.total = res.data.total; //设置总记录数
           })
-        // .catch((res) => {
-        //   this.$message({
-        //     type: "error",
-        //     message: "连接超时,请重新登录!",
-        //   });
-        //   this.$router.push("/login");
-        // });
+        .catch((res) => {
+          this.$message({
+            type: "error",
+            message: "连接超时,请重新登录!",
+          });
+          this.$router.push("/login");
+        });
       },
 
 //部门列表
