@@ -3,15 +3,8 @@
 <mapper namespace="com.woniu.mapper.SendDrugRecordMapper">
   <resultMap id="BaseResultMap" type="com.woniu.entity.SendDrugRecord">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="doctor_name" jdbcType="VARCHAR" property="doctorName" />
-    <result column="nurse_name" jdbcType="VARCHAR" property="nurseName" />
-    <result column="patient_name" jdbcType="VARCHAR" property="patientName" />
-    <result column="patient_no" jdbcType="VARCHAR" property="patientNo" />
-    <result column="card_id" jdbcType="VARCHAR" property="cardId" />
+    <result column="prescription_id" jdbcType="INTEGER" property="prescriptionId" />
     <result column="send_drug_time" jdbcType="TIMESTAMP" property="sendDrugTime" />
-    <result column="drug_name" jdbcType="VARCHAR" property="drugName" />
-    <result column="type" jdbcType="VARCHAR" property="type" />
-    <result column="drug_num" jdbcType="INTEGER" property="drugNum" />
     <result column="spare1" jdbcType="VARCHAR" property="spare1" />
     <result column="spare2" jdbcType="VARCHAR" property="spare2" />
     <result column="spare3" jdbcType="VARCHAR" property="spare3" />
@@ -75,8 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, doctor_name, nurse_name, patient_name, patient_no, card_id, send_drug_time, drug_name, 
-    type, drug_num, spare1, spare2, spare3
+    id, prescription_id, send_drug_time, spare1, spare2, spare3
   </sql>
   <select id="selectByExample" parameterType="com.woniu.entity.SendDrugRecordExample" resultMap="BaseResultMap">
     select
@@ -109,16 +101,12 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.woniu.entity.SendDrugRecord">
-    insert into HOS_send_drug_record (id, doctor_name, nurse_name, 
-      patient_name, patient_no, card_id, 
-      send_drug_time, drug_name, type, 
-      drug_num, spare1, spare2, 
-      spare3)
-    values (#{id,jdbcType=INTEGER}, #{doctorName,jdbcType=VARCHAR}, #{nurseName,jdbcType=VARCHAR}, 
-      #{patientName,jdbcType=VARCHAR}, #{patientNo,jdbcType=VARCHAR}, #{cardId,jdbcType=VARCHAR}, 
-      #{sendDrugTime,jdbcType=TIMESTAMP}, #{drugName,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
-      #{drugNum,jdbcType=INTEGER}, #{spare1,jdbcType=VARCHAR}, #{spare2,jdbcType=VARCHAR}, 
-      #{spare3,jdbcType=VARCHAR})
+    insert into HOS_send_drug_record (id, prescription_id, send_drug_time, 
+      spare1, spare2, spare3
+      )
+    values (#{id,jdbcType=INTEGER}, #{prescriptionId,jdbcType=INTEGER}, #{sendDrugTime,jdbcType=TIMESTAMP}, 
+      #{spare1,jdbcType=VARCHAR}, #{spare2,jdbcType=VARCHAR}, #{spare3,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.woniu.entity.SendDrugRecord">
     insert into HOS_send_drug_record
@@ -126,32 +114,11 @@
       <if test="id != null">
         id,
       </if>
-      <if test="doctorName != null">
-        doctor_name,
-      </if>
-      <if test="nurseName != null">
-        nurse_name,
-      </if>
-      <if test="patientName != null">
-        patient_name,
-      </if>
-      <if test="patientNo != null">
-        patient_no,
-      </if>
-      <if test="cardId != null">
-        card_id,
+      <if test="prescriptionId != null">
+        prescription_id,
       </if>
       <if test="sendDrugTime != null">
         send_drug_time,
-      </if>
-      <if test="drugName != null">
-        drug_name,
-      </if>
-      <if test="type != null">
-        type,
-      </if>
-      <if test="drugNum != null">
-        drug_num,
       </if>
       <if test="spare1 != null">
         spare1,
@@ -167,32 +134,11 @@
       <if test="id != null">
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="doctorName != null">
-        #{doctorName,jdbcType=VARCHAR},
-      </if>
-      <if test="nurseName != null">
-        #{nurseName,jdbcType=VARCHAR},
-      </if>
-      <if test="patientName != null">
-        #{patientName,jdbcType=VARCHAR},
-      </if>
-      <if test="patientNo != null">
-        #{patientNo,jdbcType=VARCHAR},
-      </if>
-      <if test="cardId != null">
-        #{cardId,jdbcType=VARCHAR},
+      <if test="prescriptionId != null">
+        #{prescriptionId,jdbcType=INTEGER},
       </if>
       <if test="sendDrugTime != null">
         #{sendDrugTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="drugName != null">
-        #{drugName,jdbcType=VARCHAR},
-      </if>
-      <if test="type != null">
-        #{type,jdbcType=VARCHAR},
-      </if>
-      <if test="drugNum != null">
-        #{drugNum,jdbcType=INTEGER},
       </if>
       <if test="spare1 != null">
         #{spare1,jdbcType=VARCHAR},
@@ -217,32 +163,11 @@
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.doctorName != null">
-        doctor_name = #{record.doctorName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.nurseName != null">
-        nurse_name = #{record.nurseName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.patientName != null">
-        patient_name = #{record.patientName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.patientNo != null">
-        patient_no = #{record.patientNo,jdbcType=VARCHAR},
-      </if>
-      <if test="record.cardId != null">
-        card_id = #{record.cardId,jdbcType=VARCHAR},
+      <if test="record.prescriptionId != null">
+        prescription_id = #{record.prescriptionId,jdbcType=INTEGER},
       </if>
       <if test="record.sendDrugTime != null">
         send_drug_time = #{record.sendDrugTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.drugName != null">
-        drug_name = #{record.drugName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.type != null">
-        type = #{record.type,jdbcType=VARCHAR},
-      </if>
-      <if test="record.drugNum != null">
-        drug_num = #{record.drugNum,jdbcType=INTEGER},
       </if>
       <if test="record.spare1 != null">
         spare1 = #{record.spare1,jdbcType=VARCHAR},
@@ -261,15 +186,8 @@
   <update id="updateByExample" parameterType="map">
     update HOS_send_drug_record
     set id = #{record.id,jdbcType=INTEGER},
-      doctor_name = #{record.doctorName,jdbcType=VARCHAR},
-      nurse_name = #{record.nurseName,jdbcType=VARCHAR},
-      patient_name = #{record.patientName,jdbcType=VARCHAR},
-      patient_no = #{record.patientNo,jdbcType=VARCHAR},
-      card_id = #{record.cardId,jdbcType=VARCHAR},
+      prescription_id = #{record.prescriptionId,jdbcType=INTEGER},
       send_drug_time = #{record.sendDrugTime,jdbcType=TIMESTAMP},
-      drug_name = #{record.drugName,jdbcType=VARCHAR},
-      type = #{record.type,jdbcType=VARCHAR},
-      drug_num = #{record.drugNum,jdbcType=INTEGER},
       spare1 = #{record.spare1,jdbcType=VARCHAR},
       spare2 = #{record.spare2,jdbcType=VARCHAR},
       spare3 = #{record.spare3,jdbcType=VARCHAR}
@@ -280,32 +198,11 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.woniu.entity.SendDrugRecord">
     update HOS_send_drug_record
     <set>
-      <if test="doctorName != null">
-        doctor_name = #{doctorName,jdbcType=VARCHAR},
-      </if>
-      <if test="nurseName != null">
-        nurse_name = #{nurseName,jdbcType=VARCHAR},
-      </if>
-      <if test="patientName != null">
-        patient_name = #{patientName,jdbcType=VARCHAR},
-      </if>
-      <if test="patientNo != null">
-        patient_no = #{patientNo,jdbcType=VARCHAR},
-      </if>
-      <if test="cardId != null">
-        card_id = #{cardId,jdbcType=VARCHAR},
+      <if test="prescriptionId != null">
+        prescription_id = #{prescriptionId,jdbcType=INTEGER},
       </if>
       <if test="sendDrugTime != null">
         send_drug_time = #{sendDrugTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="drugName != null">
-        drug_name = #{drugName,jdbcType=VARCHAR},
-      </if>
-      <if test="type != null">
-        type = #{type,jdbcType=VARCHAR},
-      </if>
-      <if test="drugNum != null">
-        drug_num = #{drugNum,jdbcType=INTEGER},
       </if>
       <if test="spare1 != null">
         spare1 = #{spare1,jdbcType=VARCHAR},
@@ -321,18 +218,19 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.woniu.entity.SendDrugRecord">
     update HOS_send_drug_record
-    set doctor_name = #{doctorName,jdbcType=VARCHAR},
-      nurse_name = #{nurseName,jdbcType=VARCHAR},
-      patient_name = #{patientName,jdbcType=VARCHAR},
-      patient_no = #{patientNo,jdbcType=VARCHAR},
-      card_id = #{cardId,jdbcType=VARCHAR},
+    set prescription_id = #{prescriptionId,jdbcType=INTEGER},
       send_drug_time = #{sendDrugTime,jdbcType=TIMESTAMP},
-      drug_name = #{drugName,jdbcType=VARCHAR},
-      type = #{type,jdbcType=VARCHAR},
-      drug_num = #{drugNum,jdbcType=INTEGER},
       spare1 = #{spare1,jdbcType=VARCHAR},
       spare2 = #{spare2,jdbcType=VARCHAR},
       spare3 = #{spare3,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+<!--  批量添加发药记录-->
+  <insert id="addSenDrugBatch" parameterType="list">
+    insert into HOS_send_drug_record(prescription_id,send_drug_time,spare1) values
+    <foreach collection="list" item="sendDrug" separator=",">
+      (#{sendDrug.prescriptionId},#{sendDrug.sendDrugTime},#{sendDrug.spare1})
+    </foreach>
+  </insert>
 </mapper>

@@ -243,13 +243,13 @@
 <!--               enableDeleteByExample="true"-->
 <!--               enableSelectByExample="true"-->
 <!--        />-->
-<!--        <table tableName="HOS_send_drug_record" schema="HOSPITAL"-->
-<!--               domainObjectName="SendDrugRecord"-->
-<!--               enableCountByExample="true"-->
-<!--               enableUpdateByExample="true"-->
-<!--               enableDeleteByExample="true"-->
-<!--               enableSelectByExample="true"-->
-<!--        />-->
+        <table tableName="HOS_send_drug_record" schema="HOSPITAL"
+               domainObjectName="SendDrugRecord"
+               enableCountByExample="true"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+        />
 <!--        <table tableName="HOS_user" schema="HOSPITAL"-->
 <!--               domainObjectName="User"-->
 <!--               enableCountByExample="true"-->
@@ -257,13 +257,13 @@
 <!--               enableDeleteByExample="true"-->
 <!--               enableSelectByExample="true"-->
 <!--        />-->
-        <table tableName="HOS_worker" schema="HOSPITAL"
-               domainObjectName="Worker"
-               enableCountByExample="true"
-               enableUpdateByExample="true"
-               enableDeleteByExample="true"
-               enableSelectByExample="true"
-        />
+<!--        <table tableName="HOS_worker" schema="HOSPITAL"-->
+<!--               domainObjectName="Worker"-->
+<!--               enableCountByExample="true"-->
+<!--               enableUpdateByExample="true"-->
+<!--               enableDeleteByExample="true"-->
+<!--               enableSelectByExample="true"-->
+<!--        />-->
 <!--        <table tableName="HOS_worker_perms" schema="HOSPITAL"-->
 <!--               domainObjectName="WorkerPerms"-->
 <!--               enableCountByExample="true"-->

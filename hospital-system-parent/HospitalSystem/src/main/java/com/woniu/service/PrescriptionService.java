@@ -12,4 +12,8 @@ import java.util.List;
 public interface PrescriptionService {
 
     List<Prescription> getPresDrugByMany(String doctorName,String status, Date startTime, Date endTime);
+
+    void updateStatusById(Integer pid, String account);
+
+    void updateByBatch(List<String> newlist, String account);
 }

@@ -47,4 +47,6 @@ public interface PrescriptionMapper {
             "</where>"+
             "</script>")
     List<Prescription> getPreDrugByMany(@Param("doctorName") String doctorName, @Param("status") String status, @Param("startTime") Date startTime, @Param("endTime") Date endTime);
+
+
 }

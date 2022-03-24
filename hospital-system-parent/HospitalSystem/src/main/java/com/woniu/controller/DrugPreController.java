@@ -9,9 +9,12 @@ import com.woniu.service.PrescriptionService;
 import com.woniu.util.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -44,6 +47,24 @@ public class DrugPreController {
     public ResponseResult<List<PrescriptionDrug>> findDrugNameAndNum(Integer pid){
         List<PrescriptionDrug> prescriptionDrugList =  prescriptionDrugService.getDrugNameAndNumByPreId(pid);
         return new ResponseResult<List<PrescriptionDrug>>(prescriptionDrugList,"OK",200);
+    }
+
+    //药房撤销处方同时记录撤销人和当前撤销时间
+    @PostMapping("drug/updatePreStatus")
+    public ResponseResult updatePreDrugStatus(@RequestParam("pid") Integer pid,@RequestParam("account") String account){
+        prescriptionService.updateStatusById(pid,account);
+        return ResponseResult.ok();
+    }
+
+    //通过处方id配药,支持批量配药
+    //同时添加发药记录
+    //添加发药账单记录
+    @PostMapping("drug/sendDrug")
+    public ResponseResult updatePreDrugStatusAndAddSendDrug(@RequestParam("idStrs") String idStrs,@RequestParam("account") String account){
+        List<String> list = Arrays.asList(idStrs.split(","));
+        List<String> newlist = new ArrayList<String>(list);
+        prescriptionService.updateByBatch(newlist,account);
+        return ResponseResult.ok();
     }
 
 }
