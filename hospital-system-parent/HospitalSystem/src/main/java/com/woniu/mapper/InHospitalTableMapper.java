@@ -4,6 +4,7 @@ import com.woniu.entity.InHospitalTable;
 import com.woniu.entity.InHospitalTableExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -33,4 +34,7 @@ public interface InHospitalTableMapper {
     //医生站分页模糊查询住院申请列表
     List<InHospitalTable> queryInHospitalTableList(InHospitalTable inHospitalTable);
 
+    //审核预约住院信息
+    @Update("update HOS_in_hospital_table set status='2' where id=#{id}")
+    void updateInHospitalTable(InHospitalTable inHospitalTable);
 }

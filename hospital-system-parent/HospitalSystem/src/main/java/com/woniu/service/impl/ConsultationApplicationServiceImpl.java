@@ -23,4 +23,9 @@ public class ConsultationApplicationServiceImpl implements ConsultationApplicati
         PageInfo<ConsultationApplication> consultationApplicationPageInfo = new PageInfo<>(consultationApplicationList);
         return consultationApplicationPageInfo;
     }
+
+    //编辑会诊信息
+    public void updateConsultationApplication(ConsultationApplication consultationApplication) {
+        consultationApplicationMapper.updateConsultationApplication(consultationApplication);
+    }
 }

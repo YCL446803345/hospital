@@ -307,13 +307,11 @@
   <!--queryMedicalAdviceList-->
   <!--医生站分页模糊查询医嘱列表-->
   <select id="queryMedicalAdviceList" resultType="MedicalAdvice">
-    select m.id,r.name doctorName,p.name patientName,c.advice_category adviceCategoryName,t.name projectName,
+    select m.id,r.name doctorName,p.name patientName,m.advice_category,m.project_id,
     m.create_time,m.advice_description,m.advice_status
     from HOS_medical_advice m
     inner join HOS_worker r on m.doctor_id = r.id
     inner join HOS_patient p on m.patient_id = p.id
-    inner join HOS_medical_advice_category c on m.advice_category = c.id
-    inner join HOS_project t on m.project_id = t.id
     <where>
       <if test="adviceCategory != null and adviceCategory !=''">m.advice_category = #{adviceCategory}</if>
       <if test="adviceStatus != null and adviceStatus != ''">m.advice_status = #{adviceStatus}</if>

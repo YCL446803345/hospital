@@ -25,4 +25,9 @@ public class InHospitalTableServiceImpl implements InHospitalTableService {
         PageInfo<InHospitalTable> inHospitalTablePageInfo = new PageInfo<>(inHospitalTableList);
         return inHospitalTablePageInfo;
     }
+
+    //审核预约住院信息
+    public void updateInHospitalTable(InHospitalTable inHospitalTable) {
+        inHospitalTableMapper.updateInHospitalTable(inHospitalTable);
+    }
 }
