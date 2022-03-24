@@ -84,7 +84,13 @@ public class DoctorController {
         return responseResult;
     }
 
-    //处方申请
+    //审核预约住院信息
+    @PostMapping("doctor/updateInHospitalTable")
+    public void updateInHospitalTable(@RequestBody InHospitalTable inHospitalTable) {
+        inHospitalTableService.updateInHospitalTable(inHospitalTable);
+    }
+
+
 
 
 
@@ -161,6 +167,12 @@ public class DoctorController {
             responseResult.setMsg("查询失败...");
         }
         return responseResult;
+    }
+
+    //编辑会诊信息
+    @PostMapping("doctor/updateConsultationApplication")
+    public void updateConsultationApplication(@RequestBody ConsultationApplication consultationApplication) {
+        consultationApplicationService.updateConsultationApplication(consultationApplication);
     }
 
 

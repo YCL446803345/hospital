@@ -66,15 +66,37 @@
             </el-table-column>
 
             <el-table-column
-                prop="adviceCategoryName"
+                prop="adviceCategory"
                 label="医嘱类型"
                 width="180">
+                <template slot-scope="scope">
+                    <span v-if="scope.row.adviceCategory=='1'">长期医嘱</span>
+                    <span v-if="scope.row.adviceCategory=='2'">临时医嘱</span>
+                    <span v-if="scope.row.adviceCategory=='3'">一般医嘱</span>
+                </template>
             </el-table-column>
 
             <el-table-column
-                prop="projectName"
+                prop="projectId"
                 label="项目类型"
                 width="180">
+                <template slot-scope="scope">
+                    <span v-if="scope.row.projectId=='1'">内外科查体</span>
+                    <span v-if="scope.row.projectId=='2'">眼科视力检查</span>
+                    <span v-if="scope.row.projectId=='3'">尿检</span>
+                    <span v-if="scope.row.projectId=='4'">乙肝</span>
+                    <span v-if="scope.row.projectId=='5'">血脂</span>
+                    <span v-if="scope.row.projectId=='6'">血糖</span>
+                    <span v-if="scope.row.projectId=='7'">头颅CT</span>
+                    <span v-if="scope.row.projectId=='8'">肺部CT</span>
+                    <span v-if="scope.row.projectId=='9'">核磁共振成像</span>
+                    <span v-if="scope.row.projectId=='10'">开颅手术</span>
+                    <span v-if="scope.row.projectId=='11'">脂肪瘤切除手术</span>
+                    <span v-if="scope.row.projectId=='12'">痔疮切除手术</span>
+                    <span v-if="scope.row.projectId=='13'">包皮切除手术</span>
+                    <span v-if="scope.row.projectId=='14'">清创缝合术</span>
+                    <span v-if="scope.row.projectId=='15'">肌腱吻合术</span>
+                </template>
             </el-table-column>
 
             <el-table-column
@@ -88,7 +110,9 @@
                 label="医嘱状态"
                 width="180">
                 <template slot-scope="scope">
-                         {{scope.row.adviceStatus===1 ?'执行中':'已撤销'}}
+                <span v-if="scope.row.adviceStatus=='1'">待执行</span>
+                <span v-if="scope.row.adviceStatus=='2'">已执行</span>
+                <span v-if="scope.row.adviceStatus=='3'">已撤销</span>
                 </template>
             </el-table-column>
 
@@ -181,10 +205,14 @@ export default {
         },
         changePage(value){
             this.pageNum=value;
-            this.$axios.get("/api/doctor/getConsultationApplication",{params:{consultationEmergencyId:this.consultationEmergencyId,
-            consultationCategoryId:this.consultationCategoryId,status:this.status,pageNum:this.pageNum,pageSize:this.pageSize}})
+            this.$axios.get("/api/doctor/getMedicalAdviceList",{params:{
+            adviceCategory:this.adviceCategory,
+            adviceStatus:this.adviceStatus,
+            pageNum:this.pageNum,
+            pageSize:this.pageSize
+            }})
             .then(res=>{
-                this.consultationApplicationList=res.data.data.list;
+                this.medicalAdviceList=res.data.data.list;
                 this.total=res.data.data.total;
                 this.pageNum=res.data.data.pageNum;
                 this.pageSize=res.data.data.pageSize;
