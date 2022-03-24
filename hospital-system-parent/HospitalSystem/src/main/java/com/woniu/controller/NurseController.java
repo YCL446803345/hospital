@@ -32,6 +32,27 @@ public class NurseController {
     @Autowired
     private PrescriptionBillService prescriptionBillService;
 
+    @Autowired
+    private MedicalAdviceBillService medicalAdviceBillService;
+
+    @Autowired
+    private DrugOutBillService drugOutBillService;
+
+    @Autowired
+    private NursingRecordService nursingRecordService;
+
+    /**
+     * 职工登录时得到职工的所有信息
+     */
+    @GetMapping("/getWorker")
+    @ResponseBody
+    public ResponseEntity<Worker> getWorker(String account) {
+        Worker worker=workerService.getWorker(account);
+        return new ResponseEntity<Worker>(worker, HttpStatus.OK);
+    }
+
+
+
     /**
      * 查询非待床病人信息，安排并修改病人床位
      */
@@ -53,6 +74,17 @@ public class NurseController {
                                                           @RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize) {
         PageInfo<Patient> pageInfo = patientService.findPatientsByChangeDept(patient, pageNum, pageSize);
         return new ResponseEntity<PageInfo<Patient>>(pageInfo, HttpStatus.OK);
+    }
+
+    /**
+     * 通过病人id查询病人护理记录
+     */
+    @GetMapping("/findNursingRecordsByPatientId")
+    @ResponseBody
+    public ResponseEntity<PageInfo<NursingRecord>> findNursingRecordsByPatientId(NursingRecord nursingRecord, @RequestParam(value = "pageNum", defaultValue = "1", required = false) Integer pageNum,
+                                                                      @RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize) {
+        PageInfo<NursingRecord> pageInfo = nursingRecordService.findNursingRecordsByPatientId(nursingRecord, pageNum, pageSize);
+        return new ResponseEntity<PageInfo<NursingRecord>>(pageInfo, HttpStatus.OK);
     }
 
     /**
@@ -204,4 +236,32 @@ public class NurseController {
         return new ResponseEntity<List<Drug>>(drugs,HttpStatus.OK);
     }
 
+    /**
+     * 查询病人医嘱账单
+     * @return
+     */
+    @PostMapping("/getMedicalAdviceBill")
+    public ResponseEntity<List<Project>> getMedicalAdviceBill(@RequestBody Patient patient) {
+        final List<Project> projects = medicalAdviceBillService.getMedicalAdviceBill(patient);
+        return new ResponseEntity<List<Project>>(projects,HttpStatus.OK);
+    }
+
+    /**
+     * 查询病人退药账单
+     * @return
+     */
+    @PostMapping("/getDrugOutBill")
+    public ResponseEntity<List<Drug>> getDrugOutBill(@RequestBody Patient patient) {
+        final List<Drug> drugs = drugOutBillService.getDrugOutBill(patient);
+        return new ResponseEntity<List<Drug>>(drugs,HttpStatus.OK);
+    }
+
+    /**
+     * 添加护理记录
+     * @return
+     */
+    @PostMapping("/addNursingRecord")
+    public void addNursingRecord(@RequestBody NursingRecord nursingRecord) {
+        nursingRecordService.addNursingRecord(nursingRecord);
+    }
 }

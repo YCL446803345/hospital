@@ -100,7 +100,7 @@ export default {
    created(){
       //从本地浏览器拿名字
    this.account = window.localStorage.getItem("account")
-    this.$axios.get("api/perms/findMenuPerms",{
+   this.$axios.get("api/perms/findMenuPerms",{
        params:{
           account:this.account
        }
@@ -110,6 +110,7 @@ export default {
           this.menuDate=res.data.data
        }
     })
+    
    }
 }
 </script>
