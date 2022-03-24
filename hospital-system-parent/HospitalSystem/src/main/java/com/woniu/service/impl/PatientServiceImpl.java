@@ -128,6 +128,7 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public void updatePatient(Patient patient) {
         patientMapper.updatePatient(patient);
+
     }
 
     /**
@@ -152,7 +153,9 @@ public class PatientServiceImpl implements PatientService {
 
         HospitalizationBill hospitalizationBill1 = new HospitalizationBill();
         hospitalizationBill1.setPayDays(day);
+
         hospitalizationBill1.setSumMoney(sumMoney);
+
 
         return hospitalizationBill1;
 

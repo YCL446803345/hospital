@@ -2,6 +2,7 @@ package com.woniu.service;
 
 import com.github.pagehelper.PageInfo;
 import com.woniu.entity.Cost;
+import com.woniu.entity.PaymentRecord;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ public interface HospitalizationBillServer {
     void addHospitalizationBill(Integer patientId,float money);
 
     //提前缴费
-    Cost updateHospitalizationBill (Integer id);
+    Float updateHospitalizationBill (Integer id);
 
     Cost query(int id);
 
@@ -21,4 +22,6 @@ public interface HospitalizationBillServer {
     PageInfo<Cost> leaveHospital (String name, String no, Integer pageNum, Integer pageSize);
 
     void updateMoney (Integer id, Float money);
+
+    List<PaymentRecord> queryPayment(Integer id);
 }

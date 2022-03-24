@@ -43,7 +43,10 @@ import Perms from '../components/home/hrHome/Perms' // 权限管理
 
 //收费组件
 import costInfo from '../components/home/payHome/costInfo.vue' // 费用信息列表
-
+import queryCost from '../components/home/payHome/queryCost.vue' //查询统计
+import leaveHospital from '../components/home/payHome/leave.vue' //出院结算
+import dataAnalysis from '../components/home/payHome/dataAnalysis.vue' //数据分析
+import leaveCost from '../components/home/payHome/leaveCost.vue'
 
 //配置路由规则
 var router = new VueRouter({
@@ -64,6 +67,7 @@ var router = new VueRouter({
 
                 { path: "/medicine/home", component: DrugInfo },
                 { path: "/worker/list", component: HumanAffairs },
+
                 { path: "/nurse/admission", component: patientInfo },
                 { path: "/nurse/changeDept", component: patientChangeDept },
                 { path: "/nurse/information", component: queryPatientInfo },
@@ -77,7 +81,10 @@ var router = new VueRouter({
                 {path:"/drug/send/drug",component:SendDrug},
 
                 { path: "/pay/cost", component: costInfo },
-
+				{path:"/pay/queryCost",component:queryCost},
+                {path:"/pay/leaveHospital",component:leaveHospital},
+                {path:"/pay/dataAnalysis",component:dataAnalysis},
+                {path:"/pay/leaveCost",component:leaveCost},
 
                 { path: "/doctor/PatientList", component: PatientList },
                 { path: "/doctor/consultationApplicationList", component: ConsultationApplicationList },
@@ -87,6 +94,7 @@ var router = new VueRouter({
 
                 { path: "/worker/scheduling", component: Scheduling },
                 { path: "/user/perms", component: Perms },
+
 
             ]
         }

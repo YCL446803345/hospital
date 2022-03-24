@@ -22,7 +22,7 @@
                
             </el-col>
 
-            <el-col :span="1" style="margin-left:2px;">
+            <el-col :span="1.5" style="margin-left:2px;">
                  <el-button type="warning" @click="name='',no='',paheNum=1,pageSize=5">清空</el-button>
             </el-col>
             
@@ -255,6 +255,8 @@
             {{patient.balance}}
             </el-descriptions-item>
 
+
+
             <el-descriptions-item>
             <template slot="label">
                 <i class="el-icon-tickets"></i>
@@ -262,6 +264,7 @@
             </template>
             {{patient.hospitalization + patient.prescription + patient.medicalAdvice - patient.drugOut}}
             </el-descriptions-item>
+
         </el-descriptions>
         </template>
 
@@ -517,9 +520,10 @@ export default {
                             message: "结算成功!",
                         });
                     }else{
-                         this.$alert('以欠费'+res.data+',请先充值', '欠费', {
-                            confirmButtonText: '确定'
-                         })
+                        this.$message({
+                            type: "danger",
+                            message: "结算失败!",
+                        }); 
                     }
                     this.closeSettlement();
                     this.search();
@@ -568,7 +572,7 @@ export default {
         },
       //查询病人信息列表
         search(){
-            this.$axios.get("/api/queryAllCost",{params:{name:this.name,no:this.no,
+            this.$axios.get("/api/leaveHospital",{params:{name:this.name,no:this.no,
                                         pageNum:1,pageSize:this.pageSize}})
             .then(res=>{
                console.log(res.data);

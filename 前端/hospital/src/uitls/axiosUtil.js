@@ -27,8 +27,7 @@ axios.interceptors.response.use(
       // 清除token
       localStorage.removeItem('tokenStr')
       // 重新跳转到login页面
-      router.push('/login')
-
+      router.push('/gotoWorkesLogin')
   }
 )
 
