@@ -20,12 +20,11 @@
             <el-table-column label="操作" width="120">
                 <template slot-scope="scope">
                     <el-button size="mini" type="primary" @click="gotoPre(scope.row)">药方详情</el-button>
-                    <el-button size="mini" type="danger">撤销药方</el-button>
+                    <el-button size="mini" type="danger" @click="closeDrugPre(scope.row.id)">撤销药方</el-button>
                 </template>
             </el-table-column>
-            
-
         </el-table>
+        <el-button size="mini" type="primary" @click="batchSendDrug">批量发药</el-button>
 
         <!-- 药方详情模态框 -->
             <el-dialog title="药方信息" :visible.sync="updatedialogTableVisible">
@@ -41,14 +40,15 @@
                       <el-table-column prop="num" label="申请数量" width="180"></el-table-column>
                   </el-table>
                 <div slot="footer" class="dialog-footer">
-                    <el-button>取消</el-button>
-                    <el-button type="primary">配药</el-button>
+                    <el-button @click="updatedialogTableVisible=false;drugIDN={};drugND=[];">取消</el-button>
+                    <el-button type="primary" @click="sendDrug">发药</el-button>
                 </div>
             </el-dialog>
     </div>
 </template>
 
 <script>
+import qs from 'qs'
 export default {
    data() {
       return {
@@ -64,6 +64,95 @@ export default {
       }
    },
    methods:{
+    //撤销药方
+    closeDrugPre(id){
+        this.$axios.post("api/drug/updatePreStatus",qs.stringify({'pid':id,'account':window.localStorage.getItem("account")})).then(res=>{
+            if (res.data.status == 200) {
+                    this.$message({
+                    showClose: true,
+                    message: '撤销成功',
+                    type: 'success',
+                    duration:1500
+                    });
+                this.updatedialogTableVisible=false;
+                this.createMethods();
+            }else{
+                this.$message({
+                    showClose: true,
+                    message: '撤销失败, 系统维护中',
+                    type: 'warning',
+                    duration:1500
+                });
+                this.createMethods();
+                this.updatedialogTableVisible=false;
+            }
+        })
+    },
+    //多个药方批量撤销
+    batchSendDrug() {
+        if (this.multipleSelection == '') {
+            this.$message({
+                showClose: true,
+                message: '请至少选择一个处方',
+                type: 'warning',
+                duration:1500
+            });
+        }else{
+        let idList = []
+        this.multipleSelection.forEach(item=>{
+            idList.push(item.id)
+        })
+        let idStr = idList.join(",")
+        this.$confirm('请仔细察看每个处方信息,是否批量发药', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+        }).then(() => {
+            this.$axios.post("api/drug/sendDrug",qs.stringify({'idStrs':idStr,'account':window.localStorage.getItem("account")})).then(res=>{
+                if (res.data.status == 200) {
+                    this.$message({
+                    type: 'success',
+                    message: '发药成功!'
+                    });
+                    this.createMethods();
+                }else{
+                    this.$message({
+                    showClose: true,
+                    message: '发药失败, 系统维护中',
+                    type: 'warning',
+                    duration:1500
+                    });
+                    this.createMethods();
+                }
+            })
+        })
+        }
+    },
+    //单个处方配药
+    sendDrug(){
+        let idStr = this.drugIDN.id+","
+        this.$axios.post("api/drug/sendDrug",qs.stringify({'idStrs':idStr,'account':window.localStorage.getItem("account")})).then(res=>{
+         if (res.data.status == 200) {
+                    this.$message({
+                    showClose: true,
+                    message: '发药成功',
+                    type: 'success',
+                    duration:1500
+                    });
+                this.createMethods();
+                this.updatedialogTableVisible=false;
+            }else{
+                this.$message({
+                    showClose: true,
+                    message: '发药失败, 系统维护中',
+                    type: 'warning',
+                    duration:1500
+                });
+                this.createMethods();
+                this.updatedialogTableVisible=false;
+            }
+        })
+    },
     // 控制左侧动态导航栏
     toggleSelection(rows) {
         if (rows) {
@@ -76,6 +165,7 @@ export default {
       },
     handleSelectionChange(val) {
         this.multipleSelection = val;
+        console.log(this.multipleSelection)
     },
     //进入药方详情
     gotoPre(row){
@@ -89,14 +179,18 @@ export default {
             }
         })
         this.updatedialogTableVisible=true
-    }
-   },
-    created(){
+    },
+    //页数加载方法
+    createMethods(){
         this.$axios.get("api/drug/prescription").then(res=>{
             if (res.data.status == 200) {
                 this.drugPreData=res.data.data.list;
             }
-        })
+        })  
+    }
+   },
+    created(){
+        this.createMethods();
    }
 }
 </script>
