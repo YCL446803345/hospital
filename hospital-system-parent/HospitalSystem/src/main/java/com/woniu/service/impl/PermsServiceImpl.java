@@ -24,7 +24,7 @@ public class PermsServiceImpl implements PermsService {
     //查询该用户权限树
     public List<String> getPermByUserId(Integer id) {
         List<String> permsList = permsMapper.getPermByUserId(id);
-        System.err.println(permsList);
+
         return permsList;
     }
 
@@ -42,7 +42,7 @@ public class PermsServiceImpl implements PermsService {
     @Override
     public List<Perms> findAllPerms() {
         List<Perms> allPerms = permsMapper.findAllPerms();
-        System.err.println(allPerms);
+
         return allPerms;
     }
 }

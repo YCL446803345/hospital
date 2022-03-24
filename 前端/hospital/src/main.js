@@ -6,6 +6,8 @@ import 'element-ui/lib/theme-chalk/index.css'
 import './assets/css/commons.css'
 import axios from './uitls/axiosUtil.js'
 
+
+
 //安装element
 Vue.use(Element)
 

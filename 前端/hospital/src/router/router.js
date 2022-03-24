@@ -29,6 +29,7 @@ import LeaveHospitalList from '../components/home/doctorHome/patient/LeaveHospit
 
 //药房组件
 
+
 import DrugInfo from '../components/home/drugHome/DrugInfo'   //药品信息列表
 import DrugPre from '../components/home/drugHome/DrugPrescription'  //药方列表
 import SendDrug from '../components/home/drugHome/SendDrug'    //发药列表
@@ -57,30 +58,34 @@ var router = new VueRouter({
         {
             path: "/gotoHome",
             component: Home,
+
+
             children: [
 
-                {path: "/medicine/home", component: DrugInfo },
-                {path: "/worker/list", component: HumanAffairs },
-	            {path: "/nurse/admission", component: patientInfo},
-	            {path: "/nurse/changeDept", component: patientChangeDept},
-	            {path: "/nurse/information", component: queryPatientInfo},
-	            {path:"/nurse/patientManager",component:patientChangeDoctorOrBed},
-	            {path:"/nurse/waitPatientManager",component:patientWithNotBed},
-	            {path:"/nurse/bed",component:bedManager},
+                { path: "/medicine/home", component: DrugInfo },
+                { path: "/worker/list", component: HumanAffairs },
+                { path: "/nurse/admission", component: patientInfo },
+                { path: "/nurse/changeDept", component: patientChangeDept },
+                { path: "/nurse/information", component: queryPatientInfo },
+                { path: "/nurse/patientManager", component: patientChangeDoctorOrBed },
+                { path: "/nurse/waitPatientManager", component: patientWithNotBed },
+                { path: "/nurse/bed", component: bedManager },
 
 
+                { path: "/drug/prescriptionList", component: DrugPre },
                 {path:"/drug/prescriptionList",component:DrugPre},
                 {path:"/drug/send/drug",component:SendDrug},
 
-                {path:"/pay/cost",component:costInfo},
+                { path: "/pay/cost", component: costInfo },
 
-                {path:"/doctor/PatientList",component:PatientList},
-                {path:"/doctor/consultationApplicationList",component:ConsultationApplicationList},
-                {path:"/doctor/medicalAdviceList",component:MedicalAdviceList},
-                {path:"/doctor/inHospitalTableList",component:InHospitalTableList},
-                {path:"/doctor/leaveHospitalList",component:LeaveHospitalList},
-				
-				{ path: "/worker/scheduling", component: Scheduling },
+
+                { path: "/doctor/PatientList", component: PatientList },
+                { path: "/doctor/consultationApplicationList", component: ConsultationApplicationList },
+                { path: "/doctor/medicalAdviceList", component: MedicalAdviceList },
+                { path: "/doctor/inHospitalTableList", component: InHospitalTableList },
+                { path: "/doctor/leaveHospitalList", component: LeaveHospitalList },
+
+                { path: "/worker/scheduling", component: Scheduling },
                 { path: "/user/perms", component: Perms },
 
             ]
@@ -93,14 +98,14 @@ var router = new VueRouter({
 })
 
 //路由守卫
-// router.beforeEach((to,from,next) =>{
-//     if (to.path === '/login' || to.path === '/' || to.path === '/entry' || to.path === '/gotoUserLogin' || to.path === '/gotoWorkesLogin') {
-//         next();
-//     }else{
-//         const token = localStorage.getItem('tokenStr');
-//         token ? next() : next('/login')
-//     }
-// })
+router.beforeEach((to,from,next) =>{
+    if (to.path === '/login' || to.path === '/' || to.path === '/entry' || to.path === '/gotoUserLogin' || to.path === '/gotoWorkesLogin') {
+        next();
+    }else{
+        const token = localStorage.getItem('tokenStr');
+        token ? next() : next('/login')
+    }
+})
 
 //导出路由
 export default router
