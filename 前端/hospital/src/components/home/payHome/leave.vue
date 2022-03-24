@@ -105,14 +105,14 @@
                   size="mini"
                   type="danger"
                   @click="showCost(scope.row.patient.id,scope.row.drugOut,scope.row.hospitalization,scope.row.medicalAdvice,scope.row.prescription)">详情</el-button>
-                    <!-- <el-button
+                    <el-button
                   size="mini"
                   type="success"
                   @click="pay(scope.row.patient.id)">支付宝充值</el-button>
                     <el-button
                   size="mini"
                   type="warning"
-                  @click="payCash(scope.row.patient.id)">现金充值</el-button> -->
+                  @click="payCash(scope.row.patient.id)">现金充值</el-button>
                </template>
             </el-table-column>
         </el-table>
