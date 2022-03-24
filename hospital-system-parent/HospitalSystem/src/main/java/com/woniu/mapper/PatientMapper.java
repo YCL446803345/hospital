@@ -79,4 +79,29 @@ public interface PatientMapper {
             "<if test='no!=null and no != \"\"'>and no like '%${no}%'</if>" +
             "</script>")
     int selectTotal (@Param("name") String name,@Param("no") String no);
+
+
+    /**
+     * 护士站模块
+     *查询所有病人信息，方便护士长跟换病人科室
+     * @param patient
+     */
+    @Select("<script>" +
+            "select p.status status,p.id id,p.name name,no,p.bed_id bedId,p.dept_id deptId,age,card_id cardId," +
+            "appointmentt_time appointmenttTime,base_desc baseDesc,phone,p.gender gender,\n" +
+            "code bedCode,d.name deptName ,w1.name nurseName,w2.name doctorName from HOS_patient p \n" +
+            "left join HOS_worker w1 on p.nurse_id=w1.id\n" +
+            "left join HOS_worker w2 on p.doctor_id=w2.id\n" +
+            "left join HOS_dept d on p.dept_id=d.id\n" +
+            "left join HOS_bed b on p.bed_id=b.id where 1=1 " +
+            "<if test='name!=null and name != \"\"'>and p.name like '%${name}%'</if>" +
+            "<if test='no!=null and no != \"\"'>and p.no like '%${no}%'</if>" +
+            "<if test='cardId!=null and cardId != \"\"'>and p.card_id like '%${cardId}%'</if>" +
+            "<if test='gender!=null and gender != \"\"'>and p.gender = #{gender}</if>" +
+            "<if test='status==null and status == \"\"'>and p.status  = #{1,2,3}</if>" +
+            "<if test='status==1 '>and p.status in (1,2)</if>" +
+            "<if test='status==2 '>and p.status in (3)</if>" +
+            "<if test='deptId!=null and deptId != \"\"'>and p.dept_id = #{deptId}</if>" +
+            "</script>")
+    List<Patient> findPatientsByChangeDept(Patient patient);
 }

@@ -38,4 +38,10 @@ public interface HospitalizationBillMapper {
             " set hb.pay_days = #{days}\n" +
             " where hb.patient_id = #{id}")
     void updateDays (@Param("days") int days,@Param("id") int id);
+
+    @Update(" update \n" +
+            " HOS_patient p , HOS_hospitalization_bill hb\n" +
+            " set hb.spare1 = #{newTime}\n" +
+            " where hb.patient_id = p.id and p.id = #{id}")
+    void updateDate (@Param("newTime")String newTime, @Param("id")Integer id);
 }

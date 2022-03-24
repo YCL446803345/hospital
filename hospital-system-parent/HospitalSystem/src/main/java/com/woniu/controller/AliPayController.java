@@ -6,7 +6,9 @@ import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.woniu.entity.Patient;
+import com.woniu.entity.PaymentRecord;
 import com.woniu.mapper.PatientMapper;
+import com.woniu.mapper.PaymentRecordMapper;
 import com.woniu.service.PatientService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.security.SecureRandom;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Controller
 @CrossOrigin
@@ -42,6 +41,8 @@ public class AliPayController {
     private Integer pId;
     @Autowired
     private PatientService patientService;
+    @Autowired
+    private PaymentRecordMapper paymentRecordMapper;
 
     @GetMapping("/gotoPay")
     public void alipay(HttpServletRequest httpServletRequest ,HttpServletResponse httpResponse,String newMoney,Integer patientId) throws IOException {
@@ -112,6 +113,14 @@ public class AliPayController {
             //支付成功，加钱
             Float o = Float.parseFloat(total_amount);
             patientService.updateBalance(o,pId);
+
+            PaymentRecord paymentRecord = new PaymentRecord();
+            paymentRecord.setPatientId(pId);
+            paymentRecord.setType("6");
+            paymentRecord.setUpdatemoney(o);
+            paymentRecord.setTime(new Date());
+            paymentRecordMapper.insert(paymentRecord);
+
            response.sendRedirect("http://localhost:9090/#/pay/cost");
         }else{
             response.sendRedirect("http://localhost:9090/#/pay/cost");

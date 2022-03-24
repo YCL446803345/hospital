@@ -30,7 +30,10 @@ import HumanAffairs from '../components/home/hrHome/HumanAffairs ' // 职工信�
 
 //收费组件
 import costInfo from '../components/home/payHome/costInfo.vue' // 费用信息列表
-
+import queryCost from '../components/home/payHome/queryCost.vue' //查询统计
+import leaveHospital from '../components/home/payHome/leave.vue' //出院结算
+import dataAnalysis from '../components/home/payHome/dataAnalysis.vue' //数据分析
+import leaveCost from '../components/home/payHome/leaveCost.vue'
 
 //配置路由规则
 var router = new VueRouter({
@@ -52,7 +55,11 @@ var router = new VueRouter({
 	            {path:"/nurse/patientManager",component:patientChangeDoctorOrBed},
 	            {path:"/nurse/waitPatientManager",component:patientWithNotBed},
 	            {path:"/nurse/bed",component:bedManager},
-                {path:"/pay/cost",component:costInfo}
+                {path:"/pay/cost",component:costInfo},
+                {path:"/pay/queryCost",component:queryCost},
+                {path:"/pay/leaveHospital",component:leaveHospital},
+                {path:"/pay/dataAnalysis",component:dataAnalysis},
+                {path:"/pay/leaveCost",component:leaveCost}
             ]
         }
 

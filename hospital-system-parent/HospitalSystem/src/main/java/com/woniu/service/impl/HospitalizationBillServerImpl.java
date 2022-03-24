@@ -33,18 +33,20 @@ public class HospitalizationBillServerImpl implements HospitalizationBillServer 
     private final MedicalAdviceBillMapper medicalAdviceBillMapper;
 //    //退药
 //    private final OutDrugRecordMapper outDrugRecordMapper;
+
+    private final PaymentRecordMapper paymentRecordMapper;
     //处方
     private final DrugMapper drugMapper;
     //医嘱
     private final MedicalAdviceMapper medicalAdviceMapper;
 
-    public HospitalizationBillServerImpl (HospitalizationBillMapper hospitalizationBillMapper, PatientMapper patientMapper, DrugOutBillMapper drugOutBillMapper, PrescriptionBillMapper prescriptionBillMapper, MedicalAdviceBillMapper medicalAdviceBillMapper, OutDrugRecordMapper outDrugRecordMapper, DrugMapper drugMapper, MedicalAdviceMapper medicalAdviceMapper) {
+    public HospitalizationBillServerImpl (HospitalizationBillMapper hospitalizationBillMapper, PatientMapper patientMapper, DrugOutBillMapper drugOutBillMapper, PrescriptionBillMapper prescriptionBillMapper, MedicalAdviceBillMapper medicalAdviceBillMapper, PaymentRecordMapper paymentRecordMapper, DrugMapper drugMapper, MedicalAdviceMapper medicalAdviceMapper) {
         this.hospitalizationBillMapper = hospitalizationBillMapper;
         this.patientMapper = patientMapper;
         this.drugOutBillMapper = drugOutBillMapper;
         this.prescriptionBillMapper = prescriptionBillMapper;
         this.medicalAdviceBillMapper = medicalAdviceBillMapper;
-//        this.outDrugRecordMapper = outDrugRecordMapper;
+        this.paymentRecordMapper = paymentRecordMapper;
         this.drugMapper = drugMapper;
         this.medicalAdviceMapper = medicalAdviceMapper;
     }
@@ -66,6 +68,7 @@ public class HospitalizationBillServerImpl implements HospitalizationBillServer 
         patient.setBalance(money);
 
         patientMapper.updateByPrimaryKeySelective(patient);
+
         hospitalizationBillMapper.insert(hospitalizationBill);
     }
 
@@ -74,7 +77,7 @@ public class HospitalizationBillServerImpl implements HospitalizationBillServer 
      * @param id 要提前缴费的病人
      */
     @Override
-    public Cost updateHospitalizationBill (Integer id) {
+    public Float updateHospitalizationBill (Integer id) {
         Cost query = query(id);
         Float outTotal = query.getDrugOut();
         Float prescriptionTotal = query.getPrescription();
@@ -82,28 +85,77 @@ public class HospitalizationBillServerImpl implements HospitalizationBillServer 
         Float medicalAdviceTotal = query.getMedicalAdvice();
         Float balance = query.getBalance();
         balance = balance - outTotal - prescriptionTotal - timeTotal - medicalAdviceTotal;
-        //如果病人缴费,则费用相加
-//        balance+=money;
+        if(balance < 0){
+            return balance;
+        }
         Patient newPatient = new Patient();
         newPatient.setId(id);
-//        newPatient.setBalance(balance);
+        newPatient.setBalance(balance);
+//        newPatient.setBalance();
         query.setPatient(newPatient);
+        //修改病人余额
         patientMapper.updateByPrimaryKeySelective(newPatient);
-        //缴费后将处方表中的状态修改为已缴费状态
-        medicalAdviceBillMapper.updateStatus(id);
-        //缴费后将医嘱表中的状态修改为已缴费状态
-        prescriptionBillMapper.updateStatus(id);
-        //缴费后将退药表中的状态修改为已缴费状态
-        drugOutBillMapper.updateStatus(id);
-        //缴费后将住院天数修改为已缴费天数
-        hospitalizationBillMapper.updateDays((int) (timeTotal/DAILYFEE),id);
-        //缴费后修改处方缴费时间
-        prescriptionBillMapper.updateDate(TimeUtil.getNowTime(new Date()),id);
-        //缴费后修改医嘱缴费时间
-        medicalAdviceBillMapper.updateDate(TimeUtil.getNowTime(new Date()),id);
-        //缴费后修改退药时间为当前时间
-        drugOutBillMapper.updateDate(TimeUtil.getNowTime(new Date()),id);
-        return query;
+
+        if(outTotal!=0){
+            //缴费后将退药表中的状态修改为已缴费状态
+            drugOutBillMapper.updateStatus(id);
+            //缴费后修改退药时间为当前时间
+            drugOutBillMapper.updateDate(TimeUtil.getNowTime(new Date()),id);
+
+            //向缴费记录表中添加一条缴费数据
+            PaymentRecord paymentRecord = new PaymentRecord();
+            paymentRecord.setPatientId(id);
+            paymentRecord.setType("4");
+            paymentRecord.setUpdatemoney(query.getDrugOut());
+            paymentRecord.setTime(new Date());
+            paymentRecordMapper.insert(paymentRecord);
+        }
+
+       if(prescriptionTotal!=0){
+           //缴费后将处方表中的状态修改为已缴费状态
+           medicalAdviceBillMapper.updateStatus(id);
+           //缴费后修改处方缴费时间
+           prescriptionBillMapper.updateDate(TimeUtil.getNowTime(new Date()),id);
+
+           //向缴费记录表中添加一条缴费数据
+           PaymentRecord paymentRecord = new PaymentRecord();
+           paymentRecord.setPatientId(id);
+           paymentRecord.setType("2");
+           paymentRecord.setUpdatemoney(query.getPrescription());
+           paymentRecord.setTime(new Date());
+           paymentRecordMapper.insert(paymentRecord);
+       }
+
+        if(medicalAdviceTotal!=0){
+            //缴费后将医嘱表中的状态修改为已缴费状态
+            prescriptionBillMapper.updateStatus(id);
+            //缴费后修改医嘱缴费时间
+            medicalAdviceBillMapper.updateDate(TimeUtil.getNowTime(new Date()),id);
+
+            //向缴费记录表中添加一条缴费数据
+            PaymentRecord paymentRecord = new PaymentRecord();
+            paymentRecord.setPatientId(id);
+            paymentRecord.setType("3");
+            paymentRecord.setUpdatemoney(query.getMedicalAdvice());
+            paymentRecord.setTime(new Date());
+            paymentRecordMapper.insert(paymentRecord);
+        }
+        int i = (int) (timeTotal/DAILYFEE);
+        if(i!=0){
+            //缴费后将住院天数修改为已缴费天数
+            hospitalizationBillMapper.updateDays(i,id);
+            //缴费后修改缴费时间
+            hospitalizationBillMapper.updateDate(TimeUtil.getNowTime(new Date()),id);
+
+            //向缴费记录表中添加一条缴费数据
+            PaymentRecord paymentRecord = new PaymentRecord();
+            paymentRecord.setPatientId(id);
+            paymentRecord.setType("5");
+            paymentRecord.setUpdatemoney(query.getDays()*DAILYFEE);
+            paymentRecord.setTime(new Date());
+            paymentRecordMapper.insert(paymentRecord);
+        }
+        return balance;
     }
 
 
@@ -141,7 +193,7 @@ public class HospitalizationBillServerImpl implements HospitalizationBillServer 
         //查询未出院的病人
         PatientExample patientExample = new PatientExample();
         PatientExample.Criteria criteria = patientExample.createCriteria();
-        criteria.andStatusNotLike("9");//规定9是已出院的
+        criteria.andStatusNotLike("3");//规定3是已出院的
         if(!StringUtils.isEmpty(name)){
             criteria.andNameLike("%"+name+"%");//模糊查询
         }
@@ -157,6 +209,7 @@ public class HospitalizationBillServerImpl implements HospitalizationBillServer 
         }
         PageInfo<Cost> pageInfo = new PageInfo<Cost>(costList);
         int total = patientMapper.selectTotal(name,no);
+//        pageInfo.setPageSize(5);
         pageInfo.setTotal(total);
         return pageInfo;
     }
@@ -168,7 +221,7 @@ public class HospitalizationBillServerImpl implements HospitalizationBillServer 
     public PageInfo<Cost> queryAllOut (String name, String no, Integer pageNum, Integer pageSize) {
         PatientExample patientExample = new PatientExample();
         PatientExample.Criteria criteria = patientExample.createCriteria();
-        criteria.andStatusEqualTo("9");//规定9是已出院的
+        criteria.andStatusEqualTo("3");//规定3是已出院的
         if(!StringUtils.isEmpty(name)){
             criteria.andNameLike("%"+name+"%");//模糊查询
         }
@@ -195,7 +248,7 @@ public class HospitalizationBillServerImpl implements HospitalizationBillServer 
     public PageInfo<Cost> leaveHospital (String name, String no, Integer pageNum, Integer pageSize) {
         PatientExample patientExample = new PatientExample();
         PatientExample.Criteria criteria = patientExample.createCriteria();
-        criteria.andStatusEqualTo("8");//规定8是审核出院的
+        criteria.andStatusEqualTo("2");//规定2是审核出院的
         if(!StringUtils.isEmpty(name)){
             criteria.andNameLike("%"+name+"%");//模糊查询
         }
@@ -223,6 +276,14 @@ public class HospitalizationBillServerImpl implements HospitalizationBillServer 
         Patient patient = patientMapper.selectByPrimaryKey(id);
         patient.setBalance(patient.getBalance() + money);
         patientMapper.updateByPrimaryKeySelective(patient);
+
+        //向缴费记录表中添加一条缴费数据
+        PaymentRecord paymentRecord = new PaymentRecord();
+        paymentRecord.setPatientId(id);
+        paymentRecord.setType("1");
+        paymentRecord.setUpdatemoney(money);
+        paymentRecord.setTime(new Date());
+        paymentRecordMapper.insert(paymentRecord);
     }
 
 
@@ -232,8 +293,6 @@ public class HospitalizationBillServerImpl implements HospitalizationBillServer 
      */
     public Cost getPatientBill(Patient patient){
         Integer id = patient.getId();
-        //获取病人余额
-        Float balance = patient.getBalance();
         //获取退药的费用
         List<Float> floats1 = drugOutBillMapper.selectBillMoneyByPatientId(id);
         float outTotal = 0.0f;
@@ -246,8 +305,27 @@ public class HospitalizationBillServerImpl implements HospitalizationBillServer 
         for (Float aFloat : floats2) {
             prescriptionTotal+=aFloat;
         }
-        //获取住院费用
-        int i = timeOperation(patient.getAppointmenttTime(), new Date());
+        //获取住院费用,此时应该是用住院申请表中的住院时间开始计算为住院时间
+        HospitalizationBillExample hospitalizationBillExample = new HospitalizationBillExample();
+        HospitalizationBillExample.Criteria criteria = hospitalizationBillExample.createCriteria();
+        criteria.andPatientIdEqualTo(patient.getId());
+        List<HospitalizationBill> hospitalizationBills = hospitalizationBillMapper.selectByExample(hospitalizationBillExample);
+        HospitalizationBill hospitalizationBill = null;
+        int i = 0;
+        if(hospitalizationBills.size()!=0){
+             hospitalizationBill = hospitalizationBills.get(0);
+            //出院也可以用这个方法
+            if(hospitalizationBill.getStartTime()!=null){
+                if(hospitalizationBill.getEndTime()!=null){
+                    i = timeOperation(hospitalizationBill.getStartTime(), hospitalizationBill.getEndTime());
+                }else{
+                    i = timeOperation(hospitalizationBill.getStartTime(), new Date());
+                }
+                if(hospitalizationBill.getPayDays()!=null){
+                    i = i - hospitalizationBill.getPayDays();
+                }
+            }
+        }
         float timeTotal = i * DAILYFEE;
         //获取医嘱的费用
         List<Float> floats3 = medicalAdviceBillMapper.selectMoneyByPatientId(id);
@@ -289,5 +367,13 @@ public class HospitalizationBillServerImpl implements HospitalizationBillServer 
         return (int) Math.ceil(time1 / 1000 / 60 / 60 / 24);
     }
 
+    @Override
+    public List<PaymentRecord> queryPayment(Integer id){
+        PaymentRecordExample paymentRecordExample = new PaymentRecordExample();
+        PaymentRecordExample.Criteria criteria = paymentRecordExample.createCriteria();
+        criteria.andPatientIdEqualTo(id);
+        List<PaymentRecord> paymentRecords = paymentRecordMapper.selectByExample(paymentRecordExample);
+        return paymentRecords;
+    }
 }
 
