@@ -108,7 +108,7 @@
         <template slot-scope="scope">
           <el-button size="mini" type="success" @click="gotoFindPatientInformation(scope.row.id)">患者详情</el-button>  
           <el-button size="mini" type="danger" @click="gotoAddConsultationApplication(scope.row.id)">突发情况</el-button>
-          <el-button size="mini" type="success" @click="gotoAddPrescription(scope.row.id)">下达处方</el-button>
+          <el-button size="mini" type="success" @click="gotoAddPrescription(scope.row.id)">开处方</el-button>
           <el-button size="mini" type="success" @click="gotoAddLeaveHospital(
               scope.row.id,
               scope.row.name,
