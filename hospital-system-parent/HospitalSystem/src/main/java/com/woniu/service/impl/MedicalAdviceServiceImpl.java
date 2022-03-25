@@ -66,5 +66,35 @@ public class MedicalAdviceServiceImpl implements MedicalAdviceService {
         medicalAdviceMapper.stopMedicalAdviceById(id);
     }
 
+    /**
+     * 校对医嘱
+     * @param id
+     */
+    public void checkMedicalAdvice(Integer id) {
+        medicalAdviceMapper.checkMedicalAdvice(id);
+    }
 
+    /**
+     * 停止医嘱
+     * @param id
+     */
+    public void stopMedicalAdvice(Integer id) {
+        medicalAdviceMapper.stopMedicalAdvice(id);
+    }
+
+    /**
+     * 执行医嘱
+     * @param id
+     */
+    public void doMedicalAdvice(Integer id) {
+        medicalAdviceMapper.doMedicalAdvice(id);
+    }
+
+    @Override
+    public PageInfo<MedicalAdvice> getMedicalAdvices(MedicalAdvice medicalAdvice, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<MedicalAdvice> medicalAdviceList = medicalAdviceMapper.getMedicalAdvices(medicalAdvice);
+        PageInfo<MedicalAdvice> medicalAdvicePageInfo = new PageInfo<>(medicalAdviceList);
+        return medicalAdvicePageInfo;
+    }
 }

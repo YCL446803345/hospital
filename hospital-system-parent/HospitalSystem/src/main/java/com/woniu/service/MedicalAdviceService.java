@@ -25,4 +25,12 @@ public interface MedicalAdviceService {
     void updateMedicalAdviceProject(MedicalAdvice medicalAdvice);
     //停止医嘱
     void gotoStopMedicalAdviceById(Integer id);
+
+    void doMedicalAdvice(Integer id);
+
+    void stopMedicalAdvice(Integer id);
+
+    void checkMedicalAdvice(Integer id);
+
+    PageInfo<MedicalAdvice> getMedicalAdvices(MedicalAdvice medicalAdvice, Integer pageNum, Integer pageSize);
 }

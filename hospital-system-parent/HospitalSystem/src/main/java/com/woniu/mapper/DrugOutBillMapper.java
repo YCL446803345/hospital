@@ -1,8 +1,11 @@
 package com.woniu.mapper;
 
+import com.woniu.entity.Drug;
 import com.woniu.entity.DrugOutBill;
 import com.woniu.entity.DrugOutBillExample;
 import java.util.List;
+
+import com.woniu.entity.Patient;
 import org.apache.ibatis.annotations.Param;
 
 import org.apache.ibatis.annotations.Select;
@@ -61,4 +64,14 @@ public interface DrugOutBillMapper {
             " from HOS_patient p,HOS_drug_out do,HOS_drugout_bill dob\n" +
             " where p.id = do.patient_id and do.id = dob.drugoutapply_id and  p.`status` = 3")
     List<DrugOutBill> selectOutPatientAll ( );
+
+    @Select("select d.name name,d.drug_type drugType,d.make_price makePrice,d.sale_price salePrice,\n" +
+            "d.specifications specifications,o.create_time createTime,od.num num \n" +
+            "from HOS_drug_out o\n" +
+            "left join HOS_drugout_bill b on b.drugoutapply_id=o.id\n" +
+            "left join HOS_drug_out_drug od on od.drug_out_id=o.id\n" +
+            "left join HOS_drug d on od.drug_id=d.id\n" +
+            "where o.patient_id=#{id}")
+    List<Drug> getDrugOutBill(Patient patient);
+
 }

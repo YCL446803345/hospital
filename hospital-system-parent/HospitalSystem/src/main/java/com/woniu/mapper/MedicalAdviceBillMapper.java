@@ -1,9 +1,9 @@
 package com.woniu.mapper;
 
-import com.woniu.entity.MedicalAdvice;
-import com.woniu.entity.MedicalAdviceBill;
-import com.woniu.entity.MedicalAdviceBillExample;
+import com.woniu.entity.*;
+
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -50,4 +50,10 @@ public interface MedicalAdviceBillMapper {
             " from HOS_patient p,HOS_medical_advice ma,HOS_medical_advice_bill mab\n" +
             " where p.id = ma.patient_id and ma.id = mab.medical_advice_id and  p.`status` = 3")
     List<MedicalAdviceBill> selectOutPatientAll ( );
+
+    @Select("select a.create_time createTime,p.name name,p.price price from HOS_medical_advice a\n" +
+            "left join HOS_medical_advice_bill b on b.medical_advice_id=a.id\n" +
+            "left join HOS_project p on a.project_id=p.id\n" +
+            "where a.patient_id=#{id}")
+    List<Project> getMedicalAdviceBill(Patient patient);
 }

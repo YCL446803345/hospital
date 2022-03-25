@@ -1,5 +1,11 @@
 package com.woniu.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.xml.crypto.Data;
+import java.util.Date;
+
 public class Project {
     private Integer id;
 
@@ -14,6 +20,9 @@ public class Project {
     private String spare2;
 
     private String spare3;
+    @DateTimeFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
+    private Date createTime;
 
     public Integer getId() {
         return id;

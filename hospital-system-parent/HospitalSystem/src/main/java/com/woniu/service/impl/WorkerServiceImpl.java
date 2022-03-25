@@ -79,6 +79,13 @@ public class WorkerServiceImpl implements WorkerService {
 
     }
 
-
+    @Override
+    public Worker getWorker(String account) {
+        WorkerExample workerExample = new WorkerExample();
+        WorkerExample.Criteria criteria = workerExample.createCriteria();
+        criteria.andAccountEqualTo(account);
+        List<Worker> workers = workerMapper.selectByExample(workerExample);
+        return workers.get(0);
+    }
 
 }

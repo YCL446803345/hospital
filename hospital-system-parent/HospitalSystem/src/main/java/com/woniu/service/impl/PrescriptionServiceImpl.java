@@ -34,7 +34,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
         List<Prescription> prescriptionList2= prescriptionMapper.getPreDrugByMany(doctorName,status,startTime,endTime);
 
-        //相同处方排除法
+        //相同处方排除法,分页数据会有误,待修改
         for (int i = 0; i < prescriptionList2.size(); i++) {
             for (int j = 0; j < prescriptionList2.size(); j++) {
                 if(i != j && prescriptionList2.get(i).getId()== prescriptionList2.get(j).getId()) {

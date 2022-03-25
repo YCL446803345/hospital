@@ -26,4 +26,5 @@ public interface WorkerService {
     List<Worker> findNursesByDepeId(Integer deptId);
 
 
+    Worker getWorker(String account);
 }
