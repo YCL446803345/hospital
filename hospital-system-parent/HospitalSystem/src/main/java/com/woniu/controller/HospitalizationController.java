@@ -150,5 +150,52 @@ public class HospitalizationController {
         return new ResponseEntity<>(paymentRecords,HttpStatus.OK);
     }
 
+
+    /** 查询所有住院病人与出院病人的数量
+     * @return
+     */
+    @GetMapping("countHospitalization")
+    public ResponseEntity<List<Integer>> countHospitalization(){
+        List<Integer> list = hospitalizationBillServer.countHospitalization();
+        return new ResponseEntity<>(list,HttpStatus.OK);
+    }
+
+    @GetMapping("countInBill")
+    public ResponseEntity<List<Float>> countBill(){
+        List<Float> list = hospitalizationBillServer.countInBill();
+        return new ResponseEntity<>(list,HttpStatus.OK);
+    }
+
+    @GetMapping("countOutBill")
+    public ResponseEntity<List<Float>> countOutBill(){
+        List<Float> list = hospitalizationBillServer.countOutBill();
+        return new ResponseEntity<>(list,HttpStatus.OK);
+    }
+
+    /** 这个是单个病人的数据分析 根据病人id去查询病人相关数据
+     * @return 分别为住院费用,处方费用,医嘱费用,退药费用
+     */
+    @GetMapping("queryPersonalData")
+    public ResponseEntity<List<Float>> queryPersonalData(Integer id){
+        List<Float> list = hospitalizationBillServer.queryPersonalData(id);
+        return new ResponseEntity<>(list,HttpStatus.OK);
+    }
+
+    /** 这个是单个病人的数据分析,根据病人id去查询病人缴费数据折线图
+     * @param id
+     * @return
+     */
+    @GetMapping("queryPersonalTime")
+    public ResponseEntity<List<Float>> queryPersonalTime(Integer id){
+        List<Float> list = hospitalizationBillServer.queryPersonalTime(id);
+        return new ResponseEntity<>(list,HttpStatus.OK);
+    }
+
+    @GetMapping("getAllPayCount")
+    public ResponseEntity<List<Float>> getAllPayCount(String startTime,String endTime){
+        List<Float> list =  hospitalizationBillServer.getAllPayCount(startTime,endTime);
+        return new ResponseEntity<>(list,HttpStatus.OK);
+    }
+
 }
 

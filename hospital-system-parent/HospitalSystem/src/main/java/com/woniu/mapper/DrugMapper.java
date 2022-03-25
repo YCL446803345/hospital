@@ -33,9 +33,9 @@ public interface DrugMapper {
             " where pr.patient_id = p.id and pr.id = pd.prescription_id and pd.drug_id = d.id and p.id = #{id} and pb.status = 1")
     List<Drug> selectDrugByPatientId(Integer id);
 
-    @Select("  select d.name,d.sale_price,odr.drug_num outNum\n" +
-            " from HOS_out_drug_record odr, HOS_drug d,HOS_patient p,HOS_drug_out do,HOS_drugout_bill db\n" +
-            " where p.no = odr.patient_no and odr.drug_name = d.name and p.id = #{id} and p.id = do.patient_id and do.id = db.drugoutapply_id and db.status = 1")
+    @Select("  select d.name,d.sale_price,dod.num\n" +
+            " from HOS_drug d,HOS_patient p,HOS_drug_out do,HOS_drugout_bill db,HOS_drug_out_drug dod\n" +
+            " where  db.status = 1 and p.id = do.patient_id and do.id = dod.drug_out_id and dod.drug_id = d.id and db.drugoutapply_id = do.id and p.id = #{id}")
     List<Drug> selectByPatientId (int id);
 
     @Update("update HOS_drug d set d.stock=#{newStock} where d.name=#{drugName}")

@@ -447,7 +447,7 @@ export default {
             hospitalization:0,
             medicalAdvice:0,
             balance:0,
-        }
+        },
       }
    },
    created(){

@@ -1,5 +1,6 @@
 package com.woniu.mapper;
 
+import com.woniu.entity.MedicalAdvice;
 import com.woniu.entity.MedicalAdviceBill;
 import com.woniu.entity.MedicalAdviceBillExample;
 import java.util.List;
@@ -40,4 +41,13 @@ public interface MedicalAdviceBillMapper {
             "set mab.spare1 = #{newTime}\n" +
             "where p.id = ma.patient_id and ma.id = mab.medical_advice_id and p.id = #{id} ")
     void updateDate (@Param("newTime") String nowTime,@Param("id")Integer id);
+
+    @Select(" select mab.*\n" +
+            " from HOS_patient p,HOS_medical_advice ma,HOS_medical_advice_bill mab\n" +
+            " where p.id = ma.patient_id and ma.id = mab.medical_advice_id and  p.`status` in (1,2,4)")
+    List<MedicalAdviceBill> selectInPatientAll ();
+    @Select(" select mab.*\n" +
+            " from HOS_patient p,HOS_medical_advice ma,HOS_medical_advice_bill mab\n" +
+            " where p.id = ma.patient_id and ma.id = mab.medical_advice_id and  p.`status` = 3")
+    List<MedicalAdviceBill> selectOutPatientAll ( );
 }

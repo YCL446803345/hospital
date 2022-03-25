@@ -24,4 +24,16 @@ public interface HospitalizationBillServer {
     void updateMoney (Integer id, Float money);
 
     List<PaymentRecord> queryPayment(Integer id);
+
+    List<Integer> countHospitalization ( );
+
+    List<Float> countInBill ( );
+
+    List<Float> countOutBill ( );
+
+    List<Float> queryPersonalData (Integer id);
+
+    List<Float> queryPersonalTime (Integer id);
+
+    List<Float> getAllPayCount (String startTime, String endTime);
 }

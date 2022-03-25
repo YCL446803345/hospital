@@ -7,7 +7,6 @@ import com.woniu.entity.*;
 import com.woniu.mapper.*;
 import com.woniu.service.HospitalizationBillServer;
 import com.woniu.util.TimeUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -142,8 +141,9 @@ public class HospitalizationBillServerImpl implements HospitalizationBillServer 
         }
         int i = (int) (timeTotal/DAILYFEE);
         if(i!=0){
-            //缴费后将住院天数修改为已缴费天数
-            hospitalizationBillMapper.updateDays(i,id);
+            //缴费后将住院天数修改为已缴费天数  此时应该是将住院天数进行叠加
+            HospitalizationBill hospitalizationBill = hospitalizationBillMapper.selectByPrimaryKey(id);
+            hospitalizationBillMapper.updateDays(hospitalizationBill.getPayDays()+i,id);
             //缴费后修改缴费时间
             hospitalizationBillMapper.updateDate(TimeUtil.getNowTime(new Date()),id);
 
@@ -248,7 +248,7 @@ public class HospitalizationBillServerImpl implements HospitalizationBillServer 
     public PageInfo<Cost> leaveHospital (String name, String no, Integer pageNum, Integer pageSize) {
         PatientExample patientExample = new PatientExample();
         PatientExample.Criteria criteria = patientExample.createCriteria();
-        criteria.andStatusEqualTo("2");//规定2是审核出院的
+        criteria.andStatusEqualTo("4");//规定4是确认审核出院的
         if(!StringUtils.isEmpty(name)){
             criteria.andNameLike("%"+name+"%");//模糊查询
         }
@@ -374,6 +374,166 @@ public class HospitalizationBillServerImpl implements HospitalizationBillServer 
         criteria.andPatientIdEqualTo(id);
         List<PaymentRecord> paymentRecords = paymentRecordMapper.selectByExample(paymentRecordExample);
         return paymentRecords;
+    }
+
+    @Override
+    public List<Integer> countHospitalization ( ) {
+        List<Integer> list = new ArrayList<>();
+
+        PatientExample patientExample = new PatientExample();
+        PatientExample.Criteria criteria = patientExample.createCriteria();
+        criteria.andStatusNotLike("3"); // 不像3,也就是住院病人
+        List<Patient> patients = patientMapper.selectByExample(patientExample);
+        list.add(patients.size());
+
+        PatientExample patientExample1 = new PatientExample();
+        PatientExample.Criteria criteria1 = patientExample1.createCriteria();
+        criteria1.andStatusEqualTo("3"); // 像3,也就是出院病人
+        List<Patient> patients1 = patientMapper.selectByExample(patientExample1);
+        list.add(patients1.size());
+
+        return list;
+    }
+
+    @Override
+    public List<Float> countInBill () {
+        List<HospitalizationBill> hospitalizationBills = hospitalizationBillMapper.selectInPatientAll();
+        List<PrescriptionBill> prescriptionBills = prescriptionBillMapper.selectInPatientAll();
+        List<MedicalAdviceBill> medicalAdvicesBills = medicalAdviceBillMapper.selectInPatientAll();
+        List<DrugOutBill> drugBills = drugOutBillMapper.selectInPatientAll();
+        return getPatientFee(hospitalizationBills,prescriptionBills,medicalAdvicesBills,drugBills);
+    }
+
+    @Override
+    public List<Float> countOutBill ( ) {
+        List<HospitalizationBill> hospitalizationBills = hospitalizationBillMapper.selectOutPatientAll();
+        List<PrescriptionBill> prescriptionBills = prescriptionBillMapper.selectOutPatientAll();
+        List<MedicalAdviceBill> medicalAdvicesBills = medicalAdviceBillMapper.selectOutPatientAll();
+        List<DrugOutBill> drugBills = drugOutBillMapper.selectOutPatientAll();
+        return getPatientFee(hospitalizationBills,prescriptionBills,medicalAdvicesBills,drugBills);
+    }
+
+    @Override
+    public List<Float> queryPersonalData (Integer id) {
+        HospitalizationBillExample hospitalizationBillExample = new HospitalizationBillExample();
+        HospitalizationBillExample.Criteria criteria = hospitalizationBillExample.createCriteria();
+        criteria.andPatientIdEqualTo(id);
+        List<HospitalizationBill> hospitalizationBills = hospitalizationBillMapper.selectByExample(hospitalizationBillExample);
+        List<Float> list = new ArrayList<>();
+        //住院
+        float hospitalization = 0;
+        if(hospitalizationBills.size()!=0){
+            HospitalizationBill hospitalizationBill = hospitalizationBills.get(0);
+            int i = 0;
+            if(hospitalizationBill.getEndTime()==null){
+                i = timeOperation(hospitalizationBill.getStartTime(),new Date());
+            }else{
+                i = timeOperation(hospitalizationBill.getStartTime(),hospitalizationBill.getEndTime());
+            }
+            hospitalization += i * DAILYFEE;
+        }
+        list.add(hospitalization);
+        //处方
+        float prescriptionFee = 0;
+        List<Float> floats = prescriptionBillMapper.selectMoneyByPatientId(id);
+        for (Float aFloat : floats) {
+            prescriptionFee += aFloat;
+        }
+        list.add(prescriptionFee);
+        //医嘱
+        float orderFee = 0;
+        List<Float> floats1 = medicalAdviceBillMapper.selectMoneyByPatientId(id);
+        for (Float aFloat : floats1) {
+            orderFee += aFloat;
+        }
+        list.add(orderFee);
+        //退药
+        float outFee = 0;
+        List<Float> floats2 = drugOutBillMapper.selectBillMoneyByPatientId(id);
+        for (Float aFloat : floats2) {
+            outFee += aFloat;
+        }
+        list.add(outFee);
+        return list;
+    }
+
+    @Override
+    public List<Float> queryPersonalTime (Integer id) {
+        return null;
+    }
+
+    @Override
+    public List<Float> getAllPayCount (String startTime, String endTime) {
+        HospitalizationBillExample hospitalizationBillExample = new HospitalizationBillExample();
+        HospitalizationBillExample.Criteria criteria = hospitalizationBillExample.createCriteria();
+
+        PrescriptionBillExample prescriptionBillExample = new PrescriptionBillExample();
+        PrescriptionBillExample.Criteria criteria1 = prescriptionBillExample.createCriteria();
+
+        MedicalAdviceBillExample medicalAdviceBillExample = new MedicalAdviceBillExample();
+        MedicalAdviceBillExample.Criteria criteria2 = medicalAdviceBillExample.createCriteria();
+
+        DrugOutBillExample drugOutBillExample = new DrugOutBillExample();
+        DrugOutBillExample.Criteria criteria3 = drugOutBillExample.createCriteria();
+
+        if(!StringUtils.isEmpty(startTime)){
+            criteria.andSpare1GreaterThanOrEqualTo(startTime);
+            criteria1.andSpare1GreaterThanOrEqualTo(startTime);
+            criteria2.andSpare1GreaterThanOrEqualTo(startTime);
+            criteria3.andSpare1GreaterThanOrEqualTo(startTime);
+        }
+        if(!StringUtils.isEmpty(endTime)) {
+            criteria.andSpare1LessThanOrEqualTo(endTime);
+            criteria1.andSpare1LessThanOrEqualTo(endTime);
+            criteria2.andSpare1LessThanOrEqualTo(endTime);
+            criteria3.andSpare1LessThanOrEqualTo(endTime);
+        }
+        List<HospitalizationBill> hospitalizationBills = hospitalizationBillMapper.selectByExample(hospitalizationBillExample);
+        List<PrescriptionBill> prescriptionBills = prescriptionBillMapper.selectByExample(prescriptionBillExample);
+        List<MedicalAdviceBill> medicalAdviceBills = medicalAdviceBillMapper.selectByExample(medicalAdviceBillExample);
+        List<DrugOutBill> drugOutBills = drugOutBillMapper.selectByExample(drugOutBillExample);
+        return getPatientFee(hospitalizationBills,prescriptionBills,medicalAdviceBills,drugOutBills);
+    }
+
+    public List<Float> getPatientFee(List<HospitalizationBill> hospitalizationBills,
+                                     List<PrescriptionBill> prescriptionBills,
+                                     List<MedicalAdviceBill> medicalAdvicesBills,
+                                     List<DrugOutBill> drugBills){
+        List<Float> list = new ArrayList<>();
+        //所有病人住院总费用
+        float hospitalization = 0;
+        for (HospitalizationBill hospitalizationBill : hospitalizationBills) {
+            int i = 0;
+            if(hospitalizationBill.getEndTime()==null){
+                i = timeOperation(hospitalizationBill.getStartTime(),new Date());
+            }else{
+                i = timeOperation(hospitalizationBill.getStartTime(),hospitalizationBill.getEndTime());
+            }
+            hospitalization += i * DAILYFEE;
+        }
+        list.add(hospitalization);
+
+        //所有病人的处方总费用
+        float prescriptionFee = 0;
+        for (PrescriptionBill prescriptionBill : prescriptionBills) {
+            prescriptionFee += prescriptionBill.getMoney();
+        }
+        list.add(prescriptionFee);
+
+        //所有病人的医嘱总费用
+        float orderFee = 0;
+        for (MedicalAdviceBill medicalAdviceBill : medicalAdvicesBills) {
+            orderFee += medicalAdviceBill.getMoney();
+        }
+        list.add(orderFee);
+
+        //所有病人的退药总费用
+        float outFee = 0;
+        for (DrugOutBill drugOutBill : drugBills) {
+            outFee += drugOutBill.getMoney();
+        }
+        list.add(outFee);
+        return list;
     }
 }
 
