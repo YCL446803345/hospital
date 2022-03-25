@@ -5,10 +5,12 @@ import com.woniu.entity.MedicalAdviceExample;
 import java.util.List;
 
 import com.woniu.entity.Project;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 
 import org.apache.ibatis.annotations.Select;
 
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -46,5 +48,13 @@ public interface MedicalAdviceMapper {
     List<MedicalAdvice> queryMedicalAdviceList(MedicalAdvice medicalAdvice);
     //医生站根据Id查询医嘱(关联查询详细)
     MedicalAdvice findMedicalAdviceById(Integer id);
-
+    //编辑医嘱修改项目
+    @Update("update HOS_medical_advice set project_id=#{projectId} where id=#{id}")
+    void updateMedicalAdviceProject(MedicalAdvice medicalAdvice);
+    //停止医嘱
+    @Update("update HOS_medical_advice set advice_status = 3 where id=#{id}")
+    void stopMedicalAdviceById(Integer id);
+    //下达医嘱
+    @Insert("insert into HOS_medical_advice(patient_id,doctor_id,advice_category,advice_description,create_time,advice_status) values(#{patientId},#{doctorId},#{adviceCategory},#{adviceDescription},#{createTime},#{adviceStatus})")
+    void addMedicalAdvice(MedicalAdvice medicalAdvice);
 }

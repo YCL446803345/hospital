@@ -71,8 +71,14 @@
                 prop="leaveStatus"
                 label="出院状态"
                 width="80">
-                <template slot-scope="scope">
+                <!-- <template slot-scope="scope">
                          {{scope.row.leaveStatus===1 ?'住院中':'已出院'}}
+                </template> -->
+                <template slot-scope="scope">
+                <span v-if="scope.row.leaveStatus=='1'">住院中</span>
+                <span v-if="scope.row.leaveStatus=='2'">待审核</span>
+                <span v-if="scope.row.leaveStatus=='3'">已出院</span>
+                <span v-if="scope.row.leaveStatus=='4'">已审核</span>
                 </template>
 
             </el-table-column>
@@ -87,14 +93,8 @@
             
             <el-table-column label="操作">
                <template slot-scope="scope">
-                  <el-button
-                  size="mini"
-                  type="primary"
-                  @click="gotoUpdateConsultationApplication(scope.row.id)">编辑</el-button>
-                  <el-button
-                  size="mini"
-                  type="danger"
-                  @click="deleteConsultationApplication( scope.row.id)">删除</el-button>
+                  <!-- <el-button size="mini" type="primary" @click="gotoUpdateConsultationApplication(scope.row.id)">编辑</el-button> -->
+                  <el-button size="mini" type="danger" @click="gotoCancelLeaveHospital( scope.row.id)">撤 销</el-button>
                </template>
             </el-table-column>
         </el-table>
@@ -115,6 +115,9 @@
 </template>
 
 <script>
+
+import qs from 'qs'
+
 export default {
    data() {
       return {
@@ -132,6 +135,34 @@ export default {
       this.headers={tokenStr:window.localStorage.getItem('tokenStr')};
    },
    methods:{
+       //撤销出院
+    gotoCancelLeaveHospital(id) {
+        console.log(id)
+        this.$axios.post("/api/doctor/gotoCancelLeaveHospitalById",qs.stringify({'id':id}),{
+            params: { id: id }
+        }).then(res => {  
+          console.log(res.data)
+            if(res.status===200){
+                this.$message({
+                    showClose: true,
+                    message: "操作成功",
+                    type: "success",
+                    duration: 600
+                });
+                this.search();
+            }else if(res.status===4001){
+                this.$message({
+                    showClose: true,
+                    message: "没有权限",
+                    type: "error",
+                    duration: 600
+                });
+                this.search();
+            }
+        }); 
+    },
+
+
       //查询出院列表
         search(){
             

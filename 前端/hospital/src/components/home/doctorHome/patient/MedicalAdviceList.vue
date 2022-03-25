@@ -26,10 +26,8 @@
                 </el-select>
             </el-col>
 
-           
             <el-col :span="1" style="margin-left:2px;">
                 <el-button type="success" @click="search">查询</el-button>
-               
             </el-col>
 
             <el-col :span="1" style="margin-left:2px;">
@@ -42,33 +40,11 @@
             :data 动态绑定 data中对象数组
             scope.row 表示对象数组的当前行对象
          -->
-        <el-table
-            :data="medicalAdviceList"
-            style="width: 100%">
-
-            <el-table-column
-                type="index"
-                :index='getIndex'
-                label="序号"
-                width="50">
-            </el-table-column>
-
-             <el-table-column
-                prop="patientName"
-                label="病人"
-                width="80">
-            </el-table-column>
-
-            <el-table-column
-                prop="doctorName"
-                label="主治医生"
-                width="80">
-            </el-table-column>
-
-            <el-table-column
-                prop="adviceCategory"
-                label="医嘱类型"
-                width="180">
+        <el-table :data="medicalAdviceList" style="width: 100%">
+            <el-table-column type="index" :index='getIndex' label="序号" width="50"></el-table-column>
+            <el-table-column prop="patientName" label="病人" width="80"></el-table-column>
+            <el-table-column prop="doctorName" label="主治医生" width="80"></el-table-column>
+            <el-table-column prop="adviceCategory" label="医嘱类型" width="180">
                 <template slot-scope="scope">
                     <span v-if="scope.row.adviceCategory=='1'">长期医嘱</span>
                     <span v-if="scope.row.adviceCategory=='2'">临时医嘱</span>
@@ -76,10 +52,7 @@
                 </template>
             </el-table-column>
 
-            <el-table-column
-                prop="projectId"
-                label="项目类型"
-                width="180">
+            <el-table-column prop="projectId" label="项目类型" width="180">
                 <template slot-scope="scope">
                     <span v-if="scope.row.projectId=='1'">内外科查体</span>
                     <span v-if="scope.row.projectId=='2'">眼科视力检查</span>
@@ -99,27 +72,18 @@
                 </template>
             </el-table-column>
 
-            <el-table-column
-                prop="adviceDescription"
-                label="医嘱描述"
-                width="180">
+            <el-table-column prop="adviceDescription" label="医嘱描述" width="180">
             </el-table-column>
 
-            <el-table-column
-                prop="adviceStatus"
-                label="医嘱状态"
-                width="180">
+            <el-table-column prop="adviceStatus" label="医嘱状态" width="180">
                 <template slot-scope="scope">
                 <span v-if="scope.row.adviceStatus=='1'">待执行</span>
                 <span v-if="scope.row.adviceStatus=='2'">已执行</span>
-                <span v-if="scope.row.adviceStatus=='3'">已撤销</span>
+                <span v-if="scope.row.adviceStatus=='3'">已停止</span>
                 </template>
             </el-table-column>
 
-            <el-table-column
-                prop="createTime"
-                label="创建时间"
-                width="180">
+            <el-table-column prop="createTime" label="创建时间" width="180">
             </el-table-column>
 
             <!-- <el-table-column
@@ -132,14 +96,19 @@
             
             <el-table-column label="操作">
                <template slot-scope="scope">
-                  <el-button
-                  size="mini"
-                  type="primary"
-                  @click="gotoUpdateConsultationApplication(scope.row.id)">编辑医嘱</el-button>
-                  <el-button
-                  size="mini"
-                  type="danger"
-                  @click="deleteConsultationApplication( scope.row.id)">停止医嘱</el-button>
+                  <el-button size="mini" type="primary"
+                  @click="gotoUpdateMedicalAdvice(
+                      scope.row.id,
+                      scope.row.patientName,
+                      scope.row.doctorName,
+                      scope.row.adviceCategory,
+                      scope.row.projectId,
+                      scope.row.adviceDescription,
+                      scope.row.adviceStatus,
+                      scope.row.createTime
+                      )">项目执行</el-button>
+                  <el-button size="mini" type="danger"
+                  @click="gotoStopMedicalAdvice( scope.row.id)">停止医嘱</el-button>
                </template>
             </el-table-column>
         </el-table>
@@ -156,10 +125,73 @@
            >
         </el-pagination>
 
+    <!-- 项目执行 -->
+    <el-dialog :visible.sync="updateMedicalAdviceForm">
+      <h1 align="center">项目执行</h1>
+      <br />
+      <template>
+        <el-descriptions class="margin-top" title="" :column="3" border>
+          <el-descriptions-item>
+            <template slot="label"><i class="el-icon-user"></i>病人</template>
+            {{ updateMedicalAdvice.patientName }}
+          </el-descriptions-item>
+
+          <el-descriptions-item>
+            <template slot="label"><i class="el-icon-tickets"></i>主治医生</template>
+            {{ updateMedicalAdvice.doctorName }}
+          </el-descriptions-item>
+
+          <el-descriptions-item>
+            <template slot="label"><i class="el-icon-tickets"></i>医嘱类型</template>
+            {{ updateMedicalAdvice.adviceCategory ==='1'?'长期医嘱': 
+               updateMedicalAdvice.adviceCategory ==='2'?'临时医嘱':'一般医嘱' }}
+          </el-descriptions-item>
+     
+          <el-descriptions-item>
+            <template slot="label"><i class="el-icon-tickets"></i>医嘱状态</template>
+            {{ updateMedicalAdvice.adviceStatus ==='1'?'待执行': 
+               updateMedicalAdvice.adviceStatus ==='2'?'已执行':'已撤销' }}
+          </el-descriptions-item>
+
+          <el-descriptions-item>
+            <template slot="label"><i class="el-icon-tickets"></i>创建时间</template>
+            {{ updateMedicalAdvice.createTime }}
+          </el-descriptions-item>
+
+          <el-descriptions-item>
+            <template slot="label"><i class="el-icon-tickets"></i>医嘱描述</template>
+            {{ updateMedicalAdvice.adviceDescription }}
+          </el-descriptions-item>
+        </el-descriptions>
+      </template>
+
+      <el-divider></el-divider>
+
+      <el-form :model="updateMedicalAdvice">
+
+        <el-form-item label="项目" :label-width="formLabelWidth" >
+            <el-select v-model="updateMedicalAdvice.projectId" placeholder="项目" >
+                <el-option v-for="project in projectList" :key="project.id" :label="project.name" :value="project.id"  ></el-option>
+            </el-select>
+        </el-form-item>
+
+      </el-form>
+
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="doUpdateMedicalAdvice">执 行</el-button>
+        <el-button @click="closeupdateMedicalAdviceForm">取 消</el-button>
+      </div>
+    </el-dialog>
+
+    
+
     </div>
 </template>
 
 <script>
+
+import qs from 'qs'
+
 export default {
    data() {
       return {
@@ -169,18 +201,124 @@ export default {
         total:100,
         pageNum:1,
         pageSize:5,
-        // updateTeacherForm:false,
-        headers:{}
+        headers:{},
+        updateMedicalAdviceForm:false,
+        updateMedicalAdvice:{
+            id:'',
+            patientName:'',
+            doctorName:'',
+            adviceCategory:'',
+            projectId:'',
+            adviceStatus:'',
+            createTime:'',
+            adviceDescription:''
+        },
+        projectList:[],
+        formLabelWidth: '120px',
+
       }
    },
    created(){
       this.search();
+      this.$axios.get("/api/doctor/findProjectList")
+            .then(res=>{
+               console.log(res.data);
+                this.projectList=res.data;
+            })
       this.headers={tokenStr:window.localStorage.getItem('tokenStr')};
    },
    methods:{
+
+
+
+
+    //停止会诊
+    gotoStopMedicalAdvice(id) {
+        console.log(id)
+        this.$axios.post("/api/doctor/gotoStopMedicalAdviceById",qs.stringify({'id':id}),{
+            params: { id: id }
+        }).then(res => {  
+          console.log(res.data)
+            if(res.status===200){
+                this.$message({
+                    showClose: true,
+                    message: "操作成功",
+                    type: "success",
+                    duration: 600
+                });
+                this.search();
+            }else if(res.status===4001){
+                this.$message({
+                    showClose: true,
+                    message: "没有权限",
+                    type: "error",
+                    duration: 600
+                });
+                this.search();
+            }
+        }); 
+    },
+
+        //关闭修改医嘱窗口
+       closeupdateMedicalAdviceForm(){
+            this.updateMedicalAdvice={
+                        id:'',
+                        patientName:'',
+                        doctorName:'',
+                        adviceCategory:'',
+                        projectId:'',
+                        adviceStatus:'',
+                        createTime:'',
+                        adviceDescription:''
+                    };
+            this.updateMedicalAdviceForm=false;
+       },
+       //执行医嘱项目
+       doUpdateMedicalAdvice(){
+           var medicalAdvice=this.updateMedicalAdvice;
+            this.$axios.post("/api/doctor/updateMedicalAdviceProject",medicalAdvice)
+            .then(res=>{
+                if(res.status==4001){
+                     this.$message({
+                        type: "error",
+                         message: "没有权限!",
+                          duration:2000
+                     });
+                }else{
+                     this.$message({
+                        type: "success",
+                         message: "修改成功!",
+                         duration:2000
+                     });
+                    this.closeupdateMedicalAdviceForm();
+                    this.search();
+                }
+            })
+       },
+       //准备执行医嘱
+       gotoUpdateMedicalAdvice(id,
+                      patientName,
+                      doctorName,
+                      adviceCategory,
+                      projectId,
+                      adviceDescription,
+                      adviceStatus,
+                      createTime){
+           this.updateMedicalAdvice={
+                id:id,
+                patientName:patientName,
+                doctorName:doctorName,
+                adviceCategory:adviceCategory,
+                projectId:projectId,
+                adviceDescription:adviceDescription,
+                adviceStatus:adviceStatus,
+                createTime:createTime
+           };
+           this.updateMedicalAdviceForm=true;
+       },
+
       //查询医嘱列表
         search(){
-            
             console.log("---")
             this.$axios.get("/api/doctor/getMedicalAdviceList",{params:{
             adviceCategory:this.adviceCategory,

@@ -4,7 +4,9 @@ import com.woniu.entity.Project;
 import com.woniu.entity.ProjectExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface ProjectMapper {
     long countByExample(ProjectExample example);
 

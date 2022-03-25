@@ -363,6 +363,6 @@
       <if test="patientSex!=null and patientSex != ''">and i.patient_sex = #{patientSex}</if>
       <if test="startDate != null and startDate != ''">and i.in_hosptial_time &gt;= #{startDate}</if>
       <if test="endDate != null and endDate != ''">and i.in_hosptial_time &lt;= #{endDate}</if>
-    </where> order by i.in_hosptial_time desc
+    </where> and status = 1 order by i.in_hosptial_time desc
   </select>
 </mapper>
