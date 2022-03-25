@@ -3,8 +3,7 @@
 <div class="login">
       <img :src="imgSrc" width="100%" height="100%" alt="" />
       <div class="loginPart">
-
-        <h2>用户登录</h2>
+        <h2>用户注册</h2>
         <el-form ref="loginForm" :model="user" :rules="rules">
           <el-form-item prop="telephone">
           <div class="inputElement" >
@@ -17,8 +16,7 @@
           </div>
           </el-form-item>
           <div align="center">
-          <el-button type="primary" icon="el-icon-loading" @click="doLogin('loginForm')" >登录</el-button>
-          <el-button type="primary" icon="el-icon-s-custom" @click="doRegister" >注册</el-button>
+          <el-button type="primary" icon="el-icon-s-custom" @click="doRegister('loginForm')" >注册</el-button>
           </div>
         </el-form>
       </div>
@@ -31,7 +29,7 @@ import qs from 'qs'
 export default {
    data() {
       return {
-            imgSrc:require("../../assets/css/image/用户前台.gif"),   //背景图片
+            imgSrc:require("../../assets/css/image/用户注册.jpg"),   //背景图片
             user: {
                 telephone: "",
                 password: ""
@@ -39,12 +37,12 @@ export default {
             rules:{ 
                 telephone:[
                         {required: true, message: '请输入手机号', trigger: 'blur'},
-                        { maxlength: 11, message: '长度在 11 个字符', trigger: 'blur' },
+                        { min: 11, max: 11, message: '长度为 11 个字符', trigger: 'blur' },
                         
                     ],
                 password:[
                         {required: true, message: '请输入密码', trigger: 'blur'},
-                        { min: 3, max: 12, message: '长度在 4 到 12 个字符', trigger: 'blur' }
+                        { min: 3, max: 3, message: '长度为3 个字符', trigger: 'blur' }
                 ]
             }, 
       }
@@ -53,12 +51,8 @@ export default {
 
    },
    methods:{    
-       doRegister(){
- this.$router.push('/gotoUserRegister')
-       },
 
-
-     doLogin(forName){
+     doRegister(forName){
 
         let data = {telephone:this.user.telephone,password:this.user.password}
      
@@ -68,50 +62,32 @@ export default {
             this.$refs[forName].validate((valid)=>{
               //表单验证通过
               if(valid){
-               
-                  //跨域后的url
-                  this.$axios.post("api/userLogin",reqUrl,{
-                      Headers:{"Content-Type":"application/x-www/form-urlencoded"}
-                  })
-                  .then(res=>{
-                      if(res.data.status == 200){
-                          //消息框
-                        
-                          this.$router.push('/')
-                        this.$message({
-                              showClose: true,
-                              message: '欢迎你，'+this.user.telephone,
-                              type: 'success',
-                              duration:1500
-                          });
-                          //获取响应过来的token，存入本地浏览器
-                          window.localStorage.setItem("tokenStr",res.data.data)
-                          //将当前用户名存入本地浏览器
-                          window.localStorage.setItem("telephone",this.user.telephone)
-                          //将当前用户id存入本地浏览器
-                          // window.localStorage.setItem("id",this.worker.id)
-                          //跳转
-                          this.$router.push('/gotoUserHome')
-                      }else{
-                          this.$router.push('/gotoUserLogin')
-                          this.$message({
-                                  showClose: true,
-                                  message: res.data.msg,
-                                  type: 'error',
-                                  duration:1500,
-                          })
-                      }
-                  }).catch(res =>{
-                      this.$router.push('/gotoUserLogin')
-                      this.$message({
-                          showClose: true,
-                          message: '异常',
-                          type: 'success',
-                          duration:1500
-                          });
-                          //跳转
-                  })
-              } else{
+                //发送axios请求
+        this.$axios.post("/api/user/add", this.user).then((res) => {
+          console.log(res.data);
+          if (res.data.status == 200) {
+            this.$message({
+              showClose: true,
+              message: "注册成功！即将跳转到登录页",
+              type: "success",
+              duration: 600,
+                duration:2000,
+                onClose:()=>{
+        //跳转页面或执行方法
+        this.$router.push('/gotoUserLogin')
+    }
+            });
+            
+          } else {
+            this.$message({
+              showClose: true,
+              message: "注册失败",
+              type: "error",
+              duration: 600,
+            });
+          }
+        });
+      }else{
                   //验证不通过
                   return false;
               }

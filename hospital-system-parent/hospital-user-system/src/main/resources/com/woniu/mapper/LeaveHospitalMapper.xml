@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniu.mapper.LeaveHospitalMapper">
+  <resultMap id="BaseResultMap" type="com.woniu.entity.LeaveHospital">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="doctor_id" jdbcType="INTEGER" property="doctorId" />
+    <result column="patient_id" jdbcType="INTEGER" property="patientId" />
+    <result column="leave_status" jdbcType="INTEGER" property="leaveStatus" />
+    <result column="leave_time" jdbcType="TIMESTAMP" property="leaveTime" />
+    <result column="leave_description" jdbcType="VARCHAR" property="leaveDescription" />
+    <result column="spare1" jdbcType="VARCHAR" property="spare1" />
+    <result column="spare2" jdbcType="VARCHAR" property="spare2" />
+    <result column="spare3" jdbcType="VARCHAR" property="spare3" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, doctor_id, patient_id, leave_status, leave_time, leave_description, spare1, spare2, 
+    spare3
+  </sql>
+  <select id="selectByExample" parameterType="com.woniu.entity.LeaveHospitalExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from HOS_leave_hospital
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from HOS_leave_hospital
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from HOS_leave_hospital
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.woniu.entity.LeaveHospitalExample">
+    delete from HOS_leave_hospital
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.woniu.entity.LeaveHospital">
+    insert into HOS_leave_hospital (id, doctor_id, patient_id, 
+      leave_status, leave_time, leave_description, 
+      spare1, spare2, spare3
+      )
+    values (#{id,jdbcType=INTEGER}, #{doctorId,jdbcType=INTEGER}, #{patientId,jdbcType=INTEGER}, 
+      #{leaveStatus,jdbcType=INTEGER}, #{leaveTime,jdbcType=TIMESTAMP}, #{leaveDescription,jdbcType=VARCHAR}, 
+      #{spare1,jdbcType=VARCHAR}, #{spare2,jdbcType=VARCHAR}, #{spare3,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.woniu.entity.LeaveHospital">
+    insert into HOS_leave_hospital
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="doctorId != null">
+        doctor_id,
+      </if>
+      <if test="patientId != null">
+        patient_id,
+      </if>
+      <if test="leaveStatus != null">
+        leave_status,
+      </if>
+      <if test="leaveTime != null">
+        leave_time,
+      </if>
+      <if test="leaveDescription != null">
+        leave_description,
+      </if>
+      <if test="spare1 != null">
+        spare1,
+      </if>
+      <if test="spare2 != null">
+        spare2,
+      </if>
+      <if test="spare3 != null">
+        spare3,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="doctorId != null">
+        #{doctorId,jdbcType=INTEGER},
+      </if>
+      <if test="patientId != null">
+        #{patientId,jdbcType=INTEGER},
+      </if>
+      <if test="leaveStatus != null">
+        #{leaveStatus,jdbcType=INTEGER},
+      </if>
+      <if test="leaveTime != null">
+        #{leaveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="leaveDescription != null">
+        #{leaveDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="spare1 != null">
+        #{spare1,jdbcType=VARCHAR},
+      </if>
+      <if test="spare2 != null">
+        #{spare2,jdbcType=VARCHAR},
+      </if>
+      <if test="spare3 != null">
+        #{spare3,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.woniu.entity.LeaveHospitalExample" resultType="java.lang.Long">
+    select count(*) from HOS_leave_hospital
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update HOS_leave_hospital
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.doctorId != null">
+        doctor_id = #{record.doctorId,jdbcType=INTEGER},
+      </if>
+      <if test="record.patientId != null">
+        patient_id = #{record.patientId,jdbcType=INTEGER},
+      </if>
+      <if test="record.leaveStatus != null">
+        leave_status = #{record.leaveStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.leaveTime != null">
+        leave_time = #{record.leaveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.leaveDescription != null">
+        leave_description = #{record.leaveDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="record.spare1 != null">
+        spare1 = #{record.spare1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.spare2 != null">
+        spare2 = #{record.spare2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.spare3 != null">
+        spare3 = #{record.spare3,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update HOS_leave_hospital
+    set id = #{record.id,jdbcType=INTEGER},
+      doctor_id = #{record.doctorId,jdbcType=INTEGER},
+      patient_id = #{record.patientId,jdbcType=INTEGER},
+      leave_status = #{record.leaveStatus,jdbcType=INTEGER},
+      leave_time = #{record.leaveTime,jdbcType=TIMESTAMP},
+      leave_description = #{record.leaveDescription,jdbcType=VARCHAR},
+      spare1 = #{record.spare1,jdbcType=VARCHAR},
+      spare2 = #{record.spare2,jdbcType=VARCHAR},
+      spare3 = #{record.spare3,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.woniu.entity.LeaveHospital">
+    update HOS_leave_hospital
+    <set>
+      <if test="doctorId != null">
+        doctor_id = #{doctorId,jdbcType=INTEGER},
+      </if>
+      <if test="patientId != null">
+        patient_id = #{patientId,jdbcType=INTEGER},
+      </if>
+      <if test="leaveStatus != null">
+        leave_status = #{leaveStatus,jdbcType=INTEGER},
+      </if>
+      <if test="leaveTime != null">
+        leave_time = #{leaveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="leaveDescription != null">
+        leave_description = #{leaveDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="spare1 != null">
+        spare1 = #{spare1,jdbcType=VARCHAR},
+      </if>
+      <if test="spare2 != null">
+        spare2 = #{spare2,jdbcType=VARCHAR},
+      </if>
+      <if test="spare3 != null">
+        spare3 = #{spare3,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.woniu.entity.LeaveHospital">
+    update HOS_leave_hospital
+    set doctor_id = #{doctorId,jdbcType=INTEGER},
+      patient_id = #{patientId,jdbcType=INTEGER},
+      leave_status = #{leaveStatus,jdbcType=INTEGER},
+      leave_time = #{leaveTime,jdbcType=TIMESTAMP},
+      leave_description = #{leaveDescription,jdbcType=VARCHAR},
+      spare1 = #{spare1,jdbcType=VARCHAR},
+      spare2 = #{spare2,jdbcType=VARCHAR},
+      spare3 = #{spare3,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <!--queryLeaveHospitalList-->
+  <!--医生站分页模糊查询预约住院申请列表-->
+  <select id="queryLeaveHospitalList" resultType="LeaveHospital">
+    select l.id,w.name doctorName,p.name patientName,l.leave_status,l.leave_time,l.leave_description
+    from HOS_leave_hospital l
+    inner join HOS_worker w on l.doctor_id = w.id
+    inner join HOS_patient p on l.patient_id = p.id
+    <where>
+      <if test="leaveStatus != null and leaveStatus !=''">l.leave_status = #{leaveStatus}</if>
+      <if test="startDate != null and startDate != ''">and l.leave_time &gt;= #{startDate}</if>
+      <if test="endDate != null and endDate != ''">and l.leave_time &lt;= #{endDate}</if>
+    </where> order by l.leave_time desc
+  </select>
+</mapper>

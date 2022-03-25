@@ -3,11 +3,11 @@
 <div class="login">
       <img :src="imgSrc" width="100%" height="100%" alt="" />
       <div class="loginPart">
-        <h2>用户登录</h2>
+        <h2>职工登录</h2>
         <el-form ref="loginForm" :model="worker" :rules="rules">
           <el-form-item prop="account">
           <div class="inputElement" >
-            <el-input v-model="worker.account" placeholder="请输入用户名/手机号" prop="account"></el-input>
+            <el-input v-model="worker.account" placeholder="请输入用户名" prop="account"></el-input>
           </div>
           </el-form-item>
           <el-form-item prop="password">
@@ -52,6 +52,7 @@ export default {
    methods:{    
      doLogin(forName){
         let data = {account:this.worker.account,password:this.worker.password}
+        alert(this.worker)
         let reqUrl = qs.stringify(data)
             this.$refs[forName].validate((valid)=>{
               //表单验证通过
