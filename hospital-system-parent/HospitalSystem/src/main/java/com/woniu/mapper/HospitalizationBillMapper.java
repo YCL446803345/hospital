@@ -34,7 +34,7 @@ public interface HospitalizationBillMapper {
     int updateByPrimaryKey(HospitalizationBill record);
 
     @Update(" update\n" +
-            " HOS_hospitalization_bill hb,HOS_patient p\n" +
+            " HOS_hospitalization_bill hb\n" +
             " set hb.pay_days = #{days}\n" +
             " where hb.patient_id = #{id}")
     void updateDays (@Param("days") int days,@Param("id") int id);

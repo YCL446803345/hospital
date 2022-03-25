@@ -142,8 +142,9 @@ public class HospitalizationBillServerImpl implements HospitalizationBillServer 
         }
         int i = (int) (timeTotal/DAILYFEE);
         if(i!=0){
-            //缴费后将住院天数修改为已缴费天数
-            hospitalizationBillMapper.updateDays(i,id);
+            //缴费后将住院天数修改为已缴费天数  此时应该是将住院天数进行叠加
+            HospitalizationBill hospitalizationBill = hospitalizationBillMapper.selectByPrimaryKey(id);
+            hospitalizationBillMapper.updateDays(hospitalizationBill.getPayDays()+i,id);
             //缴费后修改缴费时间
             hospitalizationBillMapper.updateDate(TimeUtil.getNowTime(new Date()),id);
 
