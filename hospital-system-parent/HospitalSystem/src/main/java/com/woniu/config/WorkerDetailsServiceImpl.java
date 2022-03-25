@@ -26,11 +26,12 @@ public class WorkerDetailsServiceImpl implements UserDetailsService {
     private WorkerMapper workerMapper;
     @Override
     public UserDetails loadUserByUsername(String account) throws UsernameNotFoundException {
-
+        
         WorkerExample workerExample = new WorkerExample();
         WorkerExample.Criteria criteria = workerExample.createCriteria();
         criteria.andAccountEqualTo(account);
         List<Worker> workers = workerMapper.selectByExample(workerExample);
+
         if (workers == null || workers.size() == 0){
             //没有该用户
             return null;

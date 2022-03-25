@@ -117,15 +117,6 @@ var router = new VueRouter({
 })
 
 //路由守卫
-<<<<<<< HEAD
-router.beforeEach((to,from,next) =>{
-    if (to.path === '/login' || to.path === '/' || to.path === '/entry' || to.path === '/gotoUserLogin' || to.path === '/gotoWorkesLogin') {
-        next();
-    }else{
-        const token = localStorage.getItem('tokenStr');
-        token ? next() : next('/gotoWorkesLogin')
-    }
-=======
 router.beforeEach((to, from, next) => {  
     if (to.path === '/login' || to.path === '/' || to.path === '/entry' || to.path === '/gotoUserLogin' || to.path === '/gotoWorkesLogin' || to.path === '/gotoUserRegister') {
 			next();   
@@ -133,7 +124,6 @@ router.beforeEach((to, from, next) => {  
         const token = localStorage.getItem('tokenStr');    
         token ? next() : next('/login')  
     }
->>>>>>> e995c9d932f217033bd5264e0dda7b9848b9d0a6
 })
 
 //导出路由
