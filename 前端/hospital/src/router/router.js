@@ -2,6 +2,12 @@ import Vue from 'vue' //导入node_modules中vue.js库文件
 import VueRouter from 'vue-router' //导入node_modules中vue-router.js库文件
 
 
+// 解决ElementUI导航栏中的vue-router在3.0版本以上重复点菜单报错问题
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location) {
+    return originalPush.call(this, location).catch(err => err)
+}
+
 //护士相关组件
 import patientInfo from '../components/home/nurseHome/patient/patientInfo'
 import patientChangeDoctorOrBed from '../components/home/nurseHome/patient/PatientChangeDoctorOrBed'
@@ -17,6 +23,8 @@ Vue.use(VueRouter)
 //医院入口登录相关组件
 import Entry from '../components/entry/Entry'
 import UserLogin from '../components/login/UserLogin' //用户登录组件
+import UserRegister from '../components/login/UserRegister' //职工登录组件
+import UserHome from '../components/home/userHome/UserHome' //用户主界面+导航栏
 import WorkersLogin from '../components/login/WorkersLogin' //职工登录组件
 import Home from '../components/home/Home' //职工主界面+导航栏
 
@@ -30,9 +38,9 @@ import LeaveHospitalList from '../components/home/doctorHome/patient/LeaveHospit
 //药房组件
 
 
-import DrugInfo from '../components/home/drugHome/DrugInfo'   //药品信息列表
-import DrugPre from '../components/home/drugHome/DrugPrescription'  //药方列表
-import SendDrug from '../components/home/drugHome/SendDrug'    //发药列表
+import DrugInfo from '../components/home/drugHome/DrugInfo' //药品信息列表
+import DrugPre from '../components/home/drugHome/DrugPrescription' //药方列表
+import SendDrug from '../components/home/drugHome/SendDrug' //发药列表
 
 
 
@@ -56,9 +64,12 @@ var router = new VueRouter({
         { path: "/", redirect: "/entry" },
         { path: "/entry", component: Entry },
         { path: "/gotoUserLogin", component: UserLogin },
+        { path: "/gotoUserRegister", component: UserRegister },
+        { path: "/gotoUserHome", component: UserHome },
         { path: "/gotoWorkesLogin", component: WorkersLogin },
         //菜单栏路由
         {
+
             path: "/gotoHome",
             component: Home,
 
@@ -77,14 +88,14 @@ var router = new VueRouter({
 
 
                 { path: "/drug/prescriptionList", component: DrugPre },
-                {path:"/drug/prescriptionList",component:DrugPre},
-                {path:"/drug/send/drug",component:SendDrug},
+                { path: "/drug/prescriptionList", component: DrugPre },
+                { path: "/drug/send/drug", component: SendDrug },
 
                 { path: "/pay/cost", component: costInfo },
-				{path:"/pay/queryCost",component:queryCost},
-                {path:"/pay/leaveHospital",component:leaveHospital},
-                {path:"/pay/dataAnalysis",component:dataAnalysis},
-                {path:"/pay/leaveCost",component:leaveCost},
+                { path: "/pay/queryCost", component: queryCost },
+                { path: "/pay/leaveHospital", component: leaveHospital },
+                { path: "/pay/dataAnalysis", component: dataAnalysis },
+                { path: "/pay/leaveCost", component: leaveCost },
 
                 { path: "/doctor/PatientList", component: PatientList },
                 { path: "/doctor/consultationApplicationList", component: ConsultationApplicationList },
@@ -106,6 +117,7 @@ var router = new VueRouter({
 })
 
 //路由守卫
+<<<<<<< HEAD
 router.beforeEach((to,from,next) =>{
     if (to.path === '/login' || to.path === '/' || to.path === '/entry' || to.path === '/gotoUserLogin' || to.path === '/gotoWorkesLogin') {
         next();
@@ -113,6 +125,15 @@ router.beforeEach((to,from,next) =>{
         const token = localStorage.getItem('tokenStr');
         token ? next() : next('/gotoWorkesLogin')
     }
+=======
+router.beforeEach((to, from, next) => {  
+    if (to.path === '/login' || to.path === '/' || to.path === '/entry' || to.path === '/gotoUserLogin' || to.path === '/gotoWorkesLogin' || to.path === '/gotoUserRegister') {
+			next();   
+		} else {    
+        const token = localStorage.getItem('tokenStr');    
+        token ? next() : next('/login')  
+    }
+>>>>>>> e995c9d932f217033bd5264e0dda7b9848b9d0a6
 })
 
 //导出路由
