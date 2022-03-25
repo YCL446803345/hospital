@@ -5,6 +5,7 @@ import com.woniu.entity.HospitalizationBillExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import org.springframework.stereotype.Repository;
@@ -44,4 +45,15 @@ public interface HospitalizationBillMapper {
             " set hb.spare1 = #{newTime}\n" +
             " where hb.patient_id = p.id and p.id = #{id}")
     void updateDate (@Param("newTime")String newTime, @Param("id")Integer id);
+
+    @Select(" select hb.*\n" +
+            " from HOS_hospitalization_bill hb,HOS_patient p\n" +
+            " where p.id = hb.patient_id and p.`status` in (1,2,4)")
+    List<HospitalizationBill> selectInPatientAll ();
+
+
+    @Select(" select hb.*\n" +
+            " from HOS_hospitalization_bill hb,HOS_patient p\n" +
+            " where p.id = hb.patient_id and p.`status` = 3")
+    List<HospitalizationBill> selectOutPatientAll ();
 }

@@ -51,4 +51,14 @@ public interface DrugOutBillMapper {
             " where dou.id = dob.drugoutapply_id and p.id=dou.patient_id and p.id=#{id}\n" +
             " ")
     void updateDate (@Param("newTime") String nowTime,@Param("id")Integer id);
+
+    @Select(" select dob.*\n" +
+            " from HOS_patient p,HOS_drug_out do,HOS_drugout_bill dob\n" +
+            " where p.id = do.patient_id and do.id = dob.drugoutapply_id and  p.`status` in (1,2,4)")
+    List<DrugOutBill> selectInPatientAll ( );
+
+    @Select(" select dob.*\n" +
+            " from HOS_patient p,HOS_drug_out do,HOS_drugout_bill dob\n" +
+            " where p.id = do.patient_id and do.id = dob.drugoutapply_id and  p.`status` = 3")
+    List<DrugOutBill> selectOutPatientAll ( );
 }

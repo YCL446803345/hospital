@@ -64,4 +64,14 @@ public interface PrescriptionBillMapper {
             "left join HOS_drug d on d.id=pg.drug_id\n" +
             "where pb.id is not null and p.patient_id=#{id}")
     List<Drug> getPrescriptionBill(Patient patient);
+
+    @Select("  select pb.*\n" +
+            " from HOS_prescription_bill pb,HOS_patient p,HOS_prescription pr\n" +
+            " where p.id = pr.patient_id and p.`status` in (1,2,4) and pr.id = pb.prescription_id")
+    List<PrescriptionBill> selectInPatientAll ();
+
+    @Select("  select pb.*\n" +
+            " from HOS_prescription_bill pb,HOS_patient p,HOS_prescription pr\n" +
+            " where p.id = pr.patient_id and p.`status` = 3 and pr.id = pb.prescription_id")
+    List<PrescriptionBill> selectOutPatientAll ( );
 }

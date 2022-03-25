@@ -46,7 +46,9 @@ import costInfo from '../components/home/payHome/costInfo.vue' // 费用信息�
 import queryCost from '../components/home/payHome/queryCost.vue' //查询统计
 import leaveHospital from '../components/home/payHome/leave.vue' //出院结算
 import dataAnalysis from '../components/home/payHome/dataAnalysis.vue' //数据分析
-import leaveCost from '../components/home/payHome/leaveCost.vue'
+import leaveCost from '../components/home/payHome/leaveCost.vue' //出院病人费用查询
+import pay from '../components/home/payHome/pay.vue' //入院缴费
+
 
 //配置路由规则
 var router = new VueRouter({
@@ -85,6 +87,7 @@ var router = new VueRouter({
                 {path:"/pay/leaveHospital",component:leaveHospital},
                 {path:"/pay/dataAnalysis",component:dataAnalysis},
                 {path:"/pay/leaveCost",component:leaveCost},
+                {path:"/pay/pay",component:pay},
 
                 { path: "/doctor/PatientList", component: PatientList },
                 { path: "/doctor/consultationApplicationList", component: ConsultationApplicationList },
@@ -107,12 +110,12 @@ var router = new VueRouter({
 
 //路由守卫
 router.beforeEach((to,from,next) =>{
-    if (to.path === '/login' || to.path === '/' || to.path === '/entry' || to.path === '/gotoUserLogin' || to.path === '/gotoWorkesLogin') {
-        next();
-    }else{
-        const token = localStorage.getItem('tokenStr');
-        token ? next() : next('/login')
-    }
+    if (to.path === '/login' || to.path === '/' || to.path === '/entry' || to.path === '/gotoUserLogin' || to.path === '/gotoWorkesLogin') {
+    next();
+    }else{
+        const token = localStorage.getItem('tokenStr');
+        token ? next() : next('/gotoWorkesLogin')
+   }
 })
 
 //导出路由
