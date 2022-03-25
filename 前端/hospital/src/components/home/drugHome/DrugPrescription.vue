@@ -14,7 +14,7 @@
             <el-table-column label="药方状态" width="120" prop="prescriptionStatus">
                 <template slot-scope="scope">
                     <el-tag v-if="scope.row.prescriptionStatus == 1" type="danger"
-                        disable-transitions>待配药</el-tag>
+                        disable-transitions>待发药</el-tag>
                 </template>
             </el-table-column>
             <el-table-column label="操作" width="120">
@@ -44,6 +44,17 @@
                     <el-button type="primary" @click="sendDrug">发药</el-button>
                 </div>
             </el-dialog>
+
+        <!-- 药品库存不足模特框 -->
+            <el-dialog title="库存不足,请采购" :visible.sync="stockTableVisible">
+                <span>药品名称</span>
+                <el-descriptions   :column="1" border>
+                <el-descriptions-item  v-for="name in faileDrugName" :key="name">{{name}}</el-descriptions-item>
+                </el-descriptions>
+                <div slot="footer" class="dialog-footer">
+                    <el-button @click="stockTableVisible=false;faileDrugName=[];">取消</el-button>
+                </div>
+            </el-dialog>
     </div>
 </template>
 
@@ -60,13 +71,24 @@ export default {
             id:'',
             doctorname:'',
             nursename:''
-        }
+        },
+        faileDrugName:[],   //药品库存不足的药品名字
+        stockTableVisible:false,    //药品库存不足模态框控件
       }
    },
    methods:{
+    //   用于提示哪些药品库存不足 
+    open() {
+        this.stockTableVisible=true;
+      },
     //撤销药方
     closeDrugPre(id){
-        this.$axios.post("api/drug/updatePreStatus",qs.stringify({'pid':id,'account':window.localStorage.getItem("account")})).then(res=>{
+            this.$confirm('是否确定撤销该药方', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+        }).then(() => {
+                    this.$axios.post("api/drug/updatePreStatus",qs.stringify({'pid':id,'account':window.localStorage.getItem("account")})).then(res=>{
             if (res.data.status == 200) {
                     this.$message({
                     showClose: true,
@@ -87,8 +109,9 @@ export default {
                 this.updatedialogTableVisible=false;
             }
         })
+        })
     },
-    //多个药方批量撤销
+    //多个药方批量发药
     batchSendDrug() {
         if (this.multipleSelection == '') {
             this.$message({
@@ -110,10 +133,17 @@ export default {
         }).then(() => {
             this.$axios.post("api/drug/sendDrug",qs.stringify({'idStrs':idStr,'account':window.localStorage.getItem("account")})).then(res=>{
                 if (res.data.status == 200) {
+                    if (res.data.data.length != 0) {
+                        this.faileDrugName=res.data.data
+                        this.open();
+                        this.createMethods();
+                    }else{
                     this.$message({
                     type: 'success',
                     message: '发药成功!'
                     });
+                    this.createMethods();
+                    }
                     this.createMethods();
                 }else{
                     this.$message({
@@ -133,14 +163,19 @@ export default {
         let idStr = this.drugIDN.id+","
         this.$axios.post("api/drug/sendDrug",qs.stringify({'idStrs':idStr,'account':window.localStorage.getItem("account")})).then(res=>{
          if (res.data.status == 200) {
+                    if (res.data.data.length != 0) {
+                        this.faileDrugName=res.data.data
+                        this.open();
+                        this.createMethods();
+                        this.updatedialogTableVisible=false;
+                    }else{
                     this.$message({
-                    showClose: true,
-                    message: '发药成功',
                     type: 'success',
-                    duration:1500
+                    message: '发药成功!'
                     });
-                this.createMethods();
-                this.updatedialogTableVisible=false;
+                    this.createMethods();
+                    this.updatedialogTableVisible=false;
+                    }
             }else{
                 this.$message({
                     showClose: true,
