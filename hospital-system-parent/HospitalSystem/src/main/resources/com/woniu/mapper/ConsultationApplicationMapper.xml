@@ -325,13 +325,10 @@
   <!--医生站分页模糊查询会诊列表-->
   <select id="queryConsultationApplicationList" resultType="ConsultationApplication">
     select c.id,w.name doctorName,p.name patientName,c.consultation_emergency_id,c.consultation_category_id,
---            ce.status consultationEmergencyName,cc.type consultationCategoryName,
-    c.consultation_date,c.reason,c.desc,c.status
+    c.consultation_date,c.reason,c.desc,c.status,c.doctor_id,c.patient_id
     from HOS_consultation_application c
     inner join HOS_worker w on c.doctor_id = w.id
     inner join HOS_patient p on c.patient_id = p.id
---     inner join HOS_consultation_emergency ce on c.consultation_emergency_id = ce.id
---     inner join HOS_consultation_categor cc on c.consultation_category_id = cc.id
 
     <where>
     <if test="consultationEmergencyId != null and consultationEmergencyId !=''">c.consultation_emergency_id = #{consultationEmergencyId}</if>
@@ -339,7 +336,6 @@
     <if test="status != null and status != ''">c.status = #{status}</if>
     <if test="startDate != null and startDate != ''">and c.consultation_date &gt;= #{startDate}</if>
     <if test="endDate != null and endDate != ''">and c.consultation_date &lt;= #{endDate}</if>
-   </where>
---     order by c.consultation_date desc
+   </where> and c.status in (1,2) order by c.consultation_date desc
   </select>
 </mapper>

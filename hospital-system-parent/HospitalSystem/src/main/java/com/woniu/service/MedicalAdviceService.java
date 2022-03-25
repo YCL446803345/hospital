@@ -10,7 +10,7 @@ public interface MedicalAdviceService {
     //分页模糊查询医嘱列表
     PageInfo<MedicalAdvice> queryMedicalAdvice(MedicalAdvice medicalAdvice, Integer pageNum, Integer pageSize);
 
-    //申请医嘱
+    //下达医嘱
     void addMedicalAdvice(MedicalAdvice medicalAdvice);
     //修改医嘱
     void updateMedicalAdvice(MedicalAdvice medicalAdvice);
@@ -21,5 +21,8 @@ public interface MedicalAdviceService {
     //根据ID查询医嘱(关联查询)
     MedicalAdvice queryMedicalAdviceById2(Integer id);
 
-
+    //修改医嘱项目
+    void updateMedicalAdviceProject(MedicalAdvice medicalAdvice);
+    //停止医嘱
+    void gotoStopMedicalAdviceById(Integer id);
 }

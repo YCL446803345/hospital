@@ -9,6 +9,7 @@ import com.woniu.service.LeaveHospitalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -22,5 +23,17 @@ public class LeaveHospitalServiceImpl implements LeaveHospitalService {
         List<LeaveHospital> leaveHospitalList = leaveHospitalMapper.queryLeaveHospitalList(leaveHospital);
         PageInfo<LeaveHospital> leaveHospitalPageInfo = new PageInfo<>(leaveHospitalList);
         return leaveHospitalPageInfo;
+    }
+
+    //撤销出院
+    public void gotoCancelLeaveHospitalById(Integer id) {
+        leaveHospitalMapper.cancelLeaveHospitalById(id);
+    }
+
+    //申请出院
+    public void addLeaveHospital(LeaveHospital leaveHospital) {
+        leaveHospital.setLeaveStatus(2);
+        leaveHospital.setLeaveTime(new Date());
+        leaveHospitalMapper.addLeaveHospital(leaveHospital);
     }
 }

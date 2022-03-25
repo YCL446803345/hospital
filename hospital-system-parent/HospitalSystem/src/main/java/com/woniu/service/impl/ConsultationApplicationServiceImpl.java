@@ -28,4 +28,9 @@ public class ConsultationApplicationServiceImpl implements ConsultationApplicati
     public void updateConsultationApplication(ConsultationApplication consultationApplication) {
         consultationApplicationMapper.updateConsultationApplication(consultationApplication);
     }
+
+    //取消会诊
+    public void gotoCancelConsultationApplicationById(Integer id) {
+        consultationApplicationMapper.cancelConsultationApplication(id);
+    }
 }

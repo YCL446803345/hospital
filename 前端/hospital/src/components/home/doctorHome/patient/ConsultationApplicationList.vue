@@ -3,9 +3,7 @@
     <!-- 面包xie导航 -->
     <el-breadcrumb separator="/">
       <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item
-        ><a href="#/patientList">会诊信息管理</a></el-breadcrumb-item
-      >
+      <el-breadcrumb-item><a href="#/patientList">会诊信息管理</a></el-breadcrumb-item>
       <el-breadcrumb-item>会诊信息管理列表</el-breadcrumb-item>
     </el-breadcrumb>
     <el-row style="margin-top: 10px; margin-bottom: 10px">
@@ -29,7 +27,7 @@
         <el-select v-model="status" placeholder="会诊状态">
           <el-option label="会诊状态" value=""></el-option>
           <el-option label="待会诊" value="1"></el-option>
-          <el-option label="已会诊" value="2"></el-option>
+          <el-option label="已执行" value="2"></el-option>
           <el-option label="已取消" value="3"></el-option>
         </el-select>
       </el-col>
@@ -39,17 +37,8 @@
       </el-col>
 
       <el-col :span="1" style="margin-left: 2px">
-        <el-button
-          type="warning"
-          @click="
-            (consultationEmergencyId = ''),
-              (consultationCategoryId = ''),
-              (status = ''),
-              (paheNum = 1),
-              (pageSize = 5)
-          "
-          >清空</el-button
-        >
+        <el-button type="warning" @click="(consultationEmergencyId = ''),(consultationCategoryId = ''),
+            (status = ''),(paheNum = 1),(pageSize = 5)">清空</el-button>
       </el-col>
     </el-row>
     <!-- 
@@ -92,9 +81,6 @@
       </el-table-column>
 
       <el-table-column prop="status" label="会诊状态" width="80">
-        <!-- <template slot-scope="scope">
-          {{ scope.row.status === "1" ? "未会诊" : "已会诊" }}
-        </template> -->
         <template slot-scope="scope">
           <span v-if="scope.row.status=='1'">待会诊</span>
           <span v-if="scope.row.status=='2'">已会诊</span>
@@ -112,11 +98,13 @@
 
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="primary"
-            @click="
-              gotoUpdateConsultationApplication(
+          <el-button size="mini" type="success" @click="gotoAddMedicalAdvice(
+            scope.row.patientName,
+            scope.row.doctorName,
+            scope.row.patientId,
+            scope.row.doctorId,
+            )">下达医嘱</el-button>
+          <el-button size="mini" type="primary" @click=" gotoUpdateConsultationApplication(
                 scope.row.id,
                 scope.row.patientName,
                 scope.row.doctorName,
@@ -124,17 +112,9 @@
                 scope.row.desc,
                 scope.row.consultationEmergencyId,
                 scope.row.consultationCategoryId,
-                scope.row.consultationDate
-              )
-            "
-            >编辑会诊</el-button
-          >
-          <!-- <el-button
-            size="mini"
-            type="danger"
-            @click="deleteConsultationApplication(scope.row.id)"
-            >删除会诊</el-button
-          > -->
+                scope.row.consultationDate,
+              )">编辑会诊</el-button>
+          <el-button size="mini" type="danger" @click="gotoCancelConsultationApplication(scope.row.id)">取消会诊</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -156,89 +136,90 @@
       <h1 align="center">编辑会诊信息</h1><br />
       <el-form :model="updateConsultationApplication">
         <el-form-item label="姓名" :label-width="formLabelWidth">
-          <el-input
-            v-model="updateConsultationApplication.patientName"
-            autocomplete="off"
-          ></el-input>
+          <el-input v-model="updateConsultationApplication.patientName" autocomplete="off" readonly="readonly"></el-input>
         </el-form-item>
 
         <el-form-item label="主治医生" :label-width="formLabelWidth">
-          <el-input
-            v-model="updateConsultationApplication.doctorName"
-            autocomplete="off"
-          ></el-input>
+          <el-input v-model="updateConsultationApplication.doctorName" autocomplete="off" readonly="readonly"></el-input>
         </el-form-item>
 
         <el-form-item label="会诊原因" :label-width="formLabelWidth">
-          <el-input
-            v-model="updateConsultationApplication.reason"
-            autocomplete="off"
-          ></el-input>
+          <el-input v-model="updateConsultationApplication.reason" autocomplete="off"></el-input>
         </el-form-item>
 
         <el-form-item label="描述" :label-width="formLabelWidth">
-          <el-input
-            v-model="updateConsultationApplication.desc"
-            autocomplete="off"
-          ></el-input>
+          <el-input v-model="updateConsultationApplication.desc" autocomplete="off"></el-input>
         </el-form-item>
-
-        <!-- <el-form-item label="紧急度" :label-width="formLabelWidth">
-          <el-input
-            v-model="updateConsultationApplication.consultationEmergencyName"
-            autocomplete="off"
-          ></el-input>
-        </el-form-item>
-
-        <el-form-item label="类别" :label-width="formLabelWidth">
-          <el-input
-            v-model="updateConsultationApplication.consultationCategoryName"
-            autocomplete="off"
-          ></el-input>
-        </el-form-item> -->
 
         <el-form-item label="紧急度" :label-width="formLabelWidth">
             <el-radio v-model="updateConsultationApplication.consultationEmergencyId" label="1" value=1>紧急</el-radio>
             <el-radio v-model="updateConsultationApplication.consultationEmergencyId" label="2" value=2>24小时</el-radio>
             <el-radio v-model="updateConsultationApplication.consultationEmergencyId" label="3" value=3>一般</el-radio>
-          <!-- <el-select v-model="updateConsultationApplication.consultationEmergencyId" :label-width="formLabelWidth">
-
-            <el-option label="紧急" value=1></el-option>                    
-            <el-option label="24小时" value=2></el-option>
-            <el-option label="一般" value=3></el-option>       
-          </el-select> -->
         </el-form-item>
 
         <el-form-item label="类别" :label-width="formLabelWidth">
-          <!-- <el-select v-model="updateConsultationApplication.consultationCategoryId" :label-width="formLabelWidth"> -->
             <el-radio v-model="updateConsultationApplication.consultationCategoryId" label="1" value=1>它科会诊</el-radio>
             <el-radio v-model="updateConsultationApplication.consultationCategoryId" label="2" value=2>科内会诊</el-radio>
             <el-radio v-model="updateConsultationApplication.consultationCategoryId" label="3" value=3>院外会诊</el-radio>                         
-            <!-- <el-option label="它科会诊" value=1></el-option>                  
-            <el-option label="科内会诊" value=2></el-option>
-            <el-option label="院外会诊" value=3></el-option>
-                           
-          </el-select> -->
         </el-form-item>
 
         <el-form-item label="会诊时间" :label-width="formLabelWidth">
-          <el-input
-            v-model="updateConsultationApplication.consultationDate"
-            autocomplete="off"
-          ></el-input>
+          <el-input v-model="updateConsultationApplication.consultationDate" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="doUpdateConsultationApplication"
-          >提 交</el-button
-        >
+        <el-button type="primary" @click="doUpdateConsultationApplication">提 交</el-button>
         <el-button @click="closeUpdateConsultationApplication">取 消</el-button>
+      </div>
+    </el-dialog>
+
+    <!-- 下达医嘱 -->
+    <el-dialog :visible.sync="addMedicalAdviceForm">
+      <h1 align="center">下达医嘱</h1>
+      <br />
+      <template>
+        <el-descriptions class="margin-top" title="" :column="3" border>
+          <el-descriptions-item>
+            <template slot="label"><i class="el-icon-user"></i>病人</template>
+            {{ addMedicalAdvice.patientName }}
+          </el-descriptions-item>
+
+          <el-descriptions-item>
+            <template slot="label"><i class="el-icon-user"></i>主治医生</template>
+            {{ addMedicalAdvice.doctorName }}
+          </el-descriptions-item>
+
+        </el-descriptions>
+      </template>
+
+      <el-divider></el-divider>
+
+      <el-form :model="addMedicalAdvice">
+
+        <el-form-item label="医嘱类型" :label-width="formLabelWidth">
+            <el-radio v-model="addMedicalAdvice.adviceCategory" label="1" value=1>长期医嘱</el-radio>
+            <el-radio v-model="addMedicalAdvice.adviceCategory" label="2" value=2>临时医嘱</el-radio>
+            <el-radio v-model="addMedicalAdvice.adviceCategory" label="3" value=3>一般医嘱</el-radio>
+        </el-form-item>
+
+        <el-form-item label="医嘱描述" :label-width="formLabelWidth">
+          <el-input v-model="addMedicalAdvice.adviceDescription" autocomplete="off"></el-input>
+        </el-form-item>
+
+      </el-form>
+
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="doAddMedicalAdvice">下 达</el-button>
+        <el-button @click="addMedicalAdviceForm = false;addMedicalAdvice={}">取 消</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
+
+import qs from 'qs'
+
 export default {
   data() {
     return {
@@ -249,7 +230,9 @@ export default {
       total: 100,
       pageNum: 1,
       pageSize: 5,
-      // updateTeacherForm:false,
+
+      addMedicalAdvice:{},
+      addMedicalAdviceForm: false, //控制是否显示下达医嘱对话框
       
     
       updateConsultationApplicationForm: false, //控制是否显示编辑会诊对话框
@@ -272,6 +255,79 @@ export default {
     this.headers = { tokenStr: window.localStorage.getItem("tokenStr") };
   },
   methods: {
+    //打开下达医嘱列表
+      gotoAddMedicalAdvice(patientName,doctorName,patientId,doctorId) {
+        this.addMedicalAdvice = {
+        patientName: patientName,
+        doctorName: doctorName,
+        patientId: patientId,
+        doctorId: doctorId,
+      };
+        this.addMedicalAdviceForm = true;
+      },
+
+      //下达医嘱
+      doAddMedicalAdvice() {
+       
+        // console.log("=======================" + this.addMedicalAdvice);
+        //发送axios请求
+        var medicalAdvice=this.addMedicalAdvice;
+         console.log("所说的上档次")
+        //  alert(medicalAdvice)
+         console.log(medicalAdvice)
+        this.$axios.post("/api/doctor/gotoAddMedicalAdvice",medicalAdvice).then((res) => {
+          console.log(res.data);
+          if (res.status == 200) {
+            this.$message({
+              showClose: true,
+              message: "下达成功",
+              type: "success",
+              duration: 600,
+            });
+            this.addMedicalAdvice = {};
+            this.addMedicalAdviceForm = false;
+            // this.search(); //刷新列表
+          } else {
+            this.$message({
+              showClose: true,
+              message: "下达失败",
+              type: "error",
+              duration: 600,
+            });
+          }
+        });
+      },
+
+
+
+    //取消会诊
+    gotoCancelConsultationApplication(id) {
+        console.log(id)
+        this.$axios.post("/api/doctor/gotoCancelConsultationApplicationById",qs.stringify({'id':id}),{
+            params: { id: id }
+        }).then(res => {  
+          console.log(res.data)
+            if(res.status===200){
+                this.$message({
+                    showClose: true,
+                    message: "取消成功",
+                    type: "success",
+                    duration: 600
+                });
+                this.search();
+            }else if(res.status===4001){
+                this.$message({
+                    showClose: true,
+                    message: "没有权限",
+                    type: "error",
+                    duration: 600
+                });
+                this.search();
+            }
+        }); 
+    },
+
+      //执行修改
     doUpdateConsultationApplication() {
         //  console.log(res.data)
       var consultationApplication = this.updateConsultationApplication;
@@ -298,6 +354,7 @@ export default {
           }
         });
     },
+    //关闭执行窗口
     closeUpdateConsultationApplication() {
       this.updateConsultationApplication = {
         id: "",
@@ -311,7 +368,7 @@ export default {
       };
       this.updateConsultationApplicationForm = false;
     },
-    
+    //准备修改
     gotoUpdateConsultationApplication(
       id,
       patientName,
@@ -321,9 +378,7 @@ export default {
       consultationEmergencyId,
       consultationCategoryId,
       consultationDate
-      
-    )
-    {
+    ){
       this.updateConsultationApplication = {
         id: id,
         patientName: patientName,

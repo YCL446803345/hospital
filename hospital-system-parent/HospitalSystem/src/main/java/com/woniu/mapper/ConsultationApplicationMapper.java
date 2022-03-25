@@ -33,8 +33,13 @@ public interface ConsultationApplicationMapper {
 
     //医生站分页模糊查询会诊列表
     List<ConsultationApplication> queryConsultationApplicationList(ConsultationApplication consultationApplication);
-    //编辑会诊信息
+
+    //医生站编辑会诊信息
     @Update("update HOS_consultation_application set consultation_date=#{consultationDate}, consultation_category_id=#{consultationCategoryId}," +
             "consultation_emergency_id=#{consultationEmergencyId}, `desc`=#{desc} ,reason=#{reason} where id=#{id}")
     void updateConsultationApplication(ConsultationApplication consultationApplication);
+
+    //医生站取消会诊
+    @Update("update HOS_consultation_application set status = 3 where id=#{id}")
+    void cancelConsultationApplication(Integer id);
 }

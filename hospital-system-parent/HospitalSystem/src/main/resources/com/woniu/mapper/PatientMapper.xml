@@ -434,7 +434,7 @@
   <!--医生站分页模糊查询患者列表-->
   <select id="queryPatientList" resultType="Patient">
     select p.id,p.name,p.no,p.age,p.card_id,p.phone,p.gender,p.base_desc,p.end_time,d.name deptName,b.code bedCode,w1.name doctorName,w2.name nurseName,
-    p.appointmentt_time,p.status
+    p.appointmentt_time,p.status,p.doctor_id
     from HOS_patient p
     inner join HOS_dept d on p.dept_id = d.id
     inner join HOS_bed b on p.bed_id = b.id
