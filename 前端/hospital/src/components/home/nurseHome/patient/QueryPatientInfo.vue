@@ -163,7 +163,7 @@
                 width="120">
                 <template slot-scope="scope">
                      <el-tag :type="scope.row.status==3?'danger':'primary'" disable-transitions>
-                         {{scope.row.status==3?'已出院':scope.row.status==='2'?'出院审核':'住院'}}
+                         {{scope.row.status==3?'已出院':scope.row.status==='2'?'出院审核':scope.row.status==='4'?'出院审核通过':'住院'}}
                      </el-tag>
                 </template>
             </el-table-column>
@@ -266,7 +266,8 @@
                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                         &nbsp;
+                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </el-descriptions-item>
 
             <el-descriptions-item>
@@ -287,9 +288,9 @@
                         处方账单
                 </template>
 
-                <el-table
-                :data="drugList"
-                style="width: 100%">
+                    <el-table
+                    :data="drugList"
+                    style="width: 100%">
 
                     <el-table-column
                         type="index"
@@ -323,6 +324,12 @@
                     </el-table-column>
 
                     <el-table-column
+                        prop="createTime"
+                        label="创建时间"
+                        width="80">
+                    </el-table-column>
+
+                    <el-table-column
                         prop="money"
                         label="小计"
                         width="80">
@@ -344,8 +351,37 @@
                 <template slot="label">
                     <i class="el-icon-shopping-cart-full"></i>
                         医嘱账单
-                </template>
-                        医嘱账单---------------------------------
+                    </template>
+                    <el-table
+                        :data="MedicalAdviceList"
+                        style="width: 100%">
+
+                    <el-table-column
+                        type="index"
+                        :index='getIndex'
+                        label="序号"
+                        width="100">
+                    </el-table-column>
+
+                    <el-table-column
+                        prop="name"
+                        label="项目名"
+                        width="120">
+                    </el-table-column>
+
+                    <el-table-column
+                        prop="createTime"
+                        label="创建时间"
+                        width="190">
+                    </el-table-column>
+
+                    <el-table-column
+                        prop="price"
+                        label="价格"
+                        width="120">
+                    </el-table-column>
+
+                </el-table>
             </el-descriptions-item>
 
             <el-descriptions-item>
@@ -353,7 +389,7 @@
                     <i class="el-icon-more-outline"></i>
                         小计
                 </template>
-                        0
+                       <span style="color:red">{{getMedicalAdviceBillMoney}}</span>元
             </el-descriptions-item>
         </el-descriptions>
 
@@ -363,7 +399,53 @@
                     <i class="el-icon-shopping-cart-full"></i>
                         退药账单
                 </template>
-                        退药账单
+                        <el-table
+                    :data="drugOutList"
+                    style="width: 100%">
+
+                    <el-table-column
+                        type="index"
+                        :index='getIndex'
+                        label="序号"
+                        width="50">
+                    </el-table-column>
+
+                    <el-table-column
+                        prop="name"
+                        label="药名"
+                        width="80">
+                    </el-table-column>
+
+                    <el-table-column
+                        prop="drugType"
+                        label="种类"
+                        width="80">
+                    </el-table-column>
+
+                    <el-table-column
+                        prop="salePrice"
+                        label="单价"
+                        width="80">
+                    </el-table-column>
+
+                    <el-table-column
+                        prop="num"
+                        label="数量"
+                        width="80">
+                    </el-table-column>
+
+                     <el-table-column
+                        prop="createTime"
+                        label="创建时间"
+                        width="80">
+                    </el-table-column>
+
+                    <el-table-column
+                        prop="money"
+                        label="小计"
+                        width="80">
+                    </el-table-column>
+                </el-table>
             </el-descriptions-item>
 
             <el-descriptions-item>
@@ -371,7 +453,7 @@
                     <i class="el-icon-more-outline"></i>
                         小计
                 </template>
-                        0
+                         <span style="color:green">{{-getDrugOutBillMoney}}</span>元
             </el-descriptions-item>
         </el-descriptions>
 
@@ -397,7 +479,7 @@
                     <i class="el-icon-more"></i>
                         医嘱账单小计
                 </template>
-                        0
+                        <span style="color:red">{{getMedicalAdviceBillMoney}}</span>元
             </el-descriptions-item>
             
             <el-descriptions-item>
@@ -405,7 +487,7 @@
                     <i class="el-icon-more"></i>
                         退款
                 </template>
-                        0
+                        <span style="color:green">-{{getDrugOutBillMoney}}</span>元
             </el-descriptions-item>
             
             <el-descriptions-item>
@@ -413,7 +495,7 @@
                     <i class="el-icon-more"></i>
                         总费用
                 </template>
-                        0
+                        <span style="color:red">{{hospitalizationBill.sumMoney+getPrescriptionBillMoney+getMedicalAdviceBillMoney+getDrugOutBillMoney}}</span>元
             </el-descriptions-item>
 
         </el-descriptions>
@@ -442,7 +524,10 @@ export default {
         total:100,
         pageNum:1,
         pageSize:5,
-        hospitalizationBill:{},
+        hospitalizationBill:{
+            payDays:0,
+            sumMoney:0
+        },
         drugList:[],
         patient:{
             id:'',
@@ -453,7 +538,11 @@ export default {
         },
         formLabelWidth: '120px',
         billViewForm:false,
-        getPrescriptionBillMoney:''
+        getPrescriptionBillMoney:0,
+        drugOutList:[],
+        getDrugOutBillMoney:0,
+        MedicalAdviceList:[],
+        getMedicalAdviceBillMoney:0
       }
    },
    created(){
@@ -469,9 +558,16 @@ export default {
                 deptName:''
             }
 
-            this.hospitalizationBill={};
+            this.hospitalizationBill={
+                 payDays:0,
+                 sumMoney:0
+            };
             this.drugList=[];
-            this.getPrescriptionBillMoney='';
+            this.getPrescriptionBillMoney=0;
+            this.drugOutList=[],
+            this.getDrugOutBillMoney=0
+            this.MedicalAdviceList=[],
+            this.getMedicalAdviceBillMoney=0
 
             this.billViewForm=false;
        },
@@ -485,10 +581,13 @@ export default {
             }
             var patient=this.patient;
             
-             this.$axios.post("/api/getHospitalizationBill",patient)
+            this.$axios.post("/api/getHospitalizationBill",patient)
             .then(res=>{
-                this.hospitalizationBill=res.data;
-                 this.$axios.post("/api/getPrescriptionBill",patient)
+                
+                if(res.data.sumMoney!=null){
+                    this.hospitalizationBill=res.data;
+                }
+                this.$axios.post("/api/getPrescriptionBill",patient)
                 .then(res=>{
                     this.drugList=res.data;
                     var getPrescriptionBillMoney=0;
@@ -497,7 +596,32 @@ export default {
                     })
 
                     this.getPrescriptionBillMoney=getPrescriptionBillMoney;
-                    this.billViewForm=true;
+
+                    this.$axios.post("/api/getMedicalAdviceBill",patient)
+                    .then(res=>{
+                        this.MedicalAdviceList=res.data;
+                        var getMedicalAdviceBillMoney=0;
+                        this.MedicalAdviceList.forEach(project=>{
+                            getMedicalAdviceBillMoney+=project.price;
+                        })
+
+                        this.getMedicalAdviceBillMoney=getMedicalAdviceBillMoney;
+
+                        this.$axios.post("/api/getDrugOutBill",patient)
+                        .then(res=>{
+                            this.drugOutList=res.data;
+
+                            var getDrugOutBillMoney=0;
+                            this.drugOutList.forEach(drug=>{
+                                getDrugOutBillMoney+=drug.money;
+                            })
+
+                            this.getDrugOutBillMoney=getDrugOutBillMoney;
+
+                            this.billViewForm=true;
+                        })
+                        
+                    })
                 })
 
             })

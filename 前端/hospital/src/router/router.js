@@ -15,6 +15,8 @@ import patientWithNotBed from '../components/home/nurseHome/patient/PatientWithN
 import bedManager from '../components/home/nurseHome/patient/BedManager'
 import patientChangeDept from '../components/home/nurseHome/patient/PatientChangeDept'
 import queryPatientInfo from '../components/home/nurseHome/patient/QueryPatientInfo'
+import patientNursingRecord from '../components/home/nurseHome/patient/PatientNursingRecord'
+import medicalAdviceManager from '../components/home/nurseHome/patient/MedicalAdviceManager'
 
 
 //Vue安装router
@@ -78,15 +80,16 @@ var router = new VueRouter({
 
             children: [
 
-                { path: "/medicine/home", component: DrugInfo },
-                { path: "/worker/list", component: HumanAffairs },
-
-                { path: "/nurse/admission", component: patientInfo },
-                { path: "/nurse/changeDept", component: patientChangeDept },
-                { path: "/nurse/information", component: queryPatientInfo },
-                { path: "/nurse/patientManager", component: patientChangeDoctorOrBed },
-                { path: "/nurse/waitPatientManager", component: patientWithNotBed },
-                { path: "/nurse/bed", component: bedManager },
+                {path: "/medicine/home", component: DrugInfo },
+                {path: "/worker/list", component: HumanAffairs },
+	            {path: "/nurse/admission", component: patientInfo},
+	            {path: "/nurse/changeDept", component: patientChangeDept},
+	            {path: "/nurse/information", component: queryPatientInfo},
+	            {path: "/nurse/care", component: patientNursingRecord},
+	            {path: "/nurse/medicalAdvice", component: medicalAdviceManager},
+	            {path:"/nurse/patientManager",component:patientChangeDoctorOrBed},
+	            {path:"/nurse/waitPatientManager",component:patientWithNotBed},
+	            {path:"/nurse/bed",component:bedManager},
 
 
                 { path: "/drug/prescriptionList", component: DrugPre },
