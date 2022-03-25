@@ -16,6 +16,7 @@ import java.util.List;
 @Repository
 //处方表
 public class Prescription {
+
     private Integer id;
 
     private Integer doctorId;
@@ -47,6 +48,7 @@ public class Prescription {
     private String nurseName;
     private String paName;
     private Integer pdNum;
-
-
+    private String drugName;
+    private Integer stock;
+    private Integer num;
 }

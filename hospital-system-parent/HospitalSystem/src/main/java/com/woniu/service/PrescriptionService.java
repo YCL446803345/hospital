@@ -2,8 +2,10 @@ package com.woniu.service;
 
 
 import com.woniu.entity.Prescription;
+import com.woniu.entity.PrescriptionDrug;
 
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 /**
@@ -15,5 +17,7 @@ public interface PrescriptionService {
 
     void updateStatusById(Integer pid, String account);
 
-    void updateByBatch(List<String> newlist, String account);
+    LinkedHashSet<String> updateByBatch(List<String> newlist, String account);
+
+    Prescription getDrugNameAndNumAndCreateTime(Integer pid);
 }

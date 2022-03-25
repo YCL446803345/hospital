@@ -5,6 +5,8 @@ import com.woniu.entity.DrugExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -35,4 +37,7 @@ public interface DrugMapper {
             " from HOS_out_drug_record odr, HOS_drug d,HOS_patient p,HOS_drug_out do,HOS_drugout_bill db\n" +
             " where p.no = odr.patient_no and odr.drug_name = d.name and p.id = #{id} and p.id = do.patient_id and do.id = db.drugoutapply_id and db.status = 1")
     List<Drug> selectByPatientId (int id);
+
+    @Update("update HOS_drug d set d.stock=#{newStock} where d.name=#{drugName}")
+    void updateStock(@Param("newStock") Integer newStock, @Param("drugName") String drugName);
 }
