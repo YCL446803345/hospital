@@ -56,7 +56,6 @@ public class DrugServiceImpl implements DrugService {
     }
 
 
-
     //by药品id查询药品信息
     public Drug getDrugById(Integer id) {
         Drug drug = drugMapper.selectByPrimaryKey(id);
@@ -109,10 +108,10 @@ public class DrugServiceImpl implements DrugService {
             drug.setMoney(drug.getSalePrice() * drug.getNum());
         }
         return drugs;
+    }
 
     //获取所有药品列表
     public List<Drug> findDrugList() {
         return drugMapper.selectByExample(null);
-
     }
 }
