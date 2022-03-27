@@ -40,4 +40,9 @@ public interface DrugMapper {
 
     @Update("update HOS_drug d set d.stock=#{newStock} where d.name=#{drugName}")
     void updateStock(@Param("newStock") Integer newStock, @Param("drugName") String drugName);
+
+    @Select("select drug_type from HOS_drug")
+    List<String> findAllDrugType();
+
+    void updateByIdBatchStatus(List<Integer> ids);
 }

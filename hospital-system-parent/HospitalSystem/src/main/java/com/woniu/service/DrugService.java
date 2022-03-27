@@ -10,4 +10,14 @@ public interface DrugService {
     void updateDrug(Drug drug);
 
     void addDrug(Drug drug);
+
+    Drug getDrugById(Integer id);
+
+    List<Drug> findAllDownDrug(Drug drug);
+
+    List<String> finAllType();
+
+    void update(Drug updateDrug);
+
+    void updateByIdBatchStatus(List<String> strings);
 }

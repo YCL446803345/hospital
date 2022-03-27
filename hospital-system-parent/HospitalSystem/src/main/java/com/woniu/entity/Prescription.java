@@ -36,9 +36,11 @@ public class Prescription {
     private String spare3;
 
     private String drugs;
-
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date startTime;
-
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date endTime;
 
 
@@ -51,4 +53,5 @@ public class Prescription {
     private String drugName;
     private Integer stock;
     private Integer num;
+    private String preName;
 }

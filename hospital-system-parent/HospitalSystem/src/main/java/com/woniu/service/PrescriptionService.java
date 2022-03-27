@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface PrescriptionService {
 
-    List<Prescription> getPresDrugByMany(String doctorName,String status, Date startTime, Date endTime);
+    List<Prescription> getPresDrugByMany(String doctorName,String nurseName,String preName);
 
     void updateStatusById(Integer pid, String account);
 

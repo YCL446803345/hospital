@@ -30,18 +30,10 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     private DrugMapper drugMapper;
 
     //处方详情+模糊查询
-    public List<Prescription> getPresDrugByMany(String doctorName, String status, Date startTime, Date endTime) {
+    public List<Prescription> getPresDrugByMany(String doctorName, String nurseName,String preName) {
 
-        List<Prescription> prescriptionList2= prescriptionMapper.getPreDrugByMany(doctorName,status,startTime,endTime);
+        List<Prescription> prescriptionList2= prescriptionMapper.getPreDrugByMany(doctorName,nurseName,preName);
 
-        //相同处方排除法,分页数据会有误,待修改
-        for (int i = 0; i < prescriptionList2.size(); i++) {
-            for (int j = 0; j < prescriptionList2.size(); j++) {
-                if(i != j && prescriptionList2.get(i).getId()== prescriptionList2.get(j).getId()) {
-                    prescriptionList2.remove(prescriptionList2.get(j));
-                }
-            }
-        }
         return prescriptionList2;
     }
 
@@ -69,7 +61,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
         //迭代每个处方
         for (String s : newlist) {
-            //计数器
+            //计数器判断
             ArrayList count = new ArrayList();
 
             Integer i = Integer.parseInt(s);

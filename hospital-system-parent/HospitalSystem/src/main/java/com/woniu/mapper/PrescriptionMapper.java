@@ -40,15 +40,14 @@ public interface PrescriptionMapper {
             "left join HOS_worker w2 on w2.id=pa.nurse_id\n"+
             "<where>"+
             "<if test='doctorName != null and doctorName != \"\"'>and w1.name like '%${doctorName}'</if>"+
-            "<if test='status != null and status != \"\"'>and p.prescription_status = #{status}</if>"+
-            "<if test='startTime != null and startTime != \"\"'>and p.create_time &gt;=#{startTime}</if>"+
-            "<if test='endTime != null and endTime != \"\"'>and p.create_time &lt;=#{endTime}</if>"+
+            "<if test='nurseName != null and nurseName != \"\"'>and w2.name like '%${nurseName}'</if>"+
+            "<if test='preName != null and preName != \"\"'>and pa.name like '%${preName}'</if>"+
             "and p.prescription_status = 1"+
             "</where>"+
             "</script>")
-    List<Prescription> getPreDrugByMany(@Param("doctorName") String doctorName, @Param("status") String status, @Param("startTime") Date startTime, @Param("endTime") Date endTime);
+    List<Prescription> getPreDrugByMany(@Param("doctorName")String doctorName, @Param("nurseName")String nurseName,@Param("preName") String preName);
 
-    @Select("select p.*,w.name doctorName from hos_prescription p left join hos_worker w on w.id=p.doctor_id where p.id=#{pid}")
+    @Select("select p.*,w.name doctorName from HOS_prescription p left join HOS_worker w on w.id=p.doctor_id where p.id=#{pid}")
     Prescription getPreInfo(Integer pid);
 
     @Select("select d.name drugName,stock,num from HOS_prescription p\n" +

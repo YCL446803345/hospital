@@ -6,6 +6,7 @@ import com.woniu.entity.Prescription;
 import com.woniu.entity.PrescriptionDrug;
 import com.woniu.service.PrescriptionDrugService;
 import com.woniu.service.PrescriptionService;
+import com.woniu.service.WorkerService;
 import com.woniu.util.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,17 +26,32 @@ public class DrugPreController {
     private PrescriptionService prescriptionService;
     @Autowired
     private PrescriptionDrugService prescriptionDrugService;
+    @Autowired
+    private WorkerService workerService;
 
 
     //查询处方列表+分页+模糊查询
     @GetMapping("drug/prescription")
-    public ResponseResult<PageInfo<Prescription>> findAllPrescription(String doctorName,String status,
-                                                                      Date startTime, Date endTime,
+    public ResponseResult<PageInfo<Prescription>> findAllPrescription(String doctorName,String nurseName,String preName,
                                                                       @RequestParam(name = "pageNum",defaultValue = "1")Integer pageNum,
                                                                       @RequestParam(name = "pageSize",defaultValue = "5")Integer pageSize){
         PageHelper.startPage(pageNum,pageSize);
-        List<Prescription> preDrugList = prescriptionService.getPresDrugByMany(doctorName,status,startTime,endTime);
+        List<Prescription> preDrugList = prescriptionService.getPresDrugByMany(doctorName,nurseName,preName);
         PageInfo preDrugPageInfo = new PageInfo(preDrugList);
+        List<Prescription> prescriptionList2 = preDrugPageInfo.getList();
+        //相同处方排除法,分页数据会有误,待修改
+        //计数器
+        int count = 0;
+        for (int i = 0; i < prescriptionList2.size(); i++) {
+            for (int j = 0; j < prescriptionList2.size(); j++) {
+                if(i != j && prescriptionList2.get(i).getId()== prescriptionList2.get(j).getId()) {
+                    prescriptionList2.remove(prescriptionList2.get(j));
+                    count++;
+                }
+            }
+        }
+        preDrugPageInfo.setTotal(preDrugPageInfo.getTotal()-count);
+        preDrugPageInfo.setList(prescriptionList2);
         return new ResponseResult<PageInfo<Prescription>>(preDrugPageInfo,"OK",200);
     }
 
@@ -71,5 +87,11 @@ public class DrugPreController {
         return new ResponseResult<Prescription>(drugNameAndNumAndCreateTime,"OK",200);
     }
 
+    //药房查找所有医生
+    @GetMapping("drug/findAllDoctor")
+    public ResponseResult<List<String>> findAllDoctor(){
+        List<String> doctorList = workerService.findAllDoctor();
+        return new ResponseResult<List<String>>(doctorList,"OK",200);
+    }
 
 }
