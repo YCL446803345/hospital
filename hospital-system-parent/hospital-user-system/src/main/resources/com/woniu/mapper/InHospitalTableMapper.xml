@@ -9,7 +9,7 @@
     <result column="card_id" jdbcType="VARCHAR" property="cardId" />
     <result column="telephone" jdbcType="VARCHAR" property="telephone" />
     <result column="dept_id" jdbcType="INTEGER" property="deptId" />
-    <result column="bad_id" jdbcType="INTEGER" property="badId" />
+    <result column="bed_id" jdbcType="INTEGER" property="bedId" />
     <result column="reason" jdbcType="VARCHAR" property="reason" />
     <result column="in_hosptial_time" jdbcType="TIMESTAMP" property="inHosptialTime" />
     <result column="status" jdbcType="CHAR" property="status" />
@@ -76,7 +76,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, patient_name, patient_sex, patient_age, card_id, telephone, dept_id, bad_id, 
+    id, patient_name, patient_sex, patient_age, card_id, telephone, dept_id, bed_id, 
     reason, in_hosptial_time, status, spare1, spare2, spare3
   </sql>
   <select id="selectByExample" parameterType="com.woniu.entity.InHospitalTableExample" resultMap="BaseResultMap">
@@ -112,12 +112,12 @@
   <insert id="insert" parameterType="com.woniu.entity.InHospitalTable">
     insert into HOS_in_hospital_table (id, patient_name, patient_sex, 
       patient_age, card_id, telephone, 
-      dept_id, bad_id, reason, 
+      dept_id, bed_id, reason, 
       in_hosptial_time, status, spare1, 
       spare2, spare3)
     values (#{id,jdbcType=INTEGER}, #{patientName,jdbcType=VARCHAR}, #{patientSex,jdbcType=CHAR}, 
       #{patientAge,jdbcType=INTEGER}, #{cardId,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, 
-      #{deptId,jdbcType=INTEGER}, #{badId,jdbcType=INTEGER}, #{reason,jdbcType=VARCHAR}, 
+      #{deptId,jdbcType=INTEGER}, #{bedId,jdbcType=INTEGER}, #{reason,jdbcType=VARCHAR}, 
       #{inHosptialTime,jdbcType=TIMESTAMP}, #{status,jdbcType=CHAR}, #{spare1,jdbcType=VARCHAR}, 
       #{spare2,jdbcType=VARCHAR}, #{spare3,jdbcType=VARCHAR})
   </insert>
@@ -145,8 +145,8 @@
       <if test="deptId != null">
         dept_id,
       </if>
-      <if test="badId != null">
-        bad_id,
+      <if test="bedId != null">
+        bed_id,
       </if>
       <if test="reason != null">
         reason,
@@ -189,8 +189,8 @@
       <if test="deptId != null">
         #{deptId,jdbcType=INTEGER},
       </if>
-      <if test="badId != null">
-        #{badId,jdbcType=INTEGER},
+      <if test="bedId != null">
+        #{bedId,jdbcType=INTEGER},
       </if>
       <if test="reason != null">
         #{reason,jdbcType=VARCHAR},
@@ -242,8 +242,8 @@
       <if test="record.deptId != null">
         dept_id = #{record.deptId,jdbcType=INTEGER},
       </if>
-      <if test="record.badId != null">
-        bad_id = #{record.badId,jdbcType=INTEGER},
+      <if test="record.bedId != null">
+        bed_id = #{record.bedId,jdbcType=INTEGER},
       </if>
       <if test="record.reason != null">
         reason = #{record.reason,jdbcType=VARCHAR},
@@ -277,7 +277,7 @@
       card_id = #{record.cardId,jdbcType=VARCHAR},
       telephone = #{record.telephone,jdbcType=VARCHAR},
       dept_id = #{record.deptId,jdbcType=INTEGER},
-      bad_id = #{record.badId,jdbcType=INTEGER},
+      bed_id = #{record.bedId,jdbcType=INTEGER},
       reason = #{record.reason,jdbcType=VARCHAR},
       in_hosptial_time = #{record.inHosptialTime,jdbcType=TIMESTAMP},
       status = #{record.status,jdbcType=CHAR},
@@ -309,8 +309,8 @@
       <if test="deptId != null">
         dept_id = #{deptId,jdbcType=INTEGER},
       </if>
-      <if test="badId != null">
-        bad_id = #{badId,jdbcType=INTEGER},
+      <if test="bedId != null">
+        bed_id = #{bedId,jdbcType=INTEGER},
       </if>
       <if test="reason != null">
         reason = #{reason,jdbcType=VARCHAR},
@@ -341,7 +341,7 @@
       card_id = #{cardId,jdbcType=VARCHAR},
       telephone = #{telephone,jdbcType=VARCHAR},
       dept_id = #{deptId,jdbcType=INTEGER},
-      bad_id = #{badId,jdbcType=INTEGER},
+      bed_id = #{bedId,jdbcType=INTEGER},
       reason = #{reason,jdbcType=VARCHAR},
       in_hosptial_time = #{inHosptialTime,jdbcType=TIMESTAMP},
       status = #{status,jdbcType=CHAR},

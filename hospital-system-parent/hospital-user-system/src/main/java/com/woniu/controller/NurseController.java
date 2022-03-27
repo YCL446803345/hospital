@@ -4,12 +4,12 @@ package com.woniu.controller;
 import com.github.pagehelper.PageInfo;
 import com.woniu.entity.*;
 import com.woniu.service.*;
+import com.woniu.util.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.xml.ws.soap.Addressing;
 import java.util.List;
 
 /**
@@ -107,6 +107,17 @@ public class NurseController {
                                               @RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize) {
         PageInfo<Bed> pageInfo = bedService.findBeds(bed, pageNum, pageSize);
         return new ResponseEntity<PageInfo<Bed>>(pageInfo, HttpStatus.OK);
+    }
+
+
+    /**
+     * 获得所有床位列表,在病人预约中使用
+     * @return
+     */
+    @GetMapping("/findBedList")
+    public ResponseResult<List<Bed>> findBedList() {
+        List<Bed> bedList = bedService.findBedList();
+        return new ResponseResult<List<Bed>>(bedList,"OK",200);
     }
 
     /**

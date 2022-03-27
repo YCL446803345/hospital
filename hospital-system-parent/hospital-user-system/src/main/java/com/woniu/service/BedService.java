@@ -12,4 +12,6 @@ public interface BedService {
     void changeBedStatusOff(Patient patient);
 
     PageInfo<Bed> findBeds(Bed bed, Integer pageNum, Integer pageSize);
+
+    List<Bed> findBedList();
 }

@@ -62,7 +62,7 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
             //检查token是否有效
             if (JwtTokenUitl.checkSign(tokenStr)) {
                 //获取用户名
-                String userName = JwtTokenUitl.getUserName(tokenStr);
+                String userName = JwtTokenUitl.getTelephone(tokenStr);
                 System.out.println(userName);
                 //通过用户名查询该用户的权限集合
                 List<String> preCodes = userMapper.selectPercodeByPerm(userName);
