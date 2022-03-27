@@ -105,6 +105,5 @@ public class DrugServiceImpl implements DrugService {
             drug.setMoney(drug.getSalePrice()*drug.getNum());
         }
         return drugs;
-
     }
 }
