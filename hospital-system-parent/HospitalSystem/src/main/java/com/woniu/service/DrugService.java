@@ -10,4 +10,6 @@ public interface DrugService {
     void updateDrug(Drug drug);
 
     void addDrug(Drug drug);
+
+    List<Drug> getDrugsByPrescriptionId(Integer id);
 }

@@ -17,6 +17,7 @@ import patientChangeDept from '../components/home/nurseHome/patient/PatientChang
 import queryPatientInfo from '../components/home/nurseHome/patient/QueryPatientInfo'
 import patientNursingRecord from '../components/home/nurseHome/patient/PatientNursingRecord'
 import medicalAdviceManager from '../components/home/nurseHome/patient/MedicalAdviceManager'
+import outHospital from '../components/home/nurseHome/patient/OutHospital'
 
 
 //Vue安装router
@@ -88,6 +89,7 @@ var router = new VueRouter({
 	            {path: "/nurse/care", component: patientNursingRecord},
 	            {path: "/nurse/medicalAdvice", component: medicalAdviceManager},
 	            {path:"/nurse/patientManager",component:patientChangeDoctorOrBed},
+	            {path:"/nurse/discharge",component:outHospital},
 	            {path:"/nurse/waitPatientManager",component:patientWithNotBed},
 	            {path:"/nurse/bed",component:bedManager},
 

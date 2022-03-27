@@ -40,4 +40,12 @@ public interface DrugMapper {
 
     @Update("update HOS_drug d set d.stock=#{newStock} where d.name=#{drugName}")
     void updateStock(@Param("newStock") Integer newStock, @Param("drugName") String drugName);
+
+    @Select("select d.name name,d.drug_type drugType,d.make_price makePrice,d.sale_price salePrice,\n" +
+            "d.specifications specifications,d.spare1 spare1,pd.num num  \n" +
+            "from HOS_prescription p\n" +
+            "left join HOS_prescription_drug pd on p.id=pd.prescription_id\n" +
+            "left join HOS_drug d on d.id=pd.drug_id\n" +
+            "where p.id=#{id}")
+    List<Drug> getDrugsByPrescriptionId(Integer id);
 }

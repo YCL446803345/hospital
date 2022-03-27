@@ -30,14 +30,6 @@
                 </el-input>
                 <!--带搜索按钮的文本框 -->
             </el-col>
-
-            <el-col :span="3">
-                <el-select v-model="status" placeholder="病人状态">
-                    <el-option label="所有病人" value="4" ></el-option>
-                    <el-option label="在院病人" value="1"></el-option>
-                    <el-option label="出院病人" value="2" ></el-option>
-                </el-select>
-            </el-col>
            
             <el-col :span="1.5" style="margin-left:2px;">
                 <el-button type="success" @click="search">查询</el-button>
@@ -73,7 +65,7 @@
             <el-table-column
                 prop="no"
                 label="病人编号"
-                width="150">
+                width="100">
             </el-table-column>
 
             <!-- <el-table-column
@@ -103,18 +95,18 @@
             <el-table-column
                 prop="cardId"
                 label="身份证号"
-                width="180">
+                width="160">
             </el-table-column>
 
             <el-table-column
                 prop="phone"
                 label="手机号"
-                width="150">
+                width="120">
             </el-table-column>
 
             <el-table-column
                 label="入院时间"
-                width="180">
+                width="140">
                 <template slot-scope="scope">
                     <i class="el-icon-time"></i>
                     <span style="margin-left: 10px">{{ scope.row.appointmenttTime}}</span>
@@ -180,6 +172,11 @@
                   size="mini"
                   type="primary"
                   @click="gotoBillViewForm(scope.row.id,scope.row.name,scope.row.no,scope.row.cardId,scope.row.deptName)">费用查询</el-button>
+               
+                <el-button
+                  size="mini"
+                  type="warning"
+                  @click="doOutHospital(scope.row.id)">审核通过</el-button>
                </template>
             </el-table-column>
         </el-table>
@@ -515,12 +512,13 @@
 export default {
    data() {
       return {
+        nurseId:'',
         nurseDeptId:'',
         no:'',
         name:'',
         gender:'',
         cardId:'',
-        status:"4",
+        status:3,
         patientList: [],
         total:100,
         pageNum:1,
@@ -549,15 +547,48 @@ export default {
    created(){
         var a = window.localStorage.getItem("roleId")
       
-      if(a=='4'||a=='2'){
+      if(a=='4'){
         this.nurseDeptId = parseInt(window.localStorage.getItem("deptId"))
+      }else if(a=='2'){
+        this.nurseId =  parseInt(window.localStorage.getItem("workerId"))
       }else if(a=='9'){
         this.nurseDeptId=''
-        
+        this.nurseId=''
       }
       this.search();
    },
    methods:{
+       doOutHospital(id){
+           this.$confirm('确定要通过审核吗?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                // type: 'warning'
+            }).then(() => {
+                this.$axios.get("/api/doOutHospital",{params:{id:id}})
+                .then(res=>{
+                    if(res.data.status==4001){
+                            this.$message({
+                            type: "error",
+                            message: "没有权限!",
+                             duration:2000
+                        });
+                     }else{
+                        this.$message({
+                            type: 'success',
+                            message: '审核成功!',
+                            duration:2000
+                        });
+                        this.search();
+                     }
+                })
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '已取消审核',
+                     duration:2000
+                });          
+            });
+       },
        closeBillView(){
              this.patient={
                 id:'',
@@ -639,7 +670,7 @@ export default {
       //查询病人信息列表
         search(){
             this.$axios.get("/api/findPatientsByChangeDept",{params:{name:this.name,no:this.no,gender:this.gender,
-                  cardId:this.cardId,deptId:this.nurseDeptId,deptId:this.nurseDeptId,status:this.status,pageNum:1,pageSize:this.pageSize}})
+                  cardId:this.cardId,nurseId:this.nurseId,deptId:this.nurseDeptId,status:3,pageNum:1,pageSize:this.pageSize}})
             .then(res=>{
                console.log(res.data);
                 this.patientList=res.data.list;
@@ -656,7 +687,7 @@ export default {
         changePage(value){
             this.pageNum=value;
             this.$axios.get("/api/findPatientsByChangeDept",{params:{name:this.searchName,no:this.no,gender:this.gender,
-                  caedId:this.cardId,status:this.status,pageNum:this.pageNum,pageSize:this.pageSize}})
+                  caedId:this.cardId,status:3,nurseId:this.nurseId,deptId:this.nurseDeptId,pageNum:this.pageNum,pageSize:this.pageSize}})
             .then(res=>{
                 this.patientList=res.data.list;
                 this.total=res.data.total;

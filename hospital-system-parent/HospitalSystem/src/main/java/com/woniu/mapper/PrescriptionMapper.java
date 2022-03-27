@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -56,4 +57,24 @@ public interface PrescriptionMapper {
             "\t\t\t\t\t\t\tleft join HOS_drug d on d.id = pd.drug_id\n" +
             "\t\t\t\t\t\t\twhere p.id=#{pid}")
     List<Prescription> byPidfindStockAndNum(Integer pid);
+
+    @Select("<script>" +
+            "select p.id id,p.doctor_id doctorId,w.name doctorName,p.create_time createTime,\n" +
+            "p.prescription_status prescriptionStatus,\n" +
+            "p.spare1 spare1,p.spare2 spare2 from HOS_prescription p \n" +
+            "left join HOS_worker w on p.doctor_id=w.id\n" +
+            "left join HOS_patient pa on p.patient_id=pa.id\n" +
+            "where pa.id=#{patientId}" +
+            "<if test='prescriptionStatus!=null and prescriptionStatus != \"\"'>and p.prescription_status =#{prescriptionStatus}</if>" +
+            "</script>")
+    List<Prescription> findPatients(Prescription prescription);
+
+    @Update("update HOS_prescription set prescription_status=2 where id=#{id}")
+    void checkPrescription(Integer id);
+
+    @Update("update HOS_prescription set prescription_status=4 where id=#{id}")
+    void doPrescription(Integer id);
+
+    @Update("update HOS_prescription set prescription_status=5 where id=#{id}")
+    void stopPrescription(Integer id);
 }

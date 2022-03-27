@@ -12,8 +12,8 @@
                 </el-input>
             </el-col>
             
-            <el-col :span="3">
-                <el-select v-model="deptId" placeholder="科室">
+            <el-col :span="3" v-if='this.nurseRoleId==9'>
+                <el-select v-model="deptId" placeholder="科室" v-if='this.nurseRoleId==9'>
                     <el-option v-for="dept in deptList" :key="dept.id" :label="dept.name" :value="dept.id"  ></el-option>
                 </el-select>
             </el-col>
@@ -159,6 +159,7 @@
 export default {
    data() {
       return {
+        nurseRoleId:'',
         code:'',
         deptId:'',
         bedList: [],
@@ -181,6 +182,14 @@ export default {
       }
    },
    created(){
+    var a = window.localStorage.getItem("roleId")
+    this.nurseRoleId=a;
+      
+      if(a=='4'||a=='2'){
+        this.deptId = parseInt(window.localStorage.getItem("deptId"))
+      }else if(a=='9'){
+        this.deptId=''
+      }
       this.search();
         this.$axios.get("/api/findDepts")
             .then(res=>{

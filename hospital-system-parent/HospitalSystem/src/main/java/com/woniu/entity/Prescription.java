@@ -30,7 +30,8 @@ public class Prescription {
     private Integer prescriptionStatus;
 
     private String spare1;
-
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private String spare2;
 
     private String spare3;

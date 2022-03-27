@@ -53,4 +53,13 @@ public class DrugServiceImpl implements DrugService {
     public void addDrug(Drug drug) {
         drugMapper.insert(drug);
     }
+
+    @Override
+    public List<Drug> getDrugsByPrescriptionId(Integer id) {
+        List<Drug> drugs=drugMapper.getDrugsByPrescriptionId(id);
+        for (Drug drug : drugs) {
+            drug.setMoney(drug.getSalePrice()*drug.getNum());
+        }
+        return drugs;
+    }
 }
