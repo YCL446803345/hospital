@@ -3,6 +3,8 @@ package com.woniu.mapper;
 import com.woniu.entity.Patient;
 import com.woniu.entity.PatientExample;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -109,4 +111,7 @@ public interface PatientMapper {
             "</script>")
     int selectTotal (@Param("name") String name,@Param("no") String no);
 
+    //审核后新增患者信息
+    @Insert("insert into HOS_patient(name,no,age,card_id,phone,gender,dept_id,base_desc,status) values(#{name},#{no},#{age},#{cardId},#{phone},#{gender},#{deptId},#{baseDesc},#{status})")
+    void addPatientByDoctor(Patient patient);
 }

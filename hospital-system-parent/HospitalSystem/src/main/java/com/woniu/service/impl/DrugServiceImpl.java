@@ -53,4 +53,9 @@ public class DrugServiceImpl implements DrugService {
     public void addDrug(Drug drug) {
         drugMapper.insert(drug);
     }
+
+    //获取所有药品列表
+    public List<Drug> findDrugList() {
+        return drugMapper.selectByExample(null);
+    }
 }

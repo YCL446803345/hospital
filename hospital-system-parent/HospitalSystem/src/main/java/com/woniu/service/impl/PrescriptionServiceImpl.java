@@ -1,7 +1,10 @@
 package com.woniu.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.woniu.entity.*;
 import com.woniu.mapper.*;
+import com.woniu.service.PrescriptionDrugService;
 import com.woniu.service.PrescriptionService;
 import com.woniu.util.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -143,5 +146,28 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     public Prescription getDrugNameAndNumAndCreateTime(Integer pid) {
         Prescription prescription = prescriptionMapper.getPreInfo(pid);
         return prescription;
+    }
+
+    //分页模糊查询处方列表
+    public PageInfo<Prescription> queryPrescriptionList(Prescription prescription, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Prescription> prescriptionList = prescriptionMapper.queryPrescriptionList(prescription);
+        PageInfo<Prescription> prescriptionPageInfo = new PageInfo<>(prescriptionList);
+        return prescriptionPageInfo;
+    }
+
+    @Override
+    public void addPrescription(Prescription prescription) {
+        //新增处方表数据
+        prescription.setCreateTime(new Date());
+        prescription.setPrescriptionStatus(1);
+        prescriptionMapper.addPrescription(prescription);
+
+        //新增处方药品中间表数据
+        PrescriptionDrug prescriptionDrug = new PrescriptionDrug();
+        prescriptionDrug.setPrescriptionId(prescription.getId());
+        prescriptionDrug.setDrugId(prescription.getDrugId());
+        prescriptionDrug.setNum(prescription.getNum());
+        prescriptionDrugMapper.addPrescriptionDrug(prescriptionDrug);
     }
 }

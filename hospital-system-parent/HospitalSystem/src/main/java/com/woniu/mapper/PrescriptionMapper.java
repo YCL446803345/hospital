@@ -6,6 +6,9 @@ import com.woniu.entity.PrescriptionExample;
 
 import java.util.Date;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
@@ -56,4 +59,11 @@ public interface PrescriptionMapper {
             "\t\t\t\t\t\t\tleft join HOS_drug d on d.id = pd.drug_id\n" +
             "\t\t\t\t\t\t\twhere p.id=#{pid}")
     List<Prescription> byPidfindStockAndNum(Integer pid);
+    //分页模糊查询处方列表
+    List<Prescription> queryPrescriptionList(Prescription prescription);
+
+    //下达处方
+    @Insert("insert into HOS_prescription(doctor_id,patient_id,create_time,prescription_status) values(#{doctorId},#{patientId},#{createTime},#{prescriptionStatus})")
+    @Options(useGeneratedKeys = true,keyProperty = "id",keyColumn = "id")
+    void addPrescription(Prescription prescription);
 }

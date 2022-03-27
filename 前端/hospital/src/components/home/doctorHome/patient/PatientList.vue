@@ -41,11 +41,10 @@
       </el-col>
     </el-row>
 
-    <!-- 
-        el-table数据表格
+        <!-- el-table数据表格
         :data 动态绑定 data中对象数组
-        scope.row 表示对象数组的当前行对象
-         -->
+        scope.row 表示对象数组的当前行对象 -->
+        
     <el-table :data="patientList" style="width: 100%">
       <el-table-column type="index" :index="getIndex" label="序号" width="50">
       </el-table-column>
@@ -107,9 +106,22 @@
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button size="mini" type="success" @click="gotoFindPatientInformation(scope.row.id)">患者详情</el-button>  
-          <el-button size="mini" type="danger" @click="gotoAddConsultationApplication(scope.row.id)">突发情况</el-button>
-          <el-button size="mini" type="success" @click="gotoAddPrescription(scope.row.id)">开处方</el-button>
-          <el-button size="mini" type="success" @click="gotoAddLeaveHospital(
+          <el-button size="mini" type="danger" @click="gotoAddConsultationApplication(
+            scope.row.id,
+            scope.row.name ,
+            scope.row.no ,
+            scope.row.age ,
+            scope.row.cardId ,
+            scope.row.phone ,
+            scope.row.gender ,
+            scope.row.deptName,
+            scope.row.deptId,
+            scope.row.baseDesc,
+            scope.row.doctorName,
+            scope.row.doctorId
+            )">突发情况</el-button>
+          
+          <el-button size="mini" type="primary" @click="gotoAddLeaveHospital(
               scope.row.id,
               scope.row.name,
               scope.row.doctorId,
@@ -166,6 +178,92 @@
       </div>
     </el-dialog>
 
+    <!-- 突发情况 -->
+    <el-dialog :visible.sync="addConsultationApplicationForm">
+      <h1 align="center">申请会诊</h1>
+      <br />
+      <template>
+        <el-descriptions class="margin-top" title="" :column="3" border>
+          <el-descriptions-item>
+            <template slot="label"><i class="el-icon-user"></i>病人</template>
+            {{ addConsultationApplication.name }}
+          </el-descriptions-item>
+
+          <el-descriptions-item>
+            <template slot="label"><i class="el-icon-user"></i>患者编号</template>
+            {{ addConsultationApplication.no }}
+          </el-descriptions-item>
+
+          <el-descriptions-item>
+            <template slot="label"><i class="el-icon-user"></i>主治医生</template>
+            {{ addConsultationApplication.doctorName }}
+          </el-descriptions-item>
+
+          <el-descriptions-item>
+            <template slot="label"><i class="el-icon-user"></i>年龄</template>
+            {{ addConsultationApplication.age }}
+          </el-descriptions-item>
+
+          <el-descriptions-item>
+            <template slot="label"><i class="el-icon-user"></i>身份证号</template>
+            {{ addConsultationApplication.cardId }}
+          </el-descriptions-item>
+          
+          <el-descriptions-item>
+            <template slot="label"><i class="el-icon-user"></i>电话</template>
+            {{ addConsultationApplication.phone }}
+          </el-descriptions-item>
+
+          <el-descriptions-item>
+            <template slot="label"><i class="el-icon-user"></i>性别</template>
+            {{ addConsultationApplication.gender ==='1'?'男':'女' }}
+          </el-descriptions-item>
+
+          <el-descriptions-item>
+            <template slot="label"><i class="el-icon-user"></i>科室</template>
+            {{ addConsultationApplication.deptName }}
+          </el-descriptions-item>
+
+          <el-descriptions-item>
+            <template slot="label"><i class="el-icon-user"></i>症状</template>
+            {{ addConsultationApplication.baseDesc }}
+          </el-descriptions-item>
+
+        </el-descriptions>
+      </template>
+
+      <el-divider></el-divider>
+
+      <el-form :model="addConsultationApplication">
+
+        <el-form-item label="紧急度" :label-width="formLabelWidth">
+            <el-radio v-model="addConsultationApplication.consultationEmergencyId" label="1" value=1>紧急</el-radio>
+            <el-radio v-model="addConsultationApplication.consultationEmergencyId" label="2" value=2>24小时</el-radio>
+            <el-radio v-model="addConsultationApplication.consultationEmergencyId" label="3" value=3>一般</el-radio>
+        </el-form-item>
+
+        <el-form-item label="会诊类别" :label-width="formLabelWidth">
+            <el-radio v-model="addConsultationApplication.consultationCategoryId" label="1" value=1>它科会诊</el-radio>
+            <el-radio v-model="addConsultationApplication.consultationCategoryId" label="2" value=2>科内会诊</el-radio>
+            <el-radio v-model="addConsultationApplication.consultationCategoryId" label="3" value=3>一般会诊</el-radio>
+        </el-form-item>
+
+        <el-form-item label="原因" :label-width="formLabelWidth">
+          <el-input v-model="addConsultationApplication.reason" autocomplete="off"></el-input>
+        </el-form-item>
+
+        <el-form-item label="突发情况" :label-width="formLabelWidth">
+          <el-input v-model="addConsultationApplication.desc" autocomplete="off"></el-input>
+        </el-form-item>
+
+      </el-form>
+
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="doAddConsultationApplication">下 达</el-button>
+        <el-button @click="addConsultationApplicationForm = false;addConsultationApplication={}">取 消</el-button>
+      </div>
+    </el-dialog>
+
 
 
   </div>
@@ -179,15 +277,18 @@ export default {
       name: "",
       gender: "",
       cardId: "",
-      status: 1,
+      status: "",
       patientList: [],
       total: 100,
       pageNum: 1,
       pageSize: 5,
       headers: {},
-
+      formLabelWidth: "80px",
       addLeaveHospital:{},
-      addLeaveHospitalForm : false
+      addLeaveHospitalForm: false,
+
+      addConsultationApplication:{},
+      addConsultationApplicationForm: false,
 
 
     };
@@ -197,6 +298,72 @@ export default {
     this.headers = { tokenStr: window.localStorage.getItem("tokenStr") };
   },
   methods: {
+    //打开下达医嘱列表
+      gotoAddConsultationApplication(
+        id,
+        name ,
+        no ,
+        age ,
+        cardId ,
+        phone ,
+        gender ,
+        deptName,
+        deptId,
+        baseDesc,
+        doctorName,
+        doctorId
+        ) {
+        this.addConsultationApplication = {
+        id:id,
+        name:name ,
+        no:no ,
+        age:age ,
+        cardId:cardId ,
+        phone:phone ,
+        gender: gender,
+        deptName:deptName,
+        deptId:deptId,
+        baseDesc:baseDesc,
+        doctorName:doctorName,
+        doctorId:doctorId
+      };
+        this.addConsultationApplicationForm = true;
+      },
+
+      //执行突发情况
+      doAddConsultationApplication() {
+      
+        //发送axios请求
+        var consultationApplication=this.addConsultationApplication;
+         console.log("所说的上档次")
+        //  alert(medicalAdvice)
+         console.log(consultationApplication)
+        this.$axios.post("/api/doctor/gotoAddConsultationApplication",consultationApplication).then((res) => {
+          console.log(res.data);
+          if (res.status == 200) {
+            this.$message({
+              showClose: true,
+              message: "下达成功",
+              type: "success",
+              duration: 600,
+            });
+            this.addConsultationApplication = {};
+            this.addConsultationApplicationForm = false;
+            // this.search(); //刷新列表
+          } else {
+            this.$message({
+              showClose: true,
+              message: "下达失败",
+              type: "error",
+              duration: 600,
+            });
+          }
+        });
+      },
+
+
+
+
       //准备出院
       gotoAddLeaveHospital(id,name,doctorId,doctorName) {
         this.addLeaveHospital = {
@@ -252,7 +419,7 @@ export default {
             gender: this.gender,
             cardId: this.cardId,
             status: this.status,
-            pageNum: 1,
+            pageNum: this.pageNum,
             pageSize: this.pageSize,
           },
         })
@@ -271,24 +438,8 @@ export default {
     },
     changePage(value) {
       this.pageNum = value;
-      this.$axios
-        .get("/api/findPatients", {
-          params: {
-            name: this.searchName,
-            no: this.no,
-            gender: this.gender,
-            caedId: this.cardId,
-            status: this.status,
-            pageNum: this.pageNum,
-            pageSize: this.pageSize,
-          },
-        })
-        .then((res) => {
-          this.patientList = res.data.list;
-          this.total = res.data.total;
-          this.pageNum = res.data.pageNum;
-          this.pageSize = res.data.pageSize;
-        });
+      this.search();
+      
     },
     getIndex(i) {
       return i + 1 + this.pageSize * (this.pageNum - 1);

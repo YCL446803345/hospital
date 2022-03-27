@@ -1,6 +1,7 @@
 package com.woniu.service;
 
 
+import com.github.pagehelper.PageInfo;
 import com.woniu.entity.Prescription;
 
 
@@ -20,4 +21,8 @@ public interface PrescriptionService {
     LinkedHashSet<String> updateByBatch(List<String> newlist, String account);
 
     Prescription getDrugNameAndNumAndCreateTime(Integer pid);
+    //分页模糊查询处方列表
+    PageInfo<Prescription> queryPrescriptionList(Prescription prescription, Integer pageNum, Integer pageSize);
+    //处方下达
+    void addPrescription(Prescription prescription);
 }

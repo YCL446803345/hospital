@@ -33,4 +33,5 @@ public interface PatientService {
     void updatePatient(Patient patient);
 
     HospitalizationBill getHospitalizationBill(Patient patient);
+
 }

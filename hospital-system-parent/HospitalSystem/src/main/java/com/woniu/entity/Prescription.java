@@ -37,10 +37,18 @@ public class Prescription {
 
     private String drugs;
 
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date startTime;
 
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date endTime;
 
+    private String patientName;
+    private String drugTypeName;
+    private String specificationsName;
+    private Integer drugId;
 
     //药房查看处方表所需字段
     private Integer pid;

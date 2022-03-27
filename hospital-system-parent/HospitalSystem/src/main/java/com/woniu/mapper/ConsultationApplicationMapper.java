@@ -3,6 +3,8 @@ package com.woniu.mapper;
 import com.woniu.entity.ConsultationApplication;
 import com.woniu.entity.ConsultationApplicationExample;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
@@ -42,4 +44,8 @@ public interface ConsultationApplicationMapper {
     //医生站取消会诊
     @Update("update HOS_consultation_application set status = 3 where id=#{id}")
     void cancelConsultationApplication(Integer id);
+
+    //突发情况,申请会诊
+    @Insert("insert into HOS_consultation_application(doctor_id,patient_id,consultation_date,reason,`desc`,consultation_emergency_id,consultation_category_id,status) values(#{doctorId},#{id},#{consultationDate},#{reason},#{desc},#{consultationEmergencyId},#{consultationCategoryId},#{status})")
+    void addConsultationApplication(ConsultationApplication consultationApplication);
 }

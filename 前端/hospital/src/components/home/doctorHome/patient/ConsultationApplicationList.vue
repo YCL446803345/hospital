@@ -103,6 +103,10 @@
             scope.row.doctorName,
             scope.row.patientId,
             scope.row.doctorId,
+            scope.row.reason,
+            scope.row.desc,
+            scope.row.consultationEmergencyId,
+            scope.row.consultationCategoryId
             )">下达医嘱</el-button>
           <el-button size="mini" type="primary" @click=" gotoUpdateConsultationApplication(
                 scope.row.id,
@@ -188,6 +192,28 @@
             <template slot="label"><i class="el-icon-user"></i>主治医生</template>
             {{ addMedicalAdvice.doctorName }}
           </el-descriptions-item>
+          
+          <el-descriptions-item>
+            <template slot="label"><i class="el-icon-user"></i>原因</template>
+            {{ addMedicalAdvice.reason }}
+          </el-descriptions-item>
+
+          <el-descriptions-item>
+            <template slot="label"><i class="el-icon-user"></i>描述</template>
+            {{ addMedicalAdvice.desc }}
+          </el-descriptions-item>
+
+          <el-descriptions-item>
+            <template slot="label"><i class="el-icon-tickets"></i>紧急度</template>
+            {{ addMedicalAdvice.consultationEmergencyId ==='1'?'紧急': 
+               addMedicalAdvice.consultationEmergencyId ==='2'?'24小时':'一般' }}
+          </el-descriptions-item>
+
+          <el-descriptions-item>
+            <template slot="label"><i class="el-icon-tickets"></i>类别</template>
+            {{ addMedicalAdvice.consultationCategoryId ==='1'?'它科会诊': 
+               addMedicalAdvice.consultationCategoryId ==='2'?'科内会诊':'一般会诊' }}
+          </el-descriptions-item>
 
         </el-descriptions>
       </template>
@@ -256,12 +282,16 @@ export default {
   },
   methods: {
     //打开下达医嘱列表
-      gotoAddMedicalAdvice(patientName,doctorName,patientId,doctorId) {
+      gotoAddMedicalAdvice(patientName,doctorName,patientId,doctorId,reason,desc,consultationEmergencyId,consultationCategoryId) {
         this.addMedicalAdvice = {
         patientName: patientName,
         doctorName: doctorName,
         patientId: patientId,
         doctorId: doctorId,
+        reason: reason,
+        desc: desc,
+        consultationEmergencyId: consultationEmergencyId,
+        consultationCategoryId: consultationCategoryId
       };
         this.addMedicalAdviceForm = true;
       },
@@ -420,22 +450,7 @@ export default {
     },
     changePage(value) {
       this.pageNum = value;
-      this.$axios
-        .get("/api/doctor/getConsultationApplication", {
-          params: {
-            consultationEmergencyId: this.consultationEmergencyId,
-            consultationCategoryId: this.consultationCategoryId,
-            status: this.status,
-            pageNum: this.pageNum,
-            pageSize: this.pageSize,
-          },
-        })
-        .then((res) => {
-          this.consultationApplicationList = res.data.data.list;
-          this.total = res.data.data.total;
-          this.pageNum = res.data.data.pageNum;
-          this.pageSize = res.data.data.pageSize;
-        });
+      this.search();
     },
     getIndex(i) {
       return i + 1 + this.pageSize * (this.pageNum - 1);

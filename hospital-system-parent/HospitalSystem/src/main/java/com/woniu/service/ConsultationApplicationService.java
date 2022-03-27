@@ -13,4 +13,6 @@ public interface ConsultationApplicationService {
 
     //取消会诊
     void gotoCancelConsultationApplicationById(Integer id);
+    //突发情况申请会诊
+    void addConsultationApplication(ConsultationApplication consultationApplication);
 }

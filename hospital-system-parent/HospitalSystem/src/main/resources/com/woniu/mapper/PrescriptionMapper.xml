@@ -256,5 +256,26 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
+  <!--queryPrescriptionList-->
+  <!--医生站分页模糊查询处方列表-->
+  <select id="queryPrescriptionList" resultType="Prescription">
+    select pr.id,wo.name doctorName,pa.name patientName,dr.name drugName,dr.drug_type drugTypeName,
+           dr.specifications specificationsName,pd.num num,pr.create_time,pr.doctor_id,pr.patient_id,
+           pd.prescription_id,pd.drug_id,pr.prescription_status,dr.spare2,dr.spare1
+    from HOS_prescription pr,
+         HOS_worker wo,
+         HOS_patient pa,
+         HOS_prescription_drug pd,
+         HOS_drug dr
+    where pr.doctor_id=wo.id and pr.patient_id=pa.id and pr.id=pd.prescription_id and pd.drug_id=dr.id
+
+    <where>
+      <if test="prescriptionStatus!=null and prescriptionStatus != ''">and pr.prescription_status = #{prescriptionStatus}</if>
+      <if test="startTime != null and startTime != ''">and pr.create_time &gt;= #{startTime}</if>
+      <if test="endTime != null and endTime != ''">and pr.create_time &lt;= #{endTime}</if>
+    </where> order by pr.create_time desc
+  </select>
+
+
 
 </mapper>

@@ -36,6 +36,9 @@ import ConsultationApplicationList from '../components/home/doctorHome/patient/C
 import MedicalAdviceList from '../components/home/doctorHome/patient/MedicalAdviceList' //医嘱列表
 import InHospitalTableList from '../components/home/doctorHome/patient/InHospitalTableList' //预约住院列表
 import LeaveHospitalList from '../components/home/doctorHome/patient/LeaveHospitalList' //出院申请列表
+import PrescriptionList from '../components/home/doctorHome/patient/PrescriptionList' //处方列表
+import DrugOutList from '../components/home/doctorHome/patient/DrugOutList' //退药列表
+import PatientRecord from '../components/home/doctorHome/patient/PatientRecord' //护理列表
 
 //药房组件
 
@@ -109,6 +112,9 @@ var router = new VueRouter({
                 { path: "/doctor/medicalAdviceList", component: MedicalAdviceList },
                 { path: "/doctor/inHospitalTableList", component: InHospitalTableList },
                 { path: "/doctor/leaveHospitalList", component: LeaveHospitalList },
+                { path: "/doctor/prescriptionList", component: PrescriptionList },
+                { path: "/doctor/drugOutList", component: DrugOutList },
+                { path: "/doctor/patientRecord", component: PatientRecord },
 
                 { path: "/worker/scheduling", component: Scheduling },
                 { path: "/user/perms", component: Perms },
