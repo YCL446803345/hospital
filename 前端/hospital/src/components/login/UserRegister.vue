@@ -16,7 +16,8 @@
           </div>
           </el-form-item>
           <div align="center">
-          <el-button type="primary" icon="el-icon-s-custom" @click="doRegister('loginForm')" >注册</el-button>
+          <el-button type="primary" icon="el-icon-check" @click="doRegister('loginForm')" >提交</el-button>
+          <el-button type="primary" icon="el-icon-close" @click="back()" >返回</el-button>
           </div>
         </el-form>
       </div>
@@ -51,7 +52,9 @@ export default {
 
    },
    methods:{    
-
+back(){
+  this.$router.push('/gotoUserLogin')
+},
      doRegister(forName){
 
         let data = {telephone:this.user.telephone,password:this.user.password}

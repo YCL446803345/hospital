@@ -2,12 +2,12 @@ package com.woniu.mapper;
 
 import com.woniu.entity.Bed;
 import com.woniu.entity.BedExample;
-import java.util.List;
-
 import com.woniu.entity.Patient;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+
+import java.util.List;
 
 public interface BedMapper {
     long countByExample(BedExample example);
@@ -49,4 +49,7 @@ public interface BedMapper {
             "<if test='deptId!=null and deptId != \"\"'>and b.dept_id = #{deptId}</if> ORDER BY b.id asc " +
             "</script>")
     List<Bed> findBeds(Bed bed);
+
+    @Select("select * from HOS_bed\n")
+    List<Bed> findBedList();
 }

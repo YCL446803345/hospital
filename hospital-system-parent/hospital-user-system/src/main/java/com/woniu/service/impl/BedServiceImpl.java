@@ -3,7 +3,6 @@ package com.woniu.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.woniu.entity.Bed;
-import com.woniu.entity.BedExample;
 import com.woniu.entity.Patient;
 import com.woniu.mapper.BedMapper;
 import com.woniu.service.BedService;
@@ -36,5 +35,13 @@ public class BedServiceImpl implements BedService {
         List<Bed> beds = bedMapper.findBeds(bed);
         PageInfo<Bed> PageInfo = new PageInfo<>(beds);
         return PageInfo;
+    }
+
+
+    @Override
+    public List<Bed> findBedList() {
+        List<Bed> bedList = bedMapper.findBedList();
+        System.err.println(bedList);
+        return bedList;
     }
 }

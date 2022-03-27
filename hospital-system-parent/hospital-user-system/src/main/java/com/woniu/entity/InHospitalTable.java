@@ -26,7 +26,7 @@ public class InHospitalTable {
 
     private Integer deptId;
 
-    private Integer badId;
+    private Integer bedId;
 
     private String reason;
 

@@ -24,8 +24,8 @@ public class MyAuthenticationSucess implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
         try {
-            String username = request.getParameter("account");
-            String tokenStr = JwtTokenUitl.createSign(username);
+            String telephone = request.getParameter("telephone");
+            String tokenStr = JwtTokenUitl.createSign(telephone);
 
             ResponseResult<String> result = new ResponseResult(tokenStr,"登录成功",200);
             response.setContentType("application/json;charset=utf-8");

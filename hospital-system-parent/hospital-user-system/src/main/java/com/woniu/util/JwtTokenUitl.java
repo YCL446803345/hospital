@@ -26,13 +26,13 @@ public class JwtTokenUitl {
     /*
     生成签名  50分钟过期
      */
-    public static String createSign(String userName) throws Exception {
+    public static String createSign(String telephone) throws Exception {
         try {
             Date date = new Date(System.currentTimeMillis() + EXPIRE_TIME);
             Algorithm algorithm = Algorithm.HMAC256(SECRET);
             return JWT.create()
                     // 将 user id 保存到 token 里面
-                    .withAudience(userName)
+                    .withAudience(telephone)
                     // 50分钟后token过期
                     .withExpiresAt(date)
                     //.withClaim()
@@ -50,7 +50,7 @@ public class JwtTokenUitl {
      * @param token
      * @return
      */
-    public static String getUserName(String token) {
+    public static String getTelephone(String token) {
         try {
             String userId = JWT.decode(token).getAudience().get(0);
             return userId;
