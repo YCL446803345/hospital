@@ -19,8 +19,9 @@
                 <el-option label="西药" value="西药"></el-option>
                 </el-select>
             </el-col>
-            <el-col :span="7"  style="margin-left:10px">
+            <el-col :span="8"  style="margin-left:10px">
                 <el-button  icon="el-icon-search" @click="createMethods()"></el-button>
+                <el-button size="mini" type="primary">通知采购药品</el-button>
             </el-col>
         </el-row>
          <div f_l main>
