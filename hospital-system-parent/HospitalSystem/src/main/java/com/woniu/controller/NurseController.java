@@ -16,7 +16,8 @@ import java.util.List;
  * 护士站模块
  */
 @RestController
-public class NurseController {
+public class
+NurseController {
     @Autowired
     private PatientService patientService;
 
@@ -43,6 +44,12 @@ public class NurseController {
 
     @Autowired
     private MedicalAdviceService medicalAdviceService;
+
+    @Autowired
+    private PrescriptionService prescriptionService;
+
+    @Autowired
+    private DrugService drugService;
 
     /**
      * 职工登录时得到职工的所有信息
@@ -323,5 +330,62 @@ public class NurseController {
     @GetMapping("/doMedicalAdvice")
     public void doMedicalAdvice(Integer id) {
         medicalAdviceService.doMedicalAdvice(id);
+    }
+
+    /**
+     * 查询病人处方信息
+     * @return
+     */
+    @GetMapping("/getPrescriptions")
+    public ResponseEntity<PageInfo<Prescription>> getPrescriptions(Prescription prescription ,@RequestParam(value = "pageNum", defaultValue = "1", required = false) Integer pageNum,
+                                                                     @RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize) {
+        PageInfo<Prescription> prescriptions = prescriptionService.getPrescriptions(prescription,pageNum,pageSize);
+        return new ResponseEntity<PageInfo<Prescription>>(prescriptions,HttpStatus.OK);
+    }
+
+    /**
+     * 通过处方id查询药品星系
+     * @return
+     */
+    @GetMapping("/getDrugsByPrescriptionId")
+    public ResponseEntity<List<Drug>> getDrugsByPrescriptionId(Integer id) {
+        final List<Drug> drugs =drugService.getDrugsByPrescriptionId(id);
+        return new ResponseEntity<List<Drug>>(drugs,HttpStatus.OK);
+    }
+
+    /**
+     * 校对处方
+     * @return
+     */
+    @GetMapping("/checkPrescription")
+    public void checkPrescription(Integer id) {
+        prescriptionService.checkPrescription(id);
+    }
+
+    /**
+     * 执行处方
+     * @return
+     */
+    @GetMapping("/doPrescription")
+    public void doPrescription(Integer id) {
+        prescriptionService.doPrescription(id);
+    }
+
+    /**
+     * 撤销处方
+     * @return
+     */
+    @GetMapping("/stopPrescription")
+    public void stopPrescription(Integer id) {
+        prescriptionService.stopPrescription(id);
+    }
+
+    /**
+     * 审核出院
+     * @return
+     */
+    @GetMapping("/doOutHospital")
+    public void doOutHospital(Integer id) {
+        patientService.doOutHospital(id);
     }
 }

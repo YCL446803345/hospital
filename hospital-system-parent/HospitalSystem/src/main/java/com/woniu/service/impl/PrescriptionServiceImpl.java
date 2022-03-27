@@ -1,5 +1,7 @@
 package com.woniu.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.woniu.entity.*;
 import com.woniu.mapper.*;
 import com.woniu.service.PrescriptionService;
@@ -135,5 +137,28 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     public Prescription getDrugNameAndNumAndCreateTime(Integer pid) {
         Prescription prescription = prescriptionMapper.getPreInfo(pid);
         return prescription;
+    }
+
+    @Override
+    public PageInfo<Prescription> getPrescriptions(Prescription prescription, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<Prescription> prescriptions = prescriptionMapper.findPatients(prescription);
+        PageInfo<Prescription> patientPageInfo = new PageInfo<>(prescriptions);
+        return patientPageInfo;
+    }
+
+    @Override
+    public void checkPrescription(Integer id) {
+        prescriptionMapper.checkPrescription(id);
+    }
+
+    @Override
+    public void doPrescription(Integer id) {
+        prescriptionMapper.doPrescription(id);
+    }
+
+    @Override
+    public void stopPrescription(Integer id) {
+        prescriptionMapper.stopPrescription(id);
     }
 }

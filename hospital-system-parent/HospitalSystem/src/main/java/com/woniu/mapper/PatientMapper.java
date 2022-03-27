@@ -42,7 +42,9 @@ public interface PatientMapper {
             "<if test='no!=null and no != \"\"'>and p.no like '%${no}%'</if>" +
             "<if test='cardId!=null and cardId != \"\"'>and p.card_id like '%${cardId}%'</if>" +
             "<if test='gender!=null and gender != \"\"'>and p.gender = #{gender}</if>" +
-            "<if test='status!=null and status != \"\"'>and p.status = #{status}</if>" +
+            "<if test='nurseId!=null and nurseId != \"\"'>and p.nurse_id  = #{nurseId}</if>" +
+            "<if test='deptId!=null and deptId != \"\"'>and p.dept_id  = #{deptId}</if>" +
+            "<if test='status!=null and status != \"\"'>and p.status in (1,2,4)</if>" +
             "</script>")
     List<Patient> findPatients(Patient patient);
 
@@ -60,7 +62,9 @@ public interface PatientMapper {
             "<if test='no!=null and no != \"\"'>and p.no like '%${no}%'</if>" +
             "<if test='cardId!=null and cardId != \"\"'>and p.card_id like '%${cardId}%'</if>" +
             "<if test='gender!=null and gender != \"\"'>and p.gender = #{gender}</if>" +
-            "<if test='status!=null and status != \"\"'>and p.status = #{status}</if>" +
+            "<if test='nurseId!=null and nurseId != \"\"'>and p.nurse_id  = #{nurseId}</if>" +
+            "<if test='deptId!=null and deptId != \"\"'>and p.dept_id  = #{deptId}</if>" +
+            "<if test='status!=null and status != \"\"'>and p.status in (1,2,4)</if>" +
             "</script>")
     List<Patient> findPatientsWithNotBed(Patient patient);
 
@@ -91,10 +95,13 @@ public interface PatientMapper {
             "<if test='no!=null and no != \"\"'>and p.no like '%${no}%'</if>" +
             "<if test='cardId!=null and cardId != \"\"'>and p.card_id like '%${cardId}%'</if>" +
             "<if test='gender!=null and gender != \"\"'>and p.gender = #{gender}</if>" +
-            "<if test='status==null and status == \"\"'>and p.status  = #{1,2,3}</if>" +
-            "<if test='status==1 '>and p.status in (1,2)</if>" +
-            "<if test='status==2 '>and p.status in (3)</if>" +
-            "<if test='deptId!=null and deptId != \"\"'>and p.dept_id = #{deptId}</if>" +
+            "<if test='status==null and status == \"\"'>and p.status in (1,2,3,4)</if>" +
+            "<if test='nurseId!=null and nurseId != \"\"'>and p.nurse_id  = #{nurseId}</if>" +
+            "<if test='deptId!=null and deptId != \"\"'>and p.dept_id  = #{deptId}</if>" +
+            "<if test='status==1' >and p.status in (1,2,4)</if>" +
+            "<if test='status==2' >and p.status = 3</if>" +
+            "<if test='status==3' >and p.status = 2</if>" +
+            "<if test='status==4' >and p.status in (1,2,3,4)</if>" +
             "</script>")
     List<Patient> findPatientsByChangeDept(Patient patient);
 
@@ -109,4 +116,6 @@ public interface PatientMapper {
             "</script>")
     int selectTotal (@Param("name") String name,@Param("no") String no);
 
+    @Update("update HOS_patient set status=4 where id =#{id}")
+    void doOutHospital(Integer id);
 }

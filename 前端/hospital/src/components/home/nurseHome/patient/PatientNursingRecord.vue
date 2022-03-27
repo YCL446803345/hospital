@@ -597,6 +597,7 @@ export default {
    created(){
       var a = window.localStorage.getItem("roleId")
       
+      
       if(a=='4'){
         this.nurseDeptId = parseInt(window.localStorage.getItem("deptId"))
       }else if(a=='2'){
@@ -606,8 +607,8 @@ export default {
         this.nurseId=''
       }
 
-    //   console.log('nurseDeptId'+this.nurseDeptId)
-    //   console.log('nurseId'+this.nurseId)
+      console.log('nurseDeptId'+this.nurseDeptId)
+      console.log('nurseId'+this.nurseId)
 
       this.search();
    },

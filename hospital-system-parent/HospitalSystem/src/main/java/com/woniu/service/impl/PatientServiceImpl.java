@@ -173,5 +173,13 @@ public class PatientServiceImpl implements PatientService {
         //计算天数,并强转成int类型
         return (int) Math.ceil(time1 / 1000 / 60 / 60 / 24);
     }
+
+    /**
+     * 冰热出院审核
+     * @param id
+     */
+    public void doOutHospital(Integer id) {
+        patientMapper.doOutHospital(id);
+    }
 }
 

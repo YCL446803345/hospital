@@ -76,6 +76,12 @@ export default {
                           window.localStorage.setItem("account",this.worker.account)
                           //将当前用户id存入本地浏览器
                           // window.localStorage.setItem("id",this.worker.id)
+                           this.$axios.get("/api/getWorker",{params:{account:this.worker.account}})
+                          .then(res=>{
+                              window.localStorage.setItem("roleId",res.data.roleId)
+                              window.localStorage.setItem("deptId",res.data.deptId)
+                              window.localStorage.setItem("workerId",res.data.id)
+                            })
                           //跳转
                           this.$router.push('/gotoHome')
                       }else{

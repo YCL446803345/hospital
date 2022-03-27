@@ -256,6 +256,8 @@
 export default {
    data() {
       return {
+        nurseId:'',
+        nurseDeptId:'',
         no:'',
         name:'',
         gender:'',
@@ -295,6 +297,16 @@ export default {
       }
    },
    created(){
+    var a = window.localStorage.getItem("roleId")
+      
+      if(a=='4'){
+        this.nurseDeptId = parseInt(window.localStorage.getItem("deptId"))
+      }else if(a=='2'){
+        this.nurseId =  parseInt(window.localStorage.getItem("workerId"))
+      }else if(a=='9'){
+        this.nurseDeptId=''
+        this.nurseId=''
+      }
       this.search();
       this.headers={tokenStr:window.localStorage.getItem('tokenStr')};
    },
@@ -381,7 +393,7 @@ export default {
         search(){
             
             this.$axios.get("/api/findPatientsWithNotBed",{params:{name:this.name,no:this.no,gender:this.gender,
-                  cardId:this.cardId,status:this.status,pageNum:1,pageSize:this.pageSize}})
+                  cardId:this.cardId,nurseId:this.nurseId,deptId:this.nurseDeptId,status:this.status,pageNum:1,pageSize:this.pageSize}})
             .then(res=>{
                console.log(res.data);
                 this.patientList=res.data.list;
@@ -398,7 +410,7 @@ export default {
         changePage(value){
             this.pageNum=value;
             this.$axios.get("/api/findPatientsWithNotBed",{params:{name:this.searchName,no:this.no,gender:this.gender,
-                  caedId:this.cardId,status:this.status,pageNum:this.pageNum,pageSize:this.pageSize}})
+                  caedId:this.cardId,nurseId:this.nurseId,deptId:this.nurseDeptId,status:this.status,pageNum:this.pageNum,pageSize:this.pageSize}})
             .then(res=>{
                 this.patientList=res.data.list;
                 this.total=res.data.total;

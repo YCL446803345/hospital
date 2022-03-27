@@ -55,5 +55,6 @@ public class MedicalAdvice {
 
     private String spare3;
 
+    private Integer projectType;
 
 }

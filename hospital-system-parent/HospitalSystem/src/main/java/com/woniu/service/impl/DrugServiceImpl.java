@@ -55,6 +55,7 @@ public class DrugServiceImpl implements DrugService {
         drugMapper.insert(drug);
     }
 
+
     //by药品id查询药品信息
     public Drug getDrugById(Integer id) {
         Drug drug = drugMapper.selectByPrimaryKey(id);
@@ -96,5 +97,14 @@ public class DrugServiceImpl implements DrugService {
             ids.add(i);
         }
         drugMapper.updateByIdBatchStatus(ids);
+
+    @Override
+    public List<Drug> getDrugsByPrescriptionId(Integer id) {
+        List<Drug> drugs=drugMapper.getDrugsByPrescriptionId(id);
+        for (Drug drug : drugs) {
+            drug.setMoney(drug.getSalePrice()*drug.getNum());
+        }
+        return drugs;
+
     }
 }
