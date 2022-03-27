@@ -303,4 +303,11 @@
       spare3 = #{spare3,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+<!--  批量上架-->
+  <update id="updateByIdBatchStatus" parameterType="java.util.List">
+    <foreach collection="list" separator=";" item="l">
+      update HOS_drug set status='1' where id=#{l}
+    </foreach>
+  </update>
 </mapper>
