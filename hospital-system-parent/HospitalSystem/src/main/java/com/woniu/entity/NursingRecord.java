@@ -1,5 +1,8 @@
 package com.woniu.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 public class NursingRecord {
@@ -10,7 +13,8 @@ public class NursingRecord {
     private Integer nurseId;
 
     private String nursingLevel;
-
+    @DateTimeFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
     private Date createTime;
 
     private String decs;
@@ -20,6 +24,97 @@ public class NursingRecord {
     private String spare2;
 
     private String spare3;
+
+    private String temperature;
+
+    private String weight;
+
+    private String breathe;
+
+    private String pulse;
+
+    private String takeMedicine;
+
+    private String patientName;
+
+    private String nurseName;
+
+    private String modifyName;
+    @DateTimeFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
+    private Date modifyTime;
+
+    public String getModifyName() {
+        return modifyName;
+    }
+
+    public void setModifyName(String modifyName) {
+        this.modifyName = modifyName;
+    }
+
+    public Date getModifyTime() {
+        return modifyTime;
+    }
+
+    public void setModifyTime(Date modifyTime) {
+        this.modifyTime = modifyTime;
+    }
+
+    public String getPatientName() {
+        return patientName;
+    }
+
+    public void setPatientName(String patientName) {
+        this.patientName = patientName;
+    }
+
+    public String getNurseName() {
+        return nurseName;
+    }
+
+    public void setNurseName(String nurseName) {
+        this.nurseName = nurseName;
+    }
+
+    public String getTemperature() {
+        return temperature;
+    }
+
+    public void setTemperature(String temperature) {
+        this.temperature = temperature;
+    }
+
+    public String getWeight() {
+        return weight;
+    }
+
+    public void setWeight(String weight) {
+        this.weight = weight;
+    }
+
+    public String getBreathe() {
+        return breathe;
+    }
+
+    public void setBreathe(String breathe) {
+        this.breathe = breathe;
+    }
+
+    public String getPulse() {
+        return pulse;
+    }
+
+    public void setPulse(String pulse) {
+        this.pulse = pulse;
+    }
+
+    public String getTakeMedicine() {
+        return takeMedicine;
+    }
+
+    public void setTakeMedicine(String takeMedicine) {
+        this.takeMedicine = takeMedicine;
+    }
 
     public Integer getId() {
         return id;

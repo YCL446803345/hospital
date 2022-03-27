@@ -10,4 +10,7 @@ public interface ConsultationApplicationService {
 
     //编辑会诊信息
     void updateConsultationApplication(ConsultationApplication consultationApplication);
+
+    //取消会诊
+    void gotoCancelConsultationApplicationById(Integer id);
 }

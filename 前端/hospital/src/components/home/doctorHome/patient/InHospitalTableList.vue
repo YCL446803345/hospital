@@ -83,13 +83,11 @@
         label="预约时间"
         width="180"
       ></el-table-column>
-      <el-table-column prop="status" label="预约状态" width="80">
-        <!-- <template slot-scope="scope">
-          {{ scope.row.status === "1" ? "未审核" : "已审核" }}
-        </template> -->
+      <el-table-column prop="status" label="预约状态" width="180">
         <template slot-scope="scope">
-          <span v-if="scope.row.status=='1'">待审核</span>
-          <span v-if="scope.row.status=='2'">已审核</span>
+          <span v-if="scope.row.status=='1'">已预约,待审核</span>
+          <span v-if="scope.row.status=='2'">已审核,待确认</span>
+          <span v-if="scope.row.status=='3'">已确认,住院中</span>
         </template>
       </el-table-column>
 
@@ -147,87 +145,48 @@
       <template>
         <el-descriptions class="margin-top" title="" :column="3" border>
           <el-descriptions-item>
-            <template slot="label">
-              <i class="el-icon-user"></i>
-              姓名
-            </template>
+            <template slot="label"><i class="el-icon-user"></i>姓名</template>
             {{ updateInHospitalTable.patientName }}
           </el-descriptions-item>
 
           <el-descriptions-item>
-            <template slot="label">
-              <i class="el-icon-tickets"></i>
-              性别
-            </template>
+            <template slot="label"><i class="el-icon-tickets"></i>性别</template>
             {{ updateInHospitalTable.patientSex }}
           </el-descriptions-item>
 
           <el-descriptions-item>
-            <template slot="label">
-              <i class="el-icon-tickets"></i>
-              年龄
-            </template>
+            <template slot="label"><i class="el-icon-tickets"></i>年龄</template>
             {{ updateInHospitalTable.patientAge }}
           </el-descriptions-item>
 
           <el-descriptions-item>
-            <template slot="label">
-              <i class="el-icon-tickets"></i>
-              卡号
-            </template>
+            <template slot="label"><i class="el-icon-tickets"></i>卡号</template>
             {{ updateInHospitalTable.cardId }}
           </el-descriptions-item>
 
           <el-descriptions-item>
-            <template slot="label">
-              <i class="el-icon-tickets"></i>
-              电话
-            </template>
+            <template slot="label"><i class="el-icon-tickets"></i>电话</template>
             {{ updateInHospitalTable.telephone }}
           </el-descriptions-item>
 
           <el-descriptions-item>
-            <template slot="label">
-              <i class="el-icon-tickets"></i>
-              科室
-            </template>
-            {{
-              updateInHospitalTable.deptName === ""
-                ? "暂未分配"
-                : updateInHospitalTable.deptName
-            }}
+            <template slot="label"><i class="el-icon-tickets"></i>科室</template>
+            {{ updateInHospitalTable.deptName === ""? "暂未分配" : updateInHospitalTable.deptName }}
           </el-descriptions-item>
 
           <el-descriptions-item>
-            <template slot="label">
-              <i class="el-icon-tickets"></i>
-              时间
-            </template>
-            {{
-              updateInHospitalTable.inHosptialTime === ""
-                ? "暂未分配"
-                : updateInHospitalTable.inHosptialTime
-            }}
+            <template slot="label"><i class="el-icon-tickets"></i>时间</template>
+            {{ updateInHospitalTable.inHosptialTime === "" ? "暂未分配" : updateInHospitalTable.inHosptialTime }}
           </el-descriptions-item>
 
           <el-descriptions-item>
-            <template slot="label">
-              <i class="el-icon-tickets"></i>
-              病因
-            </template>
-            {{
-              updateInHospitalTable.reason === ""
-                ? "暂未分配"
-                : updateInHospitalTable.reason
-            }}
+            <template slot="label"><i class="el-icon-tickets"></i>病因</template>
+            {{ updateInHospitalTable.reason === "" ? "暂未分配" : updateInHospitalTable.reason }}
           </el-descriptions-item>
 
           <el-descriptions-item>
-            <template slot="label">
-              <i class="el-icon-tickets"></i>
-              病因
-            </template>
-            {{ updateInHospitalTable.status === "1" ? "未审核" : "已审核" }}
+            <template slot="label"> <i class="el-icon-tickets"></i>病因</template>
+            {{ updateInHospitalTable.status === "1" ? "已预约,待审核" : "已审核" }}
           </el-descriptions-item>
         </el-descriptions>
       </template>
@@ -235,9 +194,7 @@
       <el-divider></el-divider>
 
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="doUpdateInHospitalTable"
-          >审 核</el-button
-        >
+        <el-button type="primary" @click="doUpdateInHospitalTable">审 核</el-button>
         <el-button @click="closeUpdateInHospitalTable">取 消</el-button>
       </div>
     </el-dialog>

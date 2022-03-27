@@ -28,12 +28,12 @@ public class MedicalAdviceServiceImpl implements MedicalAdviceService {
         return medicalAdvicePageInfo;
     }
 
-    //申请医嘱
+    //下达医嘱
     public void addMedicalAdvice(MedicalAdvice medicalAdvice) {
-        medicalAdvice.setDoctorId(4);
+
         medicalAdvice.setCreateTime(new Date());
         medicalAdvice.setAdviceStatus(1);
-        medicalAdviceMapper.insert(medicalAdvice);
+        medicalAdviceMapper.addMedicalAdvice(medicalAdvice);
     }
 
     //修改医嘱
@@ -56,5 +56,45 @@ public class MedicalAdviceServiceImpl implements MedicalAdviceService {
         return medicalAdviceMapper.findMedicalAdviceById(id);
     }
 
+    //编辑医嘱,修改项目
+    public void updateMedicalAdviceProject(MedicalAdvice medicalAdvice) {
+        medicalAdviceMapper.updateMedicalAdviceProject(medicalAdvice);
+    }
 
+    @Override
+    public void gotoStopMedicalAdviceById(Integer id) {
+        medicalAdviceMapper.stopMedicalAdviceById(id);
+    }
+
+    /**
+     * 校对医嘱
+     * @param id
+     */
+    public void checkMedicalAdvice(Integer id) {
+        medicalAdviceMapper.checkMedicalAdvice(id);
+    }
+
+    /**
+     * 停止医嘱
+     * @param id
+     */
+    public void stopMedicalAdvice(Integer id) {
+        medicalAdviceMapper.stopMedicalAdvice(id);
+    }
+
+    /**
+     * 执行医嘱
+     * @param id
+     */
+    public void doMedicalAdvice(Integer id) {
+        medicalAdviceMapper.doMedicalAdvice(id);
+    }
+
+    @Override
+    public PageInfo<MedicalAdvice> getMedicalAdvices(MedicalAdvice medicalAdvice, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<MedicalAdvice> medicalAdviceList = medicalAdviceMapper.getMedicalAdvices(medicalAdvice);
+        PageInfo<MedicalAdvice> medicalAdvicePageInfo = new PageInfo<>(medicalAdviceList);
+        return medicalAdvicePageInfo;
+    }
 }

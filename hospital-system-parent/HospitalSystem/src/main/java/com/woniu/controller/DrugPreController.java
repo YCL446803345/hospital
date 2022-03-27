@@ -13,10 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 药房处方控制类
@@ -60,11 +57,19 @@ public class DrugPreController {
     //同时添加发药记录
     //添加发药账单记录
     @PostMapping("drug/sendDrug")
-    public ResponseResult updatePreDrugStatusAndAddSendDrug(@RequestParam("idStrs") String idStrs,@RequestParam("account") String account){
+    public ResponseResult<LinkedHashSet<String>> updatePreDrugStatusAndAddSendDrug(@RequestParam("idStrs") String idStrs,@RequestParam("account") String account){
         List<String> list = Arrays.asList(idStrs.split(","));
         List<String> newlist = new ArrayList<String>(list);
-        prescriptionService.updateByBatch(newlist,account);
-        return ResponseResult.ok();
+        LinkedHashSet<String> drugInfo = prescriptionService.updateByBatch(newlist,account);
+        return new ResponseResult<LinkedHashSet<String>>(drugInfo,"OK",200);
     }
+
+    //通过处方id查询该处方开单医生和审核护士和创建时刻
+    @GetMapping("drug/getDrugDNTBypreId")
+    public ResponseResult<Prescription> findDrugNameAndNumAndCreateTime(Integer pid){
+        Prescription drugNameAndNumAndCreateTime = prescriptionService.getDrugNameAndNumAndCreateTime(pid);
+        return new ResponseResult<Prescription>(drugNameAndNumAndCreateTime,"OK",200);
+    }
+
 
 }

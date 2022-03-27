@@ -184,7 +184,6 @@
            >
         </el-pagination>
 
-        <!-- 修改讲师 -->
         <el-dialog :visible.sync="updatePatientForm" >
         <h1 align="center">修改病人信息 </h1><br>
         <el-form :model="updatePatient">

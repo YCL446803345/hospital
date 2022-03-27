@@ -103,7 +103,7 @@ public interface PatientMapper {
     void updatePatient(Patient patient);
 
     @Select("<script>" +
-            "select count(0) FROM HOS_patient WHERE status NOT LIKE 3 " +
+            "select count(0) FROM HOS_patient WHERE status NOT in (3,9) " +
             "<if test='name!=null and name != \"\"'>and name like '%${name}%'</if>" +
             "<if test='no!=null and no != \"\"'>and no like '%${no}%'</if>" +
             "</script>")

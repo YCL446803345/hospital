@@ -48,5 +48,12 @@ public interface PrescriptionMapper {
             "</script>")
     List<Prescription> getPreDrugByMany(@Param("doctorName") String doctorName, @Param("status") String status, @Param("startTime") Date startTime, @Param("endTime") Date endTime);
 
+    @Select("select p.*,w.name doctorName from hos_prescription p left join hos_worker w on w.id=p.doctor_id where p.id=#{pid}")
+    Prescription getPreInfo(Integer pid);
 
+    @Select("select d.name drugName,stock,num from HOS_prescription p\n" +
+            "\t\t\t\t\t\t\tleft join HOS_prescription_drug pd on p.id=pd.prescription_id\n" +
+            "\t\t\t\t\t\t\tleft join HOS_drug d on d.id = pd.drug_id\n" +
+            "\t\t\t\t\t\t\twhere p.id=#{pid}")
+    List<Prescription> byPidfindStockAndNum(Integer pid);
 }

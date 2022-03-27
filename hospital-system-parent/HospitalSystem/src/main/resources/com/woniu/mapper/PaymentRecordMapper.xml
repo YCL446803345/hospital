@@ -5,7 +5,7 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="patient_id" jdbcType="INTEGER" property="patientId" />
     <result column="updateMoney" jdbcType="REAL" property="updatemoney" />
-    <result column="time" jdbcType="DATE" property="time" />
+    <result column="time" jdbcType="TIMESTAMP" property="time" />
     <result column="type" jdbcType="CHAR" property="type" />
     <result column="spare1" jdbcType="VARCHAR" property="spare1" />
     <result column="spare2" jdbcType="VARCHAR" property="spare2" />
@@ -107,7 +107,7 @@
       time, type, spare1, spare2, 
       spare3)
     values (#{id,jdbcType=INTEGER}, #{patientId,jdbcType=INTEGER}, #{updatemoney,jdbcType=REAL}, 
-      #{time,jdbcType=DATE}, #{type,jdbcType=CHAR}, #{spare1,jdbcType=VARCHAR}, #{spare2,jdbcType=VARCHAR}, 
+      #{time,jdbcType=TIMESTAMP}, #{type,jdbcType=CHAR}, #{spare1,jdbcType=VARCHAR}, #{spare2,jdbcType=VARCHAR},
       #{spare3,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.woniu.entity.PaymentRecord">
@@ -149,7 +149,7 @@
         #{updatemoney,jdbcType=REAL},
       </if>
       <if test="time != null">
-        #{time,jdbcType=DATE},
+        #{time,jdbcType=TIMESTAMP},
       </if>
       <if test="type != null">
         #{type,jdbcType=CHAR},
@@ -184,7 +184,7 @@
         updateMoney = #{record.updatemoney,jdbcType=REAL},
       </if>
       <if test="record.time != null">
-        time = #{record.time,jdbcType=DATE},
+        time = #{record.time,jdbcType=TIMESTAMP},
       </if>
       <if test="record.type != null">
         type = #{record.type,jdbcType=CHAR},
@@ -208,7 +208,7 @@
     set id = #{record.id,jdbcType=INTEGER},
       patient_id = #{record.patientId,jdbcType=INTEGER},
       updateMoney = #{record.updatemoney,jdbcType=REAL},
-      time = #{record.time,jdbcType=DATE},
+      time = #{record.time,jdbcType=TIMESTAMP},
       type = #{record.type,jdbcType=CHAR},
       spare1 = #{record.spare1,jdbcType=VARCHAR},
       spare2 = #{record.spare2,jdbcType=VARCHAR},
@@ -227,7 +227,7 @@
         updateMoney = #{updatemoney,jdbcType=REAL},
       </if>
       <if test="time != null">
-        time = #{time,jdbcType=DATE},
+        time = #{time,jdbcType=TIMESTAMP},
       </if>
       <if test="type != null">
         type = #{type,jdbcType=CHAR},
@@ -248,7 +248,7 @@
     update HOS_payment_record
     set patient_id = #{patientId,jdbcType=INTEGER},
       updateMoney = #{updatemoney,jdbcType=REAL},
-      time = #{time,jdbcType=DATE},
+      time = #{time,jdbcType=TIMESTAMP},
       type = #{type,jdbcType=CHAR},
       spare1 = #{spare1,jdbcType=VARCHAR},
       spare2 = #{spare2,jdbcType=VARCHAR},

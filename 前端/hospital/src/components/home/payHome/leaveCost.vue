@@ -206,6 +206,18 @@
             </el-descriptions-item>
         
         </el-descriptions>
+
+        <el-pagination
+            background
+            layout="prev, pager,next, sizes,->,total"
+            :total="Intotal"
+            :current-page='num'
+            :page-sizes=[5,10,15,20]
+            :page-size='size'
+            @size-change='changeInSize'
+            @current-change='changeInPage'
+           >
+        </el-pagination>
         </template>
 
         <el-divider></el-divider>
@@ -235,7 +247,11 @@ export default {
         patient:{
             name:"",
             no:"",
-        }
+        },
+        num:1,
+        size:5,
+          patientId:0,
+          Intotal:0,
       }
    },
    created(){
@@ -285,7 +301,35 @@ export default {
          },
          closeCostInfoForm(){
              this.costViewForm = false;
-         }
+         },
+          changeInPage(value){
+            this.num=value;
+            this.$axios.get("/api/queryPayment",{params:{
+                id:this.patientId,
+                pageNum:this.num,pageSize:this.size
+                  }})
+            .then(res=>{
+                this.paymentRecordList = res.data.list;
+                this.Intotal = res.data.total;
+                this.num = res.data.pageNum;
+                this.size = res.data.pageSize;
+            })
+        },
+        changeInSize(value){
+            this.size=value;
+            this.num=1;
+            this.$axios.get("/api/queryPayment",{params:{
+                id:this.patientId,
+                pageNum:this.num,pageSize:this.size
+                  }})
+            .then(res=>{
+                this.paymentRecordList = res.data.list;
+                this.Intotal = res.data.total;
+                this.num = res.data.pageNum;
+                this.size = res.data.pageSize;
+            })
+        },
+
    }
 }
 </script>

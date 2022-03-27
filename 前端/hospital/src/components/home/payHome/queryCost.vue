@@ -207,8 +207,20 @@
                 </el-table-column>
              </el-table>
             </el-descriptions-item>
-        
         </el-descriptions>
+
+        <el-pagination
+            background
+            layout="prev, pager,next, sizes,->,total"
+            :total="Intotal"
+            :current-page='num'
+            :page-sizes=[5,10,15,20]
+            :page-size='size'
+            @size-change='changeInSize'
+            @current-change='changeInPage'
+           >
+        </el-pagination>
+
         </template>
 
             <div slot="footer" class="dialog-footer">
@@ -259,6 +271,10 @@ export default {
             { name: '医嘱', value: 30 },
             { name: '退药', value: 30 }
           ],
+            num:1,
+            size:5,
+          patientId:0,
+          Intotal:0,
       }
    },
    created(){
@@ -298,14 +314,48 @@ export default {
             return (i+1)+this.pageSize*(this.pageNum-1);
          },
          findShow(patient){
-            this.$axios.get("/api/queryPayment",{params:{id:patient.id}}).then(res=>{
-                console.log(res.data);
+             this.patientId = patient.id
+            this.$axios.get("/api/queryPayment",{params:{
+                    pageNum:this.num,
+                    pageSize:this.size,
+                    id:this.patientId
+                }}).then(res=>{
                 this.patient.name = patient.name;
                 this.patient.no = patient.no;
-                this.paymentRecordList = res.data;
+                this.paymentRecordList = res.data.list;
+                this.Intotal = res.data.total;
                 this.costViewForm = true;
             })
          },
+        changeInPage(value){
+            this.num=value;
+            this.$axios.get("/api/queryPayment",{params:{
+                id:this.patientId,
+                pageNum:this.num,pageSize:this.size
+                  }})
+            .then(res=>{
+                this.paymentRecordList = res.data.list;
+                this.Intotal = res.data.total;
+                this.num = res.data.pageNum;
+                this.size = res.data.pageSize;
+            })
+        },
+        changeInSize(value){
+            this.size=value;
+            this.num=1;
+            this.$axios.get("/api/queryPayment",{params:{
+                id:this.patientId,
+                pageNum:this.num,pageSize:this.size
+                  }})
+            .then(res=>{
+                this.paymentRecordList = res.data.list;
+                this.Intotal = res.data.total;
+                this.num = res.data.pageNum;
+                this.size = res.data.pageSize;
+            })
+        },
+
+
          closeCostInfoForm(){
              this.costViewForm = false;
          },

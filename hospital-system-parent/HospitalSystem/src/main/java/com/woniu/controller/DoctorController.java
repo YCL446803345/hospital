@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 //医生站Controller
 @RestController
@@ -26,6 +28,25 @@ public class DoctorController {
     private PatientService patientService;
     @Autowired
     private LeaveHospitalService leaveHospitalService;
+    @Autowired
+    private ProjectService projectService;
+
+
+    //撤销出院
+    @PostMapping("doctor/gotoCancelLeaveHospitalById")
+    public void gotoCancelLeaveHospitalById(Integer id){
+        leaveHospitalService.gotoCancelLeaveHospitalById(id);
+    }
+
+    //申请出院
+    @PostMapping("doctor/gotoAddLeaveHospital")
+    public ResponseResult<String> gotoAddLeaveHospital(@RequestBody LeaveHospital leaveHospital){
+        leaveHospitalService.addLeaveHospital(leaveHospital);
+        System.out.println("出院申请成功");
+        return new ResponseResult<String>(200,"下达成功");
+    }
+
+
 
     //分页查询出院申请列表
     @RequestMapping("doctor/getLeaveHospitalList")
@@ -95,11 +116,11 @@ public class DoctorController {
 
 
     //医嘱申请
-    @RequestMapping("doctor/addMedicalAdvice")
-    public ResponseResult<String> addMedicalAdvice(MedicalAdvice medicalAdvice){
+    @PostMapping("doctor/gotoAddMedicalAdvice")
+    public ResponseResult<String> gotoAddMedicalAdvice(@RequestBody MedicalAdvice medicalAdvice){
         medicalAdviceService.addMedicalAdvice(medicalAdvice);
-        System.out.println("医嘱申请成功");
-        return new ResponseResult<String>(200,"添加成功");
+        System.out.println("医嘱下达成功");
+        return new ResponseResult<String>(200,"下达成功");
     }
 
     //医嘱修改
@@ -173,6 +194,31 @@ public class DoctorController {
     @PostMapping("doctor/updateConsultationApplication")
     public void updateConsultationApplication(@RequestBody ConsultationApplication consultationApplication) {
         consultationApplicationService.updateConsultationApplication(consultationApplication);
+    }
+
+    //取消会诊
+    @PostMapping("doctor/gotoCancelConsultationApplicationById")
+    public void gotoCancelConsultationApplicationById(Integer id){
+        consultationApplicationService.gotoCancelConsultationApplicationById(id);
+    }
+
+    //获取所有项目列表
+    @GetMapping("doctor/findProjectList")
+    public ResponseEntity<List<Project>> findProjectList() {
+        List<Project> projectList = projectService.findProjectList();
+        return new ResponseEntity<List<Project>>(projectList, HttpStatus.OK);
+    }
+
+    //编辑医嘱,修改项目
+    @PostMapping("doctor/updateMedicalAdviceProject")
+    public void updateMedicalAdviceProject(@RequestBody MedicalAdvice medicalAdvice) {
+        medicalAdviceService.updateMedicalAdviceProject(medicalAdvice);
+    }
+
+    //停止医嘱
+    @PostMapping("doctor/gotoStopMedicalAdviceById")
+    public void gotoStopMedicalAdviceById(Integer id){
+        medicalAdviceService.gotoStopMedicalAdviceById(id);
     }
 
 

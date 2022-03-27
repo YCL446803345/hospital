@@ -31,6 +31,7 @@ public class WorkerDetailsServiceImpl implements UserDetailsService {
         WorkerExample.Criteria criteria = workerExample.createCriteria();
         criteria.andAccountEqualTo(account);
         List<Worker> workers = workerMapper.selectByExample(workerExample);
+
         if (workers == null || workers.size() == 0){
             //没有该用户
             return null;

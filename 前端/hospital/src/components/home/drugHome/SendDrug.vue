@@ -30,7 +30,32 @@
                 </el-table-column>
             </el-table>
 
-                <!-- 分页 -->
+            <!-- 药方详情模态框 -->
+            <el-dialog title="药方信息" :visible.sync="updatedialogTableVisible">
+
+                <el-descriptions  direction="vertical" :column="4" border>
+                <el-descriptions-item label="开药医生">{{drugDNT.doctorName}}</el-descriptions-item>
+                <el-descriptions-item label="审核护士" :span="2">{{drugDNT.spare3}}</el-descriptions-item>
+                <el-descriptions-item label="开方日期" :span="2">{{drugDNT.createTime}}</el-descriptions-item>
+                </el-descriptions>
+                <!-- 药品名字和数量 -->
+                <el-collapse accordion>
+                    <el-collapse-item title="药品信息">
+                    <div>
+                        <el-table :data="drugNameAndNum" border style="width: 100%">
+                            <el-table-column prop="drugName" label="药品名称" width="180"></el-table-column>
+                            <el-table-column prop="num" label="已发药数量" width="180"></el-table-column>
+                        </el-table>
+                    </div>
+                    </el-collapse-item>
+                </el-collapse>
+
+                <div slot="footer" class="dialog-footer">
+                    <el-button @click="updatedialogTableVisible=false;drugDNT={};drugNameAndNum=[];">返回</el-button>
+                </div>
+            </el-dialog>
+
+        <!-- 分页 -->
         <el-pagination 
         :current-page="pageNum"
         :page-size="pageSize"
@@ -53,7 +78,14 @@ export default {
         total:0,  //总页数
         pageSize:5,  //页尺寸
         name:'',
-        preData:[]
+        preData:[],
+        drugNameAndNum:[],
+        updatedialogTableVisible:false,    //药方详情模态框
+        drugDNT:{
+            doctorName:'',
+            spare3:'',
+            createTime:''
+        }
       }
    },
    methods:{
@@ -87,7 +119,19 @@ export default {
     },
     //查看处方信息
     lookDrug(row){
-        this.$axios.get("api/")
+        //查询该处方下的药品和数量
+        this.$axios.get("api/drug/getDrugByPreId?pid="+row.prescriptionId).then(res=>{
+            if (res.data.status == 200) {
+                this.drugNameAndNum=res.data.data
+            }
+        })
+        //查询该处方下的开方医生和审核护士已经药方创建时间
+        this.$axios.get("api/drug/getDrugDNTBypreId?pid="+row.prescriptionId).then(res=>{
+            if (res.data.status == 200) {
+                this.drugDNT=res.data.data
+            }
+        })
+        this.updatedialogTableVisible=true
     }
    },
     created(){
