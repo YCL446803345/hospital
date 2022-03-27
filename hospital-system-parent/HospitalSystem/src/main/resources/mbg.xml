@@ -22,7 +22,7 @@
 
         <!--数据库链接地址账号密码-->
         <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
-                        connectionURL="jdbc:mysql://192.172.0.5:3306/HOSPITAL?serverTimezone=Asia/Shanghai&amp;characterEncoding=UTF-8"
+                        connectionURL="jdbc:mysql://localhost:3306/hos?serverTimezone=Asia/Shanghai&amp;characterEncoding=UTF-8"
                         userId="root"
                         password="root">
         </jdbcConnection>
@@ -243,13 +243,13 @@
 <!--               enableDeleteByExample="true"-->
 <!--               enableSelectByExample="true"-->
 <!--        />-->
-        <table tableName="HOS_send_drug_record" schema="HOSPITAL"
-               domainObjectName="SendDrugRecord"
-               enableCountByExample="true"
-               enableUpdateByExample="true"
-               enableDeleteByExample="true"
-               enableSelectByExample="true"
-        />
+<!--        <table tableName="HOS_send_drug_record" schema="HOSPITAL"-->
+<!--               domainObjectName="SendDrugRecord"-->
+<!--               enableCountByExample="true"-->
+<!--               enableUpdateByExample="true"-->
+<!--               enableDeleteByExample="true"-->
+<!--               enableSelectByExample="true"-->
+<!--        />-->
 <!--        <table tableName="HOS_user" schema="HOSPITAL"-->
 <!--               domainObjectName="User"-->
 <!--               enableCountByExample="true"-->
@@ -271,5 +271,12 @@
 <!--               enableDeleteByExample="true"-->
 <!--               enableSelectByExample="true"-->
 <!--        />-->
+            <table tableName="hos_purchase" schema="hos"
+                   domainObjectName="Purchase"
+                   enableCountByExample="true"
+                   enableUpdateByExample="true"
+                   enableDeleteByExample="true"
+                   enableSelectByExample="true"
+            />
     </context>
 </generatorConfiguration>

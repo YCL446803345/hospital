@@ -26,19 +26,19 @@ public class DrugServiceImpl implements DrugService {
         DrugExample drugExample = new DrugExample();
         DrugExample.Criteria criteria = drugExample.createCriteria();
 
-        if (!StringUtils.isEmpty(drug.getDrugType())){
+        if (!StringUtils.isEmpty(drug.getDrugType())) {
             criteria.andDrugTypeEqualTo(drug.getDrugType());
         }
-        if (!StringUtils.isEmpty(drug.getName())){
-            criteria.andNameLike("%"+drug.getName()+"%");
+        if (!StringUtils.isEmpty(drug.getName())) {
+            criteria.andNameLike("%" + drug.getName() + "%");
         }
         //上下架处理
-        if (!StringUtils.isEmpty(drug.getStatus())){
+        if (!StringUtils.isEmpty(drug.getStatus())) {
             criteria.andStatusEqualTo(drug.getStatus());
-        }else {
+        } else {
             criteria.andStatusEqualTo("1");
         }
-        if (!StringUtils.isEmpty(drug.getSalePrice())){
+        if (!StringUtils.isEmpty(drug.getSalePrice())) {
             criteria.andSalePriceGreaterThan(drug.getSalePrice());
         }
         List<Drug> drugList = drugMapper.selectByExample(drugExample);
@@ -68,11 +68,11 @@ public class DrugServiceImpl implements DrugService {
         DrugExample drugExample = new DrugExample();
         DrugExample.Criteria criteria = drugExample.createCriteria();
         criteria.andStatusEqualTo("0");
-        if (!StringUtils.isEmpty(drug.getDrugType())){
+        if (!StringUtils.isEmpty(drug.getDrugType())) {
             criteria.andDrugTypeEqualTo(drug.getDrugType());
         }
-        if (!StringUtils.isEmpty(drug.getName())){
-            criteria.andNameLike("%"+drug.getName()+"%");
+        if (!StringUtils.isEmpty(drug.getName())) {
+            criteria.andNameLike("%" + drug.getName() + "%");
         }
         List<Drug> drugList = drugMapper.selectByExample(drugExample);
         return drugList;
@@ -98,11 +98,14 @@ public class DrugServiceImpl implements DrugService {
         }
         drugMapper.updateByIdBatchStatus(ids);
 
+
+    }
+
     @Override
     public List<Drug> getDrugsByPrescriptionId(Integer id) {
-        List<Drug> drugs=drugMapper.getDrugsByPrescriptionId(id);
+        List<Drug> drugs = drugMapper.getDrugsByPrescriptionId(id);
         for (Drug drug : drugs) {
-            drug.setMoney(drug.getSalePrice()*drug.getNum());
+            drug.setMoney(drug.getSalePrice() * drug.getNum());
         }
         return drugs;
     }
