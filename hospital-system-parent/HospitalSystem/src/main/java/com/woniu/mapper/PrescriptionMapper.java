@@ -6,6 +6,9 @@ import com.woniu.entity.PrescriptionExample;
 
 import java.util.Date;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -57,6 +60,7 @@ public interface PrescriptionMapper {
             "\t\t\t\t\t\t\twhere p.id=#{pid}")
     List<Prescription> byPidfindStockAndNum(Integer pid);
 
+
     @Select("<script>" +
             "select p.id id,p.doctor_id doctorId,w.name doctorName,p.create_time createTime,\n" +
             "p.prescription_status prescriptionStatus,\n" +
@@ -76,4 +80,13 @@ public interface PrescriptionMapper {
 
     @Update("update HOS_prescription set prescription_status=5 where id=#{id}")
     void stopPrescription(Integer id);
+
+    //分页模糊查询处方列表
+    List<Prescription> queryPrescriptionList(Prescription prescription);
+
+    //下达处方
+    @Insert("insert into HOS_prescription(doctor_id,patient_id,create_time,prescription_status) values(#{doctorId},#{patientId},#{createTime},#{prescriptionStatus})")
+    @Options(useGeneratedKeys = true,keyProperty = "id",keyColumn = "id")
+    void addPrescription(Prescription prescription);
+
 }

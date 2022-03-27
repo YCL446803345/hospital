@@ -114,6 +114,7 @@
                 scope.row.telephone,
                 scope.row.reason,
                 scope.row.deptName,
+                scope.row.deptId,
                 scope.row.inHosptialTime,
                 scope.row.status
               )
@@ -224,6 +225,7 @@ export default {
         telephone: "",
         reason: "",
         deptName: "",
+        deptId:"",
         inHosptialTime: "",
         status: "",
       },
@@ -257,6 +259,7 @@ export default {
             this.search();
           }
         });
+
     },
     closeUpdateInHospitalTable() {
       this.updateInHospitalTable = {
@@ -268,6 +271,7 @@ export default {
         telephone: "",
         reason: "",
         deptName: "",
+        deptId: "",
         inHosptialTime: "",
         status: "",
       };
@@ -282,6 +286,7 @@ export default {
       telephone,
       reason,
       deptName,
+      deptId,
       inHosptialTime,
       status
     ) {
@@ -294,6 +299,7 @@ export default {
         telephone: telephone,
         reason: reason,
         deptName: deptName,
+        deptId: deptId,
         inHosptialTime: inHosptialTime,
         status: status,
       };
@@ -329,22 +335,23 @@ export default {
     },
     changePage(value) {
       this.pageNum = value;
-      this.$axios
-        .get("/api/doctor/getInHospitalTableList", {
-          params: {
-            patientName: this.patientName,
-            cardId: this.cardId,
-            patientSex: this.patientSex,
-            pageNum: this.pageNum,
-            pageSize: this.pageSize,
-          },
-        })
-        .then((res) => {
-          this.consultationApplicationList = res.data.data.list;
-          this.total = res.data.data.total;
-          this.pageNum = res.data.data.pageNum;
-          this.pageSize = res.data.data.pageSize;
-        });
+      this.search();
+      // this.$axios
+      //   .get("/api/doctor/getInHospitalTableList", {
+      //     params: {
+      //       patientName: this.patientName,
+      //       cardId: this.cardId,
+      //       patientSex: this.patientSex,
+      //       pageNum: this.pageNum,
+      //       pageSize: this.pageSize,
+      //     },
+      //   })
+      //   .then((res) => {
+      //     this.consultationApplicationList = res.data.data.list;
+      //     this.total = res.data.data.total;
+      //     this.pageNum = res.data.data.pageNum;
+      //     this.pageSize = res.data.data.pageSize;
+      //   });
     },
     getIndex(i) {
       return i + 1 + this.pageSize * (this.pageNum - 1);

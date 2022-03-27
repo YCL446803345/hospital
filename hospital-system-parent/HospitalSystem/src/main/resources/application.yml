@@ -11,7 +11,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     password: root
-    url: jdbc:mysql://localhost:3306/hos?useUincode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowMultiQueries=true
+    url: jdbc:mysql://192.12.0.5:3306/HOSPITAL?useUincode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowMultiQueries=true
     username: root
     type: com.zaxxer.hikari.HikariDataSource
   redis:

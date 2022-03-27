@@ -34,5 +34,7 @@ public interface PatientService {
 
     HospitalizationBill getHospitalizationBill(Patient patient);
 
+
     void doOutHospital(Integer id);
+
 }

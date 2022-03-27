@@ -5,6 +5,8 @@ import com.woniu.entity.PrescriptionDrugExample;
 
 import java.util.Date;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
@@ -28,4 +30,8 @@ public interface PrescriptionDrugMapper {
             "from HOS_prescription_drug pd,HOS_drug d " +
             "where pd.drug_id=d.id and pd.prescription_id=#{pid}")
     List<PrescriptionDrug> getDrugNameAndNumByPreId(Integer pid);
+
+    //下达处方,处方药品中间表新增数据
+    @Insert("insert into HOS_prescription_drug(prescription_id,drug_id,num) values(#{prescriptionId},#{drugId},#{num})")
+    void addPrescriptionDrug(PrescriptionDrug prescriptionDrug);
 }

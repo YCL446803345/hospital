@@ -9,6 +9,7 @@ import com.woniu.service.ConsultationApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service("consultationApplicationService")
@@ -32,5 +33,12 @@ public class ConsultationApplicationServiceImpl implements ConsultationApplicati
     //取消会诊
     public void gotoCancelConsultationApplicationById(Integer id) {
         consultationApplicationMapper.cancelConsultationApplication(id);
+    }
+
+    //突发情况申请会诊
+    public void addConsultationApplication(ConsultationApplication consultationApplication) {
+        consultationApplication.setConsultationDate(new Date());
+        consultationApplication.setStatus("1");
+        consultationApplicationMapper.addConsultationApplication(consultationApplication);
     }
 }

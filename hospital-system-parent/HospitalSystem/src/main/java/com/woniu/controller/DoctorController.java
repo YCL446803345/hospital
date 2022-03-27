@@ -30,6 +30,19 @@ public class DoctorController {
     private LeaveHospitalService leaveHospitalService;
     @Autowired
     private ProjectService projectService;
+    @Autowired
+    private PrescriptionService prescriptionService;
+    @Autowired
+    private DrugService drugService;
+
+
+    //下达处方
+    @PostMapping("doctor/gotoAddPrescription")
+    public ResponseResult<String> gotoAddPrescription(@RequestBody Prescription prescription){
+        prescriptionService.addPrescription(prescription);
+        System.out.println("处方下达成功");
+        return new ResponseResult<String>(200,"下达成功");
+    }
 
 
     //撤销出院
@@ -45,6 +58,35 @@ public class DoctorController {
         System.out.println("出院申请成功");
         return new ResponseResult<String>(200,"下达成功");
     }
+
+    //病人列表突发情况申请会诊
+    @PostMapping("doctor/gotoAddConsultationApplication")
+    public ResponseResult<String> gotoAddConsultationApplication(@RequestBody ConsultationApplication consultationApplication){
+        consultationApplicationService.addConsultationApplication(consultationApplication);
+        System.out.println("突发情况申请会诊成功");
+        return new ResponseResult<String>(200,"申请成功");
+    }
+
+
+    //分页查询处方列表
+    @RequestMapping("doctor/getPrescriptionList")
+    public ResponseResult<PageInfo<Prescription>> getPrescriptionList(@RequestParam(name = "pageNum", defaultValue = "1", required = false) Integer pageNum,
+                                                                        @RequestParam(name = "pageSize", defaultValue = "5", required = false) Integer pageSize,
+                                                                      Prescription prescription) {
+        ResponseResult<PageInfo<Prescription>> responseResult = new ResponseResult<>();
+        try {
+            PageInfo<Prescription> prescriptionPageInfo = prescriptionService.queryPrescriptionList(prescription, pageNum, pageSize);
+            responseResult.setData(prescriptionPageInfo);
+            responseResult.setStatus(200);
+            responseResult.setMsg("查询成功...");
+        } catch(Exception e) {
+            e.printStackTrace();
+            responseResult.setStatus(500);
+            responseResult.setMsg("查询失败...");
+        }
+        return responseResult;
+    }
+
 
 
 
@@ -110,6 +152,7 @@ public class DoctorController {
     public void updateInHospitalTable(@RequestBody InHospitalTable inHospitalTable) {
         inHospitalTableService.updateInHospitalTable(inHospitalTable);
     }
+
 
 
 
@@ -207,6 +250,13 @@ public class DoctorController {
     public ResponseEntity<List<Project>> findProjectList() {
         List<Project> projectList = projectService.findProjectList();
         return new ResponseEntity<List<Project>>(projectList, HttpStatus.OK);
+    }
+
+    //获取所有药品列表
+    @GetMapping("doctor/findDrugList")
+    public ResponseEntity<List<Drug>> findDrugList() {
+        List<Drug> drugList = drugService.findDrugList();
+        return new ResponseEntity<List<Drug>>(drugList, HttpStatus.OK);
     }
 
     //编辑医嘱,修改项目

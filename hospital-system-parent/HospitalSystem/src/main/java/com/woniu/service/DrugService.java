@@ -12,6 +12,7 @@ public interface DrugService {
     void addDrug(Drug drug);
 
 
+
     Drug getDrugById(Integer id);
 
     List<Drug> findAllDownDrug(Drug drug);
@@ -23,5 +24,9 @@ public interface DrugService {
     void updateByIdBatchStatus(List<String> strings);
 
     List<Drug> getDrugsByPrescriptionId(Integer id);
+
+
+    //获取所有药品列表
+    List<Drug> findDrugList();
 
 }

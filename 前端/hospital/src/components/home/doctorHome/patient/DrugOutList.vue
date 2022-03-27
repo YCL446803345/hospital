@@ -3,16 +3,19 @@
         <!-- 面包xie导航 -->
         <el-breadcrumb separator="/">
             <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item><a href="#/patientList">出院申请信息管理</a></el-breadcrumb-item>
-            <el-breadcrumb-item>出院信息管理列表</el-breadcrumb-item>
+            <el-breadcrumb-item><a href="#/patientList">退药信息管理</a></el-breadcrumb-item>
+            <el-breadcrumb-item>退药信息管理列表</el-breadcrumb-item>
         </el-breadcrumb>
         <el-row style="margin-top:10px;margin-bottom:10px">
 
             <el-col :span="2">
-                <el-select v-model="leaveStatus" placeholder="出院状态">
-                    <el-option label="出院状态" value="" ></el-option>
-                    <el-option label="住院中" value="1" ></el-option>
-                    <el-option label="已出院" value="2" ></el-option>
+                <el-select v-model="prescriptionStatus" placeholder="处方状态">
+                    <el-option label="处方状态" value="" ></el-option>
+                    <el-option label="待审核" value="1" ></el-option>
+                    <el-option label="待校对" value="2" ></el-option>
+                    <el-option label="待发药" value="3" ></el-option>
+                    <el-option label="执行中" value="4" ></el-option>
+                    <el-option label="已退药" value="5" ></el-option>
                 </el-select>
             </el-col>
 
@@ -23,7 +26,7 @@
             </el-col>
 
             <el-col :span="1" style="margin-left:2px;">
-                 <el-button type="warning" @click="leaveStatus='',paheNum=1,pageSize=5">清空</el-button>
+                 <el-button type="warning" @click="prescriptionStatus='',paheNum=1,pageSize=5">清空</el-button>
             </el-col>
             
         </el-row>
@@ -33,7 +36,7 @@
             scope.row 表示对象数组的当前行对象
          -->
         <el-table
-            :data="leaveHospitalList"
+            :data="prescriptionlList"
             style="width: 100%">
 
             <el-table-column
@@ -56,29 +59,51 @@
             </el-table-column>
 
             <el-table-column
-                prop="leaveDescription"
-                label="描述"
+                prop="drugName"
+                label="药品"
                 width="180">
             </el-table-column>
 
             <el-table-column
-                prop="leaveTime"
-                label="出院日期"
-                width="180">
-            </el-table-column>
-
-            <el-table-column
-                prop="leaveStatus"
-                label="出院状态"
+                prop="drugTypeName"
+                label="类型"
                 width="80">
-                <!-- <template slot-scope="scope">
-                         {{scope.row.leaveStatus===1 ?'住院中':'已出院'}}
-                </template> -->
+            </el-table-column>
+
+            <el-table-column
+                prop="specificationsName"
+                label="规格"
+                width="120">
+            </el-table-column>
+
+            <el-table-column
+                prop="num"
+                label="数量"
+                width="80">
+            </el-table-column>
+            
+            <el-table-column
+                prop="spare1"
+                label="功效"
+                width="400">
+            </el-table-column>
+
+            <el-table-column
+                prop="spare2"
+                label="制造商"
+                width="300">
+            </el-table-column>
+
+            <el-table-column
+                prop="prescriptionStatus"
+                label="处方状态"
+                width="80">
                 <template slot-scope="scope">
-                <span v-if="scope.row.leaveStatus=='1'">住院中</span>
-                <span v-if="scope.row.leaveStatus=='2'">待审核</span>
-                <span v-if="scope.row.leaveStatus=='3'">已出院</span>
-                <span v-if="scope.row.leaveStatus=='4'">已审核</span>
+                <span v-if="scope.row.prescriptionStatus=='1'">待审核</span>
+                <span v-if="scope.row.prescriptionStatus=='2'">待校对</span>
+                <span v-if="scope.row.prescriptionStatus=='3'">待发药</span>
+                <span v-if="scope.row.prescriptionStatus=='4'">执行中</span>
+                <span v-if="scope.row.prescriptionStatus=='5'">已退药</span>
                 </template>
 
             </el-table-column>
@@ -91,12 +116,12 @@
                 </template>
             </el-table-column> -->
             
-            <el-table-column label="操作">
-               <template slot-scope="scope">
+            <!-- <el-table-column label="操作">
+               <template slot-scope="scope"> -->
                   <!-- <el-button size="mini" type="primary" @click="gotoUpdateConsultationApplication(scope.row.id)">编辑</el-button> -->
-                  <el-button size="mini" type="danger" @click="gotoCancelLeaveHospital( scope.row.id)">撤 销</el-button>
-               </template>
-            </el-table-column>
+                  <!-- <el-button size="mini" type="danger" @click="gotoCancelLeaveHospital( scope.row.id)">撤 销</el-button> -->
+               <!-- </template>
+            </el-table-column> -->
         </el-table>
        
         <el-pagination
@@ -121,12 +146,11 @@ import qs from 'qs'
 export default {
    data() {
       return {
-        leaveStatus:'',
-        leaveHospitalList: [],
+        prescriptionStatus:'',
+        prescriptionlList: [],
         total:100,
         pageNum:1,
         pageSize:5,
-        // updateTeacherForm:false,
         headers:{}
       }
    },
@@ -135,47 +159,19 @@ export default {
       this.headers={tokenStr:window.localStorage.getItem('tokenStr')};
    },
    methods:{
-       //撤销出院
-    gotoCancelLeaveHospital(id) {
-        console.log(id)
-        this.$axios.post("/api/doctor/gotoCancelLeaveHospitalById",qs.stringify({'id':id}),{
-            params: { id: id }
-        }).then(res => {  
-          console.log(res.data)
-            if(res.status===200){
-                this.$message({
-                    showClose: true,
-                    message: "操作成功",
-                    type: "success",
-                    duration: 600
-                });
-                this.search();
-            }else if(res.status===4001){
-                this.$message({
-                    showClose: true,
-                    message: "没有权限",
-                    type: "error",
-                    duration: 600
-                });
-                this.search();
-            }
-        }); 
-    },
 
-
-      //查询出院列表
+      //查询处方列表
         search(){
-            
             console.log("---")
-            this.$axios.get("/api/doctor/getLeaveHospitalList",{params:{
-            leaveStatus:this.leaveStatus,
+            this.$axios.get("/api/doctor/getPrescriptionList",{params:{
+            prescriptionStatus:this.prescriptionStatus,
             pageNum:this.pageNum,
             pageSize:this.pageSize
             }})
             .then(res=>{
                  console.log("=========================");
                console.log(res.data.data.list);
-                this.leaveHospitalList=res.data.data.list;
+                this.prescriptionlList=res.data.data.list;
                 this.total=res.data.data.total;
                 this.pageNum=res.data.data.pageNum;
                 this.pageSize=res.data.data.pageSize;
@@ -184,7 +180,7 @@ export default {
         },
         changeSize(value){
             this.pageSize=value;
-            this.pageNum=1;
+            // this.pageNum=1;
             this.search();
         },
         changePage(value){

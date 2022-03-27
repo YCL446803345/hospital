@@ -22,7 +22,8 @@
                     <el-option label="医嘱状态" value="" ></el-option>
                     <el-option label="待执行" value="1" ></el-option>
                     <el-option label="已执行" value="2" ></el-option>
-                    <el-option label="已撤销" value="3" ></el-option>
+                    <el-option label="已停止" value="3" ></el-option>
+                    <el-option label="已撤销" value="4" ></el-option>
                 </el-select>
             </el-col>
 
@@ -77,9 +78,10 @@
 
             <el-table-column prop="adviceStatus" label="医嘱状态" width="180">
                 <template slot-scope="scope">
-                <span v-if="scope.row.adviceStatus=='1'">待执行</span>
+                <span v-if="scope.row.adviceStatus=='1'">待审核</span>
                 <span v-if="scope.row.adviceStatus=='2'">已执行</span>
                 <span v-if="scope.row.adviceStatus=='3'">已停止</span>
+                <span v-if="scope.row.adviceStatus=='4'">已撤销</span>
                 </template>
             </el-table-column>
 
@@ -96,8 +98,7 @@
             
             <el-table-column label="操作">
                <template slot-scope="scope">
-                  <el-button size="mini" type="primary"
-                  @click="gotoUpdateMedicalAdvice(
+                  <el-button size="mini" type="primary" @click="gotoUpdateMedicalAdvice(
                       scope.row.id,
                       scope.row.patientName,
                       scope.row.doctorName,
@@ -107,6 +108,16 @@
                       scope.row.adviceStatus,
                       scope.row.createTime
                       )">项目执行</el-button>
+                  <el-button size="mini" type="success" @click="gotoAddPrescription(
+                      scope.row.id,
+                      scope.row.patientName,
+                      scope.row.doctorName,
+                      scope.row.patientId,
+                      scope.row.doctorId,
+                      scope.row.adviceCategory,
+                      scope.row.projectId,
+                      scope.row.adviceDescription
+                      )">下达处方</el-button>
                   <el-button size="mini" type="danger"
                   @click="gotoStopMedicalAdvice( scope.row.id)">停止医嘱</el-button>
                </template>
@@ -183,6 +194,80 @@
       </div>
     </el-dialog>
 
+    <!-- 下达处方 -->
+    <el-dialog :visible.sync="addPrescriptionForm">
+      <h1 align="center">下达处方</h1>
+      <br />
+      <template>
+        <el-descriptions class="margin-top" title="" :column="3" border>
+          <el-descriptions-item>
+            <template slot="label"><i class="el-icon-user"></i>病人</template>
+            {{ addPrescription.patientName }}
+          </el-descriptions-item>
+
+          <el-descriptions-item>
+            <template slot="label"><i class="el-icon-user"></i>主治医生</template>
+            {{ addPrescription.doctorName }}
+          </el-descriptions-item>
+
+          <el-descriptions-item>
+            <template slot="label"><i class="el-icon-tickets"></i>医嘱类型</template>
+            {{ addPrescription.adviceCategory ==='1'?'长期医嘱': 
+               addPrescription.adviceCategory ==='2'?'临时医嘱':'一般医嘱' }}
+          </el-descriptions-item>
+
+          <el-descriptions-item>
+            <template slot="label"><i class="el-icon-tickets"></i>项目类型</template>
+            {{ addPrescription.projectId ==='1'?'内外科查体': 
+               addPrescription.projectId ==='2'?'眼科视力检查': 
+               addPrescription.projectId ==='3'?'尿检': 
+               addPrescription.projectId ==='4'?'乙肝': 
+               addPrescription.projectId ==='5'?'血脂': 
+               addPrescription.projectId ==='6'?'血糖': 
+               addPrescription.projectId ==='7'?'头颅CT': 
+               addPrescription.projectId ==='8'?'肺部CT': 
+               addPrescription.projectId ==='9'?'核磁共振成像': 
+               addPrescription.projectId ==='10'?'开颅手术': 
+               addPrescription.projectId ==='11'?'脂肪瘤切除手术': 
+               addPrescription.projectId ==='12'?'痔疮切除手术': 
+               addPrescription.projectId ==='13'?'包皮切除手术': 
+               addPrescription.projectId ==='14'?'清创缝合术':'肌腱吻合术' }}
+          </el-descriptions-item>
+        
+
+          <el-descriptions-item>
+            <template slot="label"><i class="el-icon-user"></i>描述</template>
+            {{ addPrescription.adviceDescription }}
+          </el-descriptions-item>
+
+        </el-descriptions>
+      </template>
+
+      <el-divider></el-divider>
+
+      <el-form :model="addPrescription">
+
+          <el-form-item label="药品" :label-width="formLabelWidth" >
+            <el-select v-model="addPrescription.drugId" placeholder="药品" >
+                <el-option v-for="drug in drugList" :key="drug.id" :label="drug.name" :value="drug.id"  ></el-option>
+            </el-select>
+        </el-form-item>
+
+        <el-form-item label="数量" :label-width="formLabelWidth">
+          <!-- <el-input v-model="addPrescription.num" autocomplete="off"></el-input> -->
+          <el-input-number v-model="addPrescription.num" @change="handleChange" :min="1" :max="20" label="描述文字"></el-input-number>
+        </el-form-item>
+
+      </el-form>
+
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="doAddPrescription">下 达</el-button>
+        <el-button @click="addPrescriptionForm = false;addPrescription={}">取 消</el-button>
+      </div>
+    </el-dialog>
+
+
+
     
 
     </div>
@@ -216,6 +301,11 @@ export default {
         projectList:[],
         formLabelWidth: '120px',
 
+        addPrescriptionForm: false,
+        addPrescription:{},
+        drugList:[],
+        num:'',
+
       }
    },
    created(){
@@ -224,10 +314,78 @@ export default {
             .then(res=>{
                console.log(res.data);
                 this.projectList=res.data;
-            })
+            }),
+      this.$axios.get("/api/doctor/findDrugList")
+            .then(res=>{
+               console.log(res.data);
+                this.drugList=res.data;
+            }),
       this.headers={tokenStr:window.localStorage.getItem('tokenStr')};
+
+
    },
    methods:{
+        handleChange(value) {
+        console.log(value);
+      },
+      //关闭下达处方窗口
+       closeAddPrescriptionForm(){
+            this.addPrescription={
+                id:'',
+                patientName:'',
+                doctorName:'',
+                patientId: '',
+                doctorId: '',
+                adviceCategory:'',
+                projectId:'',
+                adviceDescription:'',
+                    };
+            this.addPrescriptionForm=false;
+       },
+    
+    //执行医嘱项目
+       doAddPrescription(){
+           var prescription=this.addPrescription;
+           console.log(prescription)
+            this.$axios.post("/api/doctor/gotoAddPrescription",prescription)
+            .then(res=>{
+                if(res.status==4001){
+                     this.$message({
+                        type: "error",
+                         message: "没有权限!",
+                          duration:2000
+                     });
+                }else{
+                     this.$message({
+                        type: "success",
+                         message: "下达处方成功!",
+                         duration:2000
+                     });
+                    this.closeAddPrescriptionForm();
+                    this.search();
+                    
+
+                }
+            })
+       },
+       //准备下达处方
+       gotoAddPrescription(id,patientName,doctorName,patientId,doctorId,adviceCategory,projectId,adviceDescription){
+           this.addPrescription={
+                id:id,
+                patientName:patientName,
+                doctorName:doctorName,
+                patientId: patientId,
+                doctorId: doctorId,
+                adviceCategory:adviceCategory,
+                projectId:projectId,
+                // createTime:createTime,
+                adviceDescription:adviceDescription,
+                // adviceStatus:adviceStatus,
+                
+           };
+           this.addPrescriptionForm=true;
+       },
+
 
 
 
@@ -343,18 +501,7 @@ export default {
         },
         changePage(value){
             this.pageNum=value;
-            this.$axios.get("/api/doctor/getMedicalAdviceList",{params:{
-            adviceCategory:this.adviceCategory,
-            adviceStatus:this.adviceStatus,
-            pageNum:this.pageNum,
-            pageSize:this.pageSize
-            }})
-            .then(res=>{
-                this.medicalAdviceList=res.data.data.list;
-                this.total=res.data.data.total;
-                this.pageNum=res.data.data.pageNum;
-                this.pageSize=res.data.data.pageSize;
-            })
+            this.search();
         },
           getIndex(i){
             return (i+1)+this.pageSize*(this.pageNum-1);
