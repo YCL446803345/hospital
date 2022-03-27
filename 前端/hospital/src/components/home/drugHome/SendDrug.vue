@@ -16,7 +16,7 @@
             </el-col>
         </el-row>
         
-            <!-- 发药列表 -->
+            <!-- 发药记录列表 -->
             <el-table :data="preData" style="width: 100%">
                 <el-table-column type="index" :index="indexMethod" label="序号"></el-table-column>
                 <el-table-column prop="prescriptionId" label="处方编号" width="100"></el-table-column>
@@ -109,7 +109,10 @@ export default {
                }
            }).then(res=>{
                if (res.data.status == 200) {
-                   this.preData=res.data.data.list
+                this.preData=res.data.data.list
+                this.total=res.data.data.total
+                this.pageNum=res.data.data.pageNum
+                this.pageSize=res.data.data.pageSize
                }
            })
        },

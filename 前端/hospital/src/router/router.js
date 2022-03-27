@@ -43,6 +43,7 @@ import LeaveHospitalList from '../components/home/doctorHome/patient/LeaveHospit
 import DrugInfo from '../components/home/drugHome/DrugInfo' //药品信息列表
 import DrugPre from '../components/home/drugHome/DrugPrescription' //药方列表
 import SendDrug from '../components/home/drugHome/SendDrug' //发药列表
+import DrugManager from '../components/home/drugHome/DrugManager'
 
 
 
@@ -80,7 +81,7 @@ var router = new VueRouter({
 
             children: [
 
-                {path: "/medicine/home", component: DrugInfo },
+                
                 {path: "/worker/list", component: HumanAffairs },
 	            {path: "/nurse/admission", component: patientInfo},
 	            {path: "/nurse/changeDept", component: patientChangeDept},
@@ -93,8 +94,9 @@ var router = new VueRouter({
 
 
                 { path: "/drug/prescriptionList", component: DrugPre },
-                { path: "/drug/prescriptionList", component: DrugPre },
                 { path: "/drug/send/drug", component: SendDrug },
+                { path: "/medicine/home", component: DrugInfo },
+                { path: "/drug/storage/list", component: DrugManager },
 
                 { path: "/pay/cost", component: costInfo },
 				{path:"/pay/queryCost",component:queryCost},
