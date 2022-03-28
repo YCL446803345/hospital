@@ -1,5 +1,6 @@
 import Vue from 'vue' //导入node_modules中vue.js库文件
 import VueRouter from 'vue-router' //导入node_modules中vue-router.js库文件
+import echarts from 'echarts'
 
 
 // 解决ElementUI导航栏中的vue-router在3.0版本以上重复点菜单报错问题
@@ -23,6 +24,7 @@ import outHospital from '../components/home/nurseHome/patient/OutHospital'
 
 //Vue安装router
 Vue.use(VueRouter)
+Vue.prototype.$echarts=echarts
 
 //医院入口登录相关组件
 import Entry from '../components/entry/Entry'

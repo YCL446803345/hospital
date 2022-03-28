@@ -5,6 +5,7 @@ import com.woniu.entity.BedExample;
 import java.util.List;
 
 import com.woniu.entity.Patient;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -49,4 +50,7 @@ public interface BedMapper {
             "<if test='deptId!=null and deptId != \"\"'>and b.dept_id = #{deptId}</if> ORDER BY b.id asc " +
             "</script>")
     List<Bed> findBeds(Bed bed);
+
+    @Insert("insert into HOS_bed(code,status,dept_id)values(#{code},1,#{deptId})")
+    void addBed(Bed bed);
 }

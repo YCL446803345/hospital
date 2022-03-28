@@ -146,10 +146,9 @@ NurseController {
      * @return
      */
     @GetMapping("/findBeds")
-    public ResponseEntity<PageInfo<Bed>> findBeds(Bed bed, @RequestParam(value = "pageNum", defaultValue = "1", required = false) Integer pageNum,
-                                              @RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize) {
-        PageInfo<Bed> pageInfo = bedService.findBeds(bed, pageNum, pageSize);
-        return new ResponseEntity<PageInfo<Bed>>(pageInfo, HttpStatus.OK);
+    public ResponseEntity<List<Bed>> findBeds(Bed bed) {
+        List<Bed> beds = bedService.findBeds(bed);
+        return new ResponseEntity<List<Bed>>(beds, HttpStatus.OK);
     }
 
     /**
@@ -389,6 +388,16 @@ NurseController {
     @GetMapping("/doOutHospital")
     public void doOutHospital(Integer id) {
         patientService.doOutHospital(id);
+    }
+
+
+    /**
+     * 添加床位
+     * @return
+     */
+    @GetMapping("/addBed")
+    public void addBed(Integer deptId) {
+        bedService.addBed(deptId);
     }
 
 }

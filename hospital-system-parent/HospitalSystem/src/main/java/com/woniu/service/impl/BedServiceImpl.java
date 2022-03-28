@@ -31,10 +31,32 @@ public class BedServiceImpl implements BedService {
     }
 
     @Override
-    public PageInfo<Bed> findBeds(Bed bed, Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum,pageSize);
+    public List<Bed> findBeds(Bed bed) {
         List<Bed> beds = bedMapper.findBeds(bed);
-        PageInfo<Bed> PageInfo = new PageInfo<>(beds);
-        return PageInfo;
+        return beds;
+    }
+
+    @Override
+    public void addBed(Integer deptId) {
+        List<Bed> beds = bedMapper.findBeds(null);
+        Bed bed = beds.get(beds.size() - 1);
+        String code = bed.getCode();
+        String str = code.substring(1);
+
+        int i = Integer.parseInt(str);
+
+        int numberOfDigits = String.valueOf(i).length();
+        String c="";
+
+        int b=i+1;
+
+        for(i=0;i<4-numberOfDigits;i++){
+            c=c+"0";
+        }
+
+        c="A"+c+b;
+        bed.setCode(c);
+        bed.setDeptId(deptId);
+        bedMapper.addBed(bed);
     }
 }
