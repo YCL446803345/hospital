@@ -321,13 +321,13 @@ public class HospitalizationBillServerImpl implements HospitalizationBillServer 
     public Cost getPatientBill(Patient patient){
         Integer id = patient.getId();
         //获取退药的费用
-        List<Float> floats1 = drugOutBillMapper.selectBillMoneyByPatientId(id);
+        List<Float> floats1 = drugOutBillMapper.selectBillMoneyByPatientId(id,"1");
         float outTotal = 0.0f;
         for (Float aFloat : floats1) {
             outTotal+=aFloat;
         }
         //获取处方的费用
-        List<Float> floats2 = prescriptionBillMapper.selectMoneyByPatientId(id);
+        List<Float> floats2 = prescriptionBillMapper.selectMoneyByPatientId(id,"1");
         float prescriptionTotal = 0.0f;
         for (Float aFloat : floats2) {
             prescriptionTotal+=aFloat;
@@ -355,7 +355,7 @@ public class HospitalizationBillServerImpl implements HospitalizationBillServer 
         }
         float timeTotal = i * DAILYFEE;
         //获取医嘱的费用
-        List<Float> floats3 = medicalAdviceBillMapper.selectMoneyByPatientId(id);
+        List<Float> floats3 = medicalAdviceBillMapper.selectMoneyByPatientId(id,"1");
         float medicalAdviceTotal = 0.0f;
         for (Float aFloat : floats3) {
             medicalAdviceTotal+=aFloat;
@@ -458,31 +458,34 @@ public class HospitalizationBillServerImpl implements HospitalizationBillServer 
         if(hospitalizationBills.size()!=0){
             HospitalizationBill hospitalizationBill = hospitalizationBills.get(0);
             int i = 0;
-            if(hospitalizationBill.getEndTime()==null){
-                i = timeOperation(hospitalizationBill.getStartTime(),new Date());
-            }else{
-                i = timeOperation(hospitalizationBill.getStartTime(),hospitalizationBill.getEndTime());
+//            if(hospitalizationBill.getEndTime()==null){
+//                i = timeOperation(hospitalizationBill.getStartTime(),new Date());
+//            }else{
+//                i = timeOperation(hospitalizationBill.getStartTime(),hospitalizationBill.getEndTime());
+//            }
+            if(hospitalizationBill.getPayDays()!=null){
+                i = hospitalizationBill.getPayDays();
             }
             hospitalization += i * DAILYFEE;
         }
         list.add(hospitalization);
         //处方
         float prescriptionFee = 0;
-        List<Float> floats = prescriptionBillMapper.selectMoneyByPatientId(id);
+        List<Float> floats = prescriptionBillMapper.selectMoneyByPatientId(id,"2");
         for (Float aFloat : floats) {
             prescriptionFee += aFloat;
         }
         list.add(prescriptionFee);
         //医嘱
         float orderFee = 0;
-        List<Float> floats1 = medicalAdviceBillMapper.selectMoneyByPatientId(id);
+        List<Float> floats1 = medicalAdviceBillMapper.selectMoneyByPatientId(id,"2");
         for (Float aFloat : floats1) {
             orderFee += aFloat;
         }
         list.add(orderFee);
         //退药
         float outFee = 0;
-        List<Float> floats2 = drugOutBillMapper.selectBillMoneyByPatientId(id);
+        List<Float> floats2 = drugOutBillMapper.selectBillMoneyByPatientId(id,"2");
         for (Float aFloat : floats2) {
             outFee += aFloat;
         }

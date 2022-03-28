@@ -1,6 +1,7 @@
 <template>
     <div>
         <!-- 面包xie导航 -->
+        <br>
         <el-breadcrumb separator="/">
             <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
             <el-breadcrumb-item><a href="#/costInfo">在院病人费用信息管理</a></el-breadcrumb-item>

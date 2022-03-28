@@ -27,8 +27,8 @@ public interface MedicalAdviceBillMapper {
 
     @Select("select mab.money\n" +
             "from HOS_patient p,HOS_medical_advice ma,HOS_medical_advice_bill mab\n" +
-            "where p.id = ma.patient_id and ma.id = mab.medical_advice_id and p.id = #{id} and mab.status = 1")
-    List<Float> selectMoneyByPatientId (Integer id);
+            "where p.id = ma.patient_id and ma.id = mab.medical_advice_id and p.id = #{id} and mab.status = #{status}")
+    List<Float> selectMoneyByPatientId (@Param("id")Integer id,@Param("status")String status);
 
     @Update("update \n" +
             "HOS_patient p,HOS_medical_advice ma,HOS_medical_advice_bill mab\n" +

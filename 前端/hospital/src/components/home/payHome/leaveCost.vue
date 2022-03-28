@@ -1,6 +1,7 @@
 <template>
     <div>
         <!-- 面包xie导航 -->
+        <br>
         <el-breadcrumb separator="/">
             <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
             <el-breadcrumb-item><a href="#/patientInfo">在院病人费用信息管理</a></el-breadcrumb-item>
@@ -99,7 +100,7 @@
 
             <el-table-column
                 label="入院时间"
-                width="180">
+                width="200">
                 <template slot-scope="scope">
                     <i class="el-icon-time"></i>
                     <span style="margin-left: 10px">{{ scope.row.appointmenttTime}}</span>

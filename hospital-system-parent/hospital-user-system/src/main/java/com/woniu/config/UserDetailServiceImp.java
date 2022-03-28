@@ -38,6 +38,7 @@ public class UserDetailServiceImp implements UserDetailsService {
         //创建存放权限的集合 --暂时为空集合
         List<GrantedAuthority> authorities = new ArrayList<>();
         List<String> perCodes = userMapper.selectPercodeByPerm(user.getTelephone());
+        userMapper.updateByPhone(user.getTelephone(),"1");
         perCodes.forEach(per->{
             authorities.add(new SimpleGrantedAuthority(per));
         });

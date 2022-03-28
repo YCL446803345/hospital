@@ -9,7 +9,6 @@
     <el-row style="margin-top: 10px; margin-bottom: 10px">
       <el-dialog title="个人排班" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
         <!-- 日历 -->
-
         <div class="calendar_box">
           <el-row :gutter="20">
             <el-col :span="18">
