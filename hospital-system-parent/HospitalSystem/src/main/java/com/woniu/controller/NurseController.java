@@ -45,6 +45,7 @@ NurseController {
     @Autowired
     private MedicalAdviceService medicalAdviceService;
 
+
     @Autowired
     private PrescriptionService prescriptionService;
 
@@ -332,6 +333,7 @@ NurseController {
         medicalAdviceService.doMedicalAdvice(id);
     }
 
+
     /**
      * 查询病人处方信息
      * @return
@@ -388,4 +390,5 @@ NurseController {
     public void doOutHospital(Integer id) {
         patientService.doOutHospital(id);
     }
+
 }

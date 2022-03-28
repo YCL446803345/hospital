@@ -12,9 +12,7 @@ public interface PatientService {
 
     void updateDoctorOrNurse(Patient patient);
 
-
-
-    void updateBalance (Float o,Integer id);
+    void updateBalance (Float o,Integer id,String status);
 
     PageInfo<Patient> findPatientsWithNotBed(Patient patient, Integer pageNum, Integer pageSize);
 

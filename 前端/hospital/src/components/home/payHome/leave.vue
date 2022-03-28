@@ -513,7 +513,7 @@ export default {
         },
         //结算病人账单
         settlement(){
-            this.$axios.get("/api/advancePayment",{params:{id:this.patient.id}}).then(res=>{
+            this.$axios.get("/api/advancePayment",{params:{id:this.patient.id,status:"3"}}).then(res=>{
                  if(res.data === "OK"){
                             this.$message({
                             type: "success",

@@ -4,7 +4,9 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.woniu.entity.*;
 import com.woniu.mapper.*;
+
 import com.woniu.service.PrescriptionDrugService;
+
 import com.woniu.service.PrescriptionService;
 import com.woniu.util.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +39,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
         List<Prescription> prescriptionList2= prescriptionMapper.getPreDrugByMany(doctorName,nurseName,preName);
 
+
         return prescriptionList2;
     }
 
@@ -64,7 +67,9 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
         //迭代每个处方
         for (String s : newlist) {
+
             //计数器判断
+
             ArrayList count = new ArrayList();
 
             Integer i = Integer.parseInt(s);
@@ -138,6 +143,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     public Prescription getDrugNameAndNumAndCreateTime(Integer pid) {
         Prescription prescription = prescriptionMapper.getPreInfo(pid);
         return prescription;
+
     }
 
 
@@ -184,5 +190,6 @@ public class PrescriptionServiceImpl implements PrescriptionService {
         prescriptionDrug.setDrugId(prescription.getDrugId());
         prescriptionDrug.setNum(prescription.getNum());
         prescriptionDrugMapper.addPrescriptionDrug(prescriptionDrug);
+
     }
 }

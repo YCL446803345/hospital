@@ -84,9 +84,11 @@ public interface PrescriptionMapper {
     //分页模糊查询处方列表
     List<Prescription> queryPrescriptionList(Prescription prescription);
 
+
     //下达处方
     @Insert("insert into HOS_prescription(doctor_id,patient_id,create_time,prescription_status) values(#{doctorId},#{patientId},#{createTime},#{prescriptionStatus})")
     @Options(useGeneratedKeys = true,keyProperty = "id",keyColumn = "id")
     void addPrescription(Prescription prescription);
+
 
 }
