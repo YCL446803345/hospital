@@ -47,7 +47,9 @@ import PatientRecord from '../components/home/doctorHome/patient/PatientRecord' 
 import DrugInfo from '../components/home/drugHome/DrugInfo' //药品信息列表
 import DrugPre from '../components/home/drugHome/DrugPrescription' //药方列表
 import SendDrug from '../components/home/drugHome/SendDrug' //发药列表
-import DrugManager from '../components/home/drugHome/DrugManager'
+import DrugManager from '../components/home/drugHome/DrugManager' //药品管理
+import Purchase from '../components/home/drugHome/Purchase'   //采购管理
+
 
 
 
@@ -102,6 +104,7 @@ var router = new VueRouter({
                 { path: "/drug/send/drug", component: SendDrug },
                 { path: "/medicine/home", component: DrugInfo },
                 { path: "/drug/storage/list", component: DrugManager },
+                { path: "/purchase/manager", component: Purchase },
 
                 { path: "/pay/cost", component: costInfo },
 				{path:"/pay/queryCost",component:queryCost},
