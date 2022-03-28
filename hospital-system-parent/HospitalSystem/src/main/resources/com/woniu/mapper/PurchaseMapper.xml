@@ -10,7 +10,7 @@
     <result column="status" jdbcType="CHAR" property="status" />
     <result column="spare1" jdbcType="VARCHAR" property="spare1" />
     <result column="spare2" jdbcType="VARCHAR" property="spare2" />
-    <result column="spare3" jdbcType="VARCHAR" property="spare3" />
+    <result column="drug_name" jdbcType="VARCHAR" property="drugName" />
     <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
     <result column="type" jdbcType="CHAR" property="type" />
   </resultMap>
@@ -74,7 +74,7 @@
   </sql>
   <sql id="Base_Column_List">
     id, drug_id, purchase_num, purchase_name, purchase_time, status, spare1, spare2, 
-    spare3, start_time, type
+    drug_name, start_time, type
   </sql>
   <select id="selectByExample" parameterType="com.woniu.entity.PurchaseExample" resultMap="BaseResultMap">
     select
@@ -82,7 +82,7 @@
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from hos_purchase
+    from HOS_purchase
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -93,31 +93,31 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from hos_purchase
+    from HOS_purchase
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from hos_purchase
+    delete from HOS_purchase
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <delete id="deleteByExample" parameterType="com.woniu.entity.PurchaseExample">
-    delete from hos_purchase
+    delete from HOS_purchase
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
   <insert id="insert" parameterType="com.woniu.entity.Purchase">
-    insert into hos_purchase (id, drug_id, purchase_num, 
+    insert into HOS_purchase (id, drug_id, purchase_num, 
       purchase_name, purchase_time, status, 
-      spare1, spare2, spare3, 
+      spare1, spare2, drug_name, 
       start_time, type)
     values (#{id,jdbcType=INTEGER}, #{drugId,jdbcType=INTEGER}, #{purchaseNum,jdbcType=INTEGER}, 
       #{purchaseName,jdbcType=VARCHAR}, #{purchaseTime,jdbcType=TIMESTAMP}, #{status,jdbcType=CHAR}, 
-      #{spare1,jdbcType=VARCHAR}, #{spare2,jdbcType=VARCHAR}, #{spare3,jdbcType=VARCHAR}, 
+      #{spare1,jdbcType=VARCHAR}, #{spare2,jdbcType=VARCHAR}, #{drugName,jdbcType=VARCHAR}, 
       #{startTime,jdbcType=TIMESTAMP}, #{type,jdbcType=CHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.woniu.entity.Purchase">
-    insert into hos_purchase
+    insert into HOS_purchase
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
@@ -143,8 +143,8 @@
       <if test="spare2 != null">
         spare2,
       </if>
-      <if test="spare3 != null">
-        spare3,
+      <if test="drugName != null">
+        drug_name,
       </if>
       <if test="startTime != null">
         start_time,
@@ -178,8 +178,8 @@
       <if test="spare2 != null">
         #{spare2,jdbcType=VARCHAR},
       </if>
-      <if test="spare3 != null">
-        #{spare3,jdbcType=VARCHAR},
+      <if test="drugName != null">
+        #{drugName,jdbcType=VARCHAR},
       </if>
       <if test="startTime != null">
         #{startTime,jdbcType=TIMESTAMP},
@@ -190,13 +190,13 @@
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.woniu.entity.PurchaseExample" resultType="java.lang.Long">
-    select count(*) from hos_purchase
+    select count(*) from HOS_purchase
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update hos_purchase
+    update HOS_purchase
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
@@ -222,8 +222,8 @@
       <if test="record.spare2 != null">
         spare2 = #{record.spare2,jdbcType=VARCHAR},
       </if>
-      <if test="record.spare3 != null">
-        spare3 = #{record.spare3,jdbcType=VARCHAR},
+      <if test="record.drugName != null">
+        drug_name = #{record.drugName,jdbcType=VARCHAR},
       </if>
       <if test="record.startTime != null">
         start_time = #{record.startTime,jdbcType=TIMESTAMP},
@@ -237,7 +237,7 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update hos_purchase
+    update HOS_purchase
     set id = #{record.id,jdbcType=INTEGER},
       drug_id = #{record.drugId,jdbcType=INTEGER},
       purchase_num = #{record.purchaseNum,jdbcType=INTEGER},
@@ -246,7 +246,7 @@
       status = #{record.status,jdbcType=CHAR},
       spare1 = #{record.spare1,jdbcType=VARCHAR},
       spare2 = #{record.spare2,jdbcType=VARCHAR},
-      spare3 = #{record.spare3,jdbcType=VARCHAR},
+      drug_name = #{record.drugName,jdbcType=VARCHAR},
       start_time = #{record.startTime,jdbcType=TIMESTAMP},
       type = #{record.type,jdbcType=CHAR}
     <if test="_parameter != null">
@@ -254,7 +254,7 @@
     </if>
   </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.woniu.entity.Purchase">
-    update hos_purchase
+    update HOS_purchase
     <set>
       <if test="drugId != null">
         drug_id = #{drugId,jdbcType=INTEGER},
@@ -277,8 +277,8 @@
       <if test="spare2 != null">
         spare2 = #{spare2,jdbcType=VARCHAR},
       </if>
-      <if test="spare3 != null">
-        spare3 = #{spare3,jdbcType=VARCHAR},
+      <if test="drugName != null">
+        drug_name = #{drugName,jdbcType=VARCHAR},
       </if>
       <if test="startTime != null">
         start_time = #{startTime,jdbcType=TIMESTAMP},
@@ -290,7 +290,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.woniu.entity.Purchase">
-    update hos_purchase
+    update HOS_purchase
     set drug_id = #{drugId,jdbcType=INTEGER},
       purchase_num = #{purchaseNum,jdbcType=INTEGER},
       purchase_name = #{purchaseName,jdbcType=VARCHAR},
@@ -298,7 +298,7 @@
       status = #{status,jdbcType=CHAR},
       spare1 = #{spare1,jdbcType=VARCHAR},
       spare2 = #{spare2,jdbcType=VARCHAR},
-      spare3 = #{spare3,jdbcType=VARCHAR},
+      drug_name = #{drugName,jdbcType=VARCHAR},
       start_time = #{startTime,jdbcType=TIMESTAMP},
       type = #{type,jdbcType=CHAR}
     where id = #{id,jdbcType=INTEGER}

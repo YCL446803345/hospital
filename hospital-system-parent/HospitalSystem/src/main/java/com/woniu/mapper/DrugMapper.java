@@ -55,4 +55,7 @@ public interface DrugMapper {
             "where p.id=#{id}")
     List<Drug> getDrugsByPrescriptionId(Integer id);
 
+    @Update("update HOS_drug set stock=#{stock} where id=#{id}")
+    void addDrugStockById(@Param("id") Integer id, @Param("stock") Integer stock);
+
 }

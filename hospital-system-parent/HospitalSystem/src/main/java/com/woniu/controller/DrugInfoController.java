@@ -66,12 +66,18 @@ public class DrugInfoController {
         return ResponseResult.ok();
     }
 
-    //添加药品,附带药品图片上传
+    //添加药品
     @PostMapping("drug/addDrug")
-    public ResponseResult addDrug(Drug drug, MultipartFile file){
-        String url = FileUtils.uploadFile(file);
-        drug.setSpare3(url);
-        drugService.addDrug(drug);
+    public ResponseResult addDrug(@RequestBody Drug drug){
+        List<Drug> drug1 = drugService.byNameGetDrug(drug.getName());
+        if (drug1.size() == 0){
+            drug.setStatus("0");
+            drugService.addDrug(drug);
+        }else {
+            for (Drug drug2 : drug1) {
+                drugService.updateStock(drug2.getName(),drug.getStock()+drug2.getStock());
+            }
+        }
         return ResponseResult.ok();
     }
 
@@ -104,4 +110,12 @@ public class DrugInfoController {
         drugService.updateByIdBatchStatus(strings);
         return ResponseResult.ok();
     }
+
+    //根据药品id修改库存
+    @PostMapping("drug/byIdUpdateStock")
+    public ResponseResult byIdUpdateStock(@RequestBody Drug drug){
+        drugService.addDrugStockById(drug);
+        return ResponseResult.ok();
+    }
+
 }

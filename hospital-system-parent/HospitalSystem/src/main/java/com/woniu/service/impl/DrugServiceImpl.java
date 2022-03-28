@@ -114,4 +114,26 @@ public class DrugServiceImpl implements DrugService {
     public List<Drug> findDrugList() {
         return drugMapper.selectByExample(null);
     }
+
+    //根据药品id加库存
+    public void addDrugStockById(Drug drug) {
+        Drug drug1 = drugMapper.selectByPrimaryKey(drug.getId());
+        drugMapper.addDrugStockById(drug.getId(),drug.getStock()+drug1.getStock());
+    }
+
+    //根据姓名查药品
+    public List<Drug> byNameGetDrug(String name) {
+        DrugExample drugExample = new DrugExample();
+        DrugExample.Criteria criteria = drugExample.createCriteria();
+        criteria.andNameEqualTo(name);
+
+        List<Drug> drugList = drugMapper.selectByExample(drugExample);
+        return drugList;
+    }
+
+    //根据药品姓名加库存
+    public void updateStock(String name, int i) {
+        drugMapper.updateStock(i,name);
+    }
+
 }

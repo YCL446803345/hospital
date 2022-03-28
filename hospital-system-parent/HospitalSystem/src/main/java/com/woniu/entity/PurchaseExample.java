@@ -625,73 +625,73 @@ public class PurchaseExample {
             return (Criteria) this;
         }
 
-        public Criteria andSpare3IsNull() {
-            addCriterion("spare3 is null");
+        public Criteria andDrugNameIsNull() {
+            addCriterion("drug_name is null");
             return (Criteria) this;
         }
 
-        public Criteria andSpare3IsNotNull() {
-            addCriterion("spare3 is not null");
+        public Criteria andDrugNameIsNotNull() {
+            addCriterion("drug_name is not null");
             return (Criteria) this;
         }
 
-        public Criteria andSpare3EqualTo(String value) {
-            addCriterion("spare3 =", value, "spare3");
+        public Criteria andDrugNameEqualTo(String value) {
+            addCriterion("drug_name =", value, "drugName");
             return (Criteria) this;
         }
 
-        public Criteria andSpare3NotEqualTo(String value) {
-            addCriterion("spare3 <>", value, "spare3");
+        public Criteria andDrugNameNotEqualTo(String value) {
+            addCriterion("drug_name <>", value, "drugName");
             return (Criteria) this;
         }
 
-        public Criteria andSpare3GreaterThan(String value) {
-            addCriterion("spare3 >", value, "spare3");
+        public Criteria andDrugNameGreaterThan(String value) {
+            addCriterion("drug_name >", value, "drugName");
             return (Criteria) this;
         }
 
-        public Criteria andSpare3GreaterThanOrEqualTo(String value) {
-            addCriterion("spare3 >=", value, "spare3");
+        public Criteria andDrugNameGreaterThanOrEqualTo(String value) {
+            addCriterion("drug_name >=", value, "drugName");
             return (Criteria) this;
         }
 
-        public Criteria andSpare3LessThan(String value) {
-            addCriterion("spare3 <", value, "spare3");
+        public Criteria andDrugNameLessThan(String value) {
+            addCriterion("drug_name <", value, "drugName");
             return (Criteria) this;
         }
 
-        public Criteria andSpare3LessThanOrEqualTo(String value) {
-            addCriterion("spare3 <=", value, "spare3");
+        public Criteria andDrugNameLessThanOrEqualTo(String value) {
+            addCriterion("drug_name <=", value, "drugName");
             return (Criteria) this;
         }
 
-        public Criteria andSpare3Like(String value) {
-            addCriterion("spare3 like", value, "spare3");
+        public Criteria andDrugNameLike(String value) {
+            addCriterion("drug_name like", value, "drugName");
             return (Criteria) this;
         }
 
-        public Criteria andSpare3NotLike(String value) {
-            addCriterion("spare3 not like", value, "spare3");
+        public Criteria andDrugNameNotLike(String value) {
+            addCriterion("drug_name not like", value, "drugName");
             return (Criteria) this;
         }
 
-        public Criteria andSpare3In(List<String> values) {
-            addCriterion("spare3 in", values, "spare3");
+        public Criteria andDrugNameIn(List<String> values) {
+            addCriterion("drug_name in", values, "drugName");
             return (Criteria) this;
         }
 
-        public Criteria andSpare3NotIn(List<String> values) {
-            addCriterion("spare3 not in", values, "spare3");
+        public Criteria andDrugNameNotIn(List<String> values) {
+            addCriterion("drug_name not in", values, "drugName");
             return (Criteria) this;
         }
 
-        public Criteria andSpare3Between(String value1, String value2) {
-            addCriterion("spare3 between", value1, value2, "spare3");
+        public Criteria andDrugNameBetween(String value1, String value2) {
+            addCriterion("drug_name between", value1, value2, "drugName");
             return (Criteria) this;
         }
 
-        public Criteria andSpare3NotBetween(String value1, String value2) {
-            addCriterion("spare3 not between", value1, value2, "spare3");
+        public Criteria andDrugNameNotBetween(String value1, String value2) {
+            addCriterion("drug_name not between", value1, value2, "drugName");
             return (Criteria) this;
         }
 

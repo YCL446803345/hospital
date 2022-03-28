@@ -8,7 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
+
 
 /**
  * 药品采购业务类
@@ -19,29 +22,30 @@ public class PurchaseServiceImpl implements PurchaseService {
     @Autowired
     private PurchaseMapper purchaseMapper;
 
-    //添加采购信息
+    //动态添加采购信息
     public void addPurchase(Purchase purchase) {
+        Random random = new Random();
         if (StringUtils.isEmpty(purchase.getPurchaseName())){
             purchase.setStatus("0");
-        }else {
-            purchase.setStatus("1");
+            purchase.setStartTime(new Date());
+            purchase.setId(random.nextInt(10000));
         }
-        purchaseMapper.insertSelective(purchase);
+        purchaseMapper.insert(purchase);
     }
 
-    //查询采购清单,默认未处理
+    // 动态查询采购清单
     public List<Purchase> findAllPur(Purchase purchase) {
-
 
         PurchaseExample purchaseExample = new PurchaseExample();
         PurchaseExample.Criteria criteria = purchaseExample.createCriteria();
 
-        if (StringUtils.isEmpty(purchase)){
+        if (purchase.getSpare1().equals("0")){
             criteria.andStatusEqualTo("0");
-        }else {
+        }
+        if (purchase.getSpare1().equals("1")){
             criteria.andStatusEqualTo("1");
         }
-
-        return null;
+        List<Purchase> list = purchaseMapper.selectByExample(purchaseExample);
+        return list;
     }
 }

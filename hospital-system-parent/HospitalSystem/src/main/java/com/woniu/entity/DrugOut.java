@@ -36,5 +36,9 @@ public class DrugOut {
 
     private String spare3;
 
-
+    private String doctorName;
+    private String preName;
+    private String cTime;
+    private String oCause;
+    private String oStatus;
 }
