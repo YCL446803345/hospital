@@ -317,7 +317,7 @@
       <if test="adviceStatus != null and adviceStatus != ''">m.advice_status = #{adviceStatus}</if>
       <if test="startDate != null and startDate != ''">and m.create_time &gt;= #{startDate}</if>
       <if test="endDate != null and endDate != ''">and m.create_time &lt;= #{endDate}</if>
-    </where> order by m.create_time desc
+    </where> and m.advice_status in(1,2,3) order by m.create_time desc
   </select>
 
 <!--  findMedicalAdviceById-->

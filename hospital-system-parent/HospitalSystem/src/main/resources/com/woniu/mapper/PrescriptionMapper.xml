@@ -268,12 +268,10 @@
          HOS_prescription_drug pd,
          HOS_drug dr
     where pr.doctor_id=wo.id and pr.patient_id=pa.id and pr.id=pd.prescription_id and pd.drug_id=dr.id
-
-    <where>
       <if test="prescriptionStatus!=null and prescriptionStatus != ''">and pr.prescription_status = #{prescriptionStatus}</if>
       <if test="startTime != null and startTime != ''">and pr.create_time &gt;= #{startTime}</if>
       <if test="endTime != null and endTime != ''">and pr.create_time &lt;= #{endTime}</if>
-    </where> order by pr.create_time desc
+      and pr.prescription_status in(1,2,3,4) order by pr.create_time desc
   </select>
 
 

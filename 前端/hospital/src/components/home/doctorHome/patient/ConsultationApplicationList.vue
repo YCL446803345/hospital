@@ -9,7 +9,7 @@
     <el-row style="margin-top: 10px; margin-bottom: 10px">
       <el-col :span="2">
         <el-select v-model="consultationEmergencyId" placeholder="会诊情况">
-          <el-option label="会诊情况" value=""></el-option>
+          <!-- <el-option label="会诊情况" value=""></el-option> -->
           <el-option label="紧急" value="1"></el-option>
           <el-option label="24小时" value="2"></el-option>
           <el-option label="一般" value="3"></el-option>
@@ -17,7 +17,7 @@
       </el-col>
       <el-col :span="2">
         <el-select v-model="consultationCategoryId" placeholder="会诊类别">
-          <el-option label="会诊类别" value=""></el-option>
+          <!-- <el-option label="会诊类别" value=""></el-option> -->
           <el-option label="它科会诊" value="1"></el-option>
           <el-option label="科内会诊" value="2"></el-option>
           <el-option label="院外会诊" value="3"></el-option>
@@ -25,10 +25,10 @@
       </el-col>
       <el-col :span="2">
         <el-select v-model="status" placeholder="会诊状态">
-          <el-option label="会诊状态" value=""></el-option>
+          <!-- <el-option label="会诊状态" value=""></el-option> -->
           <el-option label="待会诊" value="1"></el-option>
-          <el-option label="已执行" value="2"></el-option>
-          <el-option label="已取消" value="3"></el-option>
+          <el-option label="已会诊" value="2"></el-option>
+          <!-- <el-option label="已取消" value="3"></el-option> -->
         </el-select>
       </el-col>
 
@@ -84,7 +84,7 @@
         <template slot-scope="scope">
           <span v-if="scope.row.status=='1'">待会诊</span>
           <span v-if="scope.row.status=='2'">已会诊</span>
-          <span v-if="scope.row.status=='3'">已取消</span>
+          <!-- <span v-if="scope.row.status=='3'">已取消</span> -->
         </template>
       </el-table-column>
 
