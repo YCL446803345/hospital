@@ -1,10 +1,11 @@
 <template>
     <div>
         <!-- 面包xie导航 -->
+        <br>
         <el-breadcrumb separator="/">
             <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item><a href="#/costInfo">在院病人费用信息管理</a></el-breadcrumb-item>
-            <el-breadcrumb-item>在院病人信息费用管理列表</el-breadcrumb-item>
+            <el-breadcrumb-item><a href="#/costInfo">出院病人信息管理</a></el-breadcrumb-item>
+            <el-breadcrumb-item>出院病人信息管理列表</el-breadcrumb-item>
         </el-breadcrumb>
         <el-row style="margin-top:10px;margin-bottom:10px">
             <el-col :span="3">
@@ -513,7 +514,7 @@ export default {
         },
         //结算病人账单
         settlement(){
-            this.$axios.get("/api/advancePayment",{params:{id:this.patient.id}}).then(res=>{
+            this.$axios.get("/api/advancePayment",{params:{id:this.patient.id,status:"3"}}).then(res=>{
                  if(res.data === "OK"){
                             this.$message({
                             type: "success",

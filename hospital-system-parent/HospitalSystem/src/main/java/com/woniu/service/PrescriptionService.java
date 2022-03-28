@@ -23,6 +23,7 @@ public interface PrescriptionService {
     Prescription getDrugNameAndNumAndCreateTime(Integer pid);
 
 
+
     PageInfo<Prescription> getPrescriptions(Prescription prescription, Integer pageNum, Integer pageSize);
 
     void checkPrescription(Integer id);
@@ -35,5 +36,6 @@ public interface PrescriptionService {
     PageInfo<Prescription> queryPrescriptionList(Prescription prescription, Integer pageNum, Integer pageSize);
     //处方下达
     void addPrescription(Prescription prescription);
+
 
 }

@@ -5,7 +5,7 @@
             :router决定导航栏是否开启路由模式，即在菜单item上设置路由是否生效，值为boolean类型-->
       <el-menu default-active="0" class="el-menu-vertical-demo" :collapse="isCollapse" :router="true">
         <!--index设置当前item的下标，:route则是传一个对象进行，指定路由-->
-        <a href="#" @click="changeCollapse" style="font-size: 25px;color:#909399;"><i :class="collpaseIcon"></i></a>
+        <!-- <a href="#" @click="changeCollapse" style="font-size: 25px;color:#909399;"><i :class="collpaseIcon"></i></a> -->
 
         <!-- <el-submenu :index="String(menu.id)" v-for="menu in menuDate" :key="menu.id"> -->
         <!-- <template slot="title">
@@ -51,7 +51,8 @@
             <el-form ref="loginForm" :model="inHospitalTable">
               <el-form-item prop="patientName ">
   <div class="inputElement">
-                <el-input v-model="inHospitalTable.patientName" placeholder="请输入病人名字" prop="patientName"></el-input>
+                <el-input v-if="status == 1" disabled v-model="inHospitalTable.patientName"  placeholder="请输入病人名字" prop="patientName"></el-input>
+                <el-input v-if="status == 2" v-model="inHospitalTable.patientName"  placeholder="请输入病人名字" prop="patientName"></el-input>
   </div>
               </el-form-item>
               <el-form-item prop="patientSex ">
@@ -99,16 +100,19 @@
               <div align="center">
                  
                 <div class="inputElement">
-                <el-button type="info" icon="el-icon-s-custom" @click="addInHospitalTable()">病人预约</el-button>
-                <el-button type="info" icon="el-icon-s-custom"   @click="getInHospitalTableByTelephone()">预约查询</el-button>
+                <el-button v-if="status == 1" type="success" icon="el-icon-coin" @click="pay()">缴纳手续费</el-button>
+                
+                <el-button v-if="status == 2"  type="primary" icon="el-icon-user-solid" @click="addInHospitalTable()">病人预约</el-button>
+                
+               <el-button v-if="status == 2"  type="info" icon="el-icon-user"   @click="getInHospitalTableByTelephone()">预约查询</el-button>
                 </div>
               </div>
             </el-form>
           </div>
         </div>
-  <el-dialog title="病人预约情况" :visible.sync="Visible" class="mydig" >
+  <el-dialog title="病人预约情况" :visible.sync="Visible" class="mydig" width="60%" :showClose="false" >
        
-       <el-table :data="inHospitalTableData"  >
+       <el-table :data="inHospitalTableData" >
       <!-- 
                 el-table-column列
                 prop 绑定data数组中对象的属性
@@ -119,11 +123,19 @@
       <el-table-column prop="patientAge" label="年龄" width="100"> </el-table-column>
       <el-table-column prop="cardId" label="身份证号码" width="100"> </el-table-column>
       <el-table-column prop="telephone" label="手机号码" width="100"> </el-table-column>
-      <el-table-column prop="deptId" label="部门" width="100"> </el-table-column>
+      <el-table-column prop="deptId" label="部门" width="100">
+        
+      </el-table-column>
       <el-table-column prop="bedId" label="床位" width="100"> </el-table-column>
       <el-table-column prop="reason" label="病情" width="100"> </el-table-column>
       <el-table-column prop="inHosptialTime" label="入院时间" width="100"> </el-table-column>
-      <el-table-column prop="status" label="状态" width="100"> </el-table-column>
+     <el-table-column prop="status" label="状态" width="120" >
+        <template slot-scope="scope">
+          <span v-if="scope.row.status=='1'">已预约</span>
+          <span v-if="scope.row.status=='2'">已审核</span>
+          <span v-if="scope.row.status=='3'">住院中</span>
+        </template>
+      </el-table-column>
     
     </el-table>
 
@@ -193,7 +205,8 @@
         // AcatarUrl:require('../../assets/css/image/鸟.jpeg'), //头像图片
         telephone: "",
         headers: "",
-        menuDate: []
+        menuDate: [],
+        status:""
       }
     },
     computed: {
@@ -207,20 +220,26 @@
       }
     },
     methods: {
-
+      //缴纳手续费
+      pay(value){
+        this.$axios.get("/api/pay",{params:{phone:value}}).then(res=>{
+                        const divForm = document.getElementsByTagName("div");
+                        if (divForm.length) {
+                            document.body.removeChild(divForm[0]);
+                        }
+                        const div = document.createElement("div");
+                        div.innerHTML = res.data;
+                        document.body.appendChild(div);
+                        document.forms[0].submit();
+                        document.forms[0].setAttribute("target", "_blank"); // 新开窗口跳转
+                    })
+      },
       //部门列表
       findDeptList() {
         //axios请求拿数据
-        this.$axios
-          .get("/api/dept/list", {
-            params: {},
-          })
-          .then((res) => {
-            console.log(res.data.data);
-            //设置部门列表数据
+        this.$axios.get("/api/dept/list").then((res) => {
             this.deptData = res.data.data;
-          })
-          .catch((res) => {
+          }).catch((res) => {
             this.$message({
               type: "error",
               message: "获取部门列表错误!",
@@ -326,17 +345,24 @@ getInHospitalTableByTelephone(){
             telephone: this.telephone
           }
         }).then(res => {
-          console.log(res.data)
           if (res.data.status == 200) {
             this.menuDate = res.data.data
           }
         }),
-
-        this.findDeptList();
+      this.findDeptList();
       this.findBedList();
-
+      this.$axios.get("/api/queryUserStatus",{params:{phone: this.telephone}}).then(res=>{ 
+          if (res.data == "1") {
+              this.$alert('请先缴纳手续费', '缴费', {
+              confirmButtonText: '确定',
+              callback: action => {
+                this.pay(this.telephone);
+              }
+            })
+          }
+          this.status = res.data;
+      })
     }
-
   }
 
 </script>
@@ -406,13 +432,13 @@ getInHospitalTableByTelephone(){
 
   .el-header {
     padding: 0;
-    background: #00FFCC;
+    background: #FFC1E0;
 
   }
 
   .el-main {
     padding: 0;
-      /* background:url("../../../assets/css/image/OIP-C.jpg") ; */
+      background:url("../../../assets/css/image/宣言.jpg")  center center no-repeat ;
   }
 
   /*左边导航栏具体样式*/
@@ -439,7 +465,7 @@ getInHospitalTableByTelephone(){
   }
 
   .footer {
-    background: #FF9F00;
+    background: #C4E1E1;
   }
 
   h4 {

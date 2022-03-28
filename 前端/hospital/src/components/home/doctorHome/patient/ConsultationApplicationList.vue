@@ -103,10 +103,12 @@
             scope.row.doctorName,
             scope.row.patientId,
             scope.row.doctorId,
+
             scope.row.reason,
             scope.row.desc,
             scope.row.consultationEmergencyId,
             scope.row.consultationCategoryId
+
             )">下达医嘱</el-button>
           <el-button size="mini" type="primary" @click=" gotoUpdateConsultationApplication(
                 scope.row.id,
@@ -192,6 +194,7 @@
             <template slot="label"><i class="el-icon-user"></i>主治医生</template>
             {{ addMedicalAdvice.doctorName }}
           </el-descriptions-item>
+
           
           <el-descriptions-item>
             <template slot="label"><i class="el-icon-user"></i>原因</template>
@@ -214,6 +217,7 @@
             {{ addMedicalAdvice.consultationCategoryId ==='1'?'它科会诊': 
                addMedicalAdvice.consultationCategoryId ==='2'?'科内会诊':'一般会诊' }}
           </el-descriptions-item>
+
 
         </el-descriptions>
       </template>
@@ -282,12 +286,14 @@ export default {
   },
   methods: {
     //打开下达医嘱列表
+
       gotoAddMedicalAdvice(patientName,doctorName,patientId,doctorId,reason,desc,consultationEmergencyId,consultationCategoryId) {
         this.addMedicalAdvice = {
         patientName: patientName,
         doctorName: doctorName,
         patientId: patientId,
         doctorId: doctorId,
+
         reason: reason,
         desc: desc,
         consultationEmergencyId: consultationEmergencyId,

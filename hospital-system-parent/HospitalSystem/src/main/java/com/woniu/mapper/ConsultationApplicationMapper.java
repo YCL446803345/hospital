@@ -45,7 +45,9 @@ public interface ConsultationApplicationMapper {
     @Update("update HOS_consultation_application set status = 3 where id=#{id}")
     void cancelConsultationApplication(Integer id);
 
+
     //突发情况,申请会诊
     @Insert("insert into HOS_consultation_application(doctor_id,patient_id,consultation_date,reason,`desc`,consultation_emergency_id,consultation_category_id,status) values(#{doctorId},#{id},#{consultationDate},#{reason},#{desc},#{consultationEmergencyId},#{consultationCategoryId},#{status})")
     void addConsultationApplication(ConsultationApplication consultationApplication);
+
 }

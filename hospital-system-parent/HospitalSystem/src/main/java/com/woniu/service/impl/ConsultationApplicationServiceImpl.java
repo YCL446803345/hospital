@@ -35,10 +35,12 @@ public class ConsultationApplicationServiceImpl implements ConsultationApplicati
         consultationApplicationMapper.cancelConsultationApplication(id);
     }
 
+
     //突发情况申请会诊
     public void addConsultationApplication(ConsultationApplication consultationApplication) {
         consultationApplication.setConsultationDate(new Date());
         consultationApplication.setStatus("1");
         consultationApplicationMapper.addConsultationApplication(consultationApplication);
     }
+
 }

@@ -85,6 +85,7 @@ public class DrugPreController {
     public ResponseResult<Prescription> findDrugNameAndNumAndCreateTime(Integer pid){
         Prescription drugNameAndNumAndCreateTime = prescriptionService.getDrugNameAndNumAndCreateTime(pid);
         return new ResponseResult<Prescription>(drugNameAndNumAndCreateTime,"OK",200);
+
     }
 
     //药房查找所有医生
@@ -92,6 +93,7 @@ public class DrugPreController {
     public ResponseResult<List<String>> findAllDoctor(){
         List<String> doctorList = workerService.findAllDoctor();
         return new ResponseResult<List<String>>(doctorList,"OK",200);
+
     }
 
 }

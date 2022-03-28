@@ -9,8 +9,8 @@ public class PaymentRecord {
     private Integer id;
     private Integer patientId;
     private Float updatemoney;
-    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:SS")
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:SS",timezone="GMT+8")
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date time;
     private String type;//1为现金支付, 2为买药(处方), 3为医疗项目(医嘱), 4为退药, 5为住院费用, 6为支付宝充值
     private String spare1;

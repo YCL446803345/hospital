@@ -39,13 +39,19 @@ public class AliPayController {
     //支付宝同步通知路径,也就是当付款完毕后跳转本项目的页面,可以不是公网地址
     private String RETURN_URL = "http://localhost:8080/payReusult";
     private Integer pId;
+    private String status;
     @Autowired
     private PatientService patientService;
     @Autowired
     private PaymentRecordMapper paymentRecordMapper;
 
     @GetMapping("/gotoPay")
-    public void alipay(HttpServletRequest httpServletRequest ,HttpServletResponse httpResponse,String newMoney,Integer patientId) throws IOException {
+    public void alipay(HttpServletRequest httpServletRequest ,HttpServletResponse httpResponse,String newMoney,Integer patientId,String status) throws IOException {
+        if(status!=null){
+            this.status = status;
+        }else{
+            this.status = null;
+        }
         pId = patientId;
 //        Float oMoney = oldMoney;
         SecureRandom r= new SecureRandom();
@@ -58,7 +64,7 @@ public class AliPayController {
         HttpSession session = httpServletRequest.getSession();
         session.setAttribute("patientId",patientId);
 //        session.setAttribute("oldMoney",oldMoney);
-
+        session.setAttribute("status",status);
         //生成随机Id
         String out_trade_no = UUID.randomUUID().toString();
         //付款金额，必填
@@ -90,7 +96,6 @@ public class AliPayController {
     @GetMapping(value = "/payReusult")
     public void payReusult(HttpServletRequest request, HttpServletResponse response)
             throws IOException, AlipayApiException {
-        System.out.println("=================================同步回调=====================================");
         Map<String, String> params = new HashMap<String, String>();
         Map<String, String[]> requestParams = request.getParameterMap();
         for (Iterator<String> iter = requestParams.keySet().iterator(); iter.hasNext();) {
@@ -112,7 +117,10 @@ public class AliPayController {
             String total_amount = new String(request.getParameter("total_amount").getBytes("ISO-8859-1"), "UTF-8");
             //支付成功，加钱
             Float o = Float.parseFloat(total_amount);
-            patientService.updateBalance(o,pId);
+            if(status != null){
+                status = "1";
+            }
+            patientService.updateBalance(o,pId,status);
 
             PaymentRecord paymentRecord = new PaymentRecord();
             paymentRecord.setPatientId(pId);

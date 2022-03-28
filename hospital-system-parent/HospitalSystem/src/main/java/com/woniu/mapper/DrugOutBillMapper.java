@@ -39,8 +39,8 @@ public interface DrugOutBillMapper {
 
     @Select("select dob.money\n" +
             "from HOS_patient p,HOS_drug_out dou,HOS_drugout_bill dob\n" +
-            "where  dou.id = dob.drugoutapply_id and p.id=dou.patient_id and p.id=#{id} and dob.status=1")
-    List<Float> selectBillMoneyByPatientId (Integer id);
+            "where  dou.id = dob.drugoutapply_id and p.id=dou.patient_id and p.id=#{id} and dob.status=#{status}")
+    List<Float> selectBillMoneyByPatientId (@Param("id")Integer id,@Param("status")String status);
 
     @Update("update \n" +
             " HOS_patient p,HOS_drug_out dou,HOS_drugout_bill dob\n" +

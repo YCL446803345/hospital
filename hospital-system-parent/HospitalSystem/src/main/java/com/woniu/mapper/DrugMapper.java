@@ -33,7 +33,7 @@ public interface DrugMapper {
             " where pr.patient_id = p.id and pr.id = pd.prescription_id and pd.drug_id = d.id and p.id = #{id} and pb.status = 1")
     List<Drug> selectDrugByPatientId(Integer id);
 
-    @Select("  select d.name,d.sale_price,dod.num\n" +
+    @Select("  select d.name,d.sale_price,dod.num outNum\n" +
             " from HOS_drug d,HOS_patient p,HOS_drug_out do,HOS_drugout_bill db,HOS_drug_out_drug dod\n" +
             " where  db.status = 1 and p.id = do.patient_id and do.id = dod.drug_out_id and dod.drug_id = d.id and db.drugoutapply_id = do.id and p.id = #{id}")
     List<Drug> selectByPatientId (int id);

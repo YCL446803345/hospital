@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 public class HospitalizationController {
@@ -28,7 +29,11 @@ public class HospitalizationController {
     @Autowired
     private PatientService patientService;
 
-
+    @GetMapping("createToken")
+    public ResponseEntity<String> createToken(){
+        String token = UUID.randomUUID().toString();
+        return new ResponseEntity<>(token,HttpStatus.OK);
+    }
 
     /** 生成住院账单
      * @param patientId 病人id
@@ -46,8 +51,8 @@ public class HospitalizationController {
      * @return 返回值中有五个数 , 第一个是退药费用 第二个是处方费用 第三个是住院费用 第四个是医嘱费用 第五个是余额
      */
     @GetMapping("advancePayment")
-    public ResponseEntity<String> advancePayment(Integer id){
-        Float aFloat = hospitalizationBillServer.updateHospitalizationBill(id);
+    public ResponseEntity<String> advancePayment(Integer id,String status){
+        Float aFloat = hospitalizationBillServer.updateHospitalizationBill(id,status);
         if(aFloat > 0){
             return new ResponseEntity<> ("OK", HttpStatus.OK);
         }else{
@@ -61,8 +66,8 @@ public class HospitalizationController {
      * @return
      */
     @GetMapping("addMoney")
-    public ResponseEntity<String> addMoney(Integer id,Float money){
-        hospitalizationBillServer.updateMoney(id,money);
+    public ResponseEntity<String> addMoney(Integer id,Float money,String status){
+        hospitalizationBillServer.updateMoney(id,money,status);
         return new ResponseEntity<>("OK",HttpStatus.OK);
     }
 
@@ -145,8 +150,9 @@ public class HospitalizationController {
      * @return
      */
     @GetMapping("queryPayment")
-    public ResponseEntity<List<PaymentRecord>> queryPayment(Integer id){
-        List<PaymentRecord> paymentRecords = hospitalizationBillServer.queryPayment(id);
+    public ResponseEntity<PageInfo<PaymentRecord>> queryPayment( @RequestParam(value = "pageNum", defaultValue = "1", required = false) Integer pageNum,
+                                                             @RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize,Integer id){
+        PageInfo<PaymentRecord> paymentRecords = hospitalizationBillServer.queryPayment(pageNum,pageSize,id);
         return new ResponseEntity<>(paymentRecords,HttpStatus.OK);
     }
 
@@ -191,11 +197,32 @@ public class HospitalizationController {
         return new ResponseEntity<>(list,HttpStatus.OK);
     }
 
+    /** 查询相关时间内的支付记录   目前还没有时间
+     * @param startTime
+     * @param endTime
+     * @return
+     */
     @GetMapping("getAllPayCount")
     public ResponseEntity<List<Float>> getAllPayCount(String startTime,String endTime){
         List<Float> list =  hospitalizationBillServer.getAllPayCount(startTime,endTime);
         return new ResponseEntity<>(list,HttpStatus.OK);
     }
+
+    /** 查询所有住院缴费病人
+     * @param patient
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @GetMapping("getAllInPatient")
+    public ResponseEntity<PageInfo<Patient>> getAllInPatient(Patient patient,@RequestParam(value = "pageNum", defaultValue = "1", required = false) Integer pageNum,
+                                                             @RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize){
+        PageInfo<Patient> pageInfo = hospitalizationBillServer.getAllInPatient(pageNum,pageSize,patient);
+        return new ResponseEntity<>(pageInfo,HttpStatus.OK);
+    }
+
+//    @GetMapping("queryAllPayCount")
+//    public
 
 }
 

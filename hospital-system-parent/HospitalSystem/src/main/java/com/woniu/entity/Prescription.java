@@ -58,5 +58,7 @@ public class Prescription {
     private String drugName;
     private Integer stock;
     private Integer num;
+
     private String preName;
+
 }

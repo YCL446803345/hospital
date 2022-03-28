@@ -30,6 +30,7 @@ public class DoctorController {
     private LeaveHospitalService leaveHospitalService;
     @Autowired
     private ProjectService projectService;
+
     @Autowired
     private PrescriptionService prescriptionService;
     @Autowired
@@ -45,6 +46,7 @@ public class DoctorController {
     }
 
 
+
     //撤销出院
     @PostMapping("doctor/gotoCancelLeaveHospitalById")
     public void gotoCancelLeaveHospitalById(Integer id){
@@ -58,6 +60,7 @@ public class DoctorController {
         System.out.println("出院申请成功");
         return new ResponseResult<String>(200,"下达成功");
     }
+
 
     //病人列表突发情况申请会诊
     @PostMapping("doctor/gotoAddConsultationApplication")
@@ -86,6 +89,7 @@ public class DoctorController {
         }
         return responseResult;
     }
+
 
 
 
@@ -252,12 +256,14 @@ public class DoctorController {
         return new ResponseEntity<List<Project>>(projectList, HttpStatus.OK);
     }
 
+
     //获取所有药品列表
     @GetMapping("doctor/findDrugList")
     public ResponseEntity<List<Drug>> findDrugList() {
         List<Drug> drugList = drugService.findDrugList();
         return new ResponseEntity<List<Drug>>(drugList, HttpStatus.OK);
     }
+
 
     //编辑医嘱,修改项目
     @PostMapping("doctor/updateMedicalAdviceProject")

@@ -53,9 +53,20 @@ public class PatientServiceImpl implements PatientService {
 
 
     @Override
-    public void updateBalance (Float o,Integer id) {
+    public void updateBalance (Float o,Integer id,String status) {
         Patient patient = patientMapper.selectByPrimaryKey(id);
-        patient.setBalance(patient.getBalance() + o);
+        if(patient.getBalance()!=null){
+            float v = patient.getBalance() + o;
+            patient.setBalance(v);
+        }else{
+            patient.setBalance(o);
+        }
+        if(status!=null){
+            patient.setStatus(status);
+            patient.setNurseId(9);
+            patient.setDeptId(9);
+        }
+        patient.setStartDate(new Date());
         patientMapper.updateByPrimaryKeySelective(patient);
 
     }

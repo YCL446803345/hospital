@@ -43,7 +43,7 @@ public class PayController {
 
 
     @PostMapping("/pay")
-    public void alipay(HttpServletResponse httpResponse, String dept, String doctor) throws IOException, ParseException {
+    public void alipay(HttpServletResponse httpResponse) throws IOException, ParseException {
 //        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 //        Date date = null;
 //        try {

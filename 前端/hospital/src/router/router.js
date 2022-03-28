@@ -20,6 +20,7 @@ import medicalAdviceManager from '../components/home/nurseHome/patient/MedicalAd
 import outHospital from '../components/home/nurseHome/patient/OutHospital'
 
 
+
 //Vue安装router
 Vue.use(VueRouter)
 
@@ -53,6 +54,7 @@ import Purchase from '../components/home/drugHome/Purchase'   //采购管理
 
 
 
+
 //人事组件
 import HumanAffairs from '../components/home/hrHome/HumanAffairs ' // 职工管理
 import Scheduling from '../components/home/hrHome/Scheduling' // 排班管理
@@ -65,6 +67,7 @@ import leaveHospital from '../components/home/payHome/leave.vue' //出院结算
 import dataAnalysis from '../components/home/payHome/dataAnalysis.vue' //数据分析
 import leaveCost from '../components/home/payHome/leaveCost.vue' //出院病人费用查询
 import pay from '../components/home/payHome/pay.vue' //入院缴费
+import test from '../components/home/payHome/test.vue' //测试柱状图
 
 
 //配置路由规则
@@ -87,7 +90,6 @@ var router = new VueRouter({
 
             children: [
 
-                
                 {path: "/worker/list", component: HumanAffairs },
 	            {path: "/nurse/admission", component: patientInfo},
 	            {path: "/nurse/changeDept", component: patientChangeDept},
@@ -104,14 +106,18 @@ var router = new VueRouter({
                 { path: "/drug/send/drug", component: SendDrug },
                 { path: "/medicine/home", component: DrugInfo },
                 { path: "/drug/storage/list", component: DrugManager },
+
                 { path: "/purchase/manager", component: Purchase },
+
+
 
                 { path: "/pay/cost", component: costInfo },
 				{path:"/pay/queryCost",component:queryCost},
                 {path:"/pay/leaveHospital",component:leaveHospital},
                 {path:"/pay/dataAnalysis",component:dataAnalysis},
                 {path:"/pay/leaveCost",component:leaveCost},
-                {path:"/pay/pay",component:pay},
+                {path:"/pay/inPay",component:pay},
+                {path:"/pay/test",component:test},
 
 
                 { path: "/doctor/PatientList", component: PatientList },

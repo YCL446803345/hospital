@@ -40,8 +40,8 @@ public interface PrescriptionBillMapper {
 
     @Select("        select pb.money\n" +
             "        from HOS_prescription pr,HOS_prescription_bill pb,HOS_patient p\n" +
-            "        where pr.patient_id = p.id  and pr.id = pb.prescription_id and p.id=#{id} and pb.status=1")
-    List<Float> selectMoneyByPatientId (Integer id);
+            "        where pr.patient_id = p.id  and pr.id = pb.prescription_id and p.id=#{id} and pb.status=#{status}")
+    List<Float> selectMoneyByPatientId (@Param("id") Integer id,@Param("status") String status);
 
     @Update("update \n" +
             "HOS_prescription pr,HOS_prescription_bill pb,HOS_patient p\n" +

@@ -88,9 +88,11 @@ public class WorkerServiceImpl implements WorkerService {
         return workers.get(0);
     }
 
+
     //药房查找所有医生
     public List<String> findAllDoctor() {
         List<String> doctorList = workerMapper.findAllDoctor();
         return doctorList;
     }
+
 }
