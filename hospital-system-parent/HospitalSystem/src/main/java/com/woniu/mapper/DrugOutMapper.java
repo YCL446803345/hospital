@@ -3,8 +3,15 @@ package com.woniu.mapper;
 import com.woniu.entity.DrugOut;
 import com.woniu.entity.DrugOutExample;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
+
 import org.apache.ibatis.annotations.Select;
+
+import org.apache.ibatis.annotations.Update;
+
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -26,6 +33,7 @@ public interface DrugOutMapper {
     int updateByPrimaryKeySelective(DrugOut record);
     int updateByPrimaryKey(DrugOut record);
 
+
     @Select("<script>" +
             "select do.id did,w.name doctorName,p.name preName,do.create_time cTime,do.out_status oStatus,do.out_cause oCause\n" +
             "from HOS_drug_out do\n" +
@@ -39,4 +47,15 @@ public interface DrugOutMapper {
             "group by did"+
             "</script>")
     List<DrugOut> findAllDrugList(@Param("doctorName") String doctorName, @Param("preName") String preName);
+
+    //分页模糊查询退药列表
+    List<DrugOut> queryDrugOutList(DrugOut drugOut);
+
+    @Insert("insert into HOS_drug_out(doctor_id,patient_id,out_status,create_time,out_cause) values(#{doctorId},#{patientId},#{outStatus},#{createTime},#{outCause})")
+    @Options(useGeneratedKeys = true,keyProperty = "id",keyColumn = "id")
+    void addDrugOut(DrugOut drugOut);
+    //撤销退药
+    @Update("update HOS_drug_out set out_status='4' where id=#{id}")
+    void gotoStopDrugOutById(DrugOut drugOut);
+
 }

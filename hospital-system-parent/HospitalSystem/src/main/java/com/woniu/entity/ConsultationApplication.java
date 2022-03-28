@@ -17,8 +17,8 @@ public class ConsultationApplication {
     private Integer doctorId;
 
     private Integer patientId;
-    @DateTimeFormat(pattern="yyyy-MM-dd")
-    @JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date consultationDate;
 
     private String reason;
@@ -39,12 +39,12 @@ public class ConsultationApplication {
     //外键会诊类别名
     private String consultationCategoryName;
     //模糊时间查询开始时间
-    @DateTimeFormat(pattern="yyyy-MM-dd")
-    @JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date startDate;
     //模糊时间查询结束时间
-    @DateTimeFormat(pattern="yyyy-MM-dd")
-    @JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date endDate;
 
     private String spare3;

@@ -451,7 +451,7 @@
       <if test="status!=null and status != ''">and p.status = #{status}</if>
       <if test="startDate != null and startDate != ''">and p.appointmentt_time &gt;= #{startDate}</if>
       <if test="endDate != null and endDate != ''">and p.appointmentt_time &lt;= #{endDate}</if>
-    </where> order by p.appointmentt_time desc
+    </where> and p.status in(1,2,3)  order by p.appointmentt_time desc
   </select>
 
 </mapper>

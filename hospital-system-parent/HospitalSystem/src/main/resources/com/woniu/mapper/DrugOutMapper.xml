@@ -303,4 +303,23 @@
       spare3 = #{spare3,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <!--queryDrugOutList-->
+  <!--医生站分页模糊查询退药列表-->
+  <select id="queryDrugOutList" resultType="DrugOut">
+    select hp.name patientName,hw.name doctorName,hdo.out_status,hdo.create_time,hdo.out_cause,hdod.num num,hd.name drugName,
+    hd.drug_type drugType,hd.specifications specifications,hd.spare2 spare2,hdo.doctor_id,hdo.patient_id,hdod.drug_id drugId,
+           hdod.drug_out_id drugOutId,hdo.id,hd.spare1 spare1
+    from HOS_drug hd,HOS_drug_out hdo,HOS_drug_out_drug hdod,HOS_patient hp,HOS_worker hw
+
+   where  hdo.doctor_id=hw.id and hdo.patient_id=hp.id and hdo.id=hdod.drug_out_id and hd.id = hdod.drug_id
+
+
+      <if test="outStatus != null and outStatus != ''">and hdo.out_status = #{outStatus}</if>
+      <if test="startDate != null and startDate != ''">and hdo.create_time &gt;= #{startDate}</if>
+      <if test="endDate != null and endDate != ''">and hdo.create_time &lt;= #{endDate}</if>
+    and hdo.out_status in(1,2,3) order by hdo.create_time desc
+  </select>
+
+
 </mapper>

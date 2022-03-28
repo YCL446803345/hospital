@@ -10,7 +10,7 @@
 
             <el-col :span="2">
                 <el-select v-model="adviceCategory" placeholder="医嘱类型">
-                    <el-option label="医嘱类型" value="" ></el-option>
+                    <!-- <el-option label="医嘱类型" value="" ></el-option> -->
                     <el-option label="长期医嘱" value="1" ></el-option>
                     <el-option label="临时医嘱" value="2" ></el-option>
                     <el-option label="一般医嘱" value="3" ></el-option>
@@ -19,11 +19,11 @@
 
             <el-col :span="2">
                 <el-select v-model="adviceStatus" placeholder="医嘱状态">
-                    <el-option label="医嘱状态" value="" ></el-option>
-                    <el-option label="待执行" value="1" ></el-option>
-                    <el-option label="已执行" value="2" ></el-option>
-                    <el-option label="已停止" value="3" ></el-option>
-                    <el-option label="已撤销" value="4" ></el-option>
+                    <!-- <el-option label="医嘱状态" value="" ></el-option> -->
+                    <el-option label="待校对" value="1" ></el-option>
+                    <el-option label="已校对" value="2" ></el-option>
+                    <el-option label="已执行" value="3" ></el-option>
+                    <!-- <el-option label="已停止" value="4" ></el-option> -->
                 </el-select>
             </el-col>
 
@@ -78,10 +78,10 @@
 
             <el-table-column prop="adviceStatus" label="医嘱状态" width="180">
                 <template slot-scope="scope">
-                <span v-if="scope.row.adviceStatus=='1'">待审核</span>
-                <span v-if="scope.row.adviceStatus=='2'">已执行</span>
-                <span v-if="scope.row.adviceStatus=='3'">已停止</span>
-                <span v-if="scope.row.adviceStatus=='4'">已撤销</span>
+                <span v-if="scope.row.adviceStatus=='1'">待校对</span>
+                <span v-if="scope.row.adviceStatus=='2'">已校对</span>
+                <span v-if="scope.row.adviceStatus=='3'">已执行</span>
+                <span v-if="scope.row.adviceStatus=='4'">已停止</span>
                 </template>
             </el-table-column>
 

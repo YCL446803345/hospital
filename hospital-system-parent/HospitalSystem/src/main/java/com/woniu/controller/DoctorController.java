@@ -35,7 +35,28 @@ public class DoctorController {
     private PrescriptionService prescriptionService;
     @Autowired
     private DrugService drugService;
+    @Autowired
+    private DrugOutService drugOutService;
 
+
+
+
+    //撤销退药
+    @PostMapping("doctor/stopDrugOut")
+    public ResponseResult<String> stopDrugOut(@RequestBody DrugOut drugOut){
+        drugOutService.gotoStopDrugOutById(drugOut);
+        System.out.println("撤销退药成功");
+        return new ResponseResult<String>(200,"撤销退药成功");
+    }
+
+
+    //申请退药
+    @PostMapping("doctor/gotoAddDrugOut")
+    public ResponseResult<String> gotoAddDrugOut(@RequestBody DrugOut drugOut){
+        drugOutService.addDrugOut(drugOut);
+        System.out.println("申请退药成功");
+        return new ResponseResult<String>(200,"申请退药成功");
+    }
 
     //下达处方
     @PostMapping("doctor/gotoAddPrescription")
@@ -44,7 +65,6 @@ public class DoctorController {
         System.out.println("处方下达成功");
         return new ResponseResult<String>(200,"下达成功");
     }
-
 
 
     //撤销出院
@@ -70,6 +90,24 @@ public class DoctorController {
         return new ResponseResult<String>(200,"申请成功");
     }
 
+    //分页查询退药列表
+    @RequestMapping("doctor/getDrugOutList")
+    public ResponseResult<PageInfo<DrugOut>> getDrugOutList(@RequestParam(name = "pageNum", defaultValue = "1", required = false) Integer pageNum,
+                                                                      @RequestParam(name = "pageSize", defaultValue = "5", required = false) Integer pageSize,
+                                                            DrugOut drugOut) {
+        ResponseResult<PageInfo<DrugOut>> responseResult = new ResponseResult<>();
+        try {
+            PageInfo<DrugOut> drugOutPageInfo = drugOutService.queryDrugOutList(drugOut, pageNum, pageSize);
+            responseResult.setData(drugOutPageInfo);
+            responseResult.setStatus(200);
+            responseResult.setMsg("查询成功...");
+        } catch(Exception e) {
+            e.printStackTrace();
+            responseResult.setStatus(500);
+            responseResult.setMsg("查询失败...");
+        }
+        return responseResult;
+    }
 
     //分页查询处方列表
     @RequestMapping("doctor/getPrescriptionList")

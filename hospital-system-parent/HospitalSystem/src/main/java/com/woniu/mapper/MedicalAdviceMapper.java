@@ -52,7 +52,7 @@ public interface MedicalAdviceMapper {
     @Update("update HOS_medical_advice set project_id=#{projectId} where id=#{id}")
     void updateMedicalAdviceProject(MedicalAdvice medicalAdvice);
     //停止医嘱
-    @Update("update HOS_medical_advice set advice_status = 3 where id=#{id}")
+    @Update("update HOS_medical_advice set advice_status = 4 where id=#{id}")
     void stopMedicalAdviceById(Integer id);
     //下达医嘱
     @Insert("insert into HOS_medical_advice(patient_id,doctor_id,advice_category,advice_description,create_time,advice_status) values(#{patientId},#{doctorId},#{adviceCategory},#{adviceDescription},#{createTime},#{adviceStatus})")
