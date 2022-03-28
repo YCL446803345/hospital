@@ -5,7 +5,7 @@
             :router决定导航栏是否开启路由模式，即在菜单item上设置路由是否生效，值为boolean类型-->
       <el-menu default-active="0" class="el-menu-vertical-demo" :collapse="isCollapse" :router="true">
         <!--index设置当前item的下标，:route则是传一个对象进行，指定路由-->
-        <a href="#" @click="changeCollapse" style="font-size: 25px;color:#909399;"><i :class="collpaseIcon"></i></a>
+        <!-- <a href="#" @click="changeCollapse" style="font-size: 25px;color:#909399;"><i :class="collpaseIcon"></i></a> -->
 
         <!-- <el-submenu :index="String(menu.id)" v-for="menu in menuDate" :key="menu.id"> -->
         <!-- <template slot="title">
@@ -40,25 +40,26 @@
           </el-col>
         </el-row>
       </el-header>
-      
+
 
       <el-main>
-       
+
+
         <div class="login">
-        
+
           <div class="loginPart">
             <h2>万物皆虚,万事皆允</h2>
             <el-form ref="loginForm" :model="inHospitalTable">
               <el-form-item prop="patientName ">
-  <div class="inputElement">
-                <el-input v-model="inHospitalTable.patientName" placeholder="请输入病人名字" prop="patientName"></el-input>
-  </div>
+                <div class="inputElement">
+                  <el-input v-model="inHospitalTable.patientName" placeholder="请输入病人名字" prop="patientName"></el-input>
+                </div>
               </el-form-item>
               <el-form-item prop="patientSex ">
-                  <div class="inputElement">
-                <el-radio v-model="inHospitalTable.patientSex" label="男" style="color:white"></el-radio>
-                <el-radio v-model="inHospitalTable.patientSex" label="女"  style="color:white"></el-radio>
-                  </div>
+                <div class="inputElement">
+                  <el-radio v-model="inHospitalTable.patientSex" label="男" style="color:white"></el-radio>
+                  <el-radio v-model="inHospitalTable.patientSex" label="女" style="color:white"></el-radio>
+                </div>
               </el-form-item>
               <el-form-item prop="patientAge">
                 <div class="inputElement">
@@ -72,7 +73,7 @@
               </el-form-item>
               <el-form-item prop="telephone">
                 <div class="inputElement">
-                  <el-input v-model="telephone" :disabled="true"   prop="telephone"></el-input>
+                  <el-input v-model="telephone" :disabled="true" prop="telephone"></el-input>
                 </div>
               </el-form-item>
               <el-form-item prop="deptId">
@@ -94,45 +95,52 @@
                   <el-input v-model="inHospitalTable.reason" placeholder="请输入病情" prop="reason"></el-input>
                 </div>
               </el-form-item>
-              
+
 
               <div align="center">
-                 
+
                 <div class="inputElement">
-                <el-button type="info" icon="el-icon-s-custom" @click="addInHospitalTable()">病人预约</el-button>
-                <el-button type="info" icon="el-icon-s-custom"   @click="getInHospitalTableByTelephone()">预约查询</el-button>
+                  <el-button type="info" icon="el-icon-user-solid" @click="addInHospitalTable()">病人预约</el-button>
+                  <el-button type="info" icon="el-icon-user" @click="getInHospitalTableByTelephone()">预约查询</el-button>
                 </div>
               </div>
             </el-form>
           </div>
         </div>
-  <el-dialog title="病人预约情况" :visible.sync="Visible" class="mydig" >
-       
-       <el-table :data="inHospitalTableData"  >
-      <!-- 
+
+        <el-dialog title="病人预约情况" :visible.sync="Visible" class="mydig" width="60%" :showClose="false" align="center">
+
+          <el-table :data="inHospitalTableData">
+            <!-- 
                 el-table-column列
                 prop 绑定data数组中对象的属性
              -->
-    
-      <el-table-column prop="patientName" label="姓名" width="100" > </el-table-column>
-      <el-table-column prop="patientSex" label="性别" width="100"> </el-table-column>
-      <el-table-column prop="patientAge" label="年龄" width="100"> </el-table-column>
-      <el-table-column prop="cardId" label="身份证号码" width="100"> </el-table-column>
-      <el-table-column prop="telephone" label="手机号码" width="100"> </el-table-column>
-      <el-table-column prop="deptId" label="部门" width="100"> </el-table-column>
-      <el-table-column prop="bedId" label="床位" width="100"> </el-table-column>
-      <el-table-column prop="reason" label="病情" width="100"> </el-table-column>
-      <el-table-column prop="inHosptialTime" label="入院时间" width="100"> </el-table-column>
-      <el-table-column prop="status" label="状态" width="100"> </el-table-column>
-    
-    </el-table>
+
+            <el-table-column prop="patientName" label="姓名" width="100"> </el-table-column>
+            <el-table-column prop="patientSex" label="性别" width="100"> </el-table-column>
+            <el-table-column prop="patientAge" label="年龄" width="100"> </el-table-column>
+            <el-table-column prop="cardId" label="身份证号码" width="100"> </el-table-column>
+            <el-table-column prop="telephone" label="手机号码" width="130"> </el-table-column>
+            <el-table-column prop="deptName" label="部门" width="100"> </el-table-column>
+            <el-table-column prop="bedCode" label="床位" width="100"> </el-table-column>
+            <el-table-column prop="reason" label="病情" width="100"> </el-table-column>
+            <el-table-column prop="inHosptialTime" label="入院时间" width="100"> </el-table-column>
+            <el-table-column prop="status" label="状态" width="120">
+              <template slot-scope="scope">
+                <span v-if="scope.row.status=='1'">已预约</span>
+                <span v-if="scope.row.status=='2'">已审核</span>
+                <span v-if="scope.row.status=='3'">住院中</span>
+              </template>
+            </el-table-column>
+
+          </el-table>
 
           <div slot="footer" class="dialog-footer">
-        
-            <el-button @click="Visible = false" >返回</el-button>
+
+            <el-button @click="Visible = false">返回</el-button>
           </div>
         </el-dialog>
- 
+
         <!--路由渲染-->
         <router-view></router-view>
       </el-main>
@@ -148,11 +156,10 @@
 <script>
   export default {
     data() {
-       
+
       return {
-         patientName:"",
-          
-        user: {
+      
+       user: {
           telephone: "",
           password: ""
         },
@@ -169,7 +176,7 @@
           status: "",
 
         },
-         iospitalTableForm: {
+        iospitalTableForm: {
           patientName: "",
           patientSex: "",
           patientAge: "",
@@ -184,8 +191,8 @@
         },
         deptData: [],
         bedData: [],
-        inHospitalTableData:[],
-        Visible:false,
+        inHospitalTableData: [],
+        Visible: false,
         formLabelWidth: "120px",
         isCollapse: false, // 决定左侧导航栏是否展开
         // imgSrc:require("../../assets/css/image/OIP-C"),   //字体log图片
@@ -245,7 +252,7 @@
       },
 
 
- //添加病人
+      //添加病人
       addInHospitalTable() {
         //发送axios请求
         this.$axios.post("/api/inHospitalTable/add", this.inHospitalTable).then((res) => {
@@ -258,8 +265,8 @@
               duration: 600,
             });
             this.inHospitalTable = {};
-          
-         
+
+
           } else {
             this.$message({
               showClose: true,
@@ -271,16 +278,16 @@
         });
       },
 
-//查询病人预约
-getInHospitalTableByTelephone(){
-   this.Visible=true;
-  
-  //发送axios请求
-       //axios请求拿数据
+      //查询病人预约
+      getInHospitalTableByTelephone() {
+        this.Visible = true;
+
+        //发送axios请求
+        //axios请求拿数据
         this.$axios
           .get("/api/inHospitalTable/getByTelephone", {
             params: {
-                telephone: this.telephone
+              telephone: this.telephone
             },
           })
           .then((res) => {
@@ -318,9 +325,18 @@ getInHospitalTableByTelephone(){
       },
 
     },
+     mounted: function() {
+            if (location.href.indexOf("#reloaded") == -1) {
+                location.href = location.href + "#reloaded";
+                location.reload();
+            }
+        },
+        
     created() {
+
       //从本地浏览器拿名字
       this.telephone = window.localStorage.getItem("telephone")
+
       this.$axios.get("api/perms/findMenuPerms", {
           params: {
             telephone: this.telephone
@@ -338,6 +354,9 @@ getInHospitalTableByTelephone(){
     }
 
   }
+
+  
+
 
 </script>
 
@@ -391,7 +410,7 @@ getInHospitalTableByTelephone(){
     background: transparent;
     /*背景颜色为透明*/
   }
- 
+
 
   .login {
     width: 100%;
@@ -406,13 +425,13 @@ getInHospitalTableByTelephone(){
 
   .el-header {
     padding: 0;
-    background: #00FFCC;
+    background: #FFC1E0;
 
   }
 
   .el-main {
     padding: 0;
-      /* background:url("../../../assets/css/image/OIP-C.jpg") ; */
+    background: url("../../../assets/css/image/宣言.jpg") center center no-repeat;
   }
 
   /*左边导航栏具体样式*/
@@ -439,15 +458,16 @@ getInHospitalTableByTelephone(){
   }
 
   .footer {
-    background: #FF9F00;
+    background: #C4E1E1;
   }
 
   h4 {
     text-align: center;
     line-height: 50px;
   }
- 
+
   .mydig {
-    background:url("../../../assets/css/image/OIP-C.jpg") ;
+    background: url("../../../assets/css/image/OIP-C.jpg");
   }
+
 </style>

@@ -23,13 +23,13 @@
                 el-table-column列
                 prop 绑定data数组中对象的属性
              -->
-          <el-table-column type="index" :index="indexMethod" label="序号" width="60">
+          <el-table-column type="index" :index="indexMethod" label="序号" width="100">
           </el-table-column>
           <el-table-column prop="name" label="姓名" width="100"> </el-table-column>
 
-          `<el-table-column prop="roleName" label="角色" width="60">
+          `<el-table-column prop="roleName" label="角色" width="100">
           </el-table-column>`
-          <el-table-column prop="deptName" label="部门" width="60">
+          <el-table-column prop="deptName" label="部门" width="100">
           </el-table-column>
 
 

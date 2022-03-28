@@ -11,7 +11,7 @@ public interface WorkerService {
 
 
     //查询职工列表
-    List<Worker> findWorkerList(String account, Integer roleId,Integer deptId);
+    List<Worker> findWorkerList(Worker worker);
 
     //添加职工
     void addWorker(Worker worker);

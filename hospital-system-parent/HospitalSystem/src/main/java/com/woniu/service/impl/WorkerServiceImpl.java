@@ -24,20 +24,9 @@ public class WorkerServiceImpl implements WorkerService {
 
     @Override
 
-    public List<Worker> findWorkerList(String account, Integer roleId,Integer deptId) {
-        WorkerExample workerExample = new WorkerExample();
-        WorkerExample.Criteria criteria = workerExample.createCriteria();
-        if (!StringUtils.isEmpty(account)){
-            criteria.andAccountLike("%"+account+"%");
-        }
-        if (!StringUtils.isEmpty(roleId)){
-            criteria.andDeptIdEqualTo(roleId);
-        }
-        if (!StringUtils.isEmpty(deptId)){
-            criteria.andDeptIdEqualTo(deptId);
-        }
-        List<Worker> workers = workerMapper.select(workerExample);
-        System.out.println("IMPL+"+workers);
+    public List<Worker> findWorkerList(Worker worker) {
+
+        List<Worker> workers = workerMapper.select(worker);
         return workers;
     }
 
