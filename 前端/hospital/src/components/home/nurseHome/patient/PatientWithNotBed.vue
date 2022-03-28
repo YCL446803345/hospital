@@ -31,7 +31,7 @@
                 <!--带搜索按钮的文本框 -->
             </el-col>
            
-            <el-col :span="1" style="margin-left:2px;">
+            <el-col :span="1.5" style="margin-left:2px;">
                 <el-button type="success" @click="search">查询</el-button>
                
             </el-col>

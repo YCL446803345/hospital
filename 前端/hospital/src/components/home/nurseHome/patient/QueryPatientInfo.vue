@@ -540,10 +540,10 @@ export default {
         formLabelWidth: '120px',
         billViewForm:false,
         getPrescriptionBillMoney:0,
-        drugOutList:[],
         getDrugOutBillMoney:0,
         MedicalAdviceList:[],
-        getMedicalAdviceBillMoney:0
+        getMedicalAdviceBillMoney:0,
+        drugOutList:[],
       }
    },
    created(){
@@ -570,8 +570,8 @@ export default {
             this.hospitalizationBill={
                  payDays:0,
                  sumMoney:0
-            };
-            this.drugList=[];
+            },
+            this.drugList=[],
             this.getPrescriptionBillMoney=0;
             this.drugOutList=[],
             this.getDrugOutBillMoney=0
@@ -600,12 +600,13 @@ export default {
                 .then(res=>{
                     this.drugList=res.data;
                     var getPrescriptionBillMoney=0;
-                    this.drugList.forEach(drug=>{
+                    if( this.drugList.length>0){
+                        this.drugList.forEach(drug=>{
                         getPrescriptionBillMoney+=drug.money;
+                        this.getPrescriptionBillMoney=getPrescriptionBillMoney;
                     })
 
-                    this.getPrescriptionBillMoney=getPrescriptionBillMoney;
-
+                    }
                     this.$axios.post("/api/getMedicalAdviceBill",patient)
                     .then(res=>{
                         this.MedicalAdviceList=res.data;
@@ -618,15 +619,17 @@ export default {
 
                         this.$axios.post("/api/getDrugOutBill",patient)
                         .then(res=>{
-                            this.drugOutList=res.data;
-
-                            var getDrugOutBillMoney=0;
+                            if(res.data.length != 0){
+                                this.drugOutList = res.data;
+                            }
+                            if(this.drugOutList.length>0){
+                             var getDrugOutBillMoney=0;
                             this.drugOutList.forEach(drug=>{
-                                getDrugOutBillMoney+=drug.money;
+                            getDrugOutBillMoney+=drug.money;
                             })
-
                             this.getDrugOutBillMoney=getDrugOutBillMoney;
-
+                            }
+                           
                             this.billViewForm=true;
                         })
                         
