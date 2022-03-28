@@ -31,7 +31,7 @@ public class DrugOut {
     private Integer outNum;
 
     private String patientName;
-    private String doctorName;
+
     private Integer num;
     private String drugName;
     private String drugType;

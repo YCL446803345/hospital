@@ -18,12 +18,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service("drugOutService")
+
 
 import java.util.Date;
 import java.util.List;
 
-@Service
+@Service("drugOutService")
 public class DrugOutServiceImpl implements DrugOutService {
 
     @Autowired
