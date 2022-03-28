@@ -17,10 +17,8 @@
           </div>
           </el-form-item>
           <div align="center">
-
-          <el-button type="primary" icon="el-icon-s-custom" @click="doRegister" >注册</el-button>
           <el-button type="primary" icon="el-icon-loading" @click="doLogin('loginForm')" >登录</el-button>
-
+          <el-button type="primary" icon="el-icon-s-custom" @click="doRegister" >注册</el-button>
           </div>
         </el-form>
       </div>
@@ -35,8 +33,8 @@ export default {
       return {
             imgSrc:require("../../assets/css/image/用户前台.gif"),   //背景图片
             user: {
-                telephone: "",
-                password: ""
+                telephone: "12344556677",
+                password: "123"
             },
             rules:{ 
                 telephone:[
@@ -94,6 +92,7 @@ export default {
                           // window.localStorage.setItem("id",this.worker.id)
                           //跳转
                           this.$router.push('/gotoUserHome')
+                        
                       }else{
                           this.$router.push('/gotoUserLogin')
                           this.$message({

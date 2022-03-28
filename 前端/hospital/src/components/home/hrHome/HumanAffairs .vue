@@ -7,16 +7,35 @@
       <el-breadcrumb-item>职工列表</el-breadcrumb-item>
     </el-breadcrumb>
     <el-row style="margin-top: 10px; margin-bottom: 10px">
-      <el-col :span="8">
-        <el-input v-model="searchName" placeholder="请输入内容">
-          <!--带搜索按钮的文本框 -->
-          <el-button slot="append" icon="el-icon-search" @click="findWorkerList()"></el-button>
-        </el-input>
-      </el-col>
+         <el-col :span="8">
+                <el-input v-model="name" placeholder="请输入名字">
+                </el-input>
+            </el-col>
+            <el-col :span="3">
+                <el-select v-model="deptName" placeholder="部门" >
+                    <el-option v-for="dept in deptData" :key="dept.id" :label="dept.name" :value="dept.name"  ></el-option>
+                </el-select>
+            </el-col>
+             <el-col :span="3">
+                <el-select v-model="roleName" placeholder="角色" >
+                    <el-option v-for="role in roleData" :key="role.id" :label="role.name" :value="role.name"  ></el-option>
+                </el-select>
+            </el-col>
+           
+            <el-col :span="1.5" style="margin-left:2px;">
+                <el-button type="success" @click="findWorkerList()">查询</el-button>
+               
+            </el-col>
+
+            <el-col :span="1.5" style="margin-left:2px;">
+                 <el-button type="warning" @click="findWorkerList((name = '',roleName='',deptName=''))">清空</el-button>
+                
+            </el-col>
+              <el-col :span="2" style="margin-left:2px;">
+                 <el-button type="success" @click="openAddWorker">添加职工</el-button>
+                
+            </el-col>
       <el-col :span="12" style="margin-left: 10px">
-        <el-button type="success" @click="findWorkerList((searchName = ''))">清空条件</el-button>
-    
-        <el-button type="success" @click="openAddWorker">添加职工</el-button>
 
          <!-- 
             el-table数据表格
@@ -28,33 +47,33 @@
                 el-table-column列
                 prop 绑定data数组中对象的属性
              -->
-      <el-table-column type="index" :index="indexMethod" label="序号" width="60">
+      <el-table-column type="index" :index="indexMethod" label="序号" width="100">
       </el-table-column>
       <el-table-column prop="name" label="姓名" width="100"> </el-table-column>
 
-      `<el-table-column prop="roleName" label="角色" width="60">
+      `<el-table-column prop="roleName" label="角色" width="100">
       </el-table-column>`
-      <el-table-column prop="deptName" label="部门" width="60">
+      <el-table-column prop="deptName" label="部门" width="100">
       </el-table-column>
-      <el-table-column prop="gender" label="性别" width="60">
+      <el-table-column prop="gender" label="性别" width="100">
         <template slot-scope="scope">
           <el-tag :type="scope.row.status === '1' ? 'primary' : 'danger'" disable-transitions>
             {{ scope.row.status === "1" ? "男" : "女" }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="salary" label="薪资" width="60">
+      <el-table-column prop="salary" label="薪资" width="100">
       </el-table-column>
 
-      <el-table-column prop="status" label="在职状态" width="60">
+      <el-table-column prop="status" label="在职状态" width="100">
         <template slot-scope="scope">
           <el-tag :type="scope.row.status === '1' ? 'primary' : 'danger'" disable-transitions>
             {{ scope.row.status === "1" ? "在职" : "离职" }}</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column label="操作">
+      <el-table-column label="操作" width="100">
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="handleEdit(scope.row)">编辑</el-button>
+          <el-button size="mini" type="primary" @click="handleEdit(scope.row)">编辑</el-button><br>
           <el-button size="mini" type="danger" @click="deleteWorker(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
@@ -195,7 +214,9 @@
   export default {
     data() {
       return {
-        searchName: "",
+       name: "",
+        deptName:"",
+        roleName:"",
         workerData: [],
         currentPage: 1, //当前页码
         total: 0, //总记录数
@@ -234,7 +255,9 @@
         this.$axios
           .get("/api/worker/list", {
             params: {
-              searchName: this.searchName,
+              name: this.name,
+              deptName:this.deptName,
+              roleName:this.roleName,
               pageNum: pageNum,
               pageSize: this.pageSize,
             },

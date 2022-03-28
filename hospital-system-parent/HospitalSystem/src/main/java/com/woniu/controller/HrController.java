@@ -26,12 +26,12 @@ public class HrController {
     //职工列表
     @RequestMapping("worker/list")
 //    @PreAuthorize("hasAnyAuthority('worker:list')")
-    public ResponseEntity<PageInfo<Worker>> findWorkerList(String account, Integer roleId,Integer deptId,
+    public ResponseEntity<PageInfo<Worker>> findWorkerList(Worker worker,
                                                         @RequestParam(name = "pageNum",defaultValue = "1") Integer pageNum,
                                                         @RequestParam(name = "pageSize",defaultValue = "5") Integer pageSize){
         PageHelper.startPage(pageNum,pageSize);
-        List<Worker> workerList = workerService.findWorkerList(account,roleId,deptId);
-        System.out.println("Controller+"+workerList);
+        List<Worker> workerList = workerService.findWorkerList(worker);
+
         PageInfo pageInfo = new PageInfo(workerList);
         return new ResponseEntity<PageInfo<Worker>>(pageInfo, HttpStatus.OK);
     }

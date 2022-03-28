@@ -4,12 +4,14 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 //预约住院申请表
 public class InHospitalTable {
     private Integer id;
@@ -48,6 +50,8 @@ public class InHospitalTable {
 
     //外键部门名
     private String deptName;
+    //外键床位code
+    private String bedCode;
 
     private String spare1;
 
