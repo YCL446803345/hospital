@@ -449,6 +449,7 @@ export default {
             medicalAdvice:0,
             balance:0,
         },
+        token:""
       }
    },
    created(){
@@ -548,6 +549,12 @@ export default {
                 this.patient.medicalAdvice = medicalAdvice
                 this.patient.drugOut = prescription
                 this.costSettlementForm = true;
+                this.$axios.get("/api/createToken").then(res=>{
+                    console.log("=====================");
+                    console.log(res.data);
+                    console.log("=====================");
+                    this.token = res.data;
+                })
             })
         },
         //关闭结算病人账单模态框

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 public class HospitalizationController {
@@ -28,7 +29,11 @@ public class HospitalizationController {
     @Autowired
     private PatientService patientService;
 
-
+    @GetMapping("createToken")
+    public ResponseEntity<String> createToken(){
+        String token = UUID.randomUUID().toString();
+        return new ResponseEntity<>(token,HttpStatus.OK);
+    }
 
     /** 生成住院账单
      * @param patientId 病人id
