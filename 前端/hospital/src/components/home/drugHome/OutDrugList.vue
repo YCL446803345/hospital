@@ -35,25 +35,20 @@
             <el-table-column label="退药原因"  prop="ocause"></el-table-column>
             <el-table-column label="操作" >
                 <template slot-scope="scope">
-                    <el-button size="mini" type="primary" @click="gotoPre(scope.row)">退药详情</el-button>
+                    <el-button size="mini" type="primary" @click="gotoPre(scope.row.did)">退药详情</el-button>
                 </template>
             </el-table-column>
         </el-table>
 
-        <!-- 药方详情模态框 -->
-            <el-dialog title="药方信息" :visible.sync="updatedialogTableVisible">
-                <el-descriptions  direction="vertical" :column="4" border>
-                <el-descriptions-item label="处方编号">{{drugIDN.id}}</el-descriptions-item>
-                <el-descriptions-item label="退药医生">{{drugIDN.doctorname}}</el-descriptions-item>
-                <el-descriptions-item label="审核护士" :span="2">{{drugIDN.nursename}}</el-descriptions-item>
-                </el-descriptions>
-               
-                  <el-table :data="drugND" border style="width: 100%">
-                      <el-table-column prop="drugName" label="药品名称" width="180"></el-table-column>
-                      <el-table-column prop="num" label="退药数量" width="180"></el-table-column>
+        <!-- 退药详情模态框 -->
+            <el-dialog title="药品名称和数量" :visible.sync="updatedialogTableVisible">               
+                  <el-table :data="drugND" style="width: 100%">
+                      <el-table-column prop="drugName" label="药品名称" ></el-table-column>
+                      <el-table-column prop="num" label="退药数量"></el-table-column>
                   </el-table>
+
                 <div slot="footer" class="dialog-footer">
-                    <el-button @click="updatedialogTableVisible=false;drugIDN={};drugND=[];">取消</el-button>
+                    <el-button @click="updatedialogTableVisible=false;drugND=[];did='';">取消</el-button>
                     <el-button type="primary" @click="outDrug">退药</el-button>
                 </div>
             </el-dialog>
@@ -86,22 +81,46 @@ export default {
         multipleSelection: [],  //选中的数组
         updatedialogTableVisible:false,   //药方详情模特框切换
         drugND:[],   //药方详情中的名字和数量
-        drugIDN:{    //药方详情中的处方id开药医生审核护士
-            id:'',
-            doctorname:'',
-            nursename:''
-        },
         faileDrugName:[],   //药品库存不足的药品名字
         stockTableVisible:false,    //药品库存不足模态框控件
 
         doctorName:'',
         preName:'',
+        did:'',
       }
    },
    methods:{
     //单个退药操作
     outDrug(){
-
+        let Str = []
+        this.drugND.forEach(item=>{
+            Str.push(item.ddid+"-"+item.num)
+        })
+        let durgStr = Str.join(",")
+        this.$axios.post("api/drug/single/outDrug",qs.stringify({'durgStr':durgStr,'account':window.localStorage.getItem("account"),'did':this.did})).then(res=>{
+            if (res.data.status == 200) {
+                this.$message({
+                type: 'success',
+                message: '操作成功!',
+                duration:2000
+                });
+            this.createMethods()
+            this.drugND=[]
+            this.updatedialogTableVisible=false
+            this.did=''
+            }else{
+                this.$message({
+                    message: '操作失败, 系统维护中',
+                    type: 'warning',
+                    duration:2000
+                });
+                this.createMethods()
+                this.drugND=[]
+                this.updatedialogTableVisible=false
+                this.did=''
+            }
+        })
+        
     },
     //序号
     indexMethod(index){
@@ -121,44 +140,37 @@ export default {
     batchOutDrug() {
         if (this.multipleSelection == '') {
             this.$message({
-                showClose: true,
-                message: '请至少选择一个处方',
+                message: '请至少选择一例申请',
                 type: 'warning',
-                duration:1500
+                duration:2000
             });
         }else{
         let idList = []
         this.multipleSelection.forEach(item=>{
-            idList.push(item.id)
+            idList.push(item.did)
         })
         let idStr = idList.join(",")
-        this.$confirm('请仔细察看每个处方信息,是否批量发药', '提示', {
+        this.$confirm('请仔细察看每个退药信息,是否退药', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
         }).then(() => {
-            this.$axios.post("api/drug/sendDrug",qs.stringify({'idStrs':idStr,'account':window.localStorage.getItem("account")})).then(res=>{
+            this.$axios.post("api/drug/outDrug",qs.stringify({'idStrs':idStr,'account':window.localStorage.getItem("account")})).then(res=>{
                 if (res.data.status == 200) {
-                    if (res.data.data.length != 0) {
-                        this.faileDrugName=res.data.data
-                        this.open();
-                        this.createMethods();
-                    }else{
                     this.$message({
                     type: 'success',
-                    message: '发药成功!'
+                    message: '操作成功!',
+                    duration:2000
                     });
-                    this.createMethods();
-                    }
-                    this.createMethods();
+                this.createMethods();
                 }else{
                     this.$message({
                     showClose: true,
-                    message: '发药失败, 系统维护中',
+                    message: '操作失败, 系统维护中',
                     type: 'warning',
-                    duration:1500
+                    duration:2000
                     });
-                    this.createMethods();
+                this.createMethods();
                 }
             })
         })
@@ -177,13 +189,11 @@ export default {
     handleSelectionChange(val) {
         this.multipleSelection = val;
     },
-    //进入药方详情
-    gotoPre(row){
-        this.drugIDN.id=row.id
-        this.drugIDN.doctorname=row.doctorName
-        this.drugIDN.nursename=row.nurseName
-        //通过处方id查找该处方下所有药品及数量
-        this.$axios.get("api/drug/getDrugByPreId?pid="+row.id).then(res=>{
+    //进入退药
+    gotoPre(id){
+        this.did=id
+        //通过退药申请id查找该退掉的所有药品及数量
+        this.$axios.get("api/drug/outDrug?pid="+id).then(res=>{
             if (res.data.status == 200) {
                 this.drugND=res.data.data;
             }

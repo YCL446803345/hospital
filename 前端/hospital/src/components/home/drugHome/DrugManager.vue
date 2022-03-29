@@ -357,6 +357,9 @@ export default {
     },
     //头像上传成功处理
     handleAvatarSuccess(res, file) {
+        if (res.status == 200) {
+            this.updateDrug.spare3=res.data
+        }
         this.imageUrl = URL.createObjectURL(file.raw);
     },
     handleAvatarSuccess2(res, file) {
@@ -416,7 +419,6 @@ export default {
             //编辑表单验证
            this.$refs[forName].validate((valid) =>{
                if (valid) {
-                   this.updateDrug.spare3=this.imageUrl
                     this.$axios.post("api/drug/updateDrugInfo",this.updateDrug).then(res =>{
                         if (res.data.status == 200) {
                             this.updatedialogTableVisible=false;

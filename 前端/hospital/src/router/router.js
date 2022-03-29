@@ -41,15 +41,15 @@ import MedicalAdviceList from '../components/home/doctorHome/patient/MedicalAdvi
 import InHospitalTableList from '../components/home/doctorHome/patient/InHospitalTableList' //预约住院列表
 import LeaveHospitalList from '../components/home/doctorHome/patient/LeaveHospitalList' //出院申请列表
 import PrescriptionList from '../components/home/doctorHome/patient/PrescriptionList' //处方列表
-import DrugOutList from '../components/home/doctorHome/patient/DrugOutList' //退药列表
+import DrugOutList from '../components/home/doctorHome/patient/DrugOutList' //退药组件
 import PatientRecord from '../components/home/doctorHome/patient/PatientRecord' //护理列表
 
 //药房组件
 
 
-import DrugInfo from '../components/home/drugHome/DrugInfo' //药品信息列表
-import DrugPre from '../components/home/drugHome/DrugPrescription' //药方列表
-import SendDrug from '../components/home/drugHome/SendDrug' //发药列表
+import DrugInfo from '../components/home/drugHome/DrugInfo' //药品信息组件
+import DrugPre from '../components/home/drugHome/DrugPrescription' //药方组件
+import DrugRecord from '../components/home/drugHome/DrugRecord' //记录发药退药组件
 import DrugManager from '../components/home/drugHome/DrugManager' //药品管理
 import Purchase from '../components/home/drugHome/Purchase'   //采购管理
 
@@ -105,7 +105,7 @@ var router = new VueRouter({
 
 
                 { path: "/drug/prescriptionList", component: DrugPre },
-                { path: "/drug/send/drug", component: SendDrug },
+                { path: "/drug/send/drug", component: DrugRecord },
                 { path: "/medicine/home", component: DrugInfo },
                 { path: "/drug/storage/list", component: DrugManager },
 

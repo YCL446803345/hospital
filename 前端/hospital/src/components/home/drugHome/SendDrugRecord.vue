@@ -3,7 +3,6 @@
         <el-breadcrumb separator="/">
             <el-breadcrumb-item :to="{ path: '/gotoHome'}">首页</el-breadcrumb-item>
             <el-breadcrumb-item :to="{ path: '/drug/send/drug'}">发药记录</el-breadcrumb-item>
-            <el-breadcrumb-item>退药记录</el-breadcrumb-item>
         </el-breadcrumb>
 
         <el-row style="margin-top:10px">
@@ -19,39 +18,40 @@
             <!-- 发药记录列表 -->
             <el-table :data="preData" style="width: 100%">
                 <el-table-column type="index" :index="indexMethod" label="序号"></el-table-column>
-                <el-table-column prop="prescriptionId" label="处方编号" width="100"></el-table-column>
-                <el-table-column prop="spare1" label="配药医师" width="120"></el-table-column>
-                <el-table-column prop="sendDrugTime" label="发药时间" width="180"></el-table-column>
-
+                <el-table-column prop="doctorName" label="申请医生" width="180"></el-table-column>
+                <el-table-column prop="preName" label="患者姓名" width="180"></el-table-column>
+                <el-table-column prop="sdTime" label="发药时间" width="180"></el-table-column>
+                <el-table-column prop="spare1" label="发药人" width="120"></el-table-column>
+                <el-table-column label="状态"  prop="spare2">
+                    <template slot-scope="scope">
+                        <el-tag v-if="scope.row.spare2 == '1'" type="danger"
+                            disable-transitions>已发药</el-tag>
+                    </template>
+                </el-table-column>
                 <el-table-column label="操作" align="center">
                     <template slot-scope="scope">
-                        <el-button size="mini" @click="lookDrug(scope.row)">处方信息</el-button>
+                        <el-button size="mini" @click="lookDrug(scope.row.pid)">处方信息</el-button>
                     </template>
                 </el-table-column>
             </el-table>
 
             <!-- 药方详情模态框 -->
-            <el-dialog title="药方信息" :visible.sync="updatedialogTableVisible">
+            <el-dialog title="药品信息" :visible.sync="updatedialogTableVisible" >
 
-                <el-descriptions  direction="vertical" :column="4" border>
-                <el-descriptions-item label="开药医生">{{drugDNT.doctorName}}</el-descriptions-item>
-                <el-descriptions-item label="审核护士" :span="2">{{drugDNT.spare3}}</el-descriptions-item>
-                <el-descriptions-item label="开方日期" :span="2">{{drugDNT.createTime}}</el-descriptions-item>
-                </el-descriptions>
                 <!-- 药品名字和数量 -->
                 <el-collapse accordion>
-                    <el-collapse-item title="药品信息">
+                    <el-collapse-item >
                     <div>
-                        <el-table :data="drugNameAndNum" border style="width: 100%">
-                            <el-table-column prop="drugName" label="药品名称" width="180"></el-table-column>
-                            <el-table-column prop="num" label="已发药数量" width="180"></el-table-column>
+                        <el-table :data="drugNameAndNum"  style="width: 100%">
+                            <el-table-column prop="drugName" label="药品名称"></el-table-column>
+                            <el-table-column prop="num" label="已发药数量" ></el-table-column>
                         </el-table>
                     </div>
                     </el-collapse-item>
                 </el-collapse>
 
                 <div slot="footer" class="dialog-footer">
-                    <el-button @click="updatedialogTableVisible=false;drugDNT={};drugNameAndNum=[];">返回</el-button>
+                    <el-button @click="updatedialogTableVisible=false;drugNameAndNum=[];">返回</el-button>
                 </div>
             </el-dialog>
 
@@ -81,11 +81,6 @@ export default {
         preData:[],
         drugNameAndNum:[],
         updatedialogTableVisible:false,    //药方详情模态框
-        drugDNT:{
-            doctorName:'',
-            spare3:'',
-            createTime:''
-        }
       }
    },
    methods:{
@@ -121,17 +116,11 @@ export default {
         return (index +1)+this.pageSize*(this.pageNum-1)
     },
     //查看处方信息
-    lookDrug(row){
+    lookDrug(id){
         //查询该处方下的药品和数量
-        this.$axios.get("api/drug/getDrugByPreId?pid="+row.prescriptionId).then(res=>{
+        this.$axios.get("api/drug/getDrugByPreId?pid="+id).then(res=>{
             if (res.data.status == 200) {
                 this.drugNameAndNum=res.data.data
-            }
-        })
-        //查询该处方下的开方医生和审核护士已经药方创建时间
-        this.$axios.get("api/drug/getDrugDNTBypreId?pid="+row.prescriptionId).then(res=>{
-            if (res.data.status == 200) {
-                this.drugDNT=res.data.data
             }
         })
         this.updatedialogTableVisible=true
