@@ -18,4 +18,9 @@ public class MedicalAdviceBillServiceImpl implements MedicalAdviceBillService {
     public List<Project> getMedicalAdviceBill(Patient patient) {
         return medicalAdviceBillMapper.getMedicalAdviceBill(patient);
     }
+
+    @Override
+    public Double getMedicalAdviceBillHavePay(Patient patient) {
+        return medicalAdviceBillMapper.getMedicalAdviceBillHavePay(patient);
+    }
 }

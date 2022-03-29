@@ -14,4 +14,10 @@ public interface BedService {
     List<Bed> findBeds(Bed bed);
 
     void addBed(Integer deptId);
+
+    List<Integer> getBedData(Integer deptId);
+
+    List<Integer> getBedsByDept();
+
+    List<Integer> getBedsInUseByDept();
 }

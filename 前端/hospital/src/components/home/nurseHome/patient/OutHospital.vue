@@ -2,9 +2,9 @@
     <div>
         <!-- 面包xie导航 -->
         <el-breadcrumb separator="/">
-            <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item><a href="#/patientInfo">在院病人信息管理</a></el-breadcrumb-item>
-            <el-breadcrumb-item>在院病人信息管理列表</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: '/gotoHome' }">首页</el-breadcrumb-item>
+            <el-breadcrumb-item><a href="#/nurse/discharge">出院管理</a></el-breadcrumb-item>
+            <el-breadcrumb-item>出院管理</el-breadcrumb-item>
         </el-breadcrumb>
         <el-row style="margin-top:10px;margin-bottom:10px">
             <el-col :span="8">
@@ -194,7 +194,7 @@
         </el-pagination>
 
         <!-- 账单-->
-        <el-dialog :visible.sync=" billViewForm" >
+        <el-dialog :visible.sync=" billViewForm" @open='open'>
         <h1 align="center"></h1><br>
         <template>
             <el-descriptions class="margin-top" title="" :column="1"  border>
@@ -255,7 +255,7 @@
                     <i class="el-icon-shopping-cart-full"></i>
                         住院费用
                 </template>
-                         住院时间：{{hospitalizationBill.payDays}}天
+                         住院时间：{{hospitalizationBill.needPayDays}}天
                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -272,7 +272,8 @@
                     <i class="el-icon-more-outline"></i>
                         小计
                 </template>
-                        <span style="color:red">{{hospitalizationBill.sumMoney}} </span>元
+                        需支付<span style="color:red">{{hospitalizationBill.sumMoney}} </span>元--
+                        已支付<span style="color:green">{{havePayHospitalizationBill}} </span>元
                         
             </el-descriptions-item>
         </el-descriptions>
@@ -386,7 +387,8 @@
                     <i class="el-icon-more-outline"></i>
                         小计
                 </template>
-                       <span style="color:red">{{getMedicalAdviceBillMoney}}</span>元
+                       需支付<span style="color:red">{{getMedicalAdviceBillMoney}}</span>元--
+                       <!-- 已支付<span style="color:red">{{havePayMedicalAdviceBill}}</span>元 -->
             </el-descriptions-item>
         </el-descriptions>
 
@@ -454,6 +456,20 @@
             </el-descriptions-item>
         </el-descriptions>
 
+         <el-descriptions class="margin-top" title="" :column="1"  border>
+            <el-descriptions-item>
+                <template slot="label">
+                    <i class="el-icon-more"></i>
+                        账单统计
+                </template>
+                <el-col :span="10" >
+                        <div style="width:450px;height:450px;" id="chartbox"></div>
+                </el-col>
+                       
+            </el-descriptions-item>
+           
+        </el-descriptions>
+
         <el-descriptions class="margin-top" title="" :column="3"  border>
              <el-descriptions-item>
                 <template slot="label">
@@ -509,9 +525,17 @@
 </template>
 
 <script>
+import echarts from 'echarts'
 export default {
    data() {
       return {
+        havePayMedicalAdviceBill:0,
+        havePayHospitalizationBill:0,
+        data:[
+        { name: '住院费用', value:0 },
+        { name: '医嘱费用', value:0 },
+        { name: '药品费用', value:0 },
+        ],
         nurseId:'',
         nurseDeptId:'',
         no:'',
@@ -558,6 +582,137 @@ export default {
       this.search();
    },
    methods:{
+        drawLine(){
+                     // 绘制图表
+        var myChart = echarts.init(window.document.getElementById('chartbox'));
+        // 指定图表的配置项和数据
+        var option = {
+          //标题
+        //   title: {
+        //     text: '本科室床位使用情况统计',
+        //     x: 'left' ,              //标题位置
+        //     // textStyle: { //标题内容的样式
+        //     //   color: '#000',
+        //     //   fontStyle: 'normal',
+        //     //   fontWeight: 100,
+        //       fontSize: 12//主题文字字体大小，默认为18px
+        //     // },
+        //   },
+          // stillShowZeroSum: true,
+          //鼠标划过时饼状图上显示的数据
+          tooltip: {
+            trigger: 'item',
+            formatter: '{a}<br/>{b}:{c} ({d}%)'
+          },
+          //图例
+          legend: {//图例  标注各种颜色代表的模块
+            type:'scroll',
+            orient:'horizontal',
+            // orient: 'vertical',//图例的显示方式  默认横向显示
+            bottom: 0,//控制图例出现的距离  默认左上角
+            left: '20',//控制图例的位置
+            // itemWidth: 16,//图例颜色块的宽度和高度
+            // itemHeight: 12,
+            textStyle: {//图例中文字的样式
+              color: '#000',
+              fontSize: 16
+            },
+            // data: ['住院', '处方','医嘱','退药']//图例上显示的饼图各模块上的名字
+          },
+          //饼图中各模块的颜色
+          color: [ '#69D3BE','#9D9E9F','#F88282'],
+        //   color: [ '#E6A23C','#F56C6C', '#409EFF','#C0C4CC'],
+          // 饼图数据
+          series: {
+             name: '缴费统计',
+            type: 'pie',             //echarts图的类型   pie代表饼图
+            radius: ['50%','70%'],           //饼图中饼状部分的大小所占整个父元素的百分比
+            center: ['50%', '50%'],  //整个饼图在整个父元素中的位置
+            // data:''               //饼图数据
+            data:  this.data,
+            itemStyle: {
+              normal: {
+                label: {
+                  show: true,//饼图上是否出现标注文字 标注各模块代表什么  默认是true
+                  // position: 'inner',//控制饼图上标注文字相对于饼图的位置  默认位置在饼图外
+                },
+                labelLine: {
+                  show: true//官网demo里外部标注上的小细线的显示隐藏    默认显示
+                }
+              }
+            },
+          }
+
+        }
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option,true)
+      
+       },
+       open(){
+            var patient=this.patient;
+            
+            this.$axios.post("/api/getHospitalizationBill",patient)
+            .then(res=>{
+                
+                if(res.data.sumMoney!=null){
+                    this.hospitalizationBill=res.data;
+                    this.data[0].value=this.hospitalizationBill.sumMoney;
+                    this.havePayHospitalizationBill=res.data.payDays*200;
+                }
+                this.$axios.post("/api/getPrescriptionBill",patient)
+                .then(res=>{
+                    this.drugList=res.data;
+                    var getPrescriptionBillMoney=0;
+                    if( this.drugList.length>0){
+                        this.drugList.forEach(drug=>{
+                        getPrescriptionBillMoney+=drug.money;
+                        this.getPrescriptionBillMoney=getPrescriptionBillMoney;
+                    })
+
+                    }
+                    this.$axios.post("/api/getMedicalAdviceBill",patient)
+                    .then(res=>{
+                        this.MedicalAdviceList=res.data;
+                        var getMedicalAdviceBillMoney=0;
+                        this.MedicalAdviceList.forEach(project=>{
+                            getMedicalAdviceBillMoney+=project.price;
+                            
+                        })
+                        this.getMedicalAdviceBillMoney=getMedicalAdviceBillMoney;
+                        
+                     this.data[1].value=getMedicalAdviceBillMoney;
+                        
+                       
+                       
+                        this.$axios.post("/api/getDrugOutBill",patient)
+                        .then(res=>{
+                            if(res.data.length != 0){
+                                this.drugOutList = res.data;
+                            }
+                            var getDrugOutBillMoney=0;
+                            if(this.drugOutList.length>0){
+                             
+                            this.drugOutList.forEach(drug=>{
+                            getDrugOutBillMoney+=drug.money;
+                            })
+                            this.getDrugOutBillMoney=getDrugOutBillMoney;
+                            }
+
+                            this.data[2].value=this.getPrescriptionBillMoney-getDrugOutBillMoney
+                             window.setTimeout(() => {
+                                this.drawLine();	// 执行echarts画图方法
+                                }, 0);
+
+                                console.log(this.data)
+                           
+                        })
+                        
+                    })
+                })
+
+            })
+
+       },
        doOutHospital(id){
            this.$confirm('确定要通过审核吗?', '提示', {
                 confirmButtonText: '确定',
@@ -620,51 +775,17 @@ export default {
                 deptName:deptName
             }
             var patient=this.patient;
+
+            //  this.$axios.post("/api/getMedicalAdviceBillHavePay",patient).then(res=>{
+            //      this.havePayMedicalAdviceBill=res.data;
+            //  })
+
+            //  this.$axios.post("/api/getPrescriptionBillHavePay",patient).then(res=>{
+            //      this.havePayPrescriptionBillMoney=res.data;
+            //  })
+
+            this.billViewForm=true;
             
-            this.$axios.post("/api/getHospitalizationBill",patient)
-            .then(res=>{
-                
-                if(res.data.sumMoney!=null){
-                    this.hospitalizationBill=res.data;
-                }
-                this.$axios.post("/api/getPrescriptionBill",patient)
-                .then(res=>{
-                    this.drugList=res.data;
-                    var getPrescriptionBillMoney=0;
-                    this.drugList.forEach(drug=>{
-                        getPrescriptionBillMoney+=drug.money;
-                    })
-
-                    this.getPrescriptionBillMoney=getPrescriptionBillMoney;
-
-                    this.$axios.post("/api/getMedicalAdviceBill",patient)
-                    .then(res=>{
-                        this.MedicalAdviceList=res.data;
-                        var getMedicalAdviceBillMoney=0;
-                        this.MedicalAdviceList.forEach(project=>{
-                            getMedicalAdviceBillMoney+=project.price;
-                        })
-
-                        this.getMedicalAdviceBillMoney=getMedicalAdviceBillMoney;
-
-                        this.$axios.post("/api/getDrugOutBill",patient)
-                        .then(res=>{
-                            this.drugOutList=res.data;
-
-                            var getDrugOutBillMoney=0;
-                            this.drugOutList.forEach(drug=>{
-                                getDrugOutBillMoney+=drug.money;
-                            })
-
-                            this.getDrugOutBillMoney=getDrugOutBillMoney;
-
-                            this.billViewForm=true;
-                        })
-                        
-                    })
-                })
-
-            })
             
        },
       //查询病人信息列表
