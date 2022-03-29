@@ -10,10 +10,10 @@
 
             <el-col :span="2">
                 <el-select v-model="prescriptionStatus" placeholder="处方状态">
-                    <!-- <el-option label="处方状态" value="" ></el-option> -->
+                    <!-- <el-option label="处方状态" value="" ></el-option>
                     <el-option label="待审核" value="1" ></el-option>
                     <el-option label="待发药" value="2" ></el-option>
-                    <el-option label="已发药" value="3" ></el-option>
+                    <el-option label="已发药" value="3" ></el-option> -->
                     <el-option label="已执行" value="4" ></el-option>
                     <!-- <el-option label="已退药" value="5" ></el-option> -->
                 </el-select>
@@ -106,7 +106,7 @@
                 width="80">
                 <template slot-scope="scope">
                 <span v-if="scope.row.prescriptionStatus=='1'">待审核</span>
-                <span v-if="scope.row.prescriptionStatus=='2'">待发药</span>
+                <span v-if="scope.row.prescriptionStatus=='2'">已审核</span>
                 <span v-if="scope.row.prescriptionStatus=='3'">已发药</span>
                 <span v-if="scope.row.prescriptionStatus=='4'">已执行</span>
                 <span v-if="scope.row.prescriptionStatus=='5'">已退药</span>
@@ -216,8 +216,8 @@
           <el-input-number v-model="addDrugOut.num" @change="handleChange" :min="1" :max="addDrugOut.num" label="描述文字"></el-input-number>
         </el-form-item>
 
-        <el-form-item label="描述" :label-width="formLabelWidth" >
-            <el-input v-model="addDrugOut.outCase" autocomplete="off" ></el-input>
+        <el-form-item label="退药原因" :label-width="formLabelWidth" >
+            <el-input v-model="addDrugOut.outCause" autocomplete="off" ></el-input>
         </el-form-item>
 
       </el-form>

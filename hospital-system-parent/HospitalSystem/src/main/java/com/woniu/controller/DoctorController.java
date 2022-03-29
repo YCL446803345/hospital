@@ -30,16 +30,33 @@ public class DoctorController {
     private LeaveHospitalService leaveHospitalService;
     @Autowired
     private ProjectService projectService;
-
     @Autowired
     private PrescriptionService prescriptionService;
     @Autowired
     private DrugService drugService;
     @Autowired
     private DrugOutService drugOutService;
+    @Autowired
+    private CaseService caseService;
 
 
 
+    //驳回出院申请单
+    @PostMapping("doctor/gotoDeleteInHospitalTable")
+    public ResponseResult<String> gotoDeleteInHospitalTable(Integer id){
+        inHospitalTableService.gotoDeleteInHospitalTableById(id);
+        System.out.println("删除成功");
+        return new ResponseResult<String>(200,"添加成功");
+    }
+
+
+    //添加住院申请单
+    @PostMapping("doctor/addInHospitalTable")
+    public ResponseResult<String> addInHospitalTable(@RequestBody InHospitalTable inHospitalTable){
+        inHospitalTableService.addInHospitalTable(inHospitalTable);
+        System.out.println("添加成功");
+        return new ResponseResult<String>(200,"添加成功");
+    }
 
     //撤销退药
     @PostMapping("doctor/stopDrugOut")
@@ -88,6 +105,26 @@ public class DoctorController {
         consultationApplicationService.addConsultationApplication(consultationApplication);
         System.out.println("突发情况申请会诊成功");
         return new ResponseResult<String>(200,"申请成功");
+    }
+
+
+    //分页查询病例管理中心列表
+    @RequestMapping("doctor/getCaseList")
+    public ResponseResult<PageInfo<Case>> getCaseList(@RequestParam(name = "pageNum", defaultValue = "1", required = false) Integer pageNum,
+                                                            @RequestParam(name = "pageSize", defaultValue = "5", required = false) Integer pageSize,
+                                                            Case c) {
+        ResponseResult<PageInfo<Case>> responseResult = new ResponseResult<>();
+        try {
+            PageInfo<Case> casePageInfo = caseService.queryCaseList(c, pageNum, pageSize);
+            responseResult.setData(casePageInfo);
+            responseResult.setStatus(200);
+            responseResult.setMsg("查询成功...");
+        } catch(Exception e) {
+            e.printStackTrace();
+            responseResult.setStatus(500);
+            responseResult.setMsg("查询失败...");
+        }
+        return responseResult;
     }
 
     //分页查询退药列表
@@ -194,10 +231,6 @@ public class DoctorController {
     public void updateInHospitalTable(@RequestBody InHospitalTable inHospitalTable) {
         inHospitalTableService.updateInHospitalTable(inHospitalTable);
     }
-
-
-
-
 
 
     //医嘱申请
@@ -315,5 +348,9 @@ public class DoctorController {
         medicalAdviceService.gotoStopMedicalAdviceById(id);
     }
 
-
+    //编辑患者
+    @PostMapping("doctor/updatePatient")
+    public void updatePatient(@RequestBody Patient patient) {
+        patientService.updatePatient(patient);
+    }
 }

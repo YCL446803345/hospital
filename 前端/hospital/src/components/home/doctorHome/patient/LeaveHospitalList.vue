@@ -13,11 +13,10 @@
                     <!-- <el-option label="出院状态" value="" ></el-option> -->
                     <!-- <el-option label="住院中" value="1" ></el-option> -->
                     <el-option label="待审核" value="2" ></el-option>
-                    <el-option label="已审核" value="4" ></el-option>
+                    <!-- <el-option label="已审核" value="4" ></el-option> -->
                 </el-select>
             </el-col>
 
-           
             <el-col :span="1" style="margin-left:2px;">
                 <el-button type="success" @click="search">查询</el-button>
                
@@ -137,31 +136,40 @@ export default {
    },
    methods:{
        //撤销出院
-    gotoCancelLeaveHospital(id) {
-        console.log(id)
-        this.$axios.post("/api/doctor/gotoCancelLeaveHospitalById",qs.stringify({'id':id}),{
+    gotoCancelLeaveHospital(id){
+           this.$confirm('确定要撤销吗?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+            }).then(() => {
+                
+                this.$axios.post("/api/doctor/gotoCancelLeaveHospitalById",qs.stringify({'id':id}),{
             params: { id: id }
-        }).then(res => {  
-          console.log(res.data)
-            if(res.status===200){
+            }).then(res=>{
+                    if(res.status==4001){
+                            this.$message({
+                            type: "error",
+                            message: "没有权限!",
+                             duration:2000
+                        });
+                     }else{
+                        this.$message({
+                            type: 'success',
+                            message: '撤销成功!',
+                            duration:2000
+                        });
+                        this.search();
+                     }
+                })
+            }).catch(() => {
                 this.$message({
-                    showClose: true,
-                    message: "操作成功",
-                    type: "success",
-                    duration: 600
-                });
-                this.search();
-            }else if(res.status===4001){
-                this.$message({
-                    showClose: true,
-                    message: "没有权限",
-                    type: "error",
-                    duration: 600
-                });
-                this.search();
-            }
-        }); 
-    },
+                    type: 'info',
+                    message: '已取消操作',
+                     duration:2000
+                });          
+            });
+       },
+
+
 
 
       //查询出院列表
@@ -185,7 +193,6 @@ export default {
         },
         changeSize(value){
             this.pageSize=value;
-            this.pageNum=1;
             this.search();
         },
         changePage(value){

@@ -52,7 +52,7 @@ public class DrugOutServiceImpl implements DrugOutService {
     public void addDrugOut(DrugOut drugOut) {
         drugOut.setCreateTime(new Date());
         drugOut.setOutStatus(1);
-        drugOut.setOutCause("需退药");
+//        drugOut.setOutCause("需退药");
         drugOutMapper.addDrugOut(drugOut);//新增退药申请记录
 
         DrugOutDrug drugOutDrug = new DrugOutDrug();

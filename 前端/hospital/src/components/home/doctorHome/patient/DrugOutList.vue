@@ -13,7 +13,7 @@
                     <!-- <el-option label="处方状态" value="" ></el-option> -->
                     <el-option label="待审核" value="1" ></el-option>
                     <el-option label="待退药" value="2" ></el-option>
-                    <el-option label="已退药" value="3" ></el-option>
+                    <!-- <el-option label="已退药" value="3" ></el-option> -->
                     <!-- <el-option label="已停止" value="4" ></el-option> -->
                 </el-select>
             </el-col>
@@ -90,6 +90,12 @@
                 prop="createTime"
                 label="创建时间"
                 width="170">
+            </el-table-column>
+
+            <el-table-column
+                prop="outCause"
+                label="退药原因"
+                width="120">
             </el-table-column>
 
 
@@ -243,7 +249,7 @@ export default {
           } else {
             this.$message({
               type: "success",
-              message: "审核成功!",
+              message: "撤销成功!",
               duration: 2000,
             });
             this.closeStopDrugOutForm();

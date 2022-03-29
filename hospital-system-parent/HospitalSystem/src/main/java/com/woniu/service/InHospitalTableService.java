@@ -10,4 +10,8 @@ public interface InHospitalTableService {
 
     //审核入院信息
     void updateInHospitalTable(InHospitalTable inHospitalTable);
+    //新增住院申请单
+    void addInHospitalTable(InHospitalTable inHospitalTable);
+
+    void gotoDeleteInHospitalTableById(Integer id);
 }

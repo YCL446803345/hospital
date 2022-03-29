@@ -126,4 +126,8 @@ public interface PatientMapper {
     @Insert("insert into HOS_patient(name,no,age,card_id,phone,gender,dept_id,base_desc,status) values(#{name},#{no},#{age},#{cardId},#{phone},#{gender},#{deptId},#{baseDesc},#{status})")
     void addPatientByDoctor(Patient patient);
 
+    //医生编辑患者信息
+    @Update("update HOS_patient set name=#{name},no=#{no},gender=#{gender},phone=#{phone},age=#{age}," +
+            "base_desc=#{baseDesc},card_id=#{cardId} where id=#{id}")
+    void updatePatientByDoctor(Patient patient);
 }

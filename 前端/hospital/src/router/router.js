@@ -43,6 +43,7 @@ import LeaveHospitalList from '../components/home/doctorHome/patient/LeaveHospit
 import PrescriptionList from '../components/home/doctorHome/patient/PrescriptionList' //处方列表
 import DrugOutList from '../components/home/doctorHome/patient/DrugOutList' //退药列表
 import PatientRecord from '../components/home/doctorHome/patient/PatientRecord' //护理列表
+import CaseList from '../components/home/doctorHome/patient/CaseList' //病例中心管理
 
 //药房组件
 
@@ -130,6 +131,7 @@ var router = new VueRouter({
                 { path: "/doctor/prescriptionList", component: PrescriptionList },
                 { path: "/doctor/drugOutList", component: DrugOutList },
                 { path: "/doctor/patientRecord", component: PatientRecord },
+                { path: "/doctor/caseList", component: CaseList },
 
                 { path: "/worker/scheduling", component: Scheduling },
                 { path: "/user/perms", component: Perms },

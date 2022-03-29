@@ -51,6 +51,7 @@ public interface DrugOutMapper {
     //分页模糊查询退药列表
     List<DrugOut> queryDrugOutList(DrugOut drugOut);
 
+    //申请退药,退药记录表新增数据
     @Insert("insert into HOS_drug_out(doctor_id,patient_id,out_status,create_time,out_cause) values(#{doctorId},#{patientId},#{outStatus},#{createTime},#{outCause})")
     @Options(useGeneratedKeys = true,keyProperty = "id",keyColumn = "id")
     void addDrugOut(DrugOut drugOut);

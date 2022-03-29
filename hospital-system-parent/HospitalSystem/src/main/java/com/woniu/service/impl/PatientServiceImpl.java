@@ -194,5 +194,10 @@ public class PatientServiceImpl implements PatientService {
     public void doOutHospital(Integer id) {
         patientMapper.doOutHospital(id);
     }
+
+    @Override
+    public void updatePatientByDoctor(Patient patient) {
+        patientMapper.updatePatientByDoctor(patient);
+    }
 }
 

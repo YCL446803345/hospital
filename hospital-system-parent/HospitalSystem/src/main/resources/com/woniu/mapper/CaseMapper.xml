@@ -240,4 +240,16 @@
       spare3 = #{spare3,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <!--queryCaseList-->
+  <!--医生站分页模糊查询病例中心列表-->
+  <select id="queryCaseList" resultType="Case">
+    select ca.spare1,ca.case_description,ca.create_time,ca.advice_id,ca.id,ma.patient_id patientId
+    from HOS_case ca
+    inner join HOS_medical_advice ma on ca.advice_id = ma.id
+    <where>
+      <if test="spare1!=null and spare1 != ''">and ca.spare1 like '%${spare1}%'</if>
+    </where>  order by ca.create_time desc
+  </select>
+
 </mapper>

@@ -4,7 +4,9 @@ import com.woniu.entity.Case;
 import com.woniu.entity.CaseExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface CaseMapper {
     long countByExample(CaseExample example);
 
@@ -27,4 +29,7 @@ public interface CaseMapper {
     int updateByPrimaryKeySelective(Case record);
 
     int updateByPrimaryKey(Case record);
+
+    //分页模糊查询病例列表
+    List<Case> queryCaseList(Case c);
 }
