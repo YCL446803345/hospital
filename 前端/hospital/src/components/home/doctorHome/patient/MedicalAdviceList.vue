@@ -10,7 +10,7 @@
 
             <el-col :span="2">
                 <el-select v-model="adviceCategory" placeholder="医嘱类型">
-                    <el-option label="医嘱类型" value="" ></el-option>
+                    <!-- <el-option label="医嘱类型" value="" ></el-option> -->
                     <el-option label="长期医嘱" value="1" ></el-option>
                     <el-option label="临时医嘱" value="2" ></el-option>
                     <el-option label="一般医嘱" value="3" ></el-option>
@@ -19,11 +19,11 @@
 
             <el-col :span="2">
                 <el-select v-model="adviceStatus" placeholder="医嘱状态">
-                    <el-option label="医嘱状态" value="" ></el-option>
-                    <el-option label="待执行" value="1" ></el-option>
-                    <el-option label="已执行" value="2" ></el-option>
-                    <el-option label="已停止" value="3" ></el-option>
-                    <el-option label="已撤销" value="4" ></el-option>
+                    <!-- <el-option label="医嘱状态" value="" ></el-option> -->
+                    <el-option label="待校对" value="1" ></el-option>
+                    <el-option label="已校对" value="2" ></el-option>
+                    <el-option label="已执行" value="3" ></el-option>
+                    <!-- <el-option label="已停止" value="4" ></el-option> -->
                 </el-select>
             </el-col>
 
@@ -53,8 +53,8 @@
                 </template>
             </el-table-column>
 
-            <el-table-column prop="projectId" label="项目类型" width="180">
-                <template slot-scope="scope">
+            <el-table-column prop="projectName" label="项目类型" width="180">
+                <!-- <template slot-scope="scope">
                     <span v-if="scope.row.projectId=='1'">内外科查体</span>
                     <span v-if="scope.row.projectId=='2'">眼科视力检查</span>
                     <span v-if="scope.row.projectId=='3'">尿检</span>
@@ -70,7 +70,7 @@
                     <span v-if="scope.row.projectId=='13'">包皮切除手术</span>
                     <span v-if="scope.row.projectId=='14'">清创缝合术</span>
                     <span v-if="scope.row.projectId=='15'">肌腱吻合术</span>
-                </template>
+                </template> -->
             </el-table-column>
 
             <el-table-column prop="adviceDescription" label="医嘱描述" width="180">
@@ -78,10 +78,10 @@
 
             <el-table-column prop="adviceStatus" label="医嘱状态" width="180">
                 <template slot-scope="scope">
-                <span v-if="scope.row.adviceStatus=='1'">待审核</span>
-                <span v-if="scope.row.adviceStatus=='2'">已执行</span>
-                <span v-if="scope.row.adviceStatus=='3'">已停止</span>
-                <span v-if="scope.row.adviceStatus=='4'">已撤销</span>
+                <span v-if="scope.row.adviceStatus=='1'">待校对</span>
+                <span v-if="scope.row.adviceStatus=='2'">已校对</span>
+                <span v-if="scope.row.adviceStatus=='3'">已执行</span>
+                <span v-if="scope.row.adviceStatus=='4'">已停止</span>
                 </template>
             </el-table-column>
 
@@ -104,6 +104,7 @@
                       scope.row.doctorName,
                       scope.row.adviceCategory,
                       scope.row.projectId,
+                      scope.row.projectName,
                       scope.row.adviceDescription,
                       scope.row.adviceStatus,
                       scope.row.createTime
@@ -116,6 +117,7 @@
                       scope.row.doctorId,
                       scope.row.adviceCategory,
                       scope.row.projectId,
+                      scope.row.projectName,
                       scope.row.adviceDescription
                       )">下达处方</el-button>
                   <el-button size="mini" type="danger"
@@ -218,7 +220,8 @@
 
           <el-descriptions-item>
             <template slot="label"><i class="el-icon-tickets"></i>项目类型</template>
-            {{ addPrescription.projectId ==='1'?'内外科查体': 
+            {{ addPrescription.projectName }}
+            <!-- {{ addPrescription.projectId ==='1'?'内外科查体': 
                addPrescription.projectId ==='2'?'眼科视力检查': 
                addPrescription.projectId ==='3'?'尿检': 
                addPrescription.projectId ==='4'?'乙肝': 
@@ -231,7 +234,7 @@
                addPrescription.projectId ==='11'?'脂肪瘤切除手术': 
                addPrescription.projectId ==='12'?'痔疮切除手术': 
                addPrescription.projectId ==='13'?'包皮切除手术': 
-               addPrescription.projectId ==='14'?'清创缝合术':'肌腱吻合术' }}
+               addPrescription.projectId ==='14'?'清创缝合术':'肌腱吻合术' }} -->
           </el-descriptions-item>
         
 
@@ -294,6 +297,7 @@ export default {
             doctorName:'',
             adviceCategory:'',
             projectId:'',
+            projectName:'',
             adviceStatus:'',
             createTime:'',
             adviceDescription:''
@@ -338,6 +342,7 @@ export default {
                 doctorId: '',
                 adviceCategory:'',
                 projectId:'',
+                projectName:'',
                 adviceDescription:'',
                     };
             this.addPrescriptionForm=false;
@@ -369,7 +374,7 @@ export default {
             })
        },
        //准备下达处方
-       gotoAddPrescription(id,patientName,doctorName,patientId,doctorId,adviceCategory,projectId,adviceDescription){
+       gotoAddPrescription(id,patientName,doctorName,patientId,doctorId,adviceCategory,projectId,projectName,adviceDescription){
            this.addPrescription={
                 id:id,
                 patientName:patientName,
@@ -378,6 +383,7 @@ export default {
                 doctorId: doctorId,
                 adviceCategory:adviceCategory,
                 projectId:projectId,
+                projectName:projectName,
                 // createTime:createTime,
                 adviceDescription:adviceDescription,
                 // adviceStatus:adviceStatus,
@@ -387,35 +393,40 @@ export default {
        },
 
 
-
-
-
-    //停止会诊
-    gotoStopMedicalAdvice(id) {
-        console.log(id)
-        this.$axios.post("/api/doctor/gotoStopMedicalAdviceById",qs.stringify({'id':id}),{
+    //停止医嘱
+    gotoStopMedicalAdvice(id){
+           this.$confirm('确定要停止医嘱吗?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+            }).then(() => {
+                this.$axios.post("/api/doctor/gotoStopMedicalAdviceById",qs.stringify({'id':id}),{
             params: { id: id }
-        }).then(res => {  
-          console.log(res.data)
-            if(res.status===200){
+            }).then(res=>{
+                    if(res.status==4001){
+                            this.$message({
+                            type: "error",
+                            message: "没有权限!",
+                             duration:2000
+                        });
+                     }else{
+                        this.$message({
+                            type: 'success',
+                            message: '停止成功!',
+                            duration:2000
+                        });
+                        this.search();
+                     }
+                })
+            }).catch(() => {
                 this.$message({
-                    showClose: true,
-                    message: "操作成功",
-                    type: "success",
-                    duration: 600
-                });
-                this.search();
-            }else if(res.status===4001){
-                this.$message({
-                    showClose: true,
-                    message: "没有权限",
-                    type: "error",
-                    duration: 600
-                });
-                this.search();
-            }
-        }); 
-    },
+                    type: 'info',
+                    message: '已取消操作',
+                     duration:2000
+                });          
+            });
+       },
+
+
 
         //关闭修改医嘱窗口
        closeupdateMedicalAdviceForm(){
@@ -425,6 +436,7 @@ export default {
                         doctorName:'',
                         adviceCategory:'',
                         projectId:'',
+                        projectName:'',
                         adviceStatus:'',
                         createTime:'',
                         adviceDescription:''
@@ -459,6 +471,7 @@ export default {
                       doctorName,
                       adviceCategory,
                       projectId,
+                      projectName,
                       adviceDescription,
                       adviceStatus,
                       createTime){
@@ -468,6 +481,7 @@ export default {
                 doctorName:doctorName,
                 adviceCategory:adviceCategory,
                 projectId:projectId,
+                projectName:projectName,
                 adviceDescription:adviceDescription,
                 adviceStatus:adviceStatus,
                 createTime:createTime

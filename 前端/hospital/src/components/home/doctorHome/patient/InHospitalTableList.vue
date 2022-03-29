@@ -14,12 +14,12 @@
       </el-col>
 
       <el-col :span="4">
-        <el-input v-model="cardId" placeholder="卡号"> </el-input>
+        <el-input v-model="cardId" placeholder="身份证号"> </el-input>
       </el-col>
 
       <el-col :span="2">
         <el-select v-model="patientSex" placeholder="性别">
-          <el-option label="性别" value=""></el-option>
+          <!-- <el-option label="性别" value=""></el-option> -->
           <el-option label="男" value="男"></el-option>
           <el-option label="女" value="女"></el-option>
         </el-select>
@@ -41,6 +41,9 @@
           "
           >清空</el-button
         >
+      </el-col>
+      <el-col :span="1" style="margin-left: 2px">
+        <el-button type="primary" @click="gotoAddInHospital()">添加</el-button>
       </el-col>
     </el-row>
     <!-- 
@@ -66,7 +69,7 @@
         label="年龄"
         width="80"
       ></el-table-column>
-      <el-table-column prop="cardId" label="卡号" width="180"></el-table-column>
+      <el-table-column prop="cardId" label="身份证号" width="180"></el-table-column>
       <el-table-column
         prop="telephone"
         label="联系方式"
@@ -83,14 +86,21 @@
         label="预约时间"
         width="180"
       ></el-table-column>
-      <el-table-column prop="status" label="预约状态" width="180">
-        <template slot-scope="scope">
-          <span v-if="scope.row.status=='1'">已预约,待审核</span>
-          <span v-if="scope.row.status=='2'">已审核,待确认</span>
-          <span v-if="scope.row.status=='3'">已确认,住院中</span>
+      <el-table-column prop="status" label="预约状态" width="120">
+        <template slot-scope="scope" >
+          <span v-if="scope.row.status=='1'">
+             <el-tag type="danger">待审核</el-tag>
+            </span>
+          <span v-if="scope.row.status=='2'">
+            <el-tag type="success">已审核</el-tag>
+            </span>
+          <span v-if="scope.row.status=='3'">
+            <el-tag>已确认,住院中</el-tag>
+            </span>
         </template>
       </el-table-column>
-
+      
+     
       <!-- <el-table-column
                 label="头像"
                 width="100">
@@ -117,12 +127,8 @@
                 scope.row.deptId,
                 scope.row.inHosptialTime,
                 scope.row.status
-              )
-            "
-            >审核</el-button
-          >
-          <!-- <el-button size="mini" type="danger"
-                  @click="gotoDeleteInHospitalTable( scope.row.id)">驳回</el-button> -->
+              )">审核</el-button>
+          <el-button size="mini" type="danger" @click="gotoDeleteInHospitalTable( scope.row.id)">驳回</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -161,7 +167,7 @@
           </el-descriptions-item>
 
           <el-descriptions-item>
-            <template slot="label"><i class="el-icon-tickets"></i>卡号</template>
+            <template slot="label"><i class="el-icon-tickets"></i>身份证号</template>
             {{ updateInHospitalTable.cardId }}
           </el-descriptions-item>
 
@@ -199,10 +205,58 @@
         <el-button @click="closeUpdateInHospitalTable">取 消</el-button>
       </div>
     </el-dialog>
+
+    <!-- 添加住院通知单 -->
+    <el-dialog :visible.sync="addInHospitalForm">
+      <h1 align="center">添加住院通知单</h1><br />
+      <el-form :model="addInHospital">
+        <el-form-item label="姓名" :label-width="formLabelWidth">
+          <el-input v-model="addInHospital.patientName" autocomplete="off"></el-input>
+        </el-form-item>
+
+        <el-form-item label="性别" :label-width="formLabelWidth">
+          <el-radio v-model="addInHospital.patientSex" label="男" value='男'>男</el-radio>
+          <el-radio v-model="addInHospital.patientSex" label="女" value='女'>女</el-radio>
+        </el-form-item>
+
+        <el-form-item label="年龄" :label-width="formLabelWidth">
+          <el-input v-model="addInHospital.patientAge" autocomplete="off" ></el-input>
+        </el-form-item>
+
+        <el-form-item label="身份证号" :label-width="formLabelWidth">
+          <el-input v-model="addInHospital.cardId" autocomplete="off" ></el-input>
+        </el-form-item>
+
+        <el-form-item label="电话" :label-width="formLabelWidth">
+          <el-input v-model="addInHospital.telephone" autocomplete="off"></el-input>
+        </el-form-item>
+
+        <el-form-item label="部门" :label-width="formLabelWidth">
+          <el-select v-model="addInHospital.deptId" placeholder="请选择部门">
+            <el-option v-for="dept in deptList" :label="dept.name" :value="dept.id" :key="dept.id"></el-option>
+          </el-select>
+        </el-form-item>
+
+        <el-form-item label="原因" :label-width="formLabelWidth">
+          <el-input v-model="addInHospital.reason" autocomplete="off"></el-input>
+        </el-form-item>
+
+        <!-- <el-form-item label="时间" :label-width="formLabelWidth">
+          <el-input v-model="addInHospital.inHosptialTime" autocomplete="off"></el-input>
+        </el-form-item> -->
+
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="doAddInHospital">提 交</el-button>
+        <el-button @click="addInHospitalForm = false;addInHospital={}">取 消</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+import qs from 'qs'
+
 export default {
   data() {
     return {
@@ -214,8 +268,13 @@ export default {
       pageNum: 1,
       pageSize: 5,
 
+      deptList:[],
+
+      addInHospital:{},
+      addInHospitalForm: false,
+
       updateInHospitalTableForm: false, //控制是否显示审核对话框
-      formLabelWidth: "60px",
+      formLabelWidth: "100px",
       updateInHospitalTable: {
         id: "",
         patientName: "",
@@ -234,9 +293,98 @@ export default {
   },
   created() {
     this.search();
+    this.findDeptList();
     this.headers = { tokenStr: window.localStorage.getItem("tokenStr") };
   },
   methods: {
+
+    //删除职工
+    gotoDeleteInHospitalTable(id){
+           this.$confirm('确定要驳回吗?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+            }).then(() => {
+                this.$axios.post("/api/doctor/gotoDeleteInHospitalTable",qs.stringify({'id':id}),{
+            params: { id: id }
+            }).then(res=>{
+                    if(res.status==4001){
+                            this.$message({
+                            type: "error",
+                            message: "没有权限!",
+                             duration:2000
+                        });
+                     }else{
+                        this.$message({
+                            type: 'success',
+                            message: '驳回成功!',
+                            duration:2000
+                        });
+                        this.search();
+                     }
+                })
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '已取消操作',
+                     duration:2000
+                });          
+            });
+       },
+
+
+      //打开添加住院通知单
+      gotoAddInHospital() {
+        this.addInHospitalForm = true;
+      },
+
+      //添加职工
+      doAddInHospital() {
+        //发送axios请求
+        var inHospitalTable = this.addInHospital;
+        this.$axios.post("/api/doctor/addInHospitalTable", inHospitalTable).then((res) => {
+          console.log(res.data);
+          if (res.status == 200) {
+            this.$message({
+              showClose: true,
+              message: "添加成功",
+              type: "success",
+              duration: 600,
+            });
+            this.addInHospital = {};
+            this.addInHospitalForm = false;
+            this.search() //刷新列表
+          } else {
+            this.$message({
+              showClose: true,
+              message: "添加失败",
+              type: "error",
+              duration: 600,
+            });
+          }
+        });
+      },
+
+
+    //部门列表
+      findDeptList() {
+        //axios请求拿数据
+        this.$axios
+          .get("/api/dept/list", {
+            params: {},
+          })
+          .then((res) => {
+            console.log(res.data.data);
+            //设置部门列表数据
+            this.deptList = res.data.data;
+          })
+          .catch((res) => {
+            this.$message({
+              type: "error",
+              message: "获取部门列表错误!",
+            });
+          });
+      },
+
     doUpdateInHospitalTable() {
       //    console.log(res.data)
       var inHospitalTable = this.updateInHospitalTable;

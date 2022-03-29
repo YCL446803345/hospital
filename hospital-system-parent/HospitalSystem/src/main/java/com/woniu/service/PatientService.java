@@ -34,5 +34,6 @@ public interface PatientService {
 
 
     void doOutHospital(Integer id);
-
+    //医生编辑患者信息
+    void updatePatientByDoctor(Patient patient);
 }
