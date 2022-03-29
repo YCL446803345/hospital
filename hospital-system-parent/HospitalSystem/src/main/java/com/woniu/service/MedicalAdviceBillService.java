@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface MedicalAdviceBillService {
     List<Project> getMedicalAdviceBill(Patient patient);
+
+    Double getMedicalAdviceBillHavePay(Patient patient);
 }

@@ -21,6 +21,16 @@ public class HospitalizationBill {
 
     private Double sumMoney;
 
+    private Integer needPayDays;
+
+    public Integer getNeedPayDays() {
+        return needPayDays;
+    }
+
+    public void setNeedPayDays(Integer needPayDays) {
+        this.needPayDays = needPayDays;
+    }
+
     public Double getSumMoney() {
         return sumMoney;
     }

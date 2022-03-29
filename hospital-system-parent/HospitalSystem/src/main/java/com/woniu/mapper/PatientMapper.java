@@ -70,10 +70,10 @@ public interface PatientMapper {
             "</script>")
     List<Patient> findPatientsWithNotBed(Patient patient);
 
-    @Update("update HOS_patient set dept_id=#{deptId},bed_id=#{bedId},doctor_id=9,nurse_id=9 where id=#{id}")
+    @Update("update HOS_patient set dept_id=#{deptId} where id=#{id}")
     void updateBedByPatientWithOutBed(Patient patient);
 
-    @Update("update HOS_patient set dept_id=#{deptId},bed_id=null,doctor_id=9,nurse_id=9 where id=#{id}")
+    @Update("update HOS_patient set dept_id=#{deptId} where id=#{id}")
     void stopUseBed(Patient patient);
 
     //医生站分页模糊查询患者列表
@@ -119,7 +119,7 @@ public interface PatientMapper {
     int selectTotal (@Param("name") String name,@Param("no") String no);
 
 
-    @Update("update HOS_patient set status=4 where id =#{id}")
+    @Update("update HOS_patient set status=4,set bed_id=null where id =#{id}")
     void doOutHospital(Integer id);
 
     //审核后新增患者信息

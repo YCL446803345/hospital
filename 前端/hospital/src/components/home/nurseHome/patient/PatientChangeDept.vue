@@ -2,9 +2,9 @@
     <div>
         <!-- 面包xie导航 -->
         <el-breadcrumb separator="/">
-            <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item><a href="#/patientInfo">在院病人信息管理</a></el-breadcrumb-item>
-            <el-breadcrumb-item>在院病人信息管理列表</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: '/gotoHome' }">首页</el-breadcrumb-item>
+            <el-breadcrumb-item><a href="#/nurse/changeDept">转科管理</a></el-breadcrumb-item>
+            <el-breadcrumb-item>转科管理</el-breadcrumb-item>
         </el-breadcrumb>
         <el-row style="margin-top:10px;margin-bottom:10px">
             <el-col :span="8">
