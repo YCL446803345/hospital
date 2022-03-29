@@ -15,8 +15,6 @@
               <full-calendar ref="fullCalendar" style="height: 100%" :options="calendarOptions"></full-calendar>
             </el-col>
           </el-row>
-
-      
         </div>
  <label class='label_canlendar'><input class='ace' type='radio' value='#3a87ad' name='code' checked><span
                         class='classes' style='color:#3a87ad'>白班</span></label>
@@ -181,61 +179,10 @@
 
         
       };
-
-       // 添加排班
-        function select(start, end, allDay) {
-
-            layer.open({
-                type: 1,
-                shade: false,
-                content: $box,
-                title: '选择班次',
-                btn: ['确认', '关闭'],
-                btn1: function() {
-                    layer.closeAll();
-                },
-                yes: addCallback
-            });
+    },
 
             // 添加排班 - 弹窗回调
-            function addCallback() {
-                var bgColor = $box.find("input[name=code]:checked").val();
-                var title = $box.find("input[name=code]:checked").next().text();
-                var text = $box.find("option:selected").text();
-
-                var json = {
-                    title: text + ' - ' + title,
-                    text: text,
-                    allDay: allDay,
-                    backgroundColor: bgColor,
-                    start: start.format('YYYY-MM-DD'),
-                    end: end.format('YYYY-MM-DD')
-                };
-
-                // test
-                $('#calendar').fullCalendar('renderEvent', json, true); // 添加日历
-
-                // 添加排班 post
-                function addEvent(data) {
-                    if (data.title == null || data.title == '') {
-                        return false;
-                    }
-                    if (checkStr(data.title) == false) {
-                        alert("请不要输入非法字符！");
-                        return;
-                    }
-
-                    $.post("Canlendar/postEvent", data, function(data) {
-                        calendar.fullCalendar('renderEvent', json, true); // 添加日历
-                    }, "json");
-                }
-
-                layer.closeAll();
-            }
-
-            calendar.fullCalendar('unselect');
-        }
-    },
+   
     created() {
       this.findWorkerList();
 
@@ -290,6 +237,59 @@
       handleCurrentChange(value) {
         this.findWorkerList(value);
       },
+      //添加排班
+  
+
+
+      // select(start, end, allDay) {
+      //       layer.open({
+      //           type: 1,
+      //           shade: false,
+      //           content: $box,
+      //           title: '选择班次',
+      //           btn: ['确认', '关闭'],
+      //           btn1: function() {
+      //               layer.closeAll();
+      //           },
+      //           yes: addCallback
+      //       });
+      //       function addCallback() {
+      //           var bgColor = $box.find("input[name=code]:checked").val();
+      //           var title = $box.find("input[name=code]:checked").next().text();
+      //           var text = $box.find("option:selected").text();
+
+      //           var json = {
+      //               title: text + ' - ' + title,
+      //               text: text,
+      //               allDay: allDay,
+      //               backgroundColor: bgColor,
+      //               start: start.format('YYYY-MM-DD'),
+      //               end: end.format('YYYY-MM-DD')
+      //           };
+
+      //           // test
+      //           $('#calendar').fullCalendar('renderEvent', json, true); // 添加日历
+
+      //           // 添加排班 post
+      //           function addEvent(data) {
+      //               if (data.title == null || data.title == '') {
+      //                   return false;
+      //               }
+      //               if (checkStr(data.title) == false) {
+      //                   alert("请不要输入非法字符！");
+      //                   return;
+      //               }
+
+      //               $.post("Canlendar/postEvent", data, function(data) {
+      //                   calendar.fullCalendar('renderEvent', json, true); // 添加日历
+      //               }, "json");
+      //           }
+
+      //           layer.closeAll();
+      //       }
+
+      //       calendar.fullCalendar('unselect');
+      //   }
     },
   };
 

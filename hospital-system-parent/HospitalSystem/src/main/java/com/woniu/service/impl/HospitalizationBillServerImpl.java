@@ -400,7 +400,7 @@ public class HospitalizationBillServerImpl implements HospitalizationBillServer 
         PaymentRecordExample paymentRecordExample = new PaymentRecordExample();
         PaymentRecordExample.Criteria criteria = paymentRecordExample.createCriteria();
         criteria.andPatientIdEqualTo(id);
-        paymentRecordExample.setOrderByClause("time");
+        paymentRecordExample.setOrderByClause("time desc");
         List<PaymentRecord> paymentRecords = paymentRecordMapper.selectByExample(paymentRecordExample);
         PageInfo<PaymentRecord> pageInfo = new PageInfo<>(paymentRecords);
         return pageInfo;

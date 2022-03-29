@@ -162,9 +162,9 @@ export default {
     methods:{
          getPie1() {
         // 绘制图表
-        var myChart1 = echarts.init(document.getElementById('pie1'))
+        var myChart = echarts.init(document.getElementById('pie1'))
         // 指定图表的配置项和数据
-        var option1 = {
+        var option = {
           //标题
           title: {
             text: '住院缴费统计',
@@ -220,7 +220,7 @@ export default {
 
         }
         // 使用刚指定的配置项和数据显示图表。
-        myChart1.setOption(option1)
+        myChart.setOption(option)
       },
 
           getPie2() {
@@ -457,12 +457,12 @@ export default {
       // this.getData()    
 
     },
-    mounted(){
-      myChart.setOption(this.option9)
-        this.$nextTick(function() {
-          this.draw("report");
-        });
-    },
+    // mounted(){
+     
+    //     this.$nextTick(function() {
+    //       this.draw("report");
+    //     });
+    // },
     // watch:{
     // option:function(){
     //    var myChart = echarts.init(document.querySelector('#test'))

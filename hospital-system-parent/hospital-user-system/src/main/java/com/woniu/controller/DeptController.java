@@ -17,10 +17,8 @@ public class DeptController {
     @Autowired
     private DeptService deptService;
 
-
-
     //查询角色
-    @RequestMapping("dept/list")
+    @RequestMapping("/dept/list")
     public ResponseResult<List<Dept>> findDeptList(){
         List<Dept> deptList = deptService.findDeptList();
         return new ResponseResult<List<Dept>>(deptList,"OK",200);

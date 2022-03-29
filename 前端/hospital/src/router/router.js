@@ -28,7 +28,7 @@ Vue.prototype.$echarts=echarts
 
 //医院入口登录相关组件
 import Entry from '../components/entry/Entry'
-import UserLogin from '../components/login/UserLogin' //用户登录组件
+import UserLogin from '../components/login/UserLogin.vue' //用户登录组件
 import UserRegister from '../components/login/UserRegister' //职工登录组件
 import UserHome from '../components/home/userHome/UserHome' //用户主界面+导航栏
 import WorkersLogin from '../components/login/WorkersLogin' //职工登录组件
@@ -54,8 +54,8 @@ import DrugManager from '../components/home/drugHome/DrugManager' //药品管理
 import Purchase from '../components/home/drugHome/Purchase'   //采购管理
 
 
-
-
+//叫号组件
+import call from "../components/home/callHome/call.vue" //医生叫号
 
 //人事组件
 import HumanAffairs from '../components/home/hrHome/HumanAffairs ' // 职工管理
@@ -120,7 +120,7 @@ var router = new VueRouter({
                 {path:"/pay/leaveCost",component:leaveCost},
                 {path:"/pay/inPay",component:pay},
                 {path:"/pay/test",component:test},
-
+                {path:"/call/calling",component:call},
 
                 { path: "/doctor/PatientList", component: PatientList },
                 { path: "/doctor/consultationApplicationList", component: ConsultationApplicationList },

@@ -337,7 +337,7 @@
     created() {
       //从本地浏览器拿名字
       this.telephone = window.localStorage.getItem("telephone")
-      this.$axios.get("api/perms/findMenuPerms", {
+      this.$axios.get("/api/perms/findMenuPerms", {
           params: {
             telephone: this.telephone
           }
