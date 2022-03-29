@@ -406,7 +406,7 @@
                 <i class="el-icon-tickets"></i>
                 小结
             </template>
-            {{patient.hospitalization + patient.prescription + patient.medicalAdvice - patient.drugOut}}
+            {{(patient.hospitalization + patient.prescription + patient.medicalAdvice - patient.drugOut).toFixed(2)}}
             </el-descriptions-item>
         </el-descriptions>
         </template>
@@ -512,11 +512,16 @@ export default {
         },
         //结算病人账单
         settlement(){
-            this.$axios.get("/api/advancePayment",{params:{id:this.patient.id}}).then(res=>{
+            this.$axios.get("/api/advancePayment",{params:{id:this.patient.id,token:this.token}}).then(res=>{
                  if(res.data === "OK"){
                             this.$message({
                             type: "success",
                             message: "结算成功!",
+                        });
+                    }else if(res.data == "err"){
+                         this.$message({
+                            type: "info",
+                            message: "请不要重复点击!",
                         });
                     }else{
                          this.$alert('以欠费'+res.data+',请先充值', '欠费', {
@@ -550,9 +555,6 @@ export default {
                 this.patient.drugOut = prescription
                 this.costSettlementForm = true;
                 this.$axios.get("/api/createToken").then(res=>{
-                    console.log("=====================");
-                    console.log(res.data);
-                    console.log("=====================");
                     this.token = res.data;
                 })
             })

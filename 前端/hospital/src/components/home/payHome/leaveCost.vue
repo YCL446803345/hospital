@@ -4,8 +4,8 @@
         <br>
         <el-breadcrumb separator="/">
             <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item><a href="#/patientInfo">在院病人费用信息管理</a></el-breadcrumb-item>
-            <el-breadcrumb-item>在院病人费用信息查询列表</el-breadcrumb-item>
+            <el-breadcrumb-item><a href="#/patientInfo">离院病人费用信息管理</a></el-breadcrumb-item>
+            <el-breadcrumb-item>离院病人费用信息查询列表</el-breadcrumb-item>
         </el-breadcrumb>
         <el-row style="margin-top:10px;margin-bottom:10px">
             <el-col :span="3">
@@ -125,7 +125,10 @@
                   size="mini"
                   type="primary"
                   @click="findShow(scope.row)">查询病人费用详情</el-button>
-
+                 <el-button
+                  size="mini"
+                  type="primary"
+                  @click="showAnalysis(scope.row.id)">病人费用数据分析</el-button> 
                </template>
             </el-table-column>
         </el-table>
@@ -227,10 +230,28 @@
             </div>
         </el-dialog>
 
+         <el-dialog :visible.sync="analysisForm" @open="open">
+        <h1 align="center">缴费详情 </h1><br>
+        <template>
+            <el-row>
+                <el-col :span="10">
+                    <div class="grid-content bg-purple" style="width:700px;height:500px;" id="pies">
+                        <div style="width:500px;height:500px;" id="pie"></div>
+                    </div>
+                </el-col>
+            </el-row>
+        </template>
+             <div slot="footer" class="dialog-footer">
+                 <!-- <el-button @click="getPie">显示</el-button> -->
+                <el-button @click="closeAnalysisForm">确定</el-button>
+            </div>
+        </el-dialog>
+
     </div>
 </template>
 
 <script>
+import echarts from 'echarts'
 export default {
    data() {
       return {
@@ -244,6 +265,7 @@ export default {
         pageNum:1,
         pageSize:5,
         costViewForm:false,
+        analysisForm:false,
         paymentRecordList:[],
         patient:{
             name:"",
@@ -253,6 +275,12 @@ export default {
         size:5,
           patientId:0,
           Intotal:0,
+          data:[
+            { name: '住院', value: 10 },
+            { name: '处方', value: 30 },
+            { name: '医嘱', value: 30 },
+            { name: '退药', value: 30 }
+          ],
       }
    },
    created(){
@@ -330,6 +358,88 @@ export default {
                 this.size = res.data.pageSize;
             })
         },
+         closeCostInfoForm(){
+             this.costViewForm = false;
+         },
+        getPie() {
+        // 绘制图表
+        var myChart = echarts.init(window.document.getElementById('pie'));
+        // 指定图表的配置项和数据
+        var option = {
+          //标题
+          title: {
+            text: '住院病人缴费统计',
+            x: 'left' ,              //标题位置
+          },
+          // stillShowZeroSum: true,
+          //鼠标划过时饼状图上显示的数据
+          tooltip: {
+            trigger: 'item',
+            formatter: '{a}<br/>{b}:{c} ({d}%)'
+          },
+          //图例
+          legend: {//图例  标注各种颜色代表的模块
+            // orient: 'vertical',//图例的显示方式  默认横向显示
+            bottom: 10,//控制图例出现的距离  默认左上角
+            left: 'center',//控制图例的位置
+            // itemWidth: 16,//图例颜色块的宽度和高度
+            // itemHeight: 12,
+            textStyle: {//图例中文字的样式
+              color: '#000',
+              fontSize: 16
+            },
+            data: ['住院', '处方','医嘱','退药']//图例上显示的饼图各模块上的名字
+          },
+          //饼图中各模块的颜色
+          color: [ '#A8A8A8','#34C447', '#5ab1ef','#EFB05A'],
+          // 饼图数据
+          series: {
+             name: '缴费统计',
+            type: 'pie',             //echarts图的类型   pie代表饼图
+            radius: '70%',           //饼图中饼状部分的大小所占整个父元素的百分比
+            center: ['50%', '50%'],  //整个饼图在整个父元素中的位置
+            // data:''               //饼图数据
+            data:  this.data,
+            itemStyle: {
+              normal: {
+                label: {
+                  show: true,//饼图上是否出现标注文字 标注各模块代表什么  默认是true
+                  // position: 'inner',//控制饼图上标注文字相对于饼图的位置  默认位置在饼图外
+                },
+                labelLine: {
+                  show: true//官网demo里外部标注上的小细线的显示隐藏    默认显示
+                }
+              }
+            },
+          }
+
+        }
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option,true)
+      },
+
+      showAnalysis(id){
+            this.$axios.get("/api/queryPersonalData",{params:{id:id}}).then(res=>{
+            this.data[0].value=res.data[0]
+            this.data[1].value=res.data[1]
+            this.data[2].value=res.data[2]
+            this.data[3].value=res.data[3]
+            this.analysisForm = true;
+            // setTimeout(this.getPie(),2000)
+        })
+      },
+        closeAnalysisForm(){
+            echarts.init(window.document.getElementById('pie')).dispose()
+            // let pies = window.document.getElementById('pie');
+            // let pie = pies.childNodes[0];
+            // pie.removeChild(pie.childNodes[0]);
+            this.analysisForm = false;
+        },
+         open(){
+            window.setTimeout(()=>{
+                this.getPie();
+            },0)
+        }
 
    }
 }

@@ -457,12 +457,12 @@ export default {
       // this.getData()    
 
     },
-    mounted(){
-      myChart.setOption(this.option)
-        this.$nextTick(function() {
-          this.draw("report");
-        });
-    },
+    // mounted(){
+     
+    //     this.$nextTick(function() {
+    //       this.draw("report");
+    //     });
+    // },
     // watch:{
     // option:function(){
     //    var myChart = echarts.init(document.querySelector('#test'))

@@ -153,9 +153,9 @@ export default {
         endTime:endTime
     }}).then(res=>{
       this.source[0]=["入院缴费", "医疗项目", "处方缴费"]
-      this.source[1]=["入院缴费",res.data[0],1]
-      this.source[2]=["医疗项目",res.data[1],2]
-      this.source[3]=["处方缴费",res.data[2],3]
+      this.source[1]=["入院缴费",res.data[0]]
+      this.source[2]=["医疗项目",res.data[1]]
+      this.source[3]=["处方缴费",res.data[2]]
       this.countData=res.data.data
       this.option.series.data[0].value=res.data[0]
       this.option.series.data[1].value=res.data[1]
@@ -170,19 +170,15 @@ export default {
     draw(id) {
       this.charts = echarts.init(document.getElementById(id));
       this.charts.setOption({
-        legend: {},
+        legend: {
+          show:false
+        },
         tooltip: {},
         dataset: {
           source: this.source    //连接数据
         },
         xAxis: { type: "category" },    
         yAxis: {
-        //这个地方如果需要在Y轴定义最大值就放开,如果需要根据数据自适应的话,就注释掉
-          // type: "value",           
-          // max: this.score,
-          // maxInterval: this.score * 0.2,
-          // minInterval: 1,
-          // splitNumber: 4
         },
         grid: { bottom: 30 },
         series: [

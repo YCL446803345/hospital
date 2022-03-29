@@ -254,7 +254,7 @@
             </div>
         </el-dialog>
 
-        <el-dialog :visible.sync="analysisForm">
+        <el-dialog :visible.sync="analysisForm"  @open="open">
         <h1 align="center">缴费详情 </h1><br>
         <template>
             <el-row>
@@ -266,7 +266,7 @@
             </el-row>
         </template>
              <div slot="footer" class="dialog-footer">
-                 <el-button @click="getPie">显示</el-button>
+                 <!-- <el-button @click="getPie">显示</el-button> -->
                 <el-button @click="closeAnalysisForm">确定</el-button>
             </div>
         </el-dialog>
@@ -426,6 +426,8 @@ export default {
           legend: {//图例  标注各种颜色代表的模块
             // orient: 'vertical',//图例的显示方式  默认横向显示
             bottom: 10,//控制图例出现的距离  默认左上角
+            type:'scroll',
+            orient:'horizontal',
             left: 'center',//控制图例的位置
             // itemWidth: 16,//图例颜色块的宽度和高度
             // itemHeight: 12,
@@ -483,6 +485,11 @@ export default {
         // myMethodCall(id){
         //     this.showAnalysis(id);
         // }
+        open(){
+            window.setTimeout(()=>{
+                this.getPie();
+            },0)
+        }
        
     },
    

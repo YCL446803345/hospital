@@ -45,6 +45,5 @@ public class UserDetailServiceImp implements UserDetailsService {
         //根据数据库查询信息，封装UserDetails对象，并返回
         UserDetails userDetails = new org.springframework.security.core.userdetails.User(user.getTelephone(),user.getPassword(),authorities);
         return userDetails;
-
     }
 }
