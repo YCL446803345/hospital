@@ -14,10 +14,6 @@ public interface UserService {
     //添加职工
     void addUser(User User);
 
-    void updateStatus (String phone);
-
-    String queryUserStatus (String phone);
-
 //    void deleteWorkerById(Integer id);
 //
 //    void updateWorker(Worker worker);

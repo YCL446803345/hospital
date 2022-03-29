@@ -96,12 +96,12 @@
                 </div>
               </el-form-item>
 
-              <div align="center">
-                <div class="inputElement">
 
+              <div align="center">
+
+                <div class="inputElement">
                   <el-button type="info" icon="el-icon-user-solid" @click="addInHospitalTable()">病人预约</el-button>
                   <el-button type="info" icon="el-icon-user" @click="getInHospitalTableByTelephone()">预约查询</el-button>
-
                 </div>
               </div>
             </el-form>
@@ -136,9 +136,11 @@
           </el-table>
 
           <div slot="footer" class="dialog-footer">
+
             <el-button @click="Visible = false">返回</el-button>
           </div>
         </el-dialog>
+
         <!--路由渲染-->
         <router-view></router-view>
       </el-main>
@@ -154,8 +156,9 @@
 <script>
   export default {
     data() {
+
       return {
-     
+      
        user: {
           telephone: "",
           password: ""
@@ -197,8 +200,7 @@
         // AcatarUrl:require('../../assets/css/image/鸟.jpeg'), //头像图片
         telephone: "",
         headers: "",
-        menuDate: [],
-        status:""
+        menuDate: []
       }
     },
     computed: {
@@ -229,9 +231,14 @@
       //部门列表
       findDeptList() {
         //axios请求拿数据
-        this.$axios.get("/api/dept/list").then((res) => {
+        this.$axios.get("/api/dept/list", {
+            params: {},
+          })
+          .then((res) => {
+            //设置部门列表数据
             this.deptData = res.data.data;
-          }).catch((res) => {
+          })
+          .catch((res) => {
             this.$message({
               type: "error",
               message: "获取部门列表错误!",
@@ -269,6 +276,8 @@
               duration: 600,
             });
             this.inHospitalTable = {};
+
+
           } else {
             this.$message({
               showClose: true,
@@ -335,18 +344,22 @@
         },
         
     created() {
+
       //从本地浏览器拿名字
       this.telephone = window.localStorage.getItem("telephone")
+
       this.$axios.get("/api/perms/findMenuPerms", {
           params: {
             telephone: this.telephone
           }
         }).then(res => {
+          console.log(res.data)
           if (res.data.status == 200) {
             this.menuDate = res.data.data
           }
         }),
-      this.findDeptList();
+
+        this.findDeptList();
       this.findBedList();
       this.$axios.get("/api/queryUserStatus",{params:{phone: this.telephone}}).then(res=>{ 
           if (res.data == "1") {
@@ -360,9 +373,12 @@
           this.status = res.data;
       })
     }
+
   }
 
- 
+  
+
+
 </script>
 
 <style scoped>
@@ -416,6 +432,7 @@
     /*背景颜色为透明*/
   }
 
+
   .login {
     width: 100%;
     height: 100%;
@@ -435,9 +452,7 @@
 
   .el-main {
     padding: 0;
-
     background: url("../../../assets/css/image/宣言.jpg") center center no-repeat;
-
   }
 
   /*左边导航栏具体样式*/
@@ -471,7 +486,9 @@
     text-align: center;
     line-height: 50px;
   }
+
   .mydig {
     background: url("../../../assets/css/image/OIP-C.jpg");
   }
+
 </style>

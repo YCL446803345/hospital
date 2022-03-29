@@ -10,12 +10,12 @@
 
             <el-col :span="2">
                 <el-select v-model="prescriptionStatus" placeholder="处方状态">
-                    <!-- <el-option label="处方状态" value="" ></el-option> -->
+                    <el-option label="处方状态" value="" ></el-option>
                     <el-option label="待审核" value="1" ></el-option>
-                    <el-option label="待发药" value="2" ></el-option>
-                    <el-option label="已发药" value="3" ></el-option>
-                    <el-option label="已执行" value="4" ></el-option>
-                    <!-- <el-option label="已退药" value="5" ></el-option> -->
+                    <el-option label="待校对" value="2" ></el-option>
+                    <el-option label="待发药" value="3" ></el-option>
+                    <el-option label="执行中" value="4" ></el-option>
+                    <el-option label="已退药" value="5" ></el-option>
                 </el-select>
             </el-col>
 
@@ -26,7 +26,7 @@
             </el-col>
 
             <el-col :span="1" style="margin-left:2px;">
-                 <el-button type="warning" @click="prescriptionStatus='',patientName='',paheNum=1,pageSize=5">清空</el-button>
+                 <el-button type="warning" @click="prescriptionStatus='',paheNum=1,pageSize=5">清空</el-button>
             </el-col>
             
         </el-row>
@@ -36,7 +36,7 @@
             scope.row 表示对象数组的当前行对象
          -->
         <el-table
-            :data="prescriptionList"
+            :data="prescriptionlList"
             style="width: 100%">
 
             <el-table-column
@@ -61,7 +61,7 @@
             <el-table-column
                 prop="drugName"
                 label="药品"
-                width="120">
+                width="180">
             </el-table-column>
 
             <el-table-column
@@ -79,7 +79,7 @@
             <el-table-column
                 prop="num"
                 label="数量"
-                width="50">
+                width="80">
             </el-table-column>
             
             <el-table-column
@@ -91,13 +91,7 @@
             <el-table-column
                 prop="spare2"
                 label="制造商"
-                width="250">
-            </el-table-column>
-
-            <el-table-column
-                prop="createTime"
-                label="创建时间"
-                width="160">
+                width="300">
             </el-table-column>
 
             <el-table-column
@@ -106,9 +100,9 @@
                 width="80">
                 <template slot-scope="scope">
                 <span v-if="scope.row.prescriptionStatus=='1'">待审核</span>
-                <span v-if="scope.row.prescriptionStatus=='2'">待发药</span>
-                <span v-if="scope.row.prescriptionStatus=='3'">已发药</span>
-                <span v-if="scope.row.prescriptionStatus=='4'">已执行</span>
+                <span v-if="scope.row.prescriptionStatus=='2'">待校对</span>
+                <span v-if="scope.row.prescriptionStatus=='3'">待发药</span>
+                <span v-if="scope.row.prescriptionStatus=='4'">执行中</span>
                 <span v-if="scope.row.prescriptionStatus=='5'">已退药</span>
                 </template>
 
@@ -122,26 +116,12 @@
                 </template>
             </el-table-column> -->
             
-            <el-table-column label="操作">
-               <template slot-scope="scope">
-                  <!-- <el-button size="mini" type="primary" @click="gotoAddDrugOut(scope.row.id)">退药</el-button> -->
-                  <el-button size="mini" type="danger" @click="gotoAddDrugOut(
-                      scope.row.id,
-                      scope.row.patientName,
-                      scope.row.doctorName,
-                      scope.row.patientId,
-                      scope.row.doctorId,
-                      scope.row.drugName,
-                      scope.row.drugId,
-                      scope.row.drugTypeName,
-                      scope.row.specificationsName,
-                      scope.row.num,
-                      scope.row.spare2,
-                      scope.row.prescriptionStatus
-                      )">申请退药</el-button>
-                  <!-- <el-button size="mini" type="danger" @click="gotoCancelLeaveHospital( scope.row.id)">撤销处方</el-button> -->
-               </template>
-            </el-table-column>
+            <!-- <el-table-column label="操作">
+               <template slot-scope="scope"> -->
+                  <!-- <el-button size="mini" type="primary" @click="gotoUpdateConsultationApplication(scope.row.id)">编辑</el-button> -->
+                  <!-- <el-button size="mini" type="danger" @click="gotoCancelLeaveHospital( scope.row.id)">撤 销</el-button> -->
+               <!-- </template>
+            </el-table-column> -->
         </el-table>
        
         <el-pagination
@@ -156,84 +136,8 @@
            >
         </el-pagination>
 
-        <!-- 申请退药 -->
-    <el-dialog :visible.sync="addDrugOutForm">
-      <h1 align="center">申请退药</h1>
-      <br />
-      <template>
-        <el-descriptions class="margin-top" title="" :column="3" border>
-          <el-descriptions-item>
-            <template slot="label"><i class="el-icon-user"></i>病人</template>
-            {{ addDrugOut.patientName }}
-          </el-descriptions-item>
-
-          <el-descriptions-item>
-            <template slot="label"><i class="el-icon-user"></i>主治医生</template>
-            {{ addDrugOut.doctorName }}
-          </el-descriptions-item>
-
-          <el-descriptions-item>
-            <template slot="label"><i class="el-icon-user"></i>制造商</template>
-            {{ addDrugOut.spare2 }}
-          </el-descriptions-item>
-
-          <el-descriptions-item>
-            <template slot="label"><i class="el-icon-user"></i>药品</template>
-            {{ addDrugOut.drugName }}
-          </el-descriptions-item>
-
-          <el-descriptions-item>
-            <template slot="label"><i class="el-icon-user"></i>类型</template>
-            {{ addDrugOut.drugTypeName }}
-          </el-descriptions-item>
-
-          <el-descriptions-item>
-            <template slot="label"><i class="el-icon-user"></i>规格</template>
-            {{ addDrugOut.specificationsName }}
-          </el-descriptions-item>
-
-        
-          <el-descriptions-item>
-            <template slot="label"><i class="el-icon-tickets"></i>状态</template>
-            {{ addDrugOut.prescriptionStatus ===1?'待审核': 
-               addDrugOut.prescriptionStatus ===2?'待发药':
-               addDrugOut.prescriptionStatus ===3?'已发药':
-               addDrugOut.prescriptionStatus ===4?'已执行':'已退药' }}
-          </el-descriptions-item>
-
-        </el-descriptions>
-      </template>
-
-      <el-divider></el-divider>
-
-      <el-form :model="addDrugOut">
-
-          <el-form-item label="药品" :label-width="formLabelWidth" >
-            <el-input v-model="addDrugOut.drugName" autocomplete="off" readonly="readonly"></el-input>
-        </el-form-item>
-
-        <el-form-item label="数量" :label-width="formLabelWidth">
-          <el-input-number v-model="addDrugOut.num" @change="handleChange" :min="1" :max="addDrugOut.num" label="描述文字"></el-input-number>
-        </el-form-item>
-
-        <el-form-item label="描述" :label-width="formLabelWidth" >
-            <el-input v-model="addDrugOut.outCase" autocomplete="off" ></el-input>
-        </el-form-item>
-
-      </el-form>
-
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="doAddDrugOut">退 药</el-button>
-        <el-button @click="addDrugOutForm = false;addDrugOut={}">取 消</el-button>
-      </div>
-    </el-dialog>
-
     </div>
 </template>
-
-
-
-
 
 <script>
 
@@ -243,14 +147,11 @@ export default {
    data() {
       return {
         prescriptionStatus:'',
-        prescriptionList: [],
+        prescriptionlList: [],
         total:100,
         pageNum:1,
         pageSize:5,
-        headers:{},
-        formLabelWidth: '120px',
-        addDrugOutForm: false,
-        addDrugOut:{},
+        headers:{}
       }
    },
    created(){
@@ -258,72 +159,6 @@ export default {
       this.headers={tokenStr:window.localStorage.getItem('tokenStr')};
    },
    methods:{
-       //药品数量
-       handleChange(value) {
-        console.log(value);
-      },
-
-       //关闭申请退药窗口
-       closeAddDrugOutForm(){
-            this.addDrugOut={
-                id:'',
-                patientName: '',
-                doctorName: '',
-                patientId: '',
-                doctorId: '',
-                drugName: '',
-                drugId: '',
-                drugTypeName: '',
-                specificationsName: '',
-                num: '',
-                spare2: '',
-                prescriptionStatus: ''
-                };
-            this.addDrugOutForm=false;
-       },
-    
-    //执行申请退药
-       doAddDrugOut(){
-           var DrugOut=this.addDrugOut;
-           console.log(DrugOut)
-            this.$axios.post("/api/doctor/gotoAddDrugOut",DrugOut)
-            .then(res=>{
-                if(res.status==4001){
-                     this.$message({
-                        type: "error",
-                         message: "没有权限!",
-                          duration:2000
-                     });
-                }else{
-                     this.$message({
-                        type: "success",
-                         message: "下达处方成功!",
-                         duration:2000
-                     });
-                    this.closeAddDrugOutForm();
-                    this.search();
-                }
-            })
-       },
-       //准备申请退药
-       gotoAddDrugOut(id,patientName,doctorName,patientId,doctorId,drugName,drugId,drugTypeName,
-            specificationsName,num,spare2,prescriptionStatus){
-           this.addDrugOut={
-                id:id,
-                patientName: patientName,
-                doctorName: doctorName,
-                patientId: patientId,
-                doctorId: doctorId,
-                drugName: drugName,
-                drugId: drugId,
-                drugTypeName: drugTypeName,
-                specificationsName: specificationsName,
-                num: num,
-                spare2:spare2,
-                prescriptionStatus: prescriptionStatus
-           };
-           this.addDrugOutForm=true;
-       },
 
       //查询处方列表
         search(){
@@ -336,7 +171,7 @@ export default {
             .then(res=>{
                  console.log("=========================");
                console.log(res.data.data.list);
-                this.prescriptionList=res.data.data.list;
+                this.prescriptionlList=res.data.data.list;
                 this.total=res.data.data.total;
                 this.pageNum=res.data.data.pageNum;
                 this.pageSize=res.data.data.pageSize;

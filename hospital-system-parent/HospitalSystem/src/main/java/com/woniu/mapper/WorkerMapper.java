@@ -27,18 +27,20 @@ public interface WorkerMapper {
     int updateByPrimaryKeySelective(Worker record);
     int updateByPrimaryKey(Worker record);
 
-    @Select("select p.percode from HOS_perms p inner join HOS_worker_perms wp on(p.id=wp.perms_id)\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tinner join HOS_worker w on(w.id=wp.worker_id) where w.account=#{account}")
+    @Select("select p.percode from HOS_perms p inner join HOS_role_perm rp on(p.id=rp.perm_id)inner join HOS_worker w on(w.role_id=rp.role_id) where w.account=#{account}")
     List<String> selectPercodeByPerm(@Param("account") String account);
 
-    @Select("<script>" +"select w.*,r.name roleName,d.name deptName from\n" +
-            "    HOS_worker w,HOS_dept d,HOS_role r\n" +
-            "    where w.dept_id=d.id and w.role_id=r.id  \n"+
+    @Select("<script>" +"select w.*,r.name roleName,d.name deptName,s.worktime shift from\n" +
+            "    HOS_worker w,HOS_dept d,HOS_role r,HOS_scheduling s\n" +
+            "    where w.dept_id=d.id and w.role_id=r.id and w.spare1=s.id order by w.id asc \n"+
             "    <if test=\"name != null and name != ''\">\n" +
             "      and w.name  like  '%${name}%'\n" +
             "    </if>\n" +
             "  <if test=\"deptName != null and deptName != ''\">\n" +
             "      and d.name=#{deptName}\n" +
+            "    </if>\n" +
+            "  <if test=\"shift != null and shift != ''\">\n" +
+            "      and s.worktime=#{shift}\n" +
             "    </if>\n" +
             "  <if test=\"roleName != null and roleName != ''\">\n" +
             "      and r.name=#{roleName}\n" +

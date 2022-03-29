@@ -3,17 +3,16 @@
         <!-- 面包xie导航 -->
         <el-breadcrumb separator="/">
             <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item><a href="#">出院申请信息管理</a></el-breadcrumb-item>
+            <el-breadcrumb-item><a href="#/patientList">出院申请信息管理</a></el-breadcrumb-item>
             <el-breadcrumb-item>出院信息管理列表</el-breadcrumb-item>
         </el-breadcrumb>
         <el-row style="margin-top:10px;margin-bottom:10px">
 
             <el-col :span="2">
                 <el-select v-model="leaveStatus" placeholder="出院状态">
-                    <!-- <el-option label="出院状态" value="" ></el-option> -->
-                    <!-- <el-option label="住院中" value="1" ></el-option> -->
-                    <el-option label="待审核" value="2" ></el-option>
-                    <el-option label="已审核" value="4" ></el-option>
+                    <el-option label="出院状态" value="" ></el-option>
+                    <el-option label="住院中" value="1" ></el-option>
+                    <el-option label="已出院" value="2" ></el-option>
                 </el-select>
             </el-col>
 
@@ -78,8 +77,8 @@
                 <template slot-scope="scope">
                 <span v-if="scope.row.leaveStatus=='1'">住院中</span>
                 <span v-if="scope.row.leaveStatus=='2'">待审核</span>
-                <span v-if="scope.row.leaveStatus=='4'">已审核</span>
                 <span v-if="scope.row.leaveStatus=='3'">已出院</span>
+                <span v-if="scope.row.leaveStatus=='4'">已审核</span>
                 </template>
 
             </el-table-column>

@@ -40,5 +40,7 @@ public class Worker {
 
     private String deptName;
 
+    private String shift;
+
 
 }

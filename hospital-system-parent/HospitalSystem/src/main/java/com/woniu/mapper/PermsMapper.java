@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Repository
@@ -44,14 +44,14 @@ public interface PermsMapper {
     List<Perms> byNamefindPerms(String account);
 
 
-    @Select("select perms_id from HOS_worker_perms where worker_id=#{id}")
-    List<String> getPermByUserId(Integer id);
+    @Select("select perm_id from HOS_role_perm where role_id=#{id}")
+    List<String> getPermByRoleId(Integer id);
 
-    @Delete("delete from HOS_worker_perms where worker_id=#{id}")
-    void deletePermsByUserid(Integer id);
+    @Delete("delete from HOS_role_perm where role_id=#{id}")
+    void deletePermsByRoleId(Integer id);
 
-    @Insert("insert into HOS_worker_perms(worker_id,perms_id)values(#{userId},#{permsId})")
-    void updatePerms(@Param("userId") Integer userId, @Param("permsId") Integer  permsId);
+    @Insert("insert into HOS_role_perm(role_id,perm_id)values(#{roleId},#{permsId})")
+    void updatePerms(@Param("roleId") Integer roleId, @Param("permsId") Integer  permsId);
 
     @Select("SELECT * FROM HOS_perms")
     List<Perms> findAllPerms();

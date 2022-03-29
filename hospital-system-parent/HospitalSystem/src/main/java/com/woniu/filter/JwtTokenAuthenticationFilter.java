@@ -3,6 +3,7 @@ package com.woniu.filter;
 import com.woniu.config.MyAuthenticationFailu;
 import com.woniu.exception.ToKenInvalidException;
 import com.woniu.exception.ToKenIsNullException;
+import com.woniu.mapper.RoleMapper;
 import com.woniu.mapper.WorkerMapper;
 import com.woniu.util.JwtTokenUitl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,8 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
     private WorkerMapper workerMapper;
 
     @Autowired
+    private RoleMapper roleMapper;
+    @Autowired
     private MyAuthenticationFailu failu;
 
     @Override
@@ -64,7 +67,7 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
             if (JwtTokenUitl.checkSign(tokenStr)) {
                 //获取用户名
                 String userName = JwtTokenUitl.getUserName(tokenStr);
-                //通过用户名查询该用户的权限集合
+                //通过用户名查询该用户的角色权限集合
                 List<String> preCodes = workerMapper.selectPercodeByPerm(userName);
                 List<GrantedAuthority> authorities = new ArrayList<>();
                 preCodes.forEach(preCode -> {

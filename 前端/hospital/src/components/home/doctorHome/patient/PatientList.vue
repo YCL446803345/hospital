@@ -19,7 +19,7 @@
 
       <el-col :span="2">
         <el-select v-model="gender" placeholder="性别">
-          <!-- <el-option label="性别" value=""></el-option> -->
+          <el-option label="性别" value=""></el-option>
           <el-option label="男" value="1"></el-option>
           <el-option label="女" value="2"></el-option>
         </el-select>
@@ -68,7 +68,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="age" label="年龄" width="80"> </el-table-column>
+      <el-table-column prop="age" label="年龄" width="50"> </el-table-column>
 
       <el-table-column prop="cardId" label="身份证号" width="180">
       </el-table-column>
@@ -76,7 +76,12 @@
       <el-table-column prop="phone" label="手机号" width="150">
       </el-table-column>
 
-      <el-table-column prop="appointmenttTime" label="入院时间" width="160"></el-table-column>
+      <el-table-column label="入院时间" width="150">
+        <template slot-scope="scope">
+          <i class="el-icon-time"></i>
+          <span style="margin-left: 10px">{{scope.row.appointmenttTime}}</span>
+        </template>
+      </el-table-column>
 
       <el-table-column prop="deptName" label="科室" width="80">
       </el-table-column>
@@ -428,7 +433,7 @@ export default {
     },
     changeSize(value) {
       this.pageSize = value;
-      // this.pageNum = 1;
+      this.pageNum = 1;
       this.search();
     },
     changePage(value) {

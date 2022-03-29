@@ -21,7 +21,7 @@
             </el-col>
             <el-col :span="8"  style="margin-left:10px">
                 <el-button  icon="el-icon-search" @click="createMethods()"></el-button>
-                <!-- <el-button size="mini" type="primary" @click="purTableVisible=true;">通知采购药品</el-button> -->
+                <el-button size="mini" type="primary">通知采购药品</el-button>
             </el-col>
         </el-row>
          <div f_l main>
@@ -135,32 +135,6 @@
             </span>
         </el-dialog>
 
-        <!-- 采购清单模态框 -->
-        <!-- <el-dialog title="采购信息" :visible.sync="purTableVisible" center>
-            <el-form :model="purchaseDrug" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-
-                <el-form-item label="药品名称" prop="drugName">
-                    <el-input v-model="purchaseDrug.drugName"></el-input>
-                </el-form-item>
-
-                <el-form-item label="选择类型" prop="type">
-                    <el-select v-model="purchaseDrug.type">
-                        <el-option label="新增药品" value="0"></el-option>
-                        <el-option label="添加库存" value="1"></el-option>
-                    </el-select>
-                </el-form-item>
-
-                <el-form-item label="添加数量" prop="purchaseNum">
-                    <el-input-number v-model="purchaseDrug.purchaseNum" :min="1" ></el-input-number>
-                </el-form-item>
-
-                <el-form-item>
-                    <el-button type="primary" @click="sumitAdd('ruleForm')">确定</el-button>
-                    <el-button @click="purTableVisible = false;purchaseDrug={};">返回</el-button>
-                </el-form-item>
-            </el-form>
-        </el-dialog> -->
-
         <!-- 分页 -->
         <el-pagination 
         :current-page="pageNum"
@@ -194,20 +168,6 @@ export default {
         drugData:[], //所有药品列表
         drugInfo:{},     //单个药品信息对象
         dialogTableVisible:false, //单个药品模态框控件
-        // purchaseDrug:{},    //单个采购对象
-        // purTableVisible:false,
-        //采购表单验证
-        // rules:{
-        //     drugName:[
-        //         {required: true, message: '不能为空哦', trigger: 'blur'},
-        //     ],
-        //     type:[
-        //         {required: true, message: '请选择类别', trigger: 'blur'},
-        //     ],
-        //     purchaseNum:[
-        //         {required: true, message: '不能为空哦', trigger: 'blur'},
-        //     ],
-        // } 
       }
    },
    methods:{
@@ -219,36 +179,6 @@ export default {
     //     }
     //     this.imageUrl = URL.createObjectURL(file.raw);
     //   },
-    // sumitAdd(forName){
-    //     this.$refs[forName].validate((valid) =>{
-    //         if (valid) {
-    //             this.$axios.post("api/purchase/addPurchase",this.purchaseDrug).then(res=>{
-    //                 if (res.data.status == 200) {
-    //                     this.$message({
-    //                     type: 'success',
-    //                     message: '操作成功!',
-    //                     duration:2000
-    //                     });
-    //                     this.createMethods(1);
-    //                     this.purTableVisible=false;
-    //                     this.purchaseDrug={}
-    //                 }else{
-    //                     this.$message({
-    //                     showClose: true,
-    //                     message: '操作失败, 系统维护中',
-    //                     type: 'warning',
-    //                     duration:2000
-    //                     });
-    //                     this.createMethods(1);
-    //                     this.purTableVisible=false;
-    //                     this.purchaseDrug={}
-    //                 }
-    //             })
-    //         }else{
-    //             return false
-    //         }
-    //     })
-    // },
     //下架药品
     close(id){
         console.log(window.localStorage.getItem("redisToken"))

@@ -45,5 +45,6 @@ public class ResponseResult<T> {
     public static ResponseResult<Void> CardExe = new ResponseResult<>(303,"身份证号重复");
     public static ResponseResult<Void> AccountExe = new ResponseResult<>(306,"账号重复");
     public static ResponseResult<Void> ERROLD = new ResponseResult<>(456,"系统繁忙");
+    public static ResponseResult<Void> NO_PERMISSION = new ResponseResult<>(4001,"没有权限");
 
 }

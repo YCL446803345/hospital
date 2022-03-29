@@ -35,7 +35,7 @@
 
           <el-table-column label="操作">
             <template slot-scope="scope">
-              <el-button type="warning" @click="openRightDialog(scope.row.id)">权限加载</el-button>
+              <el-button type="warning" @click="openRightDialog(scope.row.roleId)">权限加载</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -66,7 +66,7 @@
     data() {
 
       return {
-        userid: "",
+        roleId: "",
         id: "",
         workerData: [],
         currentPage: 1, //当前页码
@@ -147,15 +147,14 @@
       },
 
       //打开权限分配对话框
-      openRightDialog(id) {
-        this.userid = id
+      openRightDialog(roleId) {
+        this.roleId = roleId
         this.rightDialogFormVisible = true;
-
         // 将当前用户权限勾选中
         this.$axios
-          .get("/api/user/permsByUserid", {
+          .get("/api/user/permsByRoleId", {
             params: {
-              id: id
+              id: roleId
             }
           })
           .then(res => {
@@ -178,7 +177,7 @@
         let permsidsStr = permsids.join(",");
 
         //发送axios请求，进行更新数据库
-        this.$axios.post("/api/user/updateUserPerms", "userId=" + this.userid + "&permsId=" + permsidsStr, {
+        this.$axios.post("/api/user/updateRolePerms", "roleId=" + this.roleId + "&permsId=" + permsidsStr, {
             headers: {
               "Content-Type": "application/x-www-form-urlencoded"
             }

@@ -9,7 +9,7 @@
     <el-row style="margin-top: 10px; margin-bottom: 10px">
       <el-col :span="2">
         <el-select v-model="consultationEmergencyId" placeholder="会诊情况">
-          <!-- <el-option label="会诊情况" value=""></el-option> -->
+          <el-option label="会诊情况" value=""></el-option>
           <el-option label="紧急" value="1"></el-option>
           <el-option label="24小时" value="2"></el-option>
           <el-option label="一般" value="3"></el-option>
@@ -17,7 +17,7 @@
       </el-col>
       <el-col :span="2">
         <el-select v-model="consultationCategoryId" placeholder="会诊类别">
-          <!-- <el-option label="会诊类别" value=""></el-option> -->
+          <el-option label="会诊类别" value=""></el-option>
           <el-option label="它科会诊" value="1"></el-option>
           <el-option label="科内会诊" value="2"></el-option>
           <el-option label="院外会诊" value="3"></el-option>
@@ -25,10 +25,10 @@
       </el-col>
       <el-col :span="2">
         <el-select v-model="status" placeholder="会诊状态">
-          <!-- <el-option label="会诊状态" value=""></el-option> -->
+          <el-option label="会诊状态" value=""></el-option>
           <el-option label="待会诊" value="1"></el-option>
-          <el-option label="已会诊" value="2"></el-option>
-          <!-- <el-option label="已取消" value="3"></el-option> -->
+          <el-option label="已执行" value="2"></el-option>
+          <el-option label="已取消" value="3"></el-option>
         </el-select>
       </el-col>
 
@@ -84,7 +84,7 @@
         <template slot-scope="scope">
           <span v-if="scope.row.status=='1'">待会诊</span>
           <span v-if="scope.row.status=='2'">已会诊</span>
-          <!-- <span v-if="scope.row.status=='3'">已取消</span> -->
+          <span v-if="scope.row.status=='3'">已取消</span>
         </template>
       </el-table-column>
 
@@ -103,12 +103,10 @@
             scope.row.doctorName,
             scope.row.patientId,
             scope.row.doctorId,
-
             scope.row.reason,
             scope.row.desc,
             scope.row.consultationEmergencyId,
             scope.row.consultationCategoryId
-
             )">下达医嘱</el-button>
           <el-button size="mini" type="primary" @click=" gotoUpdateConsultationApplication(
                 scope.row.id,
@@ -194,7 +192,6 @@
             <template slot="label"><i class="el-icon-user"></i>主治医生</template>
             {{ addMedicalAdvice.doctorName }}
           </el-descriptions-item>
-
           
           <el-descriptions-item>
             <template slot="label"><i class="el-icon-user"></i>原因</template>
@@ -217,7 +214,6 @@
             {{ addMedicalAdvice.consultationCategoryId ==='1'?'它科会诊': 
                addMedicalAdvice.consultationCategoryId ==='2'?'科内会诊':'一般会诊' }}
           </el-descriptions-item>
-
 
         </el-descriptions>
       </template>
@@ -286,14 +282,12 @@ export default {
   },
   methods: {
     //打开下达医嘱列表
-
       gotoAddMedicalAdvice(patientName,doctorName,patientId,doctorId,reason,desc,consultationEmergencyId,consultationCategoryId) {
         this.addMedicalAdvice = {
         patientName: patientName,
         doctorName: doctorName,
         patientId: patientId,
         doctorId: doctorId,
-
         reason: reason,
         desc: desc,
         consultationEmergencyId: consultationEmergencyId,

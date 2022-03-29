@@ -19,7 +19,7 @@
             
             <el-col :span="2">
                 <el-select v-model="gender" placeholder="性别">
-                    <!-- <el-option label="性别" value="" ></el-option> -->
+                    <el-option label="性别" value="" ></el-option>
                     <el-option label="男" value="1" ></el-option>
                     <el-option label="女" value="2" ></el-option>
                 </el-select>
@@ -107,7 +107,7 @@
 
             <el-table-column
                 label="入院时间"
-                width="200">
+                width="180">
                 <template slot-scope="scope">
                     <i class="el-icon-time"></i>
                     <span style="margin-left: 10px">{{ scope.row.appointmenttTime}}</span>

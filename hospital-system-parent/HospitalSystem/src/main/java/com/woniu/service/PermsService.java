@@ -9,9 +9,9 @@ public interface PermsService {
     List<Perms> byNamefindPerm(String account);
 
 
-    List<String> getPermByUserId(Integer id);
+    List<String> getPermByRoleId(Integer id);
 
-    void updatePerms(Integer userId, String permsId);
+    void updatePerms(Integer roleId, String permsId);
 
     List<Perms> findAllPerms();
 }

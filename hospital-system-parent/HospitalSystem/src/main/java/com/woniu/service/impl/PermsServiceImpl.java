@@ -22,20 +22,20 @@ public class PermsServiceImpl implements PermsService {
     }
 
     //查询该用户权限树
-    public List<String> getPermByUserId(Integer id) {
-        List<String> permsList = permsMapper.getPermByUserId(id);
+    public List<String> getPermByRoleId(Integer id) {
+        List<String> permsList = permsMapper.getPermByRoleId(id);
 
         return permsList;
     }
 
     //修改该用户权限
-    public void updatePerms(Integer userId, String permsids) {
-        permsMapper.deletePermsByUserid(userId);
+    public void updatePerms(Integer roleId, String permsids) {
+        permsMapper.deletePermsByRoleId(roleId);
         String[] split = permsids.split(",");
         for (String s : split) {
             int i = Integer.parseInt(s);
             System.err.println(i);
-            permsMapper.updatePerms(userId,i);
+            permsMapper.updatePerms(roleId,i);
         }
     }
 
