@@ -30,9 +30,11 @@ public interface SchedulingMapper {
     int updateByPrimaryKeySelective(Scheduling record);
 
     int updateByPrimaryKey(Scheduling record);
-    @Select("select w.name remarks,s.worktime from HOS_scheduling s\n" +
-            "inner join HOS_worker w on w.spare1=s.id\n")
+    @Select("select * from HOS_scheduling ")
     List<Scheduling> select(SchedulingExample schedulingExample);
+
+
+
     @Update("update HOS_worker SET spare1 = #{spare1} WHERE id = #{id} ")
     void update(Scheduling scheduling);
 }

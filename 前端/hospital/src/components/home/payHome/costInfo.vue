@@ -1,7 +1,6 @@
 <template>
     <div>
         <!-- 面包xie导航 -->
-        <br>
         <el-breadcrumb separator="/">
             <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
             <el-breadcrumb-item><a href="#/costInfo">在院病人费用信息管理</a></el-breadcrumb-item>
@@ -449,7 +448,6 @@ export default {
             medicalAdvice:0,
             balance:0,
         },
-        token:""
       }
    },
    created(){
@@ -549,12 +547,6 @@ export default {
                 this.patient.medicalAdvice = medicalAdvice
                 this.patient.drugOut = prescription
                 this.costSettlementForm = true;
-                this.$axios.get("/api/createToken").then(res=>{
-                    console.log("=====================");
-                    console.log(res.data);
-                    console.log("=====================");
-                    this.token = res.data;
-                })
             })
         },
         //关闭结算病人账单模态框

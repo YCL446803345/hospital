@@ -2,14 +2,13 @@
     <div>
     <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
         <el-tab-pane name="first"><span slot="label"><i class="el-icon-tickets"></i>发药列表</span><sendDrugList/></el-tab-pane>
-        <el-tab-pane name="second"><span slot="label"><i class="el-icon-tickets"></i>退药列表</span><outDrugList/></el-tab-pane>
+        <el-tab-pane name="second"><span slot="label"><i class="el-icon-tickets"></i>退药列表</span></el-tab-pane>
     </el-tabs>
     </div>
 </template>
 
 <script>
 import sendDrugList from '../drugHome/sendDrugList.vue'
-import outDrugList from '../drugHome/OutDrugList.vue'
 export default {
    data() {
       return {
@@ -30,8 +29,7 @@ export default {
     }
    },
    components:{
-        sendDrugList,
-        outDrugList
+        sendDrugList
    },
     created(){
         

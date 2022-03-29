@@ -2,12 +2,8 @@ package com.woniu.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.woniu.entity.User;
-import com.woniu.entity.UserExample;
-import com.woniu.mapper.UserMapper;
 import com.woniu.util.JwtTokenUitl;
 import com.woniu.util.ResponseResult;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -17,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 
 /**
  * 用户登录成功
@@ -31,6 +26,7 @@ public class MyAuthenticationSucess implements AuthenticationSuccessHandler {
         try {
             String telephone = request.getParameter("telephone");
             String tokenStr = JwtTokenUitl.createSign(telephone);
+
             ResponseResult<String> result = new ResponseResult(tokenStr,"登录成功",200);
             response.setContentType("application/json;charset=utf-8");
             PrintWriter writer =  response.getWriter();

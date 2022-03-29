@@ -1,251 +1,272 @@
 <template>
-    <div>
-        <!-- 面包xie导航 -->
-        <br>
-        <el-breadcrumb separator="/">
-            <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item><a href="#/patientInfo">在院病人信息管理</a></el-breadcrumb-item>
-            <el-breadcrumb-item>在院病人信息管理列表</el-breadcrumb-item>
-        </el-breadcrumb>
-        <el-row style="margin-top:10px;margin-bottom:10px">
-            <el-col :span="4">
-                <el-input v-model="name" placeholder="姓名">
-                </el-input>
-            </el-col>
+  <div>
+     <!-- 查询 -->
+     <br>
+          <el-row>
+    
+          <el-form :model="ruleForm"  ref="ruleForm" label-width="100px" class="demo-ruleForm">
             
-            <el-col :span="2">
-                <el-select v-model="gender" placeholder="性别">
-                    <el-option label="性别" value="" ></el-option>
-                    <el-option label="男" value="1" ></el-option>
-                    <el-option label="女" value="2" ></el-option>
-                </el-select>
-            </el-col>
-
-            <el-col :span="8">
-                <el-input v-model="cardId" placeholder="身份证">
-                </el-input>
-                <!--带搜索按钮的文本框 -->
-            </el-col>
-           
-            <el-col :span="1.5" style="margin-left:2px;">
-                <el-button type="success" @click="search">查询</el-button>
-               
-            </el-col>
-
-            <el-col :span="1" style="margin-left:2px;">
-                 <el-button type="warning" @click="name='',paheNum=1,pageSize=5,gender='',cardId=''">清空</el-button>
-            </el-col>
-            
-        </el-row>
-        <!-- 
-            el-table数据表格
-            :data 动态绑定 data中对象数组
-            scope.row 表示对象数组的当前行对象
-         -->
-        <el-table
-            :data="patientList"
-            style="width: 100%">
-
-            <el-table-column
-                type="index"
-                :index='getIndex'
-                label="序号"
-                width="50">
-            </el-table-column>
-
-             <el-table-column
-                prop="name"
-                label="姓名"
-                width="80">
-            </el-table-column>
-
-            <el-table-column
-                prop="no"
-                label="病人编号"
-                width="180">
-            </el-table-column>
-
-            <!-- <el-table-column
-                label="头像"
-                width="100">
-                 <template slot-scope="scope">
-                    <img  :src="scope.row.avatar" class="a-avatar" >
-                </template>
-            </el-table-column> -->
-            
-            <el-table-column
-                prop="gender"
-                label="性别"
-                width="50">
-                <template slot-scope="scope">
-                         {{scope.row.gender==='1'?'男':'女'}}
-                </template>
-            </el-table-column>
-
+              <el-col :span="10">
              
-            <el-table-column
-                prop="age"
-                label="年龄"
-                width="50">
-            </el-table-column>
-
-            <el-table-column
-                prop="cardId"
-                label="身份证号"
-                width="180">
-            </el-table-column>
-
-            <el-table-column
-                prop="phone"
-                label="手机号"
-                width="120">
-            </el-table-column>
-
-            <!-- <el-table-column
-                prop="balance"
-                label="余额"
-                width="120">
-                 <template slot-scope="scope">
-                         {{scope.row.balance===null?0:scope.row.balance===null}}
-                </template>
-            </el-table-column> -->
+            <el-form-item label="申请时间" >
+              <el-col :span="11">
+                <el-form-item prop="startTime">
+                  <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.startTime" style="width: 100%;"  @change="getData()"></el-date-picker>
+                </el-form-item>
+              </el-col>
+              <el-col class="line" :span="2">-</el-col>
+              <el-col :span="11">
+                <el-form-item prop="endTime">
+                  <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.endTime" style="width: 100%;"  @change="getData()"></el-date-picker>
+                </el-form-item>
+              </el-col>
             
-            <el-table-column label="操作">
-               <template slot-scope="scope">
-                  <el-button
-                  size="mini"
-                  type="success"
-                  @click="pay(scope.row.id)">支付宝充值</el-button>
-                    <el-button
-                  size="mini"
-                  type="warning"
-                  @click="payCash(scope.row.id)">现金充值</el-button>
-               </template>
-            </el-table-column>
-        </el-table>
-       
-        <el-pagination
-            background
-            layout="prev, pager,next, sizes,->,total"
-            :total="total"
-            :current-page='pageNum'
-            :page-sizes=[5,10,15,20]
-            :page-size='pageSize'
-            @size-change='changeSize'
-            @current-change='changePage'
-           >
-        </el-pagination>
+            </el-form-item>
+              </el-col>
+             <el-col :span="10">
+            <el-form-item>
+              <el-button type="primary" @click="getData()">查询</el-button>
+              <el-button @click="resetForm('ruleForm')">重置</el-button>
+            </el-form-item>
+             </el-col>
+          </el-form> 
+     
+    </el-row>
+ <el-divider></el-divider>
+  
+      <el-row >
+        <el-col :span="12"> <div id="test" style="width:500px;height:400px"></div></el-col>
+        <el-col :span="12"><div id="report" style="width: 500px;height: 400px;"></div></el-col>
+      </el-row>
 
-    </div>
+
+     
+  </div>
 </template>
 
 <script>
+import  echarts from 'echarts';
+
+
 export default {
-   data() {
-      return {
-        no:'',
-        name:'',
-        gender:'',
-        cardId:'',
-        status:1,
-        patientList: [],
-        total:100,
-        pageNum:1,
-        pageSize:5,
-        updatePatientForm:false,
-        formLabelWidth: '120px'
+  data(){
+    return{
+        ruleForm: {
+          startTime: '',
+          endTime: '',
+
+        },
+      countData:[],
+      charts: "",
+      score: "100",
+      source: [
+          ["入院缴费",1,1],
+          ["医疗项目",2,3],
+          ["处方缴费",4,5]
+      ],
+      option : {
+          //标题
+          // title: {
+          //   text: '这是个标题',
+          //   x: 'left' ,              //标题位置
+          //   // textStyle: { //标题内容的样式
+          //   //   color: '#000',
+          //   //   fontStyle: 'normal',
+          //   //   fontWeight: 100,
+          //   //   fontSize: 16 //主题文字字体大小，默认为18px
+          //   // },
+          // },
+          // stillShowZeroSum: true,
+          //鼠标划过时饼状图上显示的数据
+          tooltip: {
+            trigger: 'item',
+            formatter: '{a}<br/>{b}:{c}'+'元'+' ({d}%)'
+          },
+          //图例
+          legend: {//图例  标注各种颜色代表的模块
+            // orient: 'vertical',//图例的显示方式  默认横向显示
+            bottom: 10,//控制图例出现的距离  默认左上角
+            left: 'center',//控制图例的位置
+            // itemWidth: 16,//图例颜色块的宽度和高度
+            // itemHeight: 12,
+            textStyle: {//图例中文字的样式
+              color: '#000',
+              fontSize: 16
+            },
+            data: ['入院缴费', '医疗项目', '处方缴费']//图例上显示的饼图各模块上的名字
+          },
+          //饼图中各模块的颜色
+          color: ['#34C447', '#A8A8A8', '#5ab1ef'],
+          // 饼图数据
+          series: {
+
+            name: '收入费用占比',
+            type: 'pie',             //echarts图的类型   pie代表饼图
+            radius: '70%',           //饼图中饼状部分的大小所占整个父元素的百分比
+            center: ['50%', '50%'],  //整个饼图在整个父元素中的位置
+            // data:''               //饼图数据
+            data: [                  //每个模块的名字和值
+              { name: '入院缴费', value: 10 },
+              { name: '医疗项目', value: 30 },
+              { name: '处方缴费', value: 50 }
+            ],
+            itemStyle: {
+              normal: {
+                label: {
+                  show: true,//饼图上是否出现标注文字 标注各模块代表什么  默认是true
+                   position: 'top',//控制饼图上标注文字相对于饼图的位置  默认位置在饼图外
+                  textStyle:{
+                    color:'black',
+                    fontSize:16
+                  }
+                },
+                labelLine: {
+                  show: true//官网demo里外部标注上的小细线的显示隐藏    默认显示
+                }
+              }
+            },
+          }
+
+        },
+    }
+  },
+  methods:{
+     resetForm(formName) {
+        this.$refs[formName].resetFields();
+      },
+    getData(){
+         let startTime = "";
+         if(this.ruleForm.startTime!=''){
+           startTime=this.dateFormat(this.ruleForm.startTime)
+         }
+
+          let endTime = "";
+         if(this.ruleForm.endTime!=''){
+           endTime=this.dateFormat(this.ruleForm.endTime)
+         }
+    //查图标所需要的数据
+    //住院费用 总次数
+    //检查费用 总次数
+    //处方费用 总次数
+    this.$axios.get("/api/getAllPayCount",{params:{
+        startTime:startTime,
+        endTime:endTime
+    }}).then(re=>{
+      this.source[0]=["入院缴费", "医疗项目", "处方缴费"]
+      this.source[1]=["入院缴费",re.data.data[0],re.data.data[1]]
+      this.source[2]=["医疗项目",re.data.data[2],re.data.data[3]]
+      this.source[3]=["处方缴费",re.data.data[4],re.data.data[5]]
+      this.countData=re.data.data
+      this.option.series.data[0].value=re.data.data[0]
+      this.option.series.data[1].value=re.data.data[2]
+      this.option.series.data[2].value=re.data.data[4]
+       var myChart = echarts.init(document.querySelector('#test'))
+        myChart.setOption(this.option)
+          this.$nextTick(function() {
+            this.draw("report");
+          });
+    })
+    },
+    draw(id) {
+      this.charts = echarts.init(document.getElementById(id));
+      this.charts.setOption({
+        legend: {},
+        tooltip: {},
+        dataset: {
+          source: this.source    //连接数据
+        },
+        xAxis: { type: "category" },    
+        yAxis: {
+        //这个地方如果需要在Y轴定义最大值就放开,如果需要根据数据自适应的话,就注释掉
+          // type: "value",           
+          // max: this.score,
+          // maxInterval: this.score * 0.2,
+          // minInterval: 1,
+          // splitNumber: 4
+        },
+        grid: { bottom: 30 },
+        series: [
+          {
+            color: "#999" ,
+            type: "bar",    //表示这个是柱状图
+            barCategoryGap: "40%",
+            itemStyle: { color: "#999" ,
+             normal:{
+                label:{
+                show:true,
+                position:'top',
+                color: "#999" ,
+                textStyle:{
+                  color:'black',
+                  fontSize:16
+                }
+              }
+             }
+              
+            },   //定义颜色
+            tooltip: {
+              formatter: params => {     
+              //console.log(params)  //打印这个params,按自己需要拼接字符串
+                return ` ${params.value[0]} <br/>
+                         ${params.seriesName}:${params.value[1]}`+"元";
+              }
+            }
+          },
+          
+        ]
+      });
+    },
+     //日期格式转换方法
+      dateFormat(time){
+        var date=new Date(time);
+        var year=date.getFullYear();
+        /* 在日期格式中，月份是从0开始的，因此要加0
+        * 使用三元表达式在小于10的前面加0，以达到格式统一  如 09:11:05
+        * */
+        var month= date.getMonth()+1<10 ? "0"+(date.getMonth()+1) : date.getMonth()+1;
+        var day=date.getDate()<10 ? "0"+date.getDate() : date.getDate();
+        var hours=date.getHours()<10 ? "0"+date.getHours() : date.getHours();
+        var minutes=date.getMinutes()<10 ? "0"+date.getMinutes() : date.getMinutes();
+        var seconds=date.getSeconds()<10 ? "0"+date.getSeconds() : date.getSeconds();
+        // 拼接
+        return year+"-"+month+"-"+day+" "+hours+":"+minutes+":"+seconds;
       }
-   },
-   created(){
-      this.search();
-   },
-   methods:{
-      //查询病人信息列表
-        search(){
-            this.$axios.get("/api/getAllInPatient",{params:{name:this.name,no:this.no,gender:this.gender,
-                  cardId:this.cardId,pageNum:1,pageSize:this.pageSize}})
-            .then(res=>{
-                this.patientList=res.data.list;
-                this.total=res.data.total;
-                this.pageNum=res.data.pageNum;
-                this.pageSize=res.data.pageSize;
-            })
-        },
-        changeSize(value){
-            this.pageSize=value;
-            this.pageNum=1;
-            this.search();
-        },
-        changePage(value){
-            this.pageNum=value;
-            this.$axios.get("/api/getAllInPatient",{params:{name:this.searchName,no:this.no,gender:this.gender,
-                  caedId:this.cardId,pageNum:this.pageNum,pageSize:this.pageSize}})
-            .then(res=>{
-                this.patientList=res.data.list;
-                this.total=res.data.total;
-                this.pageNum=res.data.pageNum;
-                this.pageSize=res.data.pageSize;
-            })
-        },
-          getIndex(i){
-            return (i+1)+this.pageSize*(this.pageNum-1);
-         },
-         pay(id){
-             this.$prompt('请输入充值金额', '支付宝充值', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'success'
-              }).then((value) => {
-                    this.$axios.get("/api/gotoPay",{params:{patientId:id,newMoney:value.value,status:"1"}}).then(res=>{
-                        const divForm = document.getElementsByTagName("div");
-                        if (divForm.length) {
-                            document.body.removeChild(divForm[0]);
-                        }
-                        const div = document.createElement("div");
-                        div.innerHTML = res.data;
-                        document.body.appendChild(div);
-                        document.forms[0].submit();
-                        document.forms[0].setAttribute("target", "_blank"); // 新开窗口跳转
-                    })
-              }).catch(() => {
-                this.$message({
-                  type: 'info',
-                  message: '已取消缴费'
-                }); 
-              })
-        },
-        //现金支付
-        payCash(id){
-            this.$prompt('请输入充值金额', '现金充值', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'success'
-              }).then((value) => {
-                    this.$axios.get("/api/addMoney",{params:{id:id,money:value.value,status:"1"}}).then(res=>{
-                        if(res.data === "OK"){
-                             this.$message({
-                                type: "success",
-                                message: "支付成功!",
-                            });
-                            this.search();
-                        }else{
-                           this.$message({
-                                type: "danger",
-                                message: "支付失败!",
-                            }); 
-                        }
-                    })
-              }).catch(() => {
-                this.$message({
-                  type: 'info',
-                  message: '已取消缴费'
-                }); 
-              })
-        },
-   }
+
+
+  },
+  created(){
+  this.getData()    
+
+  },
+  
+  
+  mounted(){
+   var myChart = echarts.init(document.querySelector('#test'))
+   myChart.setOption(this.option)
+    this.$nextTick(function() {
+      this.draw("report");
+    });
+  },
+  watch:{
+    option:function(){
+       var myChart = echarts.init(document.querySelector('#test'))
+        myChart.setOption(this.option)
+          this.$nextTick(function() {
+            this.draw("report");
+          });
+    },
+    source(){
+       var myChart = echarts.init(document.querySelector('#test'))
+        myChart.setOption(this.option)
+        this.$nextTick(function() {
+          this.draw("report");
+        });
+    }
+  }
+
 }
 </script>
 
-<style scoped>
+<style>
 
 </style>

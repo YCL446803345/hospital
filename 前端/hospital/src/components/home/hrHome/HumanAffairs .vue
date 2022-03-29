@@ -7,83 +7,83 @@
       <el-breadcrumb-item>职工列表</el-breadcrumb-item>
     </el-breadcrumb>
     <el-row style="margin-top: 10px; margin-bottom: 10px">
-         <el-col :span="8">
-                <el-input v-model="name" placeholder="请输入名字">
-                </el-input>
-            </el-col>
-            <el-col :span="3">
-                <el-select v-model="deptName" placeholder="部门" >
-                    <el-option v-for="dept in deptData" :key="dept.id" :label="dept.name" :value="dept.name"  ></el-option>
-                </el-select>
-            </el-col>
-             <el-col :span="3">
-                <el-select v-model="roleName" placeholder="角色" >
-                    <el-option v-for="role in roleData" :key="role.id" :label="role.name" :value="role.name"  ></el-option>
-                </el-select>
-            </el-col>
-           
-            <el-col :span="1.5" style="margin-left:2px;">
-                <el-button type="success" @click="findWorkerList()">查询</el-button>
-               
-            </el-col>
+      <el-col :span="8">
+        <el-input v-model="name" placeholder="请输入名字">
+        </el-input>
+      </el-col>
+      <el-col :span="3">
+        <el-select v-model="deptName" placeholder="部门">
+          <el-option v-for="dept in deptData" :key="dept.id" :label="dept.name" :value="dept.name"></el-option>
+        </el-select>
+      </el-col>
+      <el-col :span="3">
+        <el-select v-model="roleName" placeholder="角色">
+          <el-option v-for="role in roleData" :key="role.id" :label="role.name" :value="role.name"></el-option>
+        </el-select>
+      </el-col>
 
-            <el-col :span="1.5" style="margin-left:2px;">
-                 <el-button type="warning" @click="findWorkerList((name = '',roleName='',deptName=''))">清空</el-button>
-                
-            </el-col>
-              <el-col :span="2" style="margin-left:2px;">
-                 <el-button type="success" @click="openAddWorker">添加职工</el-button>
-                
-            </el-col>
+      <el-col :span="1.5" style="margin-left:2px;">
+        <el-button type="success" @click="findWorkerList()">查询</el-button>
+
+      </el-col>
+
+      <el-col :span="1.5" style="margin-left:2px;">
+        <el-button type="warning" @click="findWorkerList((name = '',roleName='',deptName=''))">清空</el-button>
+
+      </el-col>
+      <el-col :span="2" style="margin-left:2px;">
+        <el-button type="success" @click="openAddWorker">添加职工</el-button>
+
+      </el-col>
       <el-col :span="12" style="margin-left: 10px">
 
-         <!-- 
+        <!-- 
             el-table数据表格
             :data 动态绑定 data中对象数组
             scope.row 表示对象数组的当前行对象
          -->
-    <el-table :data="workerData" style="width: 100%">
-      <!-- 
+        <el-table :data="workerData" style="width: 100%">
+          <!-- 
                 el-table-column列
                 prop 绑定data数组中对象的属性
              -->
-      <el-table-column type="index" :index="indexMethod" label="序号" width="100">
-      </el-table-column>
-      <el-table-column prop="name" label="姓名" width="100"> </el-table-column>
+          <el-table-column type="index" :index="indexMethod" label="序号" width="100">
+          </el-table-column>
+          <el-table-column prop="name" label="姓名" width="100"> </el-table-column>
 
-      `<el-table-column prop="roleName" label="角色" width="100">
-      </el-table-column>`
-      <el-table-column prop="deptName" label="部门" width="100">
-      </el-table-column>
-      <el-table-column prop="gender" label="性别" width="100">
-        <template slot-scope="scope">
-          <el-tag :type="scope.row.status === '1' ? 'primary' : 'danger'" disable-transitions>
-            {{ scope.row.status === "1" ? "男" : "女" }}</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column prop="salary" label="薪资" width="100">
-      </el-table-column>
+          `<el-table-column prop="roleName" label="角色" width="100">
+          </el-table-column>`
+          <el-table-column prop="deptName" label="部门" width="100">
+          </el-table-column>
+          <el-table-column prop="gender" label="性别" width="100">
+            <template slot-scope="scope">
+              <el-tag :type="scope.row.status === '1' ? 'primary' : 'danger'" disable-transitions>
+                {{ scope.row.status === "1" ? "男" : "女" }}</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="salary" label="薪资" width="100">
+          </el-table-column>
 
-      <el-table-column prop="status" label="在职状态" width="100">
-        <template slot-scope="scope">
-          <el-tag :type="scope.row.status === '1' ? 'primary' : 'danger'" disable-transitions>
-            {{ scope.row.status === "1" ? "在职" : "离职" }}</el-tag>
-        </template>
-      </el-table-column>
+          <el-table-column prop="status" label="在职状态" width="100">
+            <template slot-scope="scope">
+              <el-tag :type="scope.row.status === '1' ? 'primary' : 'danger'" disable-transitions>
+                {{ scope.row.status === "1" ? "在职" : "离职" }}</el-tag>
+            </template>
+          </el-table-column>
 
-      <el-table-column label="操作" width="100">
-        <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="handleEdit(scope.row)">编辑</el-button><br>
-          <el-button size="mini" type="danger" @click="deleteWorker(scope.row.id)">删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-pagination background :cuttent-page="currentPage" layout="prev, pager, next,sizes,->,total"
-      :page-sizes="[5, 10, 15, 20, 25]" :total="total" :page-size="pageSize" @size-change="handleSizeChange"
-      @current-change="handleCurrentChange">
-    </el-pagination>
+          <el-table-column label="操作" width="100">
+            <template slot-scope="scope">
+              <el-button size="mini" type="primary" @click="handleEdit(scope.row)">编辑</el-button><br>
+              <el-button size="mini" type="danger" @click="deleteWorker(scope.row.id)">删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+        <el-pagination background :cuttent-page="currentPage" layout="prev, pager, next,sizes,->,total"
+          :page-sizes="[5, 10, 15, 20, 25]" :total="total" :page-size="pageSize" @size-change="handleSizeChange"
+          @current-change="handleCurrentChange">
+        </el-pagination>
 
-    <!-- 添加Form -->
+        <!-- 添加Form -->
 
         <el-dialog title="添加职工" :visible.sync="addDialogWorkerFormVisible">
           <el-form :model="worker">
@@ -108,7 +108,7 @@
             <el-form-item label="薪资" :label-width="formLabelWidth">
               <el-input v-model="worker.salary" autocomplete="off"></el-input>
             </el-form-item>
-               <el-form-item label="状态" :label-width="formLabelWidth">
+            <el-form-item label="状态" :label-width="formLabelWidth">
               <el-radio v-model="worker.status" label="1">在职</el-radio>
               <el-radio v-model="worker.status" label="2">离职</el-radio>
             </el-form-item>
@@ -120,78 +120,38 @@
           </div>
         </el-dialog>
 
-<!-- 修改职工 -->
-       <el-dialog title="修改职工" :visible.sync="editWorkerDialogFormVisible">
+        <!-- 修改职工 -->
+        <el-dialog title="修改职工" :visible.sync="editWorkerDialogFormVisible">
           <el-form :model="editWorkerForm">
-          <el-form-item
-              label="职工姓名"
-              :label-width="formLabelWidth"
-              prop="name"
-            >
-              <el-input
-                v-model="editWorkerForm.name"
-                autocomplete="off"
-              ></el-input>
+            <el-form-item label="职工姓名" :label-width="formLabelWidth" prop="name">
+              <el-input v-model="editWorkerForm.name" autocomplete="off"></el-input>
             </el-form-item>
-            
-          
+
+
             <el-form-item label="角色" :label-width="formLabelWidth">
-              <el-select
-                v-model="editWorkerForm.roleId"
-                placeholder="请选择角色"
-                prop="roleId"
-              >
-                <el-option
-                  v-for="role in roleData"
-                  :key="role.id"
-                  :label="role.name"
-                  :value="role.id"
-                ></el-option>
+              <el-select v-model="editWorkerForm.roleId" placeholder="请选择角色" prop="roleId">
+                <el-option v-for="role in roleData" :key="role.id" :label="role.name" :value="role.id"></el-option>
               </el-select>
             </el-form-item>
 
             <el-form-item label="部门" :label-width="formLabelWidth">
-              <el-select
-                v-model="editWorkerForm.deptId"
-                placeholder="请选择部门"
-                prop="deptId"
-              >
-                <el-option
-                  v-for="dept in deptData"
-                  :key="dept.id"
-                  :label="dept.name"
-                  :value="dept.id"
-                ></el-option>
+              <el-select v-model="editWorkerForm.deptId" placeholder="请选择部门" prop="deptId">
+                <el-option v-for="dept in deptData" :key="dept.id" :label="dept.name" :value="dept.id"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item
-              label="性别"
-              :label-width="formLabelWidth"
-              prop="gender"
-            >
-             
-                <el-radio v-model="editWorkerForm.gender" label= 1>男</el-radio>
-                <el-radio v-model="editWorkerForm.gender" label= 2>女</el-radio>
-          
-             
+            <el-form-item label="性别" :label-width="formLabelWidth" prop="gender">
+
+              <el-radio v-model="editWorkerForm.gender" label=1>男</el-radio>
+              <el-radio v-model="editWorkerForm.gender" label=2>女</el-radio>
+
+
             </el-form-item>
-            <el-form-item
-              label="薪资"
-              :label-width="formLabelWidth"
-              prop="salary"
-            >
-              <el-input
-                v-model="editWorkerForm.salary"
-                autocomplete="off"
-              ></el-input>
+            <el-form-item label="薪资" :label-width="formLabelWidth" prop="salary">
+              <el-input v-model="editWorkerForm.salary" autocomplete="off"></el-input>
             </el-form-item>
-              <el-form-item
-              label="状态"
-              :label-width="formLabelWidth"
-              prop="status"
-            >
-              <el-radio v-model="editWorkerForm.status" label= 1>在职</el-radio>
-                <el-radio v-model="editWorkerForm.status" label= 2>离职</el-radio>
+            <el-form-item label="状态" :label-width="formLabelWidth" prop="status">
+              <el-radio v-model="editWorkerForm.status" label=1>在职</el-radio>
+              <el-radio v-model="editWorkerForm.status" label=2>离职</el-radio>
             </el-form-item>
 
           </el-form>
@@ -203,20 +163,20 @@
 
 
       </el-col>
-      
+
     </el-row>
-   
+
   </div>
-  
+
 </template>
 
 <script>
   export default {
     data() {
       return {
-       name: "",
-        deptName:"",
-        roleName:"",
+        name: "",
+        deptName: "",
+        roleName: "",
         workerData: [],
         currentPage: 1, //当前页码
         total: 0, //总记录数
@@ -230,11 +190,11 @@
         editWorkerForm: {
           id: "",
           name: "",
-          roleId:"",
-          deptId:"",
-          gender:"",
-          salary:"",
-          status:""
+          roleId: "",
+          deptId: "",
+          gender: "",
+          salary: "",
+          status: ""
         },
 
         headers: {},
@@ -256,32 +216,41 @@
           .get("/api/worker/list", {
             params: {
               name: this.name,
-              deptName:this.deptName,
-              roleName:this.roleName,
+              deptName: this.deptName,
+              roleName: this.roleName,
               pageNum: pageNum,
               pageSize: this.pageSize,
             },
             headers: {
-										"Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
-									},
+              "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+            },
           })
           .then((res) => {
-            console.log(res.data);
+             if (res.data.status == 4001) {
+            this.$message({
+              showClose: true,
+              message: res.data.msg,
+              type: 'error',
+              duration: 1000
+            });
+          }else{
             //设置职工列表数据
             this.workerData = res.data.list;
             this.currentPage = res.data.pageNum;
             this.total = res.data.total; //设置总记录数
+          }
+          
           })
-        .catch((res) => {
-          this.$message({
-            type: "error",
-            message: "连接超时,请重新登录!",
+          .catch((res) => {
+            this.$message({
+              type: "error",
+              message: "连接超时,请重新登录!",
+            });
+            this.$router.push("/login");
           });
-          this.$router.push("/login");
-        });
       },
 
-//部门列表
+      //部门列表
       findDeptList() {
         //axios请求拿数据
         this.$axios
@@ -300,7 +269,7 @@
             });
           });
       },
-//角色列表
+      //角色列表
       findRoleList() {
         //axios请求拿数据
         this.$axios
@@ -335,19 +304,36 @@
       },
       //打开添加职工列表
       openAddWorker() {
-        this.headers = {
-          strToken: localStorage.getItem('strToken')
-        }
-        this.addDialogWorkerFormVisible = true;
+        this.$axios.post("/api/worker/add", this.worker).then((res) => {
+          console.log(res.data);
+
+          if (res.data.status == 4001) {
+            this.$message({
+              showClose: true,
+              message: res.data.msg,
+              type: 'error',
+              duration: 1000
+            });
+          } else {
+            this.headers = {
+              strToken: localStorage.getItem('strToken')
+            }
+            this.addDialogWorkerFormVisible = true;
+          }
+
+        });
+
+
+
       },
 
 
       //添加职工
       addWorker() {
-        console.log("=======================" + this.worker);
         //发送axios请求
         this.$axios.post("/api/worker/add", this.worker).then((res) => {
           console.log(res.data);
+
           if (res.data.status == 200) {
             this.$message({
               showClose: true,
@@ -358,6 +344,13 @@
             this.worker = {};
             this.addDialogWorkerFormVisible = false;
             this.findWorkerList(1); //刷新列表
+          } else if (res.data.status == 4001) {
+            this.$message({
+              showClose: true,
+              message: res.data.msg,
+              type: 'error',
+              duration: 1000
+            });
           } else {
             this.$message({
               showClose: true,
@@ -366,10 +359,11 @@
               duration: 600,
             });
           }
+
         });
       },
 
-       //删除职工
+      //删除职工
       deleteWorker(id) {
         this.$confirm("是否删除职工?", "提示", {
             confirmButtonText: "确定",
@@ -384,8 +378,16 @@
                 },
               })
               .then((res) => {
-                this.findWorkerList(1);
-                if (res.data.status === 200) {
+                 if (res.data.status === 4001) {
+                  this.$message({
+                    showClose: true,
+                    message: "没有权限",
+                    type: "error",
+                    duration: 600,
+                  });
+                }else if(res.data.status === 200){
+                     this.findWorkerList(1);
+
                   this.$message({
                     showClose: true,
                     message: "删除成功",
@@ -393,14 +395,9 @@
                     duration: 600,
                   });
                   this.findWorkerList(1);
-                } else if (res.data.status === 4001) {
-                  this.$message({
-                    showClose: true,
-                    message: "没有权限",
-                    type: "error",
-                    duration: 600,
-                  });
+                
                 }
+             
               })
               .catch((res) => {
                 this.$message({
@@ -422,33 +419,49 @@
 
 
       //编辑职工
-     handleEdit(row) {
-        console.log(row);
-        let {
-          id,
-          name,
-          roleId,
-          deptId,
-          gender,
-          salary,
-          status
-    
-        } = row;
-        this.editWorkerForm.id = id;
-        this.editWorkerForm.name = name;
-        this.editWorkerForm.roleId = roleId;
-        this.editWorkerForm.deptId = deptId;
-         this.editWorkerForm.gender = gender ;
-        this.editWorkerForm.salary = salary;
-        this.editWorkerForm.status = status 
-        
+      handleEdit(row) {
+       this.$axios.post("/api/worker/update", this.worker).then((res) => {
+          console.log(res.data);
 
-        //显示编辑对话框
-        this.editWorkerDialogFormVisible = true;
+          if (res.data.status == 4001) {
+            this.$message({
+              showClose: true,
+              message: res.data.msg,
+              type: 'error',
+              duration: 1000
+            });
+          } else {
+          let {
+                id,
+                name,
+                roleId,
+                deptId,
+                gender,
+                salary,
+                status
+
+              } = row;
+              this.editWorkerForm.id = id;
+              this.editWorkerForm.name = name;
+              this.editWorkerForm.roleId = roleId;
+              this.editWorkerForm.deptId = deptId;
+              this.editWorkerForm.gender = gender;
+              this.editWorkerForm.salary = salary;
+              this.editWorkerForm.status = status
+
+
+              //显示编辑对话框
+              this.editWorkerDialogFormVisible = true;
+            }
+          });
       },
+
+
+
+
       //执行修改讲师
       updateWorker() {
-        console.log(this.editWorkerForm);
+
         this.$axios
           .post("/api/worker/update", this.editWorkerForm)
           .then((res) => {
@@ -472,7 +485,7 @@
             }
           });
       },
-     
+
 
     }
   };

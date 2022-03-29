@@ -1,14 +1,11 @@
 package com.woniu.service.impl;
 
 import com.woniu.entity.User;
-import com.woniu.entity.UserExample;
 import com.woniu.mapper.UserMapper;
 import com.woniu.service.UserService;
 import com.woniu.util.JwtTokenUitl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * 用户实现业务
@@ -48,20 +45,6 @@ public class UserServiceImpl implements UserService {
             e.printStackTrace();
         }
         userMapper.insert(user);
-    }
-
-    @Override
-    public void updateStatus (String phone) {
-        userMapper.updateByPhone(phone,"2");
-    }
-
-    @Override
-    public String queryUserStatus (String phone) {
-        UserExample userExample = new UserExample();
-        UserExample.Criteria criteria = userExample.createCriteria();
-        criteria.andTelephoneEqualTo(phone);
-        List<User> users = userMapper.selectByExample(userExample);
-        return users.get(0).getSpare3();
     }
 
 //    @Override

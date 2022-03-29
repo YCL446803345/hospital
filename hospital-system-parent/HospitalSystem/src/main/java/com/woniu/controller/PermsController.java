@@ -4,7 +4,7 @@ import com.woniu.entity.Perms;
 import com.woniu.service.PermsService;
 import com.woniu.util.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -55,17 +55,17 @@ public class PermsController {
 
 
     // 通过id查询该用户所有的权限
-    @GetMapping("user/permsByUserid")
-    public ResponseResult<List<String>> getPermByUserId(Integer id){
-        List<String> permsList=permsService.getPermByUserId(id);
+    @GetMapping("user/permsByRoleId")
+    public ResponseResult<List<String>> getPermByRoleId(Integer id){
+        List<String> permsList=permsService.getPermByRoleId(id);
 
         return new ResponseResult<List<String>>(permsList,"OK",200);
     }
 
     //修改该用户权限
-    @RequestMapping("user/updateUserPerms")
-    public ResponseResult<String> updateUserPermsById(Integer userId,String permsId){
-        permsService.updatePerms(userId,permsId);
+    @RequestMapping("user/updateRolePerms")
+    public ResponseResult<String> updateRolePermsById(Integer roleId,String permsId){
+        permsService.updatePerms(roleId,permsId);
 
         return new ResponseResult<String>(200,"修改成功");
     }

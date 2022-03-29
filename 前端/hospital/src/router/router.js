@@ -1,6 +1,5 @@
 import Vue from 'vue' //导入node_modules中vue.js库文件
 import VueRouter from 'vue-router' //导入node_modules中vue-router.js库文件
-import echarts from 'echarts'
 
 
 // 解决ElementUI导航栏中的vue-router在3.0版本以上重复点菜单报错问题
@@ -21,10 +20,8 @@ import medicalAdviceManager from '../components/home/nurseHome/patient/MedicalAd
 import outHospital from '../components/home/nurseHome/patient/OutHospital'
 
 
-
 //Vue安装router
 Vue.use(VueRouter)
-Vue.prototype.$echarts=echarts
 
 //医院入口登录相关组件
 import Entry from '../components/entry/Entry'
@@ -50,10 +47,7 @@ import PatientRecord from '../components/home/doctorHome/patient/PatientRecord' 
 import DrugInfo from '../components/home/drugHome/DrugInfo' //药品信息列表
 import DrugPre from '../components/home/drugHome/DrugPrescription' //药方列表
 import SendDrug from '../components/home/drugHome/SendDrug' //发药列表
-import DrugManager from '../components/home/drugHome/DrugManager' //药品管理
-import Purchase from '../components/home/drugHome/Purchase'   //采购管理
-
-
+import DrugManager from '../components/home/drugHome/DrugManager'
 
 
 
@@ -69,7 +63,6 @@ import leaveHospital from '../components/home/payHome/leave.vue' //出院结算
 import dataAnalysis from '../components/home/payHome/dataAnalysis.vue' //数据分析
 import leaveCost from '../components/home/payHome/leaveCost.vue' //出院病人费用查询
 import pay from '../components/home/payHome/pay.vue' //入院缴费
-import test from '../components/home/payHome/test.vue' //测试柱状图
 
 
 //配置路由规则
@@ -92,16 +85,17 @@ var router = new VueRouter({
 
             children: [
 
-                {path: "/worker/list", component: HumanAffairs },
-	            {path: "/nurse/admission", component: patientInfo},
-	            {path: "/nurse/changeDept", component: patientChangeDept},
-	            {path: "/nurse/information", component: queryPatientInfo},
-	            {path: "/nurse/care", component: patientNursingRecord},
-	            {path: "/nurse/medicalAdvice", component: medicalAdviceManager},
-	            {path:"/nurse/patientManager",component:patientChangeDoctorOrBed},
-	            {path:"/nurse/discharge",component:outHospital},
-	            {path:"/nurse/waitPatientManager",component:patientWithNotBed},
-	            {path:"/nurse/bed",component:bedManager},
+
+
+                { path: "/nurse/admission", component: patientInfo },
+                { path: "/nurse/changeDept", component: patientChangeDept },
+                { path: "/nurse/information", component: queryPatientInfo },
+                { path: "/nurse/care", component: patientNursingRecord },
+                { path: "/nurse/medicalAdvice", component: medicalAdviceManager },
+                { path: "/nurse/patientManager", component: patientChangeDoctorOrBed },
+                { path: "/nurse/discharge", component: outHospital },
+                { path: "/nurse/waitPatientManager", component: patientWithNotBed },
+                { path: "/nurse/bed", component: bedManager },
 
 
                 { path: "/drug/prescriptionList", component: DrugPre },
@@ -109,17 +103,12 @@ var router = new VueRouter({
                 { path: "/medicine/home", component: DrugInfo },
                 { path: "/drug/storage/list", component: DrugManager },
 
-                { path: "/purchase/manager", component: Purchase },
-
-
-
                 { path: "/pay/cost", component: costInfo },
-				{path:"/pay/queryCost",component:queryCost},
-                {path:"/pay/leaveHospital",component:leaveHospital},
-                {path:"/pay/dataAnalysis",component:dataAnalysis},
-                {path:"/pay/leaveCost",component:leaveCost},
-                {path:"/pay/inPay",component:pay},
-                {path:"/pay/test",component:test},
+                { path: "/pay/queryCost", component: queryCost },
+                { path: "/pay/leaveHospital", component: leaveHospital },
+                { path: "/pay/dataAnalysis", component: dataAnalysis },
+                { path: "/pay/leaveCost", component: leaveCost },
+                { path: "/pay/pay", component: pay },
 
 
                 { path: "/doctor/PatientList", component: PatientList },
@@ -131,6 +120,7 @@ var router = new VueRouter({
                 { path: "/doctor/drugOutList", component: DrugOutList },
                 { path: "/doctor/patientRecord", component: PatientRecord },
 
+                { path: "/worker/manager", component: HumanAffairs },
                 { path: "/worker/scheduling", component: Scheduling },
                 { path: "/user/perms", component: Perms },
 
@@ -148,8 +138,8 @@ var router = new VueRouter({
 
 router.beforeEach((to, from, next) => {  
     if (to.path === '/login' || to.path === '/' || to.path === '/entry' || to.path === '/gotoUserLogin' || to.path === '/gotoWorkesLogin' || to.path === '/gotoUserRegister') {
-			next();   
-		} else {    
+        next();  
+    } else {    
         const token = localStorage.getItem('tokenStr');    
         token ? next() : next('/gotoWorkesLogin')  
     }

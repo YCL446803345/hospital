@@ -19,7 +19,7 @@
 
       <el-col :span="2">
         <el-select v-model="patientSex" placeholder="性别">
-          <!-- <el-option label="性别" value=""></el-option> -->
+          <el-option label="性别" value=""></el-option>
           <el-option label="男" value="男"></el-option>
           <el-option label="女" value="女"></el-option>
         </el-select>
