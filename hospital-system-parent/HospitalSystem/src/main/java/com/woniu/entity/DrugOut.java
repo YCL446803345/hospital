@@ -58,4 +58,7 @@ public class DrugOut {
     private String cTime;
     private String oCause;
     private String oStatus;
+    private Integer did;
+    private Integer dstock;
+    private Integer dnum;
 }

@@ -11,20 +11,21 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SendDrugRecord {
+public class WithdrawalDrug {
 
     private Integer id;
-    private Integer prescriptionId;
-    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
-    private Date sendDrugTime;
+    private Integer drugOutId;
+    @DateTimeFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
+    private Date outDrugTime;
+    private String outName;
     private String spare1;
     private String spare2;
     private String spare3;
 
     private String doctorName;
     private String preName;
-    private String sdTime;
-    private Integer pid;
+    private String outTime;
+    private String outCause;
 
 }

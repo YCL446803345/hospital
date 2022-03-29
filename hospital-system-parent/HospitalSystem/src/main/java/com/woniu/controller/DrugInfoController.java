@@ -8,15 +8,16 @@ import com.woniu.entity.Drug;
 import com.woniu.service.DrugService;
 import com.woniu.util.FileUtils;
 import com.woniu.util.ResponseResult;
+import com.woniu.util.TimeUtil;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.BoundValueOperations;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.List;
+import java.util.*;
 
 /**
  * 药品信息
@@ -26,7 +27,20 @@ public class DrugInfoController {
 
     @Autowired
     private DrugService drugService;
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
+    @GetMapping("drug/addRedisToken")
+    public ResponseResult<String> getToken(){
+        //生产随机数,存入redis
+        Date date = new Date();
+        String nowTime = TimeUtil.getNowTime(date);
+        int i = new Random().nextInt(10000);
+        String redisToken = nowTime+i;
+        BoundValueOperations<String, String> ops = redisTemplate.boundValueOps(redisToken);
+        ops.set(redisToken);
+        return new ResponseResult<String>(redisToken,"OK",200);
+    }
 
     //查询所有上架药品信息
     @GetMapping("drug/findAllDrug")
@@ -60,10 +74,20 @@ public class DrugInfoController {
 
     //修改药品信息
     @PostMapping("drug/updateDrugStatus")
-    public ResponseResult updateDrugStatus(Drug drug){
-        drug.setStatus("0");
-        drugService.updateDrug(drug);
-        return ResponseResult.ok();
+    public ResponseResult<String> updateDrugStatus(@RequestParam("redisToken") String redisToken,@RequestParam("id") Integer id){
+        //直接删除redisToken,删除成功代表第一次请求,否则失败
+        if (redisTemplate.delete(redisToken)){
+            try {
+                Drug drug = new Drug();
+                drug.setId(id);
+                drug.setStatus("0");
+                drugService.updateDrug(drug);
+                return new ResponseResult<String>(200,"OK");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return new ResponseResult<String>(500,"请不要频繁点击");
     }
 
     //添加药品

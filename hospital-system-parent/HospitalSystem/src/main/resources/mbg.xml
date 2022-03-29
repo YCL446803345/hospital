@@ -271,12 +271,19 @@
 <!--               enableDeleteByExample="true"-->
 <!--               enableSelectByExample="true"-->
 <!--        />-->
-            <table tableName="HOS_purchase" schema="hos"
-                   domainObjectName="Purchase"
-                   enableCountByExample="true"
-                   enableUpdateByExample="true"
-                   enableDeleteByExample="true"
-                   enableSelectByExample="true"
-            />
+<!--            <table tableName="HOS_purchase" schema="hos"-->
+<!--                   domainObjectName="Purchase"-->
+<!--                   enableCountByExample="true"-->
+<!--                   enableUpdateByExample="true"-->
+<!--                   enableDeleteByExample="true"-->
+<!--                   enableSelectByExample="true"-->
+<!--            />-->
+        <table tableName="HOS_withdrawal_drug" schema="HOSPITAL"
+               domainObjectName="WithdrawalDrug"
+               enableCountByExample="true"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+        />
     </context>
 </generatorConfiguration>

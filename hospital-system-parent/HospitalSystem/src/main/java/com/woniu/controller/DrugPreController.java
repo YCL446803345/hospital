@@ -38,20 +38,6 @@ public class DrugPreController {
         PageHelper.startPage(pageNum,pageSize);
         List<Prescription> preDrugList = prescriptionService.getPresDrugByMany(doctorName,nurseName,preName);
         PageInfo preDrugPageInfo = new PageInfo(preDrugList);
-        List<Prescription> prescriptionList2 = preDrugPageInfo.getList();
-        //相同处方排除法,分页数据会有误,待修改
-        //计数器
-        int count = 0;
-        for (int i = 0; i < prescriptionList2.size(); i++) {
-            for (int j = 0; j < prescriptionList2.size(); j++) {
-                if(i != j && prescriptionList2.get(i).getId()== prescriptionList2.get(j).getId()) {
-                    prescriptionList2.remove(prescriptionList2.get(j));
-                    count++;
-                }
-            }
-        }
-        preDrugPageInfo.setTotal(preDrugPageInfo.getTotal()-count);
-        preDrugPageInfo.setList(prescriptionList2);
         return new ResponseResult<PageInfo<Prescription>>(preDrugPageInfo,"OK",200);
     }
 

@@ -58,4 +58,13 @@ public interface DrugOutMapper {
     @Update("update HOS_drug_out set out_status='4' where id=#{id}")
     void gotoStopDrugOutById(DrugOut drugOut);
 
+    @Update("update HOS_drug_out set out_status='3' where id=#{did}")
+    void updateStatusById(Integer did);
+
+    @Select("select d.id did,d.stock dstock,dod.num dnum\n" +
+            "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tfrom HOS_drug_out do\n" +
+            "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tleft join HOS_drug_out_drug dod on dod.drug_out_id=do.id\n" +
+            "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tleft join HOS_drug d on d.id=dod.drug_id\n" +
+            "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\twhere do.id=#{id}")
+    List<DrugOut> getDidAndStockAndNum(Integer id);
 }

@@ -34,4 +34,7 @@ public interface DrugService {
 
     void updateStock(String name, int i);
 
+    void batchUpdateStock(String[] split,String account,Integer did);
+
+    void batchUpdate(List<Integer> ids, String account);
 }
