@@ -74,4 +74,16 @@ public interface PrescriptionBillMapper {
             " from HOS_prescription_bill pb,HOS_patient p,HOS_prescription pr\n" +
             " where p.id = pr.patient_id and p.`status` = 3 and pr.id = pb.prescription_id")
     List<PrescriptionBill> selectOutPatientAll ( );
+
+
+
+    @Select("select  d.name name,d.drug_type drugType,d.make_price makePrice,d.sale_price salePrice,\n" +
+            "d.specifications specifications,p.create_time createTime,pg.num num \n" +
+            "from  HOS_prescription p\n" +
+            "left join HOS_prescription_bill pb on pb.prescription_id=p.id\n" +
+            "left join HOS_patient pa on p.patient_id=pa.id\n" +
+            "left join HOS_prescription_drug pg on p.id=pg.prescription_id\n" +
+            "left join HOS_drug d on d.id=pg.drug_id\n" +
+            "where pb.id is not null and p.patient_id=#{id} and pb.status=2")
+    List<Drug> getPrescriptionBillHavePay(Patient patient);
 }

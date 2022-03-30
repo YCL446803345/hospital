@@ -30,22 +30,11 @@ public class PrescriptionBillImpl implements PrescriptionBillService {
 
     @Override
     public Double getPrescriptionBillHavePay(Patient patient) {
-//        List<Prescription> prescriptions=prescriptionBillMapper.getPrescriptionByPatientId(patient);
-//
-//        ArrayList<PrescriptionBill> list = new ArrayList<>();
-//        for (Prescription prescription : prescriptions) {
-//            PrescriptionBill prescriptionBill=prescriptionBillMapper.getPrescriptionBillByPrescriptionId(prescriptionBill.getPrescriptionId());
-//            list.add(prescriptionBill);
-//        }
-//
-//        for (PrescriptionBill o : list) {
-//            if(o.getStatus().equals(2)){
-//                Drug drugs=prescriptionBillMapper.getDrugByprescriptionBillId(o.getPrescriptionId());
-//
-//            }
-//
-//        }
-
-        return null;
+        List<Drug> drugs=prescriptionBillMapper.getPrescriptionBillHavePay(patient);
+        Double num=0.0;
+        for (Drug drug : drugs) {
+            num+=drug.getSalePrice()*drug.getNum();
+        }
+        return num;
     }
 }

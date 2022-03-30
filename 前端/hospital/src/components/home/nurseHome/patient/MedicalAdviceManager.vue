@@ -59,6 +59,8 @@
                 width="80">
             </el-table-column>
 
+            
+
             <el-table-column
                 prop="no"
                 label="病人编号"
@@ -73,14 +75,12 @@
                          {{scope.row.gender==='1'?'男':'女'}}
                 </template>
             </el-table-column>
-
-             
+            
             <el-table-column
                 prop="age"
                 label="年龄"
-                width="50">
+                width="80">
             </el-table-column>
-
             <el-table-column
                 prop="cardId"
                 label="身份证号"
@@ -88,9 +88,19 @@
             </el-table-column>
 
             <el-table-column
-                prop="phone"
-                label="手机号"
-                width="150">
+                label="待处理的医嘱"
+                width="80">
+                <template slot-scope="scope">
+                    <span style="color:red">{{ scope.row.medicalAdviceNeedForCheck}}</span>条
+                </template>
+            </el-table-column>
+
+             <el-table-column
+                label="待处理的处方"
+                width="80">
+                <template slot-scope="scope">
+                    <span style="color:red">{{ scope.row.prescriptionNeedForCheck}}</span>条
+                </template>
             </el-table-column>
 
             <el-table-column

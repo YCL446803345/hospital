@@ -508,7 +508,7 @@
                     <i class="el-icon-more"></i>
                         总费用
                 </template>
-                        <span style="color:red">{{hospitalizationBill.sumMoney+getPrescriptionBillMoney+getMedicalAdviceBillMoney+getDrugOutBillMoney}}</span>元
+                        <span style="color:red">{{hospitalizationBill.sumMoney+getPrescriptionBillMoney+getMedicalAdviceBillMoney-getDrugOutBillMoney}}</span>元
             </el-descriptions-item>
 
         </el-descriptions>

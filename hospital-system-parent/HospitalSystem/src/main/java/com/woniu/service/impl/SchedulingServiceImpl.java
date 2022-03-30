@@ -31,4 +31,9 @@ public class SchedulingServiceImpl implements SchedulingService {
     public void updateScheduling(Scheduling scheduling) {
         schedulingMapper.update(scheduling);
     }
+
+    @Override
+    public List<Scheduling> findSchedulings() {
+        return schedulingMapper.selectByExample(null);
+    }
 }

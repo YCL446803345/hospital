@@ -90,5 +90,6 @@ public interface PrescriptionMapper {
     @Options(useGeneratedKeys = true,keyProperty = "id",keyColumn = "id")
     void addPrescription(Prescription prescription);
 
-
+    @Select("select count(*) from HOS_prescription where prescription_status in (1,3) and patient_id = #{id}")
+    Integer getPrescriptionNeedForCheckNum(Integer id);
 }

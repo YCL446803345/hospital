@@ -59,6 +59,12 @@ public class Patient {
     //外键护士名
     private String nurseName;
 
+    private Integer medicalAdviceNeedForCheck;
+
+    private Integer prescriptionNeedForCheck;
+
+
+
     //模糊时间查询开始时间
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")

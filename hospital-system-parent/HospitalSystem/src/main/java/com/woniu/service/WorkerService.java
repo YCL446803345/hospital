@@ -31,4 +31,6 @@ public interface WorkerService {
 
     List<String> findAllDoctor();
 
+
+    List<Worker> findWorkersByDeptIdAndRoleId(Integer deptId, Integer roleId);
 }
