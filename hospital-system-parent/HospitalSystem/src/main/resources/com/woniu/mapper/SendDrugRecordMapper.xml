@@ -228,9 +228,9 @@
 
 <!--  批量添加发药记录-->
   <insert id="addSenDrugBatch" parameterType="list">
-    insert into HOS_send_drug_record(prescription_id,send_drug_time,spare1) values
+    insert into HOS_send_drug_record(prescription_id,send_drug_time,spare1,spare2) values
     <foreach collection="list" item="sendDrug" separator=",">
-      (#{sendDrug.prescriptionId},#{sendDrug.sendDrugTime},#{sendDrug.spare1})
+      (#{sendDrug.prescriptionId},#{sendDrug.sendDrugTime},#{sendDrug.spare1},#{sendDrug.spare2})
     </foreach>
   </insert>
 </mapper>

@@ -18,7 +18,7 @@ public interface PrescriptionService {
 
     void updateStatusById(Integer pid, String account);
 
-    LinkedHashSet<String> updateByBatch(List<String> newlist, String account);
+    List<LinkedHashSet<String>> updateByBatch(List<String> newlist, String account);
 
     Prescription getDrugNameAndNumAndCreateTime(Integer pid);
 

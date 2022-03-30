@@ -60,5 +60,6 @@ public class Prescription {
     private Integer num;
 
     private String preName;
+    private String status;
 
 }

@@ -53,11 +53,15 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
 
     //药房批量修改处方状态，添加数据
-    public LinkedHashSet<String> updateByBatch(List<String> newlist, String account) {
+    public List<LinkedHashSet<String>> updateByBatch(List<String> newlist, String account) {
         Worker worker = workerMapper.selectWorkerByAccount(account);
 
+        //用于存放所有失败了的药品
+        List<LinkedHashSet<String>> faileDrug = new ArrayList<>();
         //用于存放库存不足的药品名
         LinkedHashSet<String> drugs =  new LinkedHashSet<>();
+        //用于存放未上架的药品名称
+        LinkedHashSet<String> noUpLoadDrugs = new LinkedHashSet<>();
         //用于存放库存足够的处方,便于批量修改
         List<Prescription> prescriptionList = new ArrayList<>();
         //用于存放药房批量添加发药记录
@@ -67,7 +71,6 @@ public class PrescriptionServiceImpl implements PrescriptionService {
         for (String s : newlist) {
 
             //计数器判断
-
             ArrayList count = new ArrayList();
 
             Integer i = Integer.parseInt(s);
@@ -82,6 +85,12 @@ public class PrescriptionServiceImpl implements PrescriptionService {
             //进行比较
             for (int j = 0; j <stockNums.size();j++ ){
                 Prescription prescription = stockNums.get(j);
+                //判断是否有没有上架
+                if (prescription.getStatus().equals("0")){
+                    noUpLoadDrugs.add(prescription.getDrugName());
+                    count.add(false);
+                    continue;
+                }
                 if (prescription.getNum() >= prescription.getStock()){
                     drugs.add(prescription.getDrugName());
                     count.add(false);
@@ -114,7 +123,9 @@ public class PrescriptionServiceImpl implements PrescriptionService {
                 sendDrugRecord.setPrescriptionId(i);
                 sendDrugRecord.setSendDrugTime(new Date());
                 sendDrugRecord.setSpare1(worker.getName());
+                sendDrugRecord.setSpare2("1");
                 sendDrugRecordList.add(sendDrugRecord);
+
                 //批量修改库存
                 if (updatestockNum.size() != 0){
                     for (Prescription updateStock : updatestockNum) {
@@ -133,8 +144,9 @@ public class PrescriptionServiceImpl implements PrescriptionService {
             //批量添加发药记录
             sendDrugRecordMapper.addSenDrugBatch(sendDrugRecordList);
         }
-
-        return drugs;
+        faileDrug.add(drugs);    //库存不足
+        faileDrug.add(noUpLoadDrugs);  //下架
+        return faileDrug;
     }
 
     //通过处方id查询该处方开单医生和审核护士和创建时刻

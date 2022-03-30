@@ -59,11 +59,11 @@ public class DrugPreController {
     //同时添加发药记录
     //添加发药账单记录
     @PostMapping("drug/sendDrug")
-    public ResponseResult<LinkedHashSet<String>> updatePreDrugStatusAndAddSendDrug(@RequestParam("idStrs") String idStrs,@RequestParam("account") String account){
+    public ResponseResult<List<LinkedHashSet<String>>> updatePreDrugStatusAndAddSendDrug(@RequestParam("idStrs") String idStrs,@RequestParam("account") String account){
         List<String> list = Arrays.asList(idStrs.split(","));
         List<String> newlist = new ArrayList<String>(list);
-        LinkedHashSet<String> drugInfo = prescriptionService.updateByBatch(newlist,account);
-        return new ResponseResult<LinkedHashSet<String>>(drugInfo,"OK",200);
+        List<LinkedHashSet<String>> drugInfo = prescriptionService.updateByBatch(newlist,account);
+        return new ResponseResult<List<LinkedHashSet<String>>>(drugInfo,"OK",200);
     }
 
     //通过处方id查询该处方开单医生和审核护士和创建时刻
