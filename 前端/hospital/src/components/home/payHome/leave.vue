@@ -451,7 +451,8 @@ export default {
             hospitalization:0,
             medicalAdvice:0,
             balance:0,
-        }
+        },
+        token:'',
       }
    },
    created(){
@@ -514,17 +515,21 @@ export default {
         },
         //结算病人账单
         settlement(){
-            this.$axios.get("/api/advancePayment",{params:{id:this.patient.id,status:"3"}}).then(res=>{
+            this.$axios.get("/api/advancePayment",{params:{id:this.patient.id,status:"3",token:this.token}}).then(res=>{
                  if(res.data === "OK"){
                             this.$message({
                             type: "success",
                             message: "结算成功!",
                         });
+                    }else if(res.data == "err"){
+                         this.$message({
+                            type: "info",
+                            message: "请不要重复点击!",
+                        });
                     }else{
-                        this.$message({
-                            type: "danger",
-                            message: "结算失败!",
-                        }); 
+                         this.$alert('以欠费'+res.data+',请先充值', '欠费', {
+                            confirmButtonText: '确定'
+                         })
                     }
                     this.closeSettlement();
                     this.search();
@@ -552,6 +557,9 @@ export default {
                 this.patient.medicalAdvice = medicalAdvice
                 this.patient.drugOut = prescription
                 this.costSettlementForm = true;
+                 this.$axios.get("/api/createToken").then(res=>{
+                    this.token = res.data;
+                })
             })
         },
         //关闭结算病人账单模态框

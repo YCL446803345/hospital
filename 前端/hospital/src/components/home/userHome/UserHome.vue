@@ -145,7 +145,6 @@
           reason: "",
           inHosptialTime: "",
           status: "",
-
         },
        
         deptData: [],
@@ -156,7 +155,8 @@
         isCollapse: false, // 决定左侧导航栏是否展开
         fits: 'scale-down',
         headers: "",
-        menuDate: []
+        menuDate: [],
+        status:'2',
       }
     },
     computed: {
@@ -221,9 +221,20 @@
 
       //添加病人
       addInHospitalTable() {
-        //发送axios请求
-        this.$axios.post("/api/inHospitalTable/add", this.inHospitalTable).then((res) => {
-   
+
+        this.$axios.get("/api/queryUserStatus",{params:{phone: this.telephone}}).then(res=>{ 
+          if (res.data == "1") {
+              window.localStorage.setItem("status",2)
+              window.localStorage.setItem("inHospitalTable",JSON.stringify(this.inHospitalTable))
+              this.$alert('请先缴纳手续费', '缴费', {
+              confirmButtonText: '确定',
+              callback: action => {
+                this.pay(this.telephone);
+              }
+            })
+          }else {
+             this.inHospitalTable.telephone = window.localStorage.getItem("telephone")
+            this.$axios.post("/api/inHospitalTable/add", this.inHospitalTable).then((res) => {
           if (res.data.status == 200) {
   
             this.$message({
@@ -233,8 +244,6 @@
               duration: 600,
             });
             this.inHospitalTable = {};
-
-
           } else {
             this.$message({
               showClose: true,
@@ -244,6 +253,10 @@
             });
           }
         });
+      
+          }
+          this.status = res.data;
+      })
       },
 
       //查询病人预约
@@ -289,17 +302,24 @@
       },
 
     },
-     mounted: function() {
-            if (location.href.indexOf("#reloaded") == -1) {
-                location.href = location.href + "#reloaded";
-                location.reload();
-            }
-        },
+    
+
+    
+    //  mounted: function() {
+    //         if (location.href.indexOf("#reloaded") == -1) {
+    //             location.href = location.href + "#reloaded";
+    //             location.reload();
+    //         }
+    //     },
         
     created() {
 
       //从本地浏览器拿名字
       this.telephone = window.localStorage.getItem("telephone")
+
+      this.status = window.localStorage.getItem("status")
+      
+
       this.$axios.get("/api/perms/findMenuPerms", {
           params: {
             telephone: this.telephone
@@ -312,20 +332,32 @@
         }),
 
         this.findDeptList();
-      this.findBedList();
-
-      this.$axios.get("/api/queryUserStatus",{params:{phone: this.telephone}}).then(res=>{ 
-          if (res.data == "1") {
-              this.$alert('请先缴纳手续费', '缴费', {
-              confirmButtonText: '确定',
-              callback: action => {
-                this.pay(this.telephone);
-              }
-            })
+       this.findBedList();
+        if(this.status == "2"){
+        this.status = "1"
+        window.localStorage.setItem("status",1)
+        this.inHospitalTable = JSON.parse(window.localStorage.getItem("inHospitalTable")) 
+        //发送axios请求
+        this.inHospitalTable.telephone = window.localStorage.getItem("telephone")
+        this.$axios.post("/api/inHospitalTable/add", this.inHospitalTable).then((res) => {
+          if (res.data.status == 200) {
+            this.$message({
+              showClose: true,
+              message: "添加成功",
+              type: "success",
+              duration: 600,
+            });
+            this.inHospitalTable = {};
+          } else {
+            this.$message({
+              showClose: true,
+              message: "添加失败",
+              type: "error",
+              duration: 600,
+            });
           }
-          this.status = res.data;
-      })
-
+        });
+      }
     }
 
   }

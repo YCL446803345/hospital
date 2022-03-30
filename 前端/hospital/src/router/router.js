@@ -151,7 +151,7 @@ router.beforeEach((to, from, next) => {  
         next();  
     } else {    
         const token = localStorage.getItem('tokenStr');    
-        token ? next() : next('/gotoWorkesLogin')  
+        token ? next() : next('/')  
     }
 })
 

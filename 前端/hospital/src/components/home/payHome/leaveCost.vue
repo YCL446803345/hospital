@@ -320,11 +320,12 @@ export default {
             return (i+1)+this.pageSize*(this.pageNum-1);
          },
          findShow(patient){
+              this.patientId = patient.id
             this.$axios.get("/api/queryPayment",{params:{id:patient.id}}).then(res=>{
-                console.log(res.data);
                 this.patient.name = patient.name;
                 this.patient.no = patient.no;
-                this.paymentRecordList = res.data;
+                this.paymentRecordList = res.data.list;
+                 this.Intotal = res.data.total;
                 this.costViewForm = true;
             })
          },
