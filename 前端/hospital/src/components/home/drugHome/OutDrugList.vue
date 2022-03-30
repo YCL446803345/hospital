@@ -1,16 +1,16 @@
 <template>
-    <div>
+    <div class="divClass">
         <!-- 添加查询搜索栏 -->
-        <el-row>
+        <el-row >
             <el-col :span="7">
-                <el-input placeholder="请输入退药医生姓名" v-model="doctorName" class="input-with-select" clearable></el-input>
+                <el-input placeholder="请输入退药医生姓名" v-model="doctorName" class="input-with-select" clearable style="width:200px;margin-left:9px"></el-input>
             </el-col>
             <el-col :span="7">
-                <el-input placeholder="请输入患者姓名" v-model="preName" class="input-with-select" clearable></el-input>
+                <el-input placeholder="请输入患者姓名" v-model="preName" class="input-with-select" clearable style="width:200px;margin-left:-280px"></el-input>
             </el-col>
-            <el-col :span="3">
-            <el-button  icon="el-icon-search" @click="createMethods()"></el-button>
-            <el-button size="mini" type="primary" @click="batchOutDrug">批量退药</el-button>
+            <el-col :span="3" style="margin-left:-567px">
+            <el-button type="primary" @click="createMethods()">查询<i class="el-icon-search el-icon--right"></i></el-button>
+            <el-button  type="warning" @click="batchOutDrug">批量退药</el-button>
             </el-col>
         </el-row>
 
@@ -226,5 +226,11 @@ export default {
 </script>
 
 <style>
+.divClass{
+    margin-top: 10px;
+    margin-bottom: 15px;
+    margin-left: 5px;
+    margin-right: 15px;
+}
 
 </style>

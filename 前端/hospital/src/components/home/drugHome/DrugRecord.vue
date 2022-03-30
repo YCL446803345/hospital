@@ -1,6 +1,7 @@
 <template>
     <div>
     <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+        <!-- <el-tab-pane><span slot="label"><i class="el-icon-tickets"></i>返回首页</span><ReturnHome/></el-tab-pane> -->
         <el-tab-pane name="first"><span slot="label"><i class="el-icon-tickets"></i>发药记录</span><SendDrugRecord/></el-tab-pane>
         <el-tab-pane name="second"><span slot="label"><i class="el-icon-tickets"></i>退药记录</span><OutDrugRecord/></el-tab-pane>
     </el-tabs>
@@ -8,6 +9,8 @@
 </template>
 
 <script>
+
+// import ReturnHome from './ReturnHome.vue'
 import SendDrugRecord from './SendDrugRecord.vue'
 import OutDrugRecord from './OutDrugRecord.vue'
 export default {
@@ -27,14 +30,15 @@ export default {
         this.first = false
         this.second = true
       }
-    }
+    },
    },
     created(){
 
    },
    components:{
         SendDrugRecord,
-        OutDrugRecord
+        OutDrugRecord,
+        // ReturnHome
    }
 }
 </script>

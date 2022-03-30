@@ -1,17 +1,13 @@
 <template>
-    <div>
-        <el-breadcrumb separator="/">
-            <el-breadcrumb-item :to="{ path: '/gotoHome'}">首页</el-breadcrumb-item>
-            <el-breadcrumb-item :to="{ path: '/drug/send/drug'}">退药记录</el-breadcrumb-item>
-        </el-breadcrumb>
+    <div class="divClass">
 
-        <el-row style="margin-top:10px">
+        <el-row >
             <el-col :span="8" >
                 <!-- 带查询查询文本框 -->
-                <el-input placeholder="请输入配药师姓名" v-model="name" clearable class="input-with-select"></el-input>
+                <el-input placeholder="请输入配药师姓名" v-model="name" clearable style="width:200px;margin-left:9px"></el-input>
             </el-col>
-            <el-col :span="8"  style="margin-left:10px">
-                <el-button  icon="el-icon-search" @click="createMethods()"></el-button>
+            <el-col :span="8"  style="margin-left:-351px">
+                <el-button type="primary" @click="createMethods()">查询<i class="el-icon-search el-icon--right"></i></el-button>
             </el-col>
         </el-row>
         
@@ -19,11 +15,11 @@
             <el-table :data="preData" style="width: 100%">
                 <el-table-column type="index" :index="indexMethod" label="序号"></el-table-column>
 
-                <el-table-column prop="doctorName" label="申请医生" width="180"></el-table-column>
-                <el-table-column prop="preName" label="患者姓名" width="180"></el-table-column>
-                <el-table-column prop="outTime" label="退药时间" width="180"></el-table-column>
-                <el-table-column prop="outCause" label="退药原因" width="180"></el-table-column>
-                <el-table-column prop="outName" label="退药人" width="120"></el-table-column>
+                <el-table-column prop="doctorName" label="申请医生" ></el-table-column>
+                <el-table-column prop="preName" label="患者姓名" ></el-table-column>
+                <el-table-column prop="outTime" label="退药时间" ></el-table-column>
+                <el-table-column prop="outCause" label="退药原因" ></el-table-column>
+                <el-table-column prop="outName" label="退药人" ></el-table-column>
                 <el-table-column label="状态"  prop="spare1">
                     <template slot-scope="scope">
                         <el-tag v-if="scope.row.spare1 == '1'" type="danger"
@@ -132,6 +128,11 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.divClass{
+    margin-top: 10px;
+    margin-bottom: 15px;
+    margin-left: 5px;
+    margin-right: 15px;
+}
 </style>

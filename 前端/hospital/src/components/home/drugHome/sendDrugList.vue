@@ -1,27 +1,29 @@
 <template>
-    <div>
-        <!-- 添加查询搜索栏 -->
+    <div class="divClass">
+        <!-- 查询搜索栏 -->
         <el-row>
             <el-col :span="7">
-                <el-input placeholder="请输入开方医生姓名" v-model="doctorName" class="input-with-select" clearable></el-input>
+                <el-input placeholder="请输入开方医生姓名" v-model="doctorName" class="input-with-select" clearable style="width:200px;margin-left:9px"></el-input>
             </el-col>
             <el-col :span="7">
-                <el-input placeholder="请输入审核护士姓名" v-model="nurseName" class="input-with-select" clearable></el-input>
+                <el-input placeholder="请输入审核护士姓名" v-model="nurseName" class="input-with-select" clearable style="width:200px;margin-left:-280px"></el-input>
             </el-col>
             <el-col :span="7">
-                <el-input placeholder="请输入患者姓名" v-model="preName" class="input-with-select" clearable></el-input>
+                <el-input placeholder="请输入患者姓名" v-model="preName" class="input-with-select" clearable style="width:200px;margin-left:-569px"></el-input>
             </el-col>
-            <el-col :span="3">
-            <el-button  icon="el-icon-search" @click="createMethods()"></el-button>
-            <el-button size="mini" type="primary" @click="batchSendDrug">批量发药</el-button>
+            <el-col :span="3" style="margin-left:-853px">
+            <el-button  type="primary" @click="createMethods()">查询<i class="el-icon-search el-icon--right"></i></el-button>
+            <el-button type="warning" @click="batchSendDrug">批量发药</el-button>
             </el-col>
         </el-row>
+
         <el-table
             ref="multipleTable"
             :data="drugPreData"
             tooltip-effect="dark"
             style="width: 100%"
-            @selection-change="handleSelectionChange">
+            @selection-change="handleSelectionChange"
+            class="tableClass">
 
             <el-table-column type="selection" ></el-table-column>
             <el-table-column label="开方医生"  prop="doctorName"></el-table-column>
@@ -33,7 +35,7 @@
                         disable-transitions>待发药</el-tag>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" >
+            <el-table-column label="操作" align="center" >
                 <template slot-scope="scope">
                     <el-button size="mini" type="primary" @click="gotoPre(scope.row)">药方详情</el-button>
                     <el-button size="mini" type="danger" @click="closeDrugPre(scope.row.id)">撤销药方</el-button>
@@ -50,9 +52,9 @@
                 <el-descriptions-item label="审核护士" :span="2">{{drugIDN.nursename}}</el-descriptions-item>
                 </el-descriptions>
                 <!-- 药品名字和数量 -->
-                  <el-table :data="drugND" border style="width: 100%">
-                      <el-table-column prop="drugName" label="药品名称" width="180"></el-table-column>
-                      <el-table-column prop="num" label="申请数量" width="180"></el-table-column>
+                  <el-table :data="drugND"  style="width: 100%">
+                      <el-table-column prop="drugName" label="药品名称"></el-table-column>
+                      <el-table-column prop="num" label="申请数量"></el-table-column>
                   </el-table>
                 <div slot="footer" class="dialog-footer">
                     <el-button @click="updatedialogTableVisible=false;drugIDN={};drugND=[];">取消</el-button>
@@ -61,14 +63,21 @@
             </el-dialog>
 
         <!-- 药品库存不足模特框 -->
-            <el-dialog title="库存不足,请采购" :visible.sync="stockTableVisible">
-                <span>药品名称</span>
-                <el-descriptions   :column="1" border>
-                <el-descriptions-item  v-for="name in faileDrugName" :key="name">{{name}}</el-descriptions-item>
-                </el-descriptions>
-                <div slot="footer" class="dialog-footer">
-                    <el-button @click="stockTableVisible=false;faileDrugName=[];">取消</el-button>
+            <el-dialog title="库存不足,请采购" :visible.sync="stockTableVisible" width="300px"
+              center class="dia1" :modal="false" :close-on-click-modal="false">
+                <div  v-for="name in faileDrugName" :key="name">{{name}}
+                    <hr>
                 </div>
+                <el-button @click="stockTableVisible=false;faileDrugName=[];">取消</el-button>
+            </el-dialog>
+        
+        <!-- 药品未上架 -->
+            <el-dialog title="药品已下架" :visible.sync="noUploadTableVisible" width="300px" 
+              center class="dia2" :modal="false" :close-on-click-modal="false">
+                <div  v-for="name in noUpLoadDrugName" :key="name">{{name}}
+                    <hr>
+                </div>
+                <el-button @click="noUploadTableVisible=false;noUpLoadDrugName=[];">取消</el-button>
             </el-dialog>
 
         <!-- 分页 -->
@@ -110,6 +119,8 @@ export default {
         doctorName:'',
         nurseName:'',
         preName:'',
+        noUploadTableVisible:false,
+        noUpLoadDrugName:[]
       }
    },
    methods:{
@@ -126,6 +137,9 @@ export default {
     //用于提示哪些药品库存不足 
     open() {
         this.stockTableVisible=true;
+      },
+    open1() {
+        this.noUploadTableVisible=true;
       },
     //撤销药方
     closeDrugPre(id){
@@ -179,18 +193,27 @@ export default {
         }).then(() => {
             this.$axios.post("api/drug/sendDrug",qs.stringify({'idStrs':idStr,'account':window.localStorage.getItem("account")})).then(res=>{
                 if (res.data.status == 200) {
-                    if (res.data.data.length != 0) {
-                        this.faileDrugName=res.data.data
+                    if (res.data.data[0].length != 0) {
+                        this.faileDrugName=res.data.data[0]
                         this.open();
                         this.createMethods();
-                    }else{
-                    this.$message({
-                    type: 'success',
-                    message: '发药成功!'
-                    });
-                    this.createMethods();
+                        this.updatedialogTableVisible=false;
                     }
-                    this.createMethods();
+                    if(res.data.data[1].length != 0){
+                        this.noUpLoadDrugName=res.data.data[1]
+                        this.open1();
+                        this.createMethods();
+                        this.updatedialogTableVisible=false;
+                    }
+                    if (res.data.data[0].length == 0 && res.data.data[1].length == 0) {
+                        this.$message({
+                        type: 'success',
+                        message: '发药成功!',
+                        duration:2000
+                        });
+                        this.createMethods();
+                        this.updatedialogTableVisible=false;
+                    }
                 }else{
                     this.$message({
                     showClose: true,
@@ -209,19 +232,26 @@ export default {
         let idStr = this.drugIDN.id+","
         this.$axios.post("api/drug/sendDrug",qs.stringify({'idStrs':idStr,'account':window.localStorage.getItem("account")})).then(res=>{
          if (res.data.status == 200) {
-                    if (res.data.data.length != 0) {
-                        this.faileDrugName=res.data.data
+                    if (res.data.data[0].length != 0) {
+                        this.faileDrugName=res.data.data[0]
                         this.open();
                         this.createMethods();
                         this.updatedialogTableVisible=false;
-                    }else{
-                    this.$message({
-                    type: 'success',
-                    message: '发药成功!',
-                    duration:2000
-                    });
-                    this.createMethods();
-                    this.updatedialogTableVisible=false;
+                    }
+                    if(res.data.data[1].length != 0){
+                        this.noUpLoadDrugName=res.data.data[1]
+                        this.open1();
+                        this.createMethods();
+                        this.updatedialogTableVisible=false;
+                    }
+                    if (res.data.data[0].length == 0 && res.data.data[1].length == 0) {
+                        this.$message({
+                        type: 'success',
+                        message: '发药成功!',
+                        duration:2000
+                        });
+                        this.createMethods();
+                        this.updatedialogTableVisible=false;
                     }
             }else{
                 this.$message({
@@ -287,6 +317,20 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.dia1{
+    margin-top: 20px;
+    z-index: 1;
+}
+.dia2{
+    top:297px;
+    z-index: 2;
+}
+.divClass{
+    margin-top: 10px;
+    margin-bottom: 15px;
+    margin-left: 5px;
+    margin-right: 15px;
+}
 
 </style>

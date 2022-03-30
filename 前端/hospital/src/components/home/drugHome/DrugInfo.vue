@@ -1,33 +1,35 @@
 <template>
-    <div>
+    <div class="divClass">
         <!-- 面包屑导航 -->
-        <el-breadcrumb separator-class="el-icon-arrow-right">
-            <el-breadcrumb-item :to="{ path: '/gotoHome' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item :to="{path: '/medicine/home'}">药品信息</el-breadcrumb-item>
-            <el-breadcrumb-item>药品详情</el-breadcrumb-item>
-        </el-breadcrumb>
+            <el-breadcrumb separator-class="el-icon-arrow-right" class="mianbao">
+                <el-breadcrumb-item :to="{ path: '/gotoHome' }">首页</el-breadcrumb-item>
+                <el-breadcrumb-item :to="{path: '/medicine/home'}">药品信息</el-breadcrumb-item>
+                <el-breadcrumb-item>药品详情</el-breadcrumb-item>
+            </el-breadcrumb>
 
         <!--  查询 -->
-        <el-row style="margin-top:10px">
+        <el-row class="seach">
             <el-col :span="7"  >
                 <!-- 带查询查询文本框 -->
-                <el-input placeholder="请输入药品名称" v-model="name" class="input-with-select" clearable></el-input>
+                <el-input placeholder="请输入药品名称" v-model="name" class="input-with-select" clearable style="width:200px"></el-input>
             </el-col>
+
             <el-col :span="7"  style="margin-left:10px">
-                <el-select v-model="drugType" clearable placeholder="请选择药品类型">
+                <el-select v-model="drugType" clearable placeholder="请选择药品类型" style="width:150px;margin-left:-290px">
                     <el-option label="中药" value="中药"></el-option>
                 <el-option label="西药" value="西药"></el-option>
                 </el-select>
             </el-col>
-            <el-col :span="8"  style="margin-left:10px">
-                <el-button  icon="el-icon-search" @click="createMethods()"></el-button>
-                <el-button size="mini" type="primary">通知采购药品</el-button>
+
+            <el-col :span="8"  style="margin-left:-613px">
+                <el-button type="primary" @click="createMethods()">查询<i class="el-icon-search el-icon--right"></i></el-button>
+                <!-- <el-button size="mini" type="primary">通知采购药品</el-button> -->
             </el-col>
         </el-row>
          <div f_l main>
         <div class="cont clearfix">
-            <ul >    
-                <li v-for="drug in drugData" :key="drug.id" style="overflow: hidden;" class="li" >
+            <ul class="ul">    
+                <li v-for="drug in drugData" :key="drug.id" style="overflow: hidden;" class="li">
                     <div :class="{'imgRed':drug.stock <=0,'img':drug.stock >0 && drug.stock <= 10}">
                         <el-link :underline="false" @click="lookDrugInfo(drug.id)">
                             <!-- imgNormal -->
@@ -144,7 +146,7 @@
         :page-sizes="[5,10,15,20]"
         :total="total"
         @current-change="changePage"
-        @size-change="handleSizeChange">
+        @size-change="handleSizeChange" class="fenye">
         </el-pagination>
     </div>
 </template>
@@ -258,7 +260,13 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.divClass{
+    margin-top: 30px;
+    margin-bottom: 15px;
+    margin-left: 5px;
+    margin-right: 15px;
+}
 .cont {
     overflow: hidden;
 }
@@ -297,4 +305,18 @@ export default {
     border-bottom: solid 3px rgb(17, 17, 17);
     border-left:  solid 3px rgb(17, 17, 17);
 }
+.seach{
+    margin-top:20px;
+    margin-left: 30px;
+}
+.mianbao{
+    margin-left: 30px;
+}
+.ul{
+    margin-left: -30px;
+}
+.fenye{
+    margin-left: 30px;
+}
+
 </style>

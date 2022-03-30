@@ -1,12 +1,18 @@
 <template>
-    <div>
+    <div class="divClass" >
+            <!-- 面包屑导航 -->
+        <el-breadcrumb separator-class="el-icon-arrow-right" class="mianbao">
+            <el-breadcrumb-item :to="{ path: '/gotoHome' }">首页</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{path: '/medicine/home'}">药品信息</el-breadcrumb-item>
+            <el-breadcrumb-item>药品详情</el-breadcrumb-item>
+        </el-breadcrumb>
         <!-- 添加查询搜索栏 -->
-        <el-row>
+        <el-row style="margin-top:24px">
             <el-col :span="6">
-                <el-input placeholder="请输入药品名称" v-model="name" class="input-with-select" clearable></el-input>
+                <el-input placeholder="请输入药品名称" v-model="name" class="input-with-select" clearable style="width:200px;margin-left:9px"></el-input>
             </el-col>
             <el-col :span="6">
-                <el-select v-model="drugType" clearable placeholder="请选择药品类别">
+                <el-select v-model="drugType" clearable placeholder="请选择药品类别" style="width:147px;margin-left:-213px">
                     <el-option 
                     v-for="type in types"
                     :key="type.value"
@@ -15,10 +21,10 @@
                     </el-option>
                 </el-select>
             </el-col>
-            <el-col :span="8">
+            <el-col :span="8" style="margin-left:-483px;margin-top:1px">
                 <el-button size="medium" type="primary" @click="createMethods()">查询<i class="el-icon-search el-icon--right"></i></el-button>
-                <el-button size="medium" type="primary" @click="batchUnloadDrug">批量上架<i class="el-icon-upload2 el-icon--right"></i></el-button>
-                <el-button size="medium" type="primary" @click="purTableVisible=true;">添加药品<i class="el-icon-plus el-icon--right"></i></el-button>
+                <el-button size="medium" type="warning" @click="batchUnloadDrug">批量上架<i class="el-icon-upload2 el-icon--right"></i></el-button>
+                <el-button size="medium" type="success" @click="purTableVisible=true;">添加药品<i class="el-icon-plus el-icon--right"></i></el-button>
             </el-col>
         </el-row>
 
@@ -33,7 +39,7 @@
             <el-table-column type="selection" ></el-table-column>
             <el-table-column label="药品名称" prop="name">
                 <template slot-scope="scope">
-                    <el-popover trigger="hover" placement="right-start" offset="10">
+                    <el-popover trigger="hover" placement="right" offset="10">
                           <el-descriptions class="margin-top" :column="3" border>
                             <el-descriptions-item>
                             <template slot="label">
@@ -82,7 +88,7 @@
 
             <el-table-column label="库存量"  prop="stock"></el-table-column>
         
-            <el-table-column label="操作" >
+            <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
                     <el-button size="mini" type="info"    @click="gotoUpdateDrug(scope.row)">编辑<i class="el-icon-edit el-icon--right"></i></el-button>
                     <el-button size="mini" type="primary" @click="oppenAddStock(scope.row.id)">添加库存<i class="el-icon-plus el-icon--right"></i></el-button>
@@ -596,4 +602,13 @@ export default {
     line-height: 178px;
     text-align: center;
   }
+  .mianbao{
+    margin-left: 10px;
+}
+.divClass{
+    margin-top: 30px;
+    margin-bottom: 15px;
+    margin-left: 5px;
+    margin-right: 15px;
+}
 </style>
