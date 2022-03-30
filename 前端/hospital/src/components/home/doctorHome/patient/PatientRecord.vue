@@ -316,7 +316,7 @@
 
 
         <el-form :model="nursingRecord">
-            <el-col :span="3">
+            <!-- <el-col :span="3">
                 <el-select v-model="nursingLevel" placeholder="护理等级">
                     <el-option label="请选择" value="" ></el-option>
                     <el-option label="一般护理等级" value="1" ></el-option>
@@ -331,7 +331,7 @@
 
             <el-col :span="1" style="margin-left:2px;">
                  <el-button type="warning" @click="nursingLevel='',paheNum1=1,pageSize1=5">清空</el-button>
-            </el-col>
+            </el-col> -->
          
         
         

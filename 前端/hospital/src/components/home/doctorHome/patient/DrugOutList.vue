@@ -13,7 +13,7 @@
                     <!-- <el-option label="处方状态" value="" ></el-option> -->
                     <el-option label="待审核" value="1" ></el-option>
                     <el-option label="待退药" value="2" ></el-option>
-                    <!-- <el-option label="已退药" value="3" ></el-option> -->
+                    <el-option label="已退药" value="3" ></el-option>
                     <!-- <el-option label="已停止" value="4" ></el-option> -->
                 </el-select>
             </el-col>
@@ -48,6 +48,12 @@
                 prop="patientName"
                 label="病人"
                 width="80">
+            </el-table-column>
+
+            <el-table-column
+                prop="no"
+                label="病人编号"
+                width="140">
             </el-table-column>
 
             <el-table-column
@@ -104,10 +110,18 @@
                 label="退药状态"
                 width="100">
                 <template slot-scope="scope">
-                <span v-if="scope.row.outStatus=='1'">待审核</span>
-                <span v-if="scope.row.outStatus=='2'">待退药</span>
-                <span v-if="scope.row.outStatus=='3'">已退药</span>
-                <span v-if="scope.row.outStatus=='4'">已撤销</span>
+                <span v-if="scope.row.outStatus=='1'">
+                  <el-tag type="danger">待审核</el-tag>
+                  </span>
+                <span v-if="scope.row.outStatus=='2'">
+                  <el-tag type="warning">待退药</el-tag>
+                  </span>
+                <span v-if="scope.row.outStatus=='3'">
+                  <el-tag>已退药</el-tag>
+                  </span>
+                <span v-if="scope.row.outStatus=='4'">
+                  <el-tag type="info">已撤销</el-tag>
+                  </span>
                 <!-- <span v-if="scope.row.outStatus=='5'">已停止</span> -->
                 </template>
 
@@ -116,11 +130,13 @@
             <el-table-column label="操作">
                <template slot-scope="scope">
                   <!-- <el-button size="mini" type="primary" @click="gotoAddDrugOut(scope.row.id)">编辑</el-button> -->
-                  <el-button size="mini" type="danger" @click="gotoStopDrugOut( 
+                  <el-button v-if='scope.row.outStatus ==1'
+                  size="mini" type="danger" @click="gotoStopDrugOut( 
                       scope.row.id,
                       scope.row.patientName,
                       scope.row.doctorName,
                       scope.row.drugName,
+                      scope.row.drugId,
                       scope.row.drugType,
                       scope.row.specifications,
                       scope.row.num,
@@ -264,6 +280,7 @@ export default {
         patientName:'',
         doctorName:'',
         drugName:'',
+        drugId:'',
         drugType:'',
         specifications:'',
         num:'',
@@ -278,6 +295,7 @@ export default {
         patientName,
         doctorName,
         drugName,
+        drugId,
         drugType,
         specifications,
         num,
@@ -290,6 +308,7 @@ export default {
         patientName:patientName,
         doctorName:doctorName,
         drugName: drugName,
+        drugId:drugId,
         drugType:drugType,
         specifications:specifications,
         num:num,

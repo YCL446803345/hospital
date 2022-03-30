@@ -5,11 +5,14 @@ import com.github.pagehelper.PageInfo;
 import com.woniu.entity.*;
 import com.woniu.mapper.*;
 
+import com.woniu.service.DrugService;
+import com.woniu.service.PrescriptionBillService;
 import com.woniu.service.PrescriptionDrugService;
 
 import com.woniu.service.PrescriptionService;
 import com.woniu.util.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.yaml.snakeyaml.util.ArrayUtils;
@@ -33,6 +36,8 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     private PrescriptionDrugMapper prescriptionDrugMapper;
     @Autowired
     private DrugMapper drugMapper;
+    @Autowired
+    private PrescriptionBillMapper prescriptionBillMapper;
 
     //处方详情+模糊查询
     public List<Prescription> getPresDrugByMany(String doctorName, String nurseName,String preName) {
@@ -187,9 +192,9 @@ public class PrescriptionServiceImpl implements PrescriptionService {
         return prescriptionPageInfo;
 		}
 
-    @Override
+    //下达处方
     public void addPrescription(Prescription prescription) {
-        //新增处方表数据
+
         prescription.setCreateTime(new Date());
         prescription.setPrescriptionStatus(1);
         prescriptionMapper.addPrescription(prescription);
@@ -200,6 +205,19 @@ public class PrescriptionServiceImpl implements PrescriptionService {
         prescriptionDrug.setDrugId(prescription.getDrugId());
         prescriptionDrug.setNum(prescription.getNum());
         prescriptionDrugMapper.addPrescriptionDrug(prescriptionDrug);
+
+        Drug drug = new Drug();
+        drug.setId(prescription.getDrugId());
+        float price = drugMapper.findPriceById(drug);
+        Integer num = prescription.getNum();
+        float money = price * num;
+
+        //下达处方新增账单,状态为1
+        PrescriptionBill prescriptionBill = new PrescriptionBill();
+        prescriptionBill.setPrescriptionId(prescription.getId());
+        prescriptionBill.setMoney(money);
+        prescriptionBill.setStatus("1");
+        prescriptionBillMapper.addPrescriptionBill(prescriptionBill);
 
     }
 }

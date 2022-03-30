@@ -19,9 +19,8 @@
 
             <el-col :span="2">
                 <el-select v-model="adviceStatus" placeholder="医嘱状态">
-                    <!-- <el-option label="医嘱状态" value="" ></el-option> -->
                     <el-option label="待校对" value="1" ></el-option>
-                    <el-option label="已校对" value="2" ></el-option>
+                    <el-option label="待执行" value="2" ></el-option>
                     <el-option label="已执行" value="3" ></el-option>
                     <!-- <el-option label="已停止" value="4" ></el-option> -->
                 </el-select>
@@ -44,6 +43,7 @@
         <el-table :data="medicalAdviceList" style="width: 100%">
             <el-table-column type="index" :index='getIndex' label="序号" width="50"></el-table-column>
             <el-table-column prop="patientName" label="病人" width="80"></el-table-column>
+            <el-table-column prop="no" label="病人编号" width="140"></el-table-column>
             <el-table-column prop="doctorName" label="主治医生" width="80"></el-table-column>
             <el-table-column prop="adviceCategory" label="医嘱类型" width="180">
                 <template slot-scope="scope">
@@ -54,23 +54,6 @@
             </el-table-column>
 
             <el-table-column prop="projectName" label="项目类型" width="180">
-                <!-- <template slot-scope="scope">
-                    <span v-if="scope.row.projectId=='1'">内外科查体</span>
-                    <span v-if="scope.row.projectId=='2'">眼科视力检查</span>
-                    <span v-if="scope.row.projectId=='3'">尿检</span>
-                    <span v-if="scope.row.projectId=='4'">乙肝</span>
-                    <span v-if="scope.row.projectId=='5'">血脂</span>
-                    <span v-if="scope.row.projectId=='6'">血糖</span>
-                    <span v-if="scope.row.projectId=='7'">头颅CT</span>
-                    <span v-if="scope.row.projectId=='8'">肺部CT</span>
-                    <span v-if="scope.row.projectId=='9'">核磁共振成像</span>
-                    <span v-if="scope.row.projectId=='10'">开颅手术</span>
-                    <span v-if="scope.row.projectId=='11'">脂肪瘤切除手术</span>
-                    <span v-if="scope.row.projectId=='12'">痔疮切除手术</span>
-                    <span v-if="scope.row.projectId=='13'">包皮切除手术</span>
-                    <span v-if="scope.row.projectId=='14'">清创缝合术</span>
-                    <span v-if="scope.row.projectId=='15'">肌腱吻合术</span>
-                </template> -->
             </el-table-column>
 
             <el-table-column prop="adviceDescription" label="医嘱描述" width="180">
@@ -78,10 +61,18 @@
 
             <el-table-column prop="adviceStatus" label="医嘱状态" width="180">
                 <template slot-scope="scope">
-                <span v-if="scope.row.adviceStatus=='1'">待校对</span>
-                <span v-if="scope.row.adviceStatus=='2'">已校对</span>
-                <span v-if="scope.row.adviceStatus=='3'">已执行</span>
-                <span v-if="scope.row.adviceStatus=='4'">已停止</span>
+                <span v-if="scope.row.adviceStatus=='1'">
+                  <el-tag type="danger">待校对</el-tag>
+                  </span>
+                <span v-if="scope.row.adviceStatus=='2'">
+                  <el-tag type="success">待执行</el-tag>
+                  </span>
+                <span v-if="scope.row.adviceStatus=='3'">
+                  <el-tag>已执行</el-tag>
+                  </span>
+                <span v-if="scope.row.adviceStatus=='4'">
+                  <el-tag type="info">已停止</el-tag>
+                  </span>
                 </template>
             </el-table-column>
 
@@ -98,7 +89,8 @@
             
             <el-table-column label="操作">
                <template slot-scope="scope">
-                  <el-button size="mini" type="primary" @click="gotoUpdateMedicalAdvice(
+                  <el-button size="mini" type="primary" v-if='scope.row.adviceStatus==3'
+                  @click="gotoUpdateMedicalAdvice(
                       scope.row.id,
                       scope.row.patientName,
                       scope.row.doctorName,
@@ -109,7 +101,8 @@
                       scope.row.adviceStatus,
                       scope.row.createTime
                       )">项目执行</el-button>
-                  <el-button size="mini" type="success" @click="gotoAddPrescription(
+                  <el-button size="mini" type="success" v-if='scope.row.adviceStatus==3'
+                  @click="gotoAddPrescription(
                       scope.row.id,
                       scope.row.patientName,
                       scope.row.doctorName,
@@ -120,7 +113,7 @@
                       scope.row.projectName,
                       scope.row.adviceDescription
                       )">下达处方</el-button>
-                  <el-button size="mini" type="danger"
+                  <el-button size="mini" type="danger" v-if='scope.row.adviceStatus==1'
                   @click="gotoStopMedicalAdvice( scope.row.id)">停止医嘱</el-button>
                </template>
             </el-table-column>
@@ -162,8 +155,9 @@
      
           <el-descriptions-item>
             <template slot="label"><i class="el-icon-tickets"></i>医嘱状态</template>
-            {{ updateMedicalAdvice.adviceStatus ==='1'?'待执行': 
-               updateMedicalAdvice.adviceStatus ==='2'?'已执行':'已撤销' }}
+            {{ updateMedicalAdvice.adviceStatus ==='1'?'待校对': 
+               updateMedicalAdvice.adviceStatus ==='2'?'待执行':
+               updateMedicalAdvice.adviceStatus ==='3'?'已执行':'已停止' }}
           </el-descriptions-item>
 
           <el-descriptions-item>
@@ -221,20 +215,6 @@
           <el-descriptions-item>
             <template slot="label"><i class="el-icon-tickets"></i>项目类型</template>
             {{ addPrescription.projectName }}
-            <!-- {{ addPrescription.projectId ==='1'?'内外科查体': 
-               addPrescription.projectId ==='2'?'眼科视力检查': 
-               addPrescription.projectId ==='3'?'尿检': 
-               addPrescription.projectId ==='4'?'乙肝': 
-               addPrescription.projectId ==='5'?'血脂': 
-               addPrescription.projectId ==='6'?'血糖': 
-               addPrescription.projectId ==='7'?'头颅CT': 
-               addPrescription.projectId ==='8'?'肺部CT': 
-               addPrescription.projectId ==='9'?'核磁共振成像': 
-               addPrescription.projectId ==='10'?'开颅手术': 
-               addPrescription.projectId ==='11'?'脂肪瘤切除手术': 
-               addPrescription.projectId ==='12'?'痔疮切除手术': 
-               addPrescription.projectId ==='13'?'包皮切除手术': 
-               addPrescription.projectId ==='14'?'清创缝合术':'肌腱吻合术' }} -->
           </el-descriptions-item>
         
 

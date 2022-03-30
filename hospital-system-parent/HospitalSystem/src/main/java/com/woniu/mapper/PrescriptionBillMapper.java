@@ -5,6 +5,8 @@ import com.woniu.entity.Patient;
 import com.woniu.entity.PrescriptionBill;
 import com.woniu.entity.PrescriptionBillExample;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 
 
@@ -74,4 +76,8 @@ public interface PrescriptionBillMapper {
             " from HOS_prescription_bill pb,HOS_patient p,HOS_prescription pr\n" +
             " where p.id = pr.patient_id and p.`status` = 3 and pr.id = pb.prescription_id")
     List<PrescriptionBill> selectOutPatientAll ( );
+
+    //下达处方新增处方账单
+    @Insert("insert into HOS_prescription_bill(prescription_id,money,status) values(#{prescriptionId},#{money},#{status})")
+    void addPrescriptionBill(PrescriptionBill prescriptionBill);
 }

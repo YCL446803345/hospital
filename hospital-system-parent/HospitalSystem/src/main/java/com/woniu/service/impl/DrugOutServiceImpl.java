@@ -68,7 +68,12 @@ public class DrugOutServiceImpl implements DrugOutService {
 
     //撤销退药
     public void gotoStopDrugOutById(DrugOut drugOut) {
+        //删除退药表Id对应的数据
         drugOutMapper.gotoStopDrugOutById(drugOut);
+        //删除退药表的同时,删除退药药品中间表的数据
+        DrugOutDrug drugOutDrug = new DrugOutDrug();
+        drugOutDrug.setDrugOutId(drugOut.getId());
+        drugOutDrugMapper.gotoStopDrugOutDrugById(drugOutDrug);
     }
 
 

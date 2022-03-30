@@ -46,7 +46,12 @@ public class InHospitalTableServiceImpl implements InHospitalTableService {
         patient.setAge(inHospitalTable.getPatientAge());
         patient.setCardId(inHospitalTable.getCardId());
         patient.setPhone(inHospitalTable.getTelephone());
-        patient.setGender(inHospitalTable.getPatientSex());
+        if(inHospitalTable.getPatientSex().equals("男")){
+            patient.setGender("1");
+        }else if(inHospitalTable.getPatientSex().equals("女")){
+            patient.setGender("2");
+        }
+//        patient.setGender(inHospitalTable.getPatientSex());
         patient.setDeptId(inHospitalTable.getDeptId());
         patient.setBaseDesc(inHospitalTable.getReason());
         patient.setStatus("9");

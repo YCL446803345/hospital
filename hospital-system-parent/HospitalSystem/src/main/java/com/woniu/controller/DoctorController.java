@@ -4,13 +4,18 @@ import com.github.pagehelper.PageInfo;
 import com.woniu.entity.*;
 import com.woniu.service.*;
 import com.woniu.util.ResponseResult;
+import com.woniu.util.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.BoundValueOperations;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 
 //医生站Controller
@@ -39,7 +44,20 @@ public class DoctorController {
     @Autowired
     private CaseService caseService;
 
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
+    @GetMapping("doctor/addRedisToken")
+    public ResponseResult<String> getToken(){
+        //生产随机数,存入redis
+        Date date = new Date();
+        String nowTime = TimeUtil.getNowTime(date);
+        int i = new Random().nextInt(10000);
+        String redisToken = nowTime+i;
+        BoundValueOperations<String, String> ops = redisTemplate.boundValueOps(redisToken);
+        ops.set(redisToken);
+        return new ResponseResult<String>(redisToken,"OK",200);
+    }
 
     //驳回出院申请单
     @PostMapping("doctor/gotoDeleteInHospitalTable")
@@ -49,14 +67,28 @@ public class DoctorController {
         return new ResponseResult<String>(200,"添加成功");
     }
 
-
     //添加住院申请单
     @PostMapping("doctor/addInHospitalTable")
     public ResponseResult<String> addInHospitalTable(@RequestBody InHospitalTable inHospitalTable){
         inHospitalTableService.addInHospitalTable(inHospitalTable);
-        System.out.println("添加成功");
         return new ResponseResult<String>(200,"添加成功");
     }
+
+
+    //添加住院申请单
+//    @PostMapping("doctor/addInHospitalTable")
+//    public ResponseResult<String> addInHospitalTable(@RequestParam("redisToken") String redisToken,@RequestBody InHospitalTable inHospitalTable){
+//        //直接删除redisToken,删除成功代表第一次请求,否则失败
+//        if (redisTemplate.delete(redisToken)) {
+//            try {
+//                inHospitalTableService.addInHospitalTable(inHospitalTable);
+//                return new ResponseResult<String>(200,"添加成功");
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        return new ResponseResult<String>(500,"请不要频繁点击");
+//    }
 
     //撤销退药
     @PostMapping("doctor/stopDrugOut")

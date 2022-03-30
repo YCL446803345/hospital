@@ -76,13 +76,13 @@ public class DrugInfoController {
     @PostMapping("drug/updateDrugStatus")
     public ResponseResult<String> updateDrugStatus(@RequestParam("redisToken") String redisToken,@RequestParam("id") Integer id){
         //直接删除redisToken,删除成功代表第一次请求,否则失败
-        if (redisTemplate.delete(redisToken)){
+        if (redisTemplate.delete(redisToken)) {
             try {
                 Drug drug = new Drug();
                 drug.setId(id);
                 drug.setStatus("0");
                 drugService.updateDrug(drug);
-                return new ResponseResult<String>(200,"OK");
+                return new ResponseResult<String>(200, "OK");
             } catch (Exception e) {
                 e.printStackTrace();
             }

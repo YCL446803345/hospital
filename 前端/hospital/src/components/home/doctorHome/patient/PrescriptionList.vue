@@ -10,10 +10,10 @@
 
             <el-col :span="2">
                 <el-select v-model="prescriptionStatus" placeholder="处方状态">
-                    <!-- <el-option label="处方状态" value="" ></el-option>
+                    <!-- <el-option label="处方状态" value="" ></el-option> -->
                     <el-option label="待审核" value="1" ></el-option>
                     <el-option label="待发药" value="2" ></el-option>
-                    <el-option label="已发药" value="3" ></el-option> -->
+                    <el-option label="待执行" value="3" ></el-option>
                     <el-option label="已执行" value="4" ></el-option>
                     <!-- <el-option label="已退药" value="5" ></el-option> -->
                 </el-select>
@@ -49,7 +49,13 @@
              <el-table-column
                 prop="patientName"
                 label="病人"
-                width="80">
+                width="70">
+            </el-table-column>
+
+            <el-table-column
+                prop="no"
+                label="病人编号"
+                width="120">
             </el-table-column>
 
             <el-table-column
@@ -67,7 +73,7 @@
             <el-table-column
                 prop="drugTypeName"
                 label="类型"
-                width="80">
+                width="50">
             </el-table-column>
 
             <el-table-column
@@ -105,11 +111,21 @@
                 label="处方状态"
                 width="80">
                 <template slot-scope="scope">
-                <span v-if="scope.row.prescriptionStatus=='1'">待审核</span>
-                <span v-if="scope.row.prescriptionStatus=='2'">已审核</span>
-                <span v-if="scope.row.prescriptionStatus=='3'">已发药</span>
-                <span v-if="scope.row.prescriptionStatus=='4'">已执行</span>
-                <span v-if="scope.row.prescriptionStatus=='5'">已退药</span>
+                <span v-if="scope.row.prescriptionStatus=='1'">
+                  <el-tag type="danger">待审核</el-tag>
+                  </span>
+                <span v-if="scope.row.prescriptionStatus=='2'">
+                  <el-tag type="warning">待发药</el-tag>
+                  </span>
+                <span v-if="scope.row.prescriptionStatus=='3'">
+                  <el-tag type="success">待执行</el-tag>
+                  </span>
+                <span v-if="scope.row.prescriptionStatus=='4'">
+                  <el-tag>已执行</el-tag>
+                  </span>
+                <span v-if="scope.row.prescriptionStatus=='5'">
+                  <el-tag type="info">已退药</el-tag>
+                  </span>
                 </template>
 
             </el-table-column>
@@ -125,7 +141,8 @@
             <el-table-column label="操作">
                <template slot-scope="scope">
                   <!-- <el-button size="mini" type="primary" @click="gotoAddDrugOut(scope.row.id)">退药</el-button> -->
-                  <el-button size="mini" type="danger" @click="gotoAddDrugOut(
+                  <el-button  v-if='scope.row.prescriptionStatus==4'
+                  size="mini" type="danger" @click="gotoAddDrugOut(
                       scope.row.id,
                       scope.row.patientName,
                       scope.row.doctorName,

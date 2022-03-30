@@ -11,9 +11,10 @@
             <el-col :span="2">
                 <el-select v-model="leaveStatus" placeholder="出院状态">
                     <!-- <el-option label="出院状态" value="" ></el-option> -->
-                    <!-- <el-option label="住院中" value="1" ></el-option> -->
                     <el-option label="待审核" value="2" ></el-option>
-                    <!-- <el-option label="已审核" value="4" ></el-option> -->
+                    <el-option label="已审核" value="4" ></el-option>
+                    <el-option label="已出院" value="3" ></el-option>
+                    <el-option label="已撤销" value="1" ></el-option>
                 </el-select>
             </el-col>
 
@@ -43,17 +44,65 @@
                 width="50">
             </el-table-column>
 
-             <el-table-column
+            <el-table-column
                 prop="patientName"
-                label="病人"
+                label="姓名"
                 width="80">
             </el-table-column>
 
+            <el-table-column
+                prop="leaveNo"
+                label="病人编号"
+                width="150">
+            </el-table-column>
+
+            
             <el-table-column
                 prop="doctorName"
                 label="主治医生"
                 width="80">
             </el-table-column>
+
+            <el-table-column
+                prop="leaveGender"
+                label="性别"
+                width="80">
+                <template slot-scope="scope">
+                <span v-if="scope.row.leaveGender=='2'">
+                  <el-tag type="danger">女</el-tag>
+                  </span>
+                <span v-if="scope.row.leaveGender=='1'">
+                  <el-tag>男</el-tag>
+                  </span>
+                </template>
+
+            </el-table-column>
+
+            <el-table-column
+                prop="leaveAge"
+                label="年龄"
+                width="80">
+            </el-table-column>
+
+            <el-table-column
+                prop="leavePhone"
+                label="联系方式"
+                width="120">
+            </el-table-column>
+
+            <el-table-column
+                prop="cardId"
+                label="身份证号"
+                width="180">
+            </el-table-column>
+
+            <el-table-column
+                prop="leaveBalance"
+                label="余额"
+                width="120">
+            </el-table-column>
+
+
 
             <el-table-column
                 prop="leaveDescription"
@@ -63,7 +112,7 @@
 
             <el-table-column
                 prop="leaveTime"
-                label="出院日期"
+                label="日期"
                 width="180">
             </el-table-column>
 
@@ -71,14 +120,19 @@
                 prop="leaveStatus"
                 label="出院状态"
                 width="80">
-                <!-- <template slot-scope="scope">
-                         {{scope.row.leaveStatus===1 ?'住院中':'已出院'}}
-                </template> -->
                 <template slot-scope="scope">
-                <span v-if="scope.row.leaveStatus=='1'">住院中</span>
-                <span v-if="scope.row.leaveStatus=='2'">待审核</span>
-                <span v-if="scope.row.leaveStatus=='4'">已审核</span>
-                <span v-if="scope.row.leaveStatus=='3'">已出院</span>
+                <span v-if="scope.row.leaveStatus=='1'">
+                    <el-tag type="info">已撤销</el-tag>
+                    </span>
+                <span v-if="scope.row.leaveStatus=='2'">
+                    <el-tag type="danger">待审核</el-tag>
+                    </span>
+                <span v-if="scope.row.leaveStatus=='4'">
+                    <el-tag type="success">已审核</el-tag>
+                    </span>
+                <span v-if="scope.row.leaveStatus=='3'">
+                    <el-tag>已出院</el-tag>
+                    </span>
                 </template>
 
             </el-table-column>
@@ -94,7 +148,8 @@
             <el-table-column label="操作">
                <template slot-scope="scope">
                   <!-- <el-button size="mini" type="primary" @click="gotoUpdateConsultationApplication(scope.row.id)">编辑</el-button> -->
-                  <el-button size="mini" type="danger" @click="gotoCancelLeaveHospital( scope.row.id)">撤 销</el-button>
+                  <el-button v-if='scope.row.leaveStatus==2'
+                  size="mini" type="danger" @click="gotoCancelLeaveHospital( scope.row.id)">撤 销</el-button>
                </template>
             </el-table-column>
         </el-table>

@@ -47,7 +47,7 @@
             <el-table-column
                 prop="caseDescription"
                 label="症状描述"
-                width="280">
+                width="180">
             </el-table-column>
 
             <el-table-column
@@ -141,7 +141,6 @@ export default {
 
       //查询出院列表
         search(){
-            
             console.log("---")
             this.$axios.get("/api/doctor/getCaseList",{params:{
             spare1:this.spare1,
@@ -160,6 +159,7 @@ export default {
         },
         changeSize(value){
             this.pageSize=value;
+            // this.pageNum=1;
             this.search();
         },
         changePage(value){
