@@ -15,6 +15,18 @@
             <el-input v-model="user.password" placeholder="请输入密码" prop="password"></el-input>
           </div>
           </el-form-item>
+          <el-form-item prop="spare1">
+          <div class="inputElement" >
+            <el-input v-model="user.spare1" placeholder="请输入邮箱" prop="spare1"></el-input>
+            <el-button type="primary" v-if="msg=='点击发送验证码'"  @click="sendCheck()" plain>{{msg}}</el-button>
+            <el-button type="primary" v-if="msg!='点击发送验证码'" disabled plain>{{msg}}</el-button>
+          </div>
+          </el-form-item>
+          <el-form-item prop="spare2">
+          <div class="inputElement" >
+            <el-input  maxlength="4" v-model="user.spare2" placeholder="验证码" prop="spare2"></el-input>
+          </div>
+          </el-form-item>
           <div align="center">
           <el-button type="primary" icon="el-icon-check" @click="doRegister('loginForm')" >提交</el-button>
           <el-button type="primary" icon="el-icon-close" @click="back()" >返回</el-button>
@@ -29,38 +41,102 @@
 import qs from 'qs'
 export default {
    data() {
+      var checkPhone = (rule, value, callback) => {
+    const phoneReg = /^1[3|4|5|7|8][0-9]{9}$/
+    if (!value) {
+      return callback(new Error('电话号码不能为空'))
+    }
+    setTimeout(() => {
+      // Number.isInteger是es6验证数字是否为整数的方法,但是我实际用的时候输入的数字总是识别成字符串
+      // 所以我就在前面加了一个+实现隐式转换
+
+      if (!Number.isInteger(+value)) {
+        callback(new Error('请输入数字值'))
+      } else {
+        if (phoneReg.test(value)) {
+          callback()
+        } else {
+          callback(new Error('电话号码格式不正确'))
+        }
+      }
+    }, 100)
+  }
+  var checkEmail = (rule, value, callback) => {
+    const mailReg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/
+    if (!value) {
+      return callback(new Error('邮箱不能为空'))
+    }
+    setTimeout(() => {
+      if (mailReg.test(value)) {
+        callback()
+      } else {
+        callback(new Error('请输入正确的邮箱格式'))
+      }
+    }, 100)
+  }
+
+
       return {
             imgSrc:require("../../assets/css/image/用户注册.jpg"),   //背景图片
             user: {
                 telephone: "",
-                password: ""
+                password: "",
+                spare1:'',
+                spare2:'',
             },
+            time:60,
+            msg:"点击发送验证码",
             rules:{ 
-                telephone:[
-                        {required: true, message: '请输入手机号', trigger: 'blur'},
-                        { min: 11, max: 11, message: '长度为 11 个字符', trigger: 'blur' },
+                // telephone:[
+                //         {required: true, message: '请输入手机号', trigger: 'blur'},
+                //         { min: 11, max: 11, message: '长度为 11 个字符', trigger: 'blur' },
                         
-                    ],
+                //     ],
                 password:[
                         {required: true, message: '请输入密码', trigger: 'blur'},
                         { min: 3, max: 3, message: '长度为3 个字符', trigger: 'blur' }
-                ]
+                ],
+                telephone: [
+                  { validator: checkPhone, trigger: 'blur' }
+                ],
+                spare1: [
+                  { validator: checkEmail, trigger: 'blur' }
+                ],
+                spare2:[
+                        {required: true, message: '请输入验证码', trigger: 'blur'},
+                        // {len:4, type: 'number',message: '长度为4个数字', trigger: 'blur' },
+                    ]
+
             }, 
       }
    },
    created(){
 
    },
-   methods:{    
-back(){
-  this.$router.push('/gotoUserLogin')
-},
+   methods:{  
+     //发送验证码
+     sendCheck(){
+        this.$axios.get("/api/sendCheck",{params:{email:this.user.spare1}})
+        this.changeButton();
+     },
+     //验证码按钮变化
+    changeButton(){ 
+      if(this.time >= 0){
+           window.setTimeout(()=>{
+             this.msg = "已发送,请"+this.time+"秒后再点击";
+             this.time = this.time - 1;
+            this.changeButton();
+          },1000)
+      }else{
+        this.msg = "点击发送验证码";
+        this.time = 60;
+      }
+    },
+    back(){
+      this.$router.push('/gotoUserLogin')
+    },
      doRegister(forName){
-
         let data = {telephone:this.user.telephone,password:this.user.password}
-     
-
-
         let reqUrl = qs.stringify(data)
             this.$refs[forName].validate((valid)=>{
               //表单验证通过
@@ -75,19 +151,31 @@ back(){
               duration: 600,
                 duration:2000,
                 onClose:()=>{
-        //跳转页面或执行方法
-        this.$router.push('/gotoUserLogin')
-    }
-            });
-            
-          } else {
-            this.$message({
+                  //跳转页面或执行方法
+                  this.$router.push('/gotoUserLogin')
+              }
+            });  
+          } else if(res.data.status == 888){
+               this.$message({
               showClose: true,
-              message: "注册失败",
+              message: "验证码错误,注册失败",
               type: "error",
               duration: 600,
+              duration:2000,
+              onClose:()=>{
+                 this.user.spare2 = "";
+              }
             });
-          }
+            }else{
+              {
+              this.$message({
+                showClose: true,
+                message: "注册失败",
+                type: "error",
+                duration: 600,
+              });
+            }
+            }
         });
       }else{
                   //验证不通过

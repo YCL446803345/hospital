@@ -2,12 +2,15 @@ package com.woniu.mapper;
 
 import com.woniu.entity.HospitalizationBill;
 import com.woniu.entity.HospitalizationBillExample;
+
+import java.util.Date;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import org.omg.PortableInterceptor.INACTIVE;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -56,4 +59,9 @@ public interface HospitalizationBillMapper {
             " from HOS_hospitalization_bill hb,HOS_patient p\n" +
             " where p.id = hb.patient_id and p.`status` = 3")
     List<HospitalizationBill> selectOutPatientAll ();
+
+    @Update(" update HOS_hospitalization_bill hb,HOS_patient p\n" +
+            " set hb.end_time = #{endTime} \n" +
+            "where hb.patient_id = p.id and p.id = #{id} ")
+    void updateEndTime (@Param("endTime") Date endTime, @Param("id")Integer id);
 }

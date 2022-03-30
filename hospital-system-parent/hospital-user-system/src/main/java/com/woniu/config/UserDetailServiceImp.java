@@ -41,6 +41,10 @@ public class UserDetailServiceImp implements UserDetailsService {
         perCodes.forEach(per->{
             authorities.add(new SimpleGrantedAuthority(per));
         });
+        //修改用户状态为为缴纳手续费
+        user.setSpare3("1"); //1为未交费,2为已缴费
+        userMapper.updateByPrimaryKey(user);
+
         //根据数据库查询信息，封装UserDetails对象，并返回
         UserDetails userDetails = new org.springframework.security.core.userdetails.User(user.getTelephone(),user.getPassword(),authorities);
         return userDetails;

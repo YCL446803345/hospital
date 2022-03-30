@@ -62,7 +62,7 @@ public class HospitalizationController {
     public ResponseEntity<String> advancePayment(Integer id,String status,String token){
         if(redisTemplate.delete(token)){
             Float aFloat = hospitalizationBillServer.updateHospitalizationBill(id,status);
-            if(aFloat > 0){
+            if(aFloat >= 0){
                 return new ResponseEntity<> ("OK", HttpStatus.OK);
             }else{
                 return new ResponseEntity<>(String.format("%.2f", aFloat),HttpStatus.OK);

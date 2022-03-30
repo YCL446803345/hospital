@@ -17,7 +17,7 @@ public class HospitalUserSystemApplication {
         SpringApplication.run(HospitalUserSystemApplication.class, args);
     }
     //密码加密
-    @Bean
+    @Bean("PasswordEncoder")
     public PasswordEncoder getPassword(){
         return new BCryptPasswordEncoder();
     }

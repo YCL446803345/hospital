@@ -158,7 +158,9 @@ public class HospitalizationBillServerImpl implements HospitalizationBillServer 
             }
             //缴费后修改缴费时间
             hospitalizationBillMapper.updateDate(TimeUtil.getNowTime(new Date()),id);
-
+            if(status!=null){
+                hospitalizationBillMapper.updateEndTime(new Date(),id);
+            }
             //向缴费记录表中添加一条缴费数据
             PaymentRecord paymentRecord = new PaymentRecord();
             paymentRecord.setPatientId(id);
@@ -304,6 +306,12 @@ public class HospitalizationBillServerImpl implements HospitalizationBillServer 
         }
         patientMapper.updateByPrimaryKeySelective(patient);
 
+        //同时向住院账单表中添加一条数据,记录病人住院账单
+        HospitalizationBill hospitalizationBill = new HospitalizationBill();
+        hospitalizationBill.setStartTime(new Date());
+        hospitalizationBill.setPatientId(id);
+        hospitalizationBillMapper.insert(hospitalizationBill);
+
         //向缴费记录表中添加一条缴费数据
         PaymentRecord paymentRecord = new PaymentRecord();
         paymentRecord.setPatientId(id);
@@ -344,7 +352,7 @@ public class HospitalizationBillServerImpl implements HospitalizationBillServer 
             //出院也可以用这个方法
             if(hospitalizationBill.getStartTime()!=null){
                 if(hospitalizationBill.getEndTime()!=null){
-                    i = timeOperation(hospitalizationBill.getStartTime(), hospitalizationBill.getEndTime());
+                    i = timeOperation(hospitalizationBill.getStartTime() ,hospitalizationBill.getEndTime());
                 }else{
                     i = timeOperation(hospitalizationBill.getStartTime(), new Date());
                 }

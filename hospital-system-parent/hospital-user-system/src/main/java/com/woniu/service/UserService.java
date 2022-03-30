@@ -14,6 +14,10 @@ public interface UserService {
     //添加职工
     void addUser(User User);
 
+    User selectUserByPhone (String phone);
+
+    void commonEmail (String email);
+
 //    void deleteWorkerById(Integer id);
 //
 //    void updateWorker(Worker worker);
