@@ -59,8 +59,9 @@ import call from "../components/home/callHome/call.vue" //医生叫号
 
 //人事组件
 import HumanAffairs from '../components/home/hrHome/HumanAffairs ' // 职工管理
-import Scheduling from '../components/home/hrHome/Scheduling' // 排班管理
+//import Scheduling from '../components/home/hrHome/Scheduling' // 排班管理
 import Perms from '../components/home/hrHome/Perms' // 权限管理
+import Scheduling from '../components/home/hrHome/a' // 权限管理
 
 //收费组件
 import costInfo from '../components/home/payHome/costInfo.vue' // 费用信息列表

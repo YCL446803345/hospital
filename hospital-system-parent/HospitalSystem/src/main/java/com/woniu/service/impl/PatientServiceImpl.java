@@ -3,10 +3,10 @@ package com.woniu.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.woniu.entity.*;
-import com.woniu.mapper.BedMapper;
-import com.woniu.mapper.HospitalizationBillMapper;
-import com.woniu.mapper.PatientMapper;
+import com.woniu.mapper.*;
+import com.woniu.service.MedicalAdviceService;
 import com.woniu.service.PatientService;
+import com.woniu.service.PrescriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sun.security.util.Length;
@@ -26,6 +26,12 @@ public class PatientServiceImpl implements PatientService {
 
     @Autowired
     private HospitalizationBillMapper hospitalizationBillMapper;
+
+    @Autowired
+    private MedicalAdviceMapper medicalAdviceMapper;
+
+    @Autowired
+    private PrescriptionMapper prescriptionMapper;
 
     @Override
     public PageInfo<Patient> findPatients(Patient patient, Integer pageNum, Integer pageSize) {
@@ -120,6 +126,14 @@ public class PatientServiceImpl implements PatientService {
     public PageInfo<Patient> findPatientsByChangeDept(Patient patient, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
         List<Patient> patientList = patientMapper.findPatientsByChangeDept(patient);
+        if(patientList.size()>0){
+            for (int i = 0; i < patientList.size(); i++) {
+                Integer medicalAdvicesNeedForCheckNum=medicalAdviceMapper.getMedicalAdvicesNeedForCheckNum(patientList.get(i).getId());
+                Integer prescriptionNeedForCheckNum=prescriptionMapper.getPrescriptionNeedForCheckNum(patientList.get(i).getId());
+                patientList.get(i).setMedicalAdviceNeedForCheck(medicalAdvicesNeedForCheckNum);
+                patientList.get(i).setPrescriptionNeedForCheck(prescriptionNeedForCheckNum);
+            }
+        }
         PageInfo<Patient> patientPageInfo = new PageInfo<>(patientList);
         return patientPageInfo;
     }

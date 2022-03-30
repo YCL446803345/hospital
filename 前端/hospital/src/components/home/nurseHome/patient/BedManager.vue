@@ -66,20 +66,21 @@
                                   {{bed.status==1?'未使用':'使用中'}}
                               </el-tag> -->
 
-                              {{bed.code}}&nbsp;&nbsp;
-                              {{bed.deptName}}&nbsp;&nbsp;
+                              {{bed.code}}&nbsp;
+                              {{bed.deptName}}&nbsp;
                               {{bed.status==1?'未使用':'使用中'}}
-                          </span>
-                    
-                        <div class="bottom clearfix">
-                              <!-- <time class="time">{{ currentDate }}</time> -->
+                               <!-- <time class="time">{{ currentDate }}</time> -->
                               <el-button type="success" class="button" 
                                   @click="gotoBedInfo(bed.id,bed.deptName,bed.patientName,bed.code,bed.patientNo,bed.status,bed.patientId)">详情</el-button>
                               <el-button v-if='bed.status==2' type="danger" class="button" 
-                              @click="stopUseBed(bed.id,bed.patientId,bed.deptId)">停止床位</el-button>
+                              @click="stopUseBed(bed.id,bed.patientId,bed.deptId)">停止</el-button>
 
                               <!-- <el-button v-if='bed.status==1' type="info" class="button" disabled size='medium'
                               @click="stopUseBed(bed.id,bed.patientId)">停止床位</el-button> -->
+                          </span>
+                    
+                        <div class="bottom clearfix">
+                             
                         </div>
                     </div>
                   </div>
@@ -324,7 +325,7 @@ export default {
             .then(res=>{
                console.log(res.data);
                 this.deptList=res.data;
-            })
+        })
       this.headers={tokenStr:window.localStorage.getItem('tokenStr')};
    },
    methods:{

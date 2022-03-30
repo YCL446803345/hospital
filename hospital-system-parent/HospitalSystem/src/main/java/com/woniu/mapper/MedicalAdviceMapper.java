@@ -80,4 +80,7 @@ public interface MedicalAdviceMapper {
             "<if test='adviceCategory!=null and adviceCategory != \"\"'>and m.advice_category = #{adviceCategory}</if>" +
             "</script>")
     List<MedicalAdvice> getMedicalAdvices(MedicalAdvice medicalAdvice);
+
+    @Select("select count(*) from HOS_medical_advice where advice_status in (1,2) and patient_id = #{id}")
+    Integer getMedicalAdvicesNeedForCheckNum(Integer id);
 }

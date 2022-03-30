@@ -52,6 +52,12 @@ NurseController {
     @Autowired
     private DrugService drugService;
 
+    @Autowired
+    private SchedulingService schedulingService;
+
+    @Autowired
+    private RoleService roleService;
+
     /**
      * 职工登录时得到职工的所有信息
      */
@@ -434,7 +440,7 @@ NurseController {
      * 查询已支付医嘱账单的金额
      * @return
      */
-    @GetMapping("/getMedicalAdviceBillHavePay")
+    @PostMapping("/getMedicalAdviceBillHavePay")
     public ResponseEntity<Double> getMedicalAdviceBillHavePay(@RequestBody Patient patient) {
         Double num = medicalAdviceBillService.getMedicalAdviceBillHavePay(patient);
         return new ResponseEntity<Double>(num,HttpStatus.OK);
@@ -444,11 +450,39 @@ NurseController {
      * 查询已支付处方账单的金额
      * @return
      */
-    @GetMapping("/getPrescriptionBillHavePay")
+    @PostMapping("/getPrescriptionBillHavePay")
     public ResponseEntity<Double> getPrescriptionBillHavePay(@RequestBody Patient patient) {
         Double num = prescriptionBillService.getPrescriptionBillHavePay(patient);
         return new ResponseEntity<Double>(num,HttpStatus.OK);
     }
 
+    /**
+     * 查询排班列表
+     * @return
+     */
+    @GetMapping("/findSchedulings")
+    public ResponseEntity<List<Scheduling>> findSchedulings() {
+        List<Scheduling> schedulings = schedulingService.findSchedulings();
+        return new ResponseEntity<List<Scheduling>>(schedulings,HttpStatus.OK);
+    }
 
+    /**
+     * 查询职位列表
+     * @return
+     */
+    @GetMapping("/findRoles")
+    public ResponseEntity<List<Role>> findRoles() {
+        List<Role> roles = roleService.findRoles();
+        return new ResponseEntity<List<Role>>(roles,HttpStatus.OK);
+    }
+
+    /**
+     * 在排班中根据部门和职位查询员工列表
+     * @return
+     */
+    @GetMapping("/findWorkers")
+    public ResponseEntity<List<Worker>> findWorkers(Integer deptId,Integer roleId) {
+        List<Worker> workers = workerService.findWorkersByDeptIdAndRoleId(deptId,roleId);
+        return new ResponseEntity<List<Worker>>(workers,HttpStatus.OK);
+    }
 }

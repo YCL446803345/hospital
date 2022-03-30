@@ -11,4 +11,6 @@ public interface RoleService {
 
     //查询角色列表
     List<Role> findRoleList();
+
+    List<Role> findRoles();
 }

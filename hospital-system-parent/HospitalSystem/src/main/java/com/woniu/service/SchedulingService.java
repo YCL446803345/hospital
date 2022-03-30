@@ -13,4 +13,6 @@ public interface SchedulingService {
     List<Scheduling> findSchedulingList();
 
     void updateScheduling(Scheduling scheduling);
+
+    List<Scheduling> findSchedulings();
 }

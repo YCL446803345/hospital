@@ -42,5 +42,7 @@ public class Worker {
 
     private String shift;
 
+    private Integer schedulingId;
+
 
 }

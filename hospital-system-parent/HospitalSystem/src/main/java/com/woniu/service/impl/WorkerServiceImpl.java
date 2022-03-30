@@ -84,4 +84,12 @@ public class WorkerServiceImpl implements WorkerService {
         return doctorList;
     }
 
+    @Override
+    public List<Worker> findWorkersByDeptIdAndRoleId(Integer deptId, Integer roleId) {
+        WorkerExample workerExample = new WorkerExample();
+        WorkerExample.Criteria criteria = workerExample.createCriteria();
+        criteria.andDeptIdEqualTo(deptId);
+        criteria.andRoleIdEqualTo(roleId);
+        return workerMapper.selectByExample(workerExample);
+    }
 }

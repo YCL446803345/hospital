@@ -340,7 +340,8 @@
                     <i class="el-icon-more-outline"></i>
                         小计
                 </template>
-                        <span style="color:red">{{getPrescriptionBillMoney}}</span>元
+                        需支付<span style="color:red">{{getPrescriptionBillMoney}}</span>元--
+                        已支付<span style="color:green">{{havePayPrescriptionBillMoney}}</span>元
             </el-descriptions-item>
         </el-descriptions>
 
@@ -388,7 +389,7 @@
                         小计
                 </template>
                        需支付<span style="color:red">{{getMedicalAdviceBillMoney}}</span>元--
-                       <!-- 已支付<span style="color:red">{{havePayMedicalAdviceBill}}</span>元 -->
+                       已支付<span style="color:green">{{havePayMedicalAdviceBill}}</span>元
             </el-descriptions-item>
         </el-descriptions>
 
@@ -508,7 +509,7 @@
                     <i class="el-icon-more"></i>
                         总费用
                 </template>
-                        <span style="color:red">{{hospitalizationBill.sumMoney+getPrescriptionBillMoney+getMedicalAdviceBillMoney+getDrugOutBillMoney}}</span>元
+                        <span style="color:red">{{hospitalizationBill.sumMoney+getPrescriptionBillMoney+getMedicalAdviceBillMoney-getDrugOutBillMoney}}</span>元
             </el-descriptions-item>
 
         </el-descriptions>
@@ -531,6 +532,7 @@ export default {
       return {
         havePayMedicalAdviceBill:0,
         havePayHospitalizationBill:0,
+        havePayPrescriptionBillMoney:0,
         data:[
         { name: '住院费用', value:0 },
         { name: '医嘱费用', value:0 },
@@ -776,13 +778,18 @@ export default {
             }
             var patient=this.patient;
 
-            //  this.$axios.post("/api/getMedicalAdviceBillHavePay",patient).then(res=>{
-            //      this.havePayMedicalAdviceBill=res.data;
-            //  })
+             this.$axios.post("/api/getMedicalAdviceBillHavePay",patient).then(res=>{
+                 this.havePayMedicalAdviceBill=res.data;
+             })
 
-            //  this.$axios.post("/api/getPrescriptionBillHavePay",patient).then(res=>{
-            //      this.havePayPrescriptionBillMoney=res.data;
-            //  })
+             this.$axios.post("/api/getPrescriptionBillHavePay",patient).then(res=>{
+                 if(res.data!=''){
+                    this.havePayPrescriptionBillMoney=res.data;
+                 }else{
+                     this.havePayPrescriptionBillMoney=0;
+                 }
+                 
+             })
 
             this.billViewForm=true;
             
