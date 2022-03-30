@@ -20,10 +20,10 @@ public class RoleServiceImpl implements RoleService {
     private RoleMapper roleMapper;
 
 
-    @Override
+    //查询角色列表
     public List<Role> findRoleList() {
         List<Role> roleList = roleMapper.selectByExample(new RoleExample());
-        System.out.println("IMPL"+roleList);
+
         return roleList;
     }
 

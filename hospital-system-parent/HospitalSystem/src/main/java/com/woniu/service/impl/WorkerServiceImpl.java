@@ -6,7 +6,6 @@ import com.woniu.mapper.WorkerMapper;
 import com.woniu.service.WorkerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,28 +21,29 @@ public class WorkerServiceImpl implements WorkerService {
     private WorkerMapper workerMapper;
 
 
-    @Override
-
+    //查询职工列表
     public List<Worker> findWorkerList(Worker worker) {
 
         List<Worker> workers = workerMapper.select(worker);
         return workers;
     }
 
-
+    //添加职工
     public void addWorker(Worker worker) {
         workerMapper.insert(worker);
     }
 
-    @Override
+    //删除职工
     public void deleteWorkerById(Integer id) {
         workerMapper.deleteByPrimaryKey(id);
     }
 
-    @Override
+    //修改职工
     public void updateWorker(Worker worker) {
         workerMapper.updateByPrimaryKeySelective(worker);
     }
+
+
     public List<Worker> findDoctorsByDepeId(Integer deptId) {
         WorkerExample workerExample = new WorkerExample();
         WorkerExample.Criteria criteria = workerExample.createCriteria();

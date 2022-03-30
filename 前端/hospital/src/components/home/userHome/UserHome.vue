@@ -4,19 +4,7 @@
       <!--default-active代表导航栏默认选中哪个index, :collapse决定导航栏是否展开，为boolean类型
             :router决定导航栏是否开启路由模式，即在菜单item上设置路由是否生效，值为boolean类型-->
       <el-menu default-active="0" class="el-menu-vertical-demo" :collapse="isCollapse" :router="true">
-        <!--index设置当前item的下标，:route则是传一个对象进行，指定路由-->
-        <!-- <a href="#" @click="changeCollapse" style="font-size: 25px;color:#909399;"><i :class="collpaseIcon"></i></a> -->
-
-        <!-- <el-submenu :index="String(menu.id)" v-for="menu in menuDate" :key="menu.id"> -->
-        <!-- <template slot="title">
-                  <i class="el-icon-office-building"></i>
-                  <span>{{menu.name}}</span>
-               </template>
-                  <el-menu-item :index="item.pageLink" v-for="item in menu.children" :key="item.id">
-                     <i class="el-icon-menu"></i>
-                     <span slot="title">{{item.name}}</span>
-                  </el-menu-item>
-               </el-submenu> -->
+   
       </el-menu>
     </el-aside>
 
@@ -30,13 +18,8 @@
             <h1>病人预约</h1>
           </el-col>
           <el-col :span="6" class="col_r">
-            <el-dropdown @command="handleCommand">
-              <h1 style="color:red">用户：{{telephone}}</h1>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="workerCenter">个人中心</el-dropdown-item>
-                <el-dropdown-item command="logout">退出</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
+              <h1 style="color:red">用户：{{telephone}}  <el-button @click="logout">退出</el-button></h1>
+
           </el-col>
         </el-row>
       </el-header>
@@ -73,20 +56,13 @@
               </el-form-item>
               <el-form-item prop="telephone">
                 <div class="inputElement">
-                  <el-input v-model="telephone" :disabled="true" prop="telephone"></el-input>
+                  <el-input v-model="inHospitalTable.telephone"  placeholder="请输入当前用户手机号码" prop="telephone"></el-input>
                 </div>
               </el-form-item>
               <el-form-item prop="deptId">
                 <div class="inputElement">
                   <el-select v-model="inHospitalTable.deptId" placeholder="请选择部门">
                     <el-option v-for="dept in deptData" :label="dept.name" :value="dept.id" :key="dept.id"></el-option>
-                  </el-select>
-                </div>
-              </el-form-item>
-              <el-form-item prop="bedId">
-                <div class="inputElement">
-                  <el-select v-model="inHospitalTable.bedId" placeholder="请选择床位">
-                    <el-option v-for="bed in bedData" :label="bed.code" :value="bed.id" :key="bed.id"></el-option>
                   </el-select>
                 </div>
               </el-form-item>
@@ -119,10 +95,9 @@
             <el-table-column prop="patientName" label="姓名" width="100"> </el-table-column>
             <el-table-column prop="patientSex" label="性别" width="100"> </el-table-column>
             <el-table-column prop="patientAge" label="年龄" width="100"> </el-table-column>
-            <el-table-column prop="cardId" label="身份证号码" width="100"> </el-table-column>
+            <el-table-column prop="cardId" label="身份证号码" width="200"> </el-table-column>
             <el-table-column prop="telephone" label="手机号码" width="130"> </el-table-column>
             <el-table-column prop="deptName" label="部门" width="100"> </el-table-column>
-            <el-table-column prop="bedCode" label="床位" width="100"> </el-table-column>
             <el-table-column prop="reason" label="病情" width="100"> </el-table-column>
             <el-table-column prop="inHosptialTime" label="入院时间" width="100"> </el-table-column>
             <el-table-column prop="status" label="状态" width="120">
@@ -158,11 +133,7 @@
     data() {
 
       return {
-      
-       user: {
-          telephone: "",
-          password: ""
-        },
+    
         inHospitalTable: {
           patientName: "",
           patientSex: "",
@@ -176,29 +147,14 @@
           status: "",
 
         },
-        iospitalTableForm: {
-          patientName: "",
-          patientSex: "",
-          patientAge: "",
-          cardId: "",
-          telephone: "",
-          deptId: "",
-          bedId: "",
-          reason: "",
-          inHosptialTime: "",
-          status: "",
-
-        },
+       
         deptData: [],
         bedData: [],
         inHospitalTableData: [],
         Visible: false,
         formLabelWidth: "120px",
         isCollapse: false, // 决定左侧导航栏是否展开
-        // imgSrc:require("../../assets/css/image/OIP-C"),   //字体log图片
         fits: 'scale-down',
-        // AcatarUrl:require('../../assets/css/image/鸟.jpeg'), //头像图片
-        telephone: "",
         headers: "",
         menuDate: []
       }
@@ -267,8 +223,9 @@
       addInHospitalTable() {
         //发送axios请求
         this.$axios.post("/api/inHospitalTable/add", this.inHospitalTable).then((res) => {
-          console.log(res.data);
+   
           if (res.data.status == 200) {
+  
             this.$message({
               showClose: true,
               message: "添加成功",
@@ -315,20 +272,16 @@
       },
 
 
-      handleCommand(command) {
-        if (command == "workerCenter") {
-
-        }
-        if (command == "logout") {
+      logout() {
           this.$confirm('是否退出本系统?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
             window.localStorage.removeItem("tokenStr");
-            this.$router.push("/gotoUserLogin");
+            this.$router.push("/");
           })
-        }
+        
 
       },
       changeCollapse: function () { // 更改左侧导航栏展示状态
@@ -347,7 +300,6 @@
 
       //从本地浏览器拿名字
       this.telephone = window.localStorage.getItem("telephone")
-
       this.$axios.get("/api/perms/findMenuPerms", {
           params: {
             telephone: this.telephone
@@ -361,6 +313,7 @@
 
         this.findDeptList();
       this.findBedList();
+
       this.$axios.get("/api/queryUserStatus",{params:{phone: this.telephone}}).then(res=>{ 
           if (res.data == "1") {
               this.$alert('请先缴纳手续费', '缴费', {
@@ -372,6 +325,7 @@
           }
           this.status = res.data;
       })
+
     }
 
   }
@@ -446,7 +400,7 @@
 
   .el-header {
     padding: 0;
-    background: #FFC1E0;
+    background: #E6E6F2;
 
   }
 
@@ -457,7 +411,7 @@
 
   /*左边导航栏具体样式*/
   .el-menu-vertical-demo.el-menu {
-    background: #696969;
+    background: 	#FFDAC8;
     padding-left: 20px;
     text-align: left;
     height: 100%;

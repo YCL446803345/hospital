@@ -18,26 +18,7 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
 
-//    @Override
-//
-//    public List<Worker> findWorkerList(String account, Integer roleId,Integer deptId) {
-//        WorkerExample workerExample = new WorkerExample();
-//        WorkerExample.Criteria criteria = workerExample.createCriteria();
-//        if (!StringUtils.isEmpty(account)){
-//            criteria.andAccountLike("%"+account+"%");
-//        }
-//        if (!StringUtils.isEmpty(roleId)){
-//            criteria.andDeptIdEqualTo(roleId);
-//        }
-//        if (!StringUtils.isEmpty(deptId)){
-//            criteria.andDeptIdEqualTo(deptId);
-//        }
-//        List<Worker> workers = workerMapper.select(workerExample);
-//        System.out.println("IMPL+"+workers);
-//        return workers;
-//    }
-
-
+    //添加用户
     public void addUser(User user) {
         try {
             user.setPassword(JwtTokenUitl.createSign(user.getPassword()));
@@ -46,39 +27,6 @@ public class UserServiceImpl implements UserService {
         }
         userMapper.insert(user);
     }
-
-//    @Override
-//    public void deleteWorkerById(Integer id) {
-//        workerMapper.deleteByPrimaryKey(id);
-//    }
-//
-//    @Override
-//    public void updateWorker(Worker worker) {
-//        workerMapper.updateByPrimaryKeySelective(worker);
-//    }
-//    public List<Worker> findDoctorsByDepeId(Integer deptId) {
-//        WorkerExample workerExample = new WorkerExample();
-//        WorkerExample.Criteria criteria = workerExample.createCriteria();
-//        ArrayList<Integer> list = new ArrayList<>();
-//        list.add(1);
-//        list.add(5);
-//        criteria.andRoleIdIn(list);
-//        criteria.andDeptIdEqualTo(deptId);
-//        return workerMapper.selectByExample(workerExample);
-//    }
-//
-//    @Override
-//    public List<Worker> findNursesByDepeId(Integer deptId) {
-//        WorkerExample workerExample = new WorkerExample();
-//        WorkerExample.Criteria criteria = workerExample.createCriteria();
-//        ArrayList<Integer> list = new ArrayList<>();
-//        list.add(2);
-//        list.add(4);
-//        criteria.andRoleIdIn(list);
-//        criteria.andDeptIdEqualTo(deptId);
-//        return workerMapper.selectByExample(workerExample);
-//
-//    }
 
 
 
