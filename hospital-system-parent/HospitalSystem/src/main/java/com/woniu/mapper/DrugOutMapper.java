@@ -4,13 +4,7 @@ import com.woniu.entity.DrugOut;
 import com.woniu.entity.DrugOutExample;
 import java.util.List;
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Param;
-
-import org.apache.ibatis.annotations.Select;
-
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import org.springframework.stereotype.Repository;
 
@@ -56,7 +50,7 @@ public interface DrugOutMapper {
     @Options(useGeneratedKeys = true,keyProperty = "id",keyColumn = "id")
     void addDrugOut(DrugOut drugOut);
     //撤销退药
-    @Update("update HOS_drug_out set out_status='4' where id=#{id}")
+    @Delete("delete from HOS_drug_out  where id=#{id}")
     void gotoStopDrugOutById(DrugOut drugOut);
 
     @Update("update HOS_drug_out set out_status='3' where id=#{did}")

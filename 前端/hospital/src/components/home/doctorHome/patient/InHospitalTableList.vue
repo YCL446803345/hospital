@@ -95,7 +95,7 @@
             <el-tag type="success">已审核</el-tag>
             </span>
           <span v-if="scope.row.status=='3'">
-            <el-tag>已确认,住院中</el-tag>
+            <el-tag>住院中</el-tag>
             </span>
         </template>
       </el-table-column>
@@ -193,7 +193,7 @@
 
           <el-descriptions-item>
             <template slot="label"> <i class="el-icon-tickets"></i>病因</template>
-            {{ updateInHospitalTable.status === "1" ? "已预约,待审核" : "已审核" }}
+            {{ updateInHospitalTable.status === "1" ? "待审核" : "已审核" }}
           </el-descriptions-item>
         </el-descriptions>
       </template>
@@ -338,31 +338,60 @@ export default {
       },
 
       //添加职工
-      doAddInHospital() {
-        //发送axios请求
-        var inHospitalTable = this.addInHospital;
-        this.$axios.post("/api/doctor/addInHospitalTable", inHospitalTable).then((res) => {
-          console.log(res.data);
-          if (res.status == 200) {
-            this.$message({
-              showClose: true,
-              message: "添加成功",
-              type: "success",
-              duration: 600,
-            });
-            this.addInHospital = {};
-            this.addInHospitalForm = false;
-            this.search() //刷新列表
-          } else {
-            this.$message({
-              showClose: true,
-              message: "添加失败",
-              type: "error",
-              duration: 600,
-            });
-          }
-        });
-      },
+    doAddInHospital(){
+      var inHospitalTable = this.addInHospital;
+        // this.$axios.get("api/doctor/addRedisToken").then(res=>{
+                // window.localStorage.setItem('redisToken',res.data.data)
+                this.$axios.post("apidoctor/addInHospitalTable", inHospitalTable).then(res=>{
+                    if(res.data.status ==200){
+                        this.$message({
+                          showClose: true,
+                          message: "添加成功",
+                          type: "success",
+                          duration: 600,
+                        });
+                        this.addInHospital = {};
+                        this.addInHospitalForm = false;
+                        this.search() //刷新列表
+                        // this.drugInfo=res.data.data
+                        // this.dialogTableVisible=true
+                    }else{
+                        this.$message({
+                        showClose: true,
+                        message: '查看失败, 系统维护中',
+                        type: 'warning',
+                        duration:2000
+                        });
+                    }
+                })
+        // })
+    },
+      //添加职工
+      // doAddInHospital() {
+      //   //发送axios请求
+      //   var inHospitalTable = this.addInHospital;
+      //   this.$axios.post("/api/doctor/addInHospitalTable", inHospitalTable).then((res) => {
+      //     console.log(res.data);
+      //     if (res.status == 200) {
+      //       this.$message({
+      //         showClose: true,
+      //         message: "添加成功",
+      //         type: "success",
+      //         duration: 600,
+      //       });
+      //       this.addInHospital = {};
+      //       this.addInHospitalForm = false;
+      //       this.search() //刷新列表
+      //     } else {
+      //       this.$message({
+      //         showClose: true,
+      //         message: "添加失败",
+      //         type: "error",
+      //         duration: 600,
+      //       });
+      //     }
+      //   });
+      // },
 
 
     //部门列表
@@ -386,7 +415,6 @@ export default {
       },
 
     doUpdateInHospitalTable() {
-      //    console.log(res.data)
       var inHospitalTable = this.updateInHospitalTable;
       this.$axios
         .post("/api/doctor/updateInHospitalTable", inHospitalTable)
@@ -484,22 +512,7 @@ export default {
     changePage(value) {
       this.pageNum = value;
       this.search();
-      // this.$axios
-      //   .get("/api/doctor/getInHospitalTableList", {
-      //     params: {
-      //       patientName: this.patientName,
-      //       cardId: this.cardId,
-      //       patientSex: this.patientSex,
-      //       pageNum: this.pageNum,
-      //       pageSize: this.pageSize,
-      //     },
-      //   })
-      //   .then((res) => {
-      //     this.consultationApplicationList = res.data.data.list;
-      //     this.total = res.data.data.total;
-      //     this.pageNum = res.data.data.pageNum;
-      //     this.pageSize = res.data.data.pageSize;
-      //   });
+
     },
     getIndex(i) {
       return i + 1 + this.pageSize * (this.pageNum - 1);

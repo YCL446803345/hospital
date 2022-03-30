@@ -38,6 +38,7 @@ public class MedicalAdvice {
     private String adviceCategoryName;
     //外键科目名
     private String projectName;
+    private String no;
 
     //模糊时间查询开始时间
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")

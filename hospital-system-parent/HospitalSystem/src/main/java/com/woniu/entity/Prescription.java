@@ -43,7 +43,7 @@ public class Prescription {
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date endTime;
-
+    private String no;
     private String patientName;
     private String drugTypeName;
     private String specificationsName;

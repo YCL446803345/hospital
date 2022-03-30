@@ -53,6 +53,9 @@
       <el-table-column prop="patientName" label="病人" width="80">
       </el-table-column>
 
+      <el-table-column prop="no" label="病人编号" width="140">
+      </el-table-column>
+
       <el-table-column prop="doctorName" label="主治医生" width="80">
       </el-table-column>
 
@@ -88,7 +91,9 @@
           <span v-if="scope.row.status=='2'">
             <el-tag type="success">已会诊</el-tag>
             </span>
-          <!-- <span v-if="scope.row.status=='3'">已取消</span> -->
+          <span v-if="scope.row.status=='3'">
+            <el-tag type="info">已取消</el-tag>
+            </span>
         </template>
       </el-table-column>
 
@@ -102,18 +107,6 @@
 
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button size="mini" type="success" @click="gotoAddMedicalAdvice(
-            scope.row.patientName,
-            scope.row.doctorName,
-            scope.row.patientId,
-            scope.row.doctorId,
-
-            scope.row.reason,
-            scope.row.desc,
-            scope.row.consultationEmergencyId,
-            scope.row.consultationCategoryId
-
-            )">下达医嘱</el-button>
           <el-button size="mini" type="primary" @click=" gotoUpdateConsultationApplication(
                 scope.row.id,
                 scope.row.patientName,
@@ -124,7 +117,19 @@
                 scope.row.consultationCategoryId,
                 scope.row.consultationDate,
               )">编辑会诊</el-button>
-          <el-button size="mini" type="danger" @click="gotoCancelConsultationApplication(scope.row.id)">取消会诊</el-button>
+          <el-button v-if='scope.row.status==2'  size="mini" type="success" @click="gotoAddMedicalAdvice(
+            scope.row.patientName,
+            scope.row.doctorName,
+            scope.row.patientId,
+            scope.row.doctorId,
+            scope.row.reason,
+            scope.row.desc,
+            scope.row.consultationEmergencyId,
+            scope.row.consultationCategoryId
+            )">下达医嘱</el-button>
+          
+          <el-button size="mini" type="danger" v-if='scope.row.status !=2 '
+          @click="gotoCancelConsultationApplication(scope.row.id)">取消会诊</el-button>
         </template>
       </el-table-column>
     </el-table>

@@ -58,4 +58,6 @@ public interface DrugMapper {
     @Update("update HOS_drug set stock=#{stock} where id=#{id}")
     void addDrugStockById(@Param("id") Integer id, @Param("stock") Integer stock);
 
+    @Select("select sale_price from HOS_drug where id=#{id}")
+    Float findPriceById(Drug drug);
 }

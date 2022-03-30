@@ -277,7 +277,8 @@
   <!--queryLeaveHospitalList-->
   <!--医生站分页模糊查询预约住院申请列表-->
   <select id="queryLeaveHospitalList" resultType="LeaveHospital">
-    select l.id,w.name doctorName,p.name patientName,l.leave_status,l.leave_time,l.leave_description
+    select l.id,w.name doctorName,p.name patientName,l.leave_status,l.leave_time,l.leave_description,
+    p.no leaveNo,p.balance leaveBalance,p.age leaveAge,p.card_id cardId,p.phone leavePhone,p.gender leaveGender
     from HOS_leave_hospital l
     inner join HOS_worker w on l.doctor_id = w.id
     inner join HOS_patient p on l.patient_id = p.id
@@ -285,6 +286,6 @@
       <if test="leaveStatus != null and leaveStatus !=''">l.leave_status = #{leaveStatus}</if>
       <if test="startDate != null and startDate != ''">and l.leave_time &gt;= #{startDate}</if>
       <if test="endDate != null and endDate != ''">and l.leave_time &lt;= #{endDate}</if>
-    </where> and l.leave_status = 2  order by l.leave_time desc
+    </where>  order by l.leave_time desc
   </select>
 </mapper>

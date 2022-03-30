@@ -28,9 +28,16 @@ public class LeaveHospital {
 
     //外键医生名
     private String doctorName;
-
     //外键患者名
     private String patientName;
+    private String leaveNo;
+    private Float leaveBalance;
+    private Integer leaveAge;
+    private String cardId;
+    private String leavePhone;
+    private String leaveGender;
+
+
 
     //模糊时间查询开始时间
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")

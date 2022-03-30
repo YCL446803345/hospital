@@ -307,7 +307,7 @@
   <!--queryMedicalAdviceList-->
   <!--医生站分页模糊查询医嘱列表-->
   <select id="queryMedicalAdviceList" resultType="MedicalAdvice">
-    select m.id,r.name doctorName,p.name patientName,m.advice_category,m.project_id,
+    select m.id,r.name doctorName,p.name patientName,m.advice_category,m.project_id,p.no no,
     m.create_time,m.advice_description,m.advice_status,m.doctor_id,m.patient_id,t.name projectName
     from HOS_medical_advice m
     inner join HOS_worker r on m.doctor_id = r.id
@@ -319,7 +319,9 @@
       <if test="adviceStatus != null and adviceStatus != ''">m.advice_status = #{adviceStatus}</if>
       <if test="startDate != null and startDate != ''">and m.create_time &gt;= #{startDate}</if>
       <if test="endDate != null and endDate != ''">and m.create_time &lt;= #{endDate}</if>
-    </where> and m.advice_status in(1,2,3) order by m.create_time desc
+    </where>
+     and m.advice_status in(1,2,3)
+    order by m.create_time desc
   </select>
 
 <!--  findMedicalAdviceById-->
