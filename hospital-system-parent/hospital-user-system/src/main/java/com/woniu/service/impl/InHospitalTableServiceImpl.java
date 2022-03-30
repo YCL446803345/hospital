@@ -38,13 +38,10 @@ public class InHospitalTableServiceImpl implements InHospitalTableService {
         inHospitalTableMapper.insert(inHospitalTable);
     }
 
-    @Override
+    //根据当前用户手机号查询相应的病人信息
     public List<InHospitalTable> getInHospitalTableByTelephone(String telephone) {
-//        InHospitalTableExample inHospitalTableExample = new InHospitalTableExample();
-//        InHospitalTableExample.Criteria criteria = inHospitalTableExample.createCriteria();
-//        criteria.andTelephoneEqualTo(telephone);
-        List<InHospitalTable> inHospitalTableList = inHospitalTableMapper.getInHospitalTableByTelephone(telephone);
 
+        List<InHospitalTable> inHospitalTableList = inHospitalTableMapper.getInHospitalTableByTelephone(telephone);
 
         return inHospitalTableList;
     }

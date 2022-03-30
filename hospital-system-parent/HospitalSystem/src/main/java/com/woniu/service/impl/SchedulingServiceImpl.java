@@ -23,7 +23,7 @@ public class SchedulingServiceImpl implements SchedulingService {
     @Override
     public List<Scheduling> findSchedulingList() {
         List<Scheduling> schedulingList = schedulingMapper.select(new SchedulingExample());
-        System.out.println("SchedulingIMPL"+schedulingList);
+
         return schedulingList;
     }
 

@@ -1,6 +1,7 @@
 <template>
     <div>
         <!-- 面包xie导航 -->
+        <br>
         <el-breadcrumb separator="/">
             <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
             <el-breadcrumb-item><a href="#/costInfo">在院病人费用信息管理</a></el-breadcrumb-item>
@@ -405,7 +406,7 @@
                 <i class="el-icon-tickets"></i>
                 小结
             </template>
-            {{patient.hospitalization + patient.prescription + patient.medicalAdvice - patient.drugOut}}
+            {{(patient.hospitalization + patient.prescription + patient.medicalAdvice - patient.drugOut).toFixed(2)}}
             </el-descriptions-item>
         </el-descriptions>
         </template>
@@ -448,6 +449,7 @@ export default {
             medicalAdvice:0,
             balance:0,
         },
+        token:""
       }
    },
    created(){
@@ -510,11 +512,16 @@ export default {
         },
         //结算病人账单
         settlement(){
-            this.$axios.get("/api/advancePayment",{params:{id:this.patient.id}}).then(res=>{
+            this.$axios.get("/api/advancePayment",{params:{id:this.patient.id,token:this.token}}).then(res=>{
                  if(res.data === "OK"){
                             this.$message({
                             type: "success",
                             message: "结算成功!",
+                        });
+                    }else if(res.data == "err"){
+                         this.$message({
+                            type: "info",
+                            message: "请不要重复点击!",
                         });
                     }else{
                          this.$alert('以欠费'+res.data+',请先充值', '欠费', {
@@ -547,6 +554,9 @@ export default {
                 this.patient.medicalAdvice = medicalAdvice
                 this.patient.drugOut = prescription
                 this.costSettlementForm = true;
+                this.$axios.get("/api/createToken").then(res=>{
+                    this.token = res.data;
+                })
             })
         },
         //关闭结算病人账单模态框

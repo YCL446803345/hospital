@@ -2,9 +2,9 @@
     <div>
         <!-- 面包xie导航 -->
         <el-breadcrumb separator="/">
-            <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item><a href="#/patientInfo">在院病人信息管理</a></el-breadcrumb-item>
-            <el-breadcrumb-item>在院病人信息管理列表</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: '/gotoHome' }">首页</el-breadcrumb-item>
+            <el-breadcrumb-item><a href="#/nurse/waitPatientManager">待床病人管理</a></el-breadcrumb-item>
+            <el-breadcrumb-item>待床病人管理</el-breadcrumb-item>
         </el-breadcrumb>
         <el-row style="margin-top:10px;margin-bottom:10px">
             <el-col :span="8">
@@ -31,7 +31,7 @@
                 <!--带搜索按钮的文本框 -->
             </el-col>
            
-            <el-col :span="1" style="margin-left:2px;">
+            <el-col :span="1.5" style="margin-left:2px;">
                 <el-button type="success" @click="search">查询</el-button>
                
             </el-col>

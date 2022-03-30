@@ -28,11 +28,15 @@
         <div class="cont clearfix">
             <ul >    
                 <li v-for="drug in drugData" :key="drug.id" style="overflow: hidden;" class="li" >
+                    <div :class="{'imgRed':drug.stock <=0,'img':drug.stock >0 && drug.stock <= 10}">
                         <el-link :underline="false" @click="lookDrugInfo(drug.id)">
-                        <el-image style="width: 230px; height: 230px" :src="drug.spare3" fit="scale-down" :class="{'imgRed':drug.stock <=0,'img':drug.stock >0 && drug.stock <= 10}"></el-image>
+                            <!-- imgNormal -->
+                            <!--  -->
+                        <el-image style="width: 230px; height: 230px" :src="drug.spare3" fit="scale-down" class="imgNormal"></el-image>
                         </el-link>
+                    </div>
                     <p>{{drug.name}}<span v-if="drug.stock <=0 " style="color:red">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;已售空</span>
-                                    <span v-if="drug.stock >0 && drug.stock <= 10 " style="color:red">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;警告,库存不足</span></p> 
+                                    <span v-if="drug.stock >0 && drug.stock <= 10 " style="color:red">&nbsp;&nbsp;&nbsp;&nbsp;警告,库存不足</span></p> 
                     <p class="brown">价格:<b>￥{{drug.salePrice}}</b></p>
                 </li>
             </ul>
@@ -169,7 +173,6 @@ export default {
    methods:{
            //头像上传成功处理
     //   handleAvatarSuccess(res, file) {
-    //       console.log(res)
     //     this.imageUrl = URL.createObjectURL(file.raw);
     //     if (res.status == 200) {
     //         this.teacher.avatar = res.data
@@ -178,7 +181,8 @@ export default {
     //   },
     //下架药品
     close(id){
-        this.$axios.post("api/drug/updateDrugStatus",qs.stringify({'id':id})).then(res=>{
+        console.log(window.localStorage.getItem("redisToken"))
+        this.$axios.post("api/drug/updateDrugStatus",qs.stringify({'id':id,'redisToken':window.localStorage.getItem("redisToken")})).then(res=>{
             if (res.data.status == 200) {
                 this.$message({
                 showClose: true,
@@ -192,7 +196,7 @@ export default {
             }else{
                 this.$message({
                 showClose: true,
-                message: '操作失败, 系统维护中',
+                message: '操作失败, '+res.data.msg,
                 type: 'warning',
                 duration:2000
                 });
@@ -201,18 +205,21 @@ export default {
     },
     //查看单个药品详细信息
     lookDrugInfo(id){
-        this.$axios.get("api/drug/findDrugById?id="+id).then(res=>{
-            if(res.data.status ==200){
-                this.drugInfo=res.data.data
-                this.dialogTableVisible=true
-            }else{
-                this.$message({
-                showClose: true,
-                message: '查看失败, 系统维护中',
-                type: 'warning',
-                duration:2000
-                });
-            }
+        this.$axios.get("api/drug/addRedisToken").then(res=>{
+                window.localStorage.setItem('redisToken',res.data.data)
+                this.$axios.get("api/drug/findDrugById?id="+id).then(res=>{
+                    if(res.data.status ==200){
+                        this.drugInfo=res.data.data
+                        this.dialogTableVisible=true
+                    }else{
+                        this.$message({
+                        showClose: true,
+                        message: '查看失败, 系统维护中',
+                        type: 'warning',
+                        duration:2000
+                        });
+                    }
+                })
         })
     },
     //翻页事件
@@ -278,17 +285,16 @@ export default {
     color: #a40000
 }
 .img{
-    border:dashed 5px yellow;
-    border-right:solid 5px yellow; 
-    border-top: solid 5px yellow;
-    border-bottom: solid 5px yellow;
-    border-left:  solid 5px yellow;
+    background: yellow;
 }
 .imgRed{
-    border:dashed 5px red;
-    border-right:solid 5px red; 
-    border-top: solid 5px red;
-    border-bottom: solid 5px red;
-    border-left:  solid 5px red;
+    background: red;
+}
+.imgNormal{
+    border:dashed 3px rgb(17, 17, 17);
+    border-right:solid 3px rgb(17, 17, 17); 
+    border-top: solid 3px rgb(17, 17, 17);
+    border-bottom: solid 3px rgb(17, 17, 17);
+    border-left:  solid 3px rgb(17, 17, 17);
 }
 </style>

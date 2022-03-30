@@ -70,10 +70,10 @@ public interface PatientMapper {
             "</script>")
     List<Patient> findPatientsWithNotBed(Patient patient);
 
-    @Update("update HOS_patient set dept_id=#{deptId},bed_id=#{bedId},doctor_id=9,nurse_id=9 where id=#{id}")
+    @Update("update HOS_patient set dept_id=#{deptId} where id=#{id}")
     void updateBedByPatientWithOutBed(Patient patient);
 
-    @Update("update HOS_patient set dept_id=#{deptId},bed_id=null,doctor_id=9,nurse_id=9 where id=#{id}")
+    @Update("update HOS_patient set dept_id=#{deptId} where id=#{id}")
     void stopUseBed(Patient patient);
 
     //医生站分页模糊查询患者列表
@@ -119,11 +119,15 @@ public interface PatientMapper {
     int selectTotal (@Param("name") String name,@Param("no") String no);
 
 
-    @Update("update HOS_patient set status=4 where id =#{id}")
+    @Update("update HOS_patient set status=4,set bed_id=null where id =#{id}")
     void doOutHospital(Integer id);
 
     //审核后新增患者信息
     @Insert("insert into HOS_patient(name,no,age,card_id,phone,gender,dept_id,base_desc,status) values(#{name},#{no},#{age},#{cardId},#{phone},#{gender},#{deptId},#{baseDesc},#{status})")
     void addPatientByDoctor(Patient patient);
 
+    //医生编辑患者信息
+    @Update("update HOS_patient set name=#{name},no=#{no},gender=#{gender},phone=#{phone},age=#{age}," +
+            "base_desc=#{baseDesc},card_id=#{cardId} where id=#{id}")
+    void updatePatientByDoctor(Patient patient);
 }

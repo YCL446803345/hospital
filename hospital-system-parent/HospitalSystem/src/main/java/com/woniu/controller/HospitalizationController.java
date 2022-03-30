@@ -2,14 +2,14 @@
 package com.woniu.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.woniu.entity.Bed;
-import com.woniu.entity.Cost;
-import com.woniu.entity.Patient;
-import com.woniu.entity.PaymentRecord;
+import com.woniu.entity.*;
+import com.woniu.service.CallService;
 import com.woniu.service.HospitalizationBillServer;
 import com.woniu.service.PatientService;
 import com.woniu.util.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,9 +29,17 @@ public class HospitalizationController {
     @Autowired
     private PatientService patientService;
 
+    @Autowired
+    private StringRedisTemplate redisTemplate;
+
+    @Autowired
+    private CallService callService;
+
     @GetMapping("createToken")
     public ResponseEntity<String> createToken(){
         String token = UUID.randomUUID().toString();
+        ValueOperations<String, String> ops = redisTemplate.opsForValue();
+        ops.set(token,token);
         return new ResponseEntity<>(token,HttpStatus.OK);
     }
 
@@ -51,12 +59,16 @@ public class HospitalizationController {
      * @return 返回值中有五个数 , 第一个是退药费用 第二个是处方费用 第三个是住院费用 第四个是医嘱费用 第五个是余额
      */
     @GetMapping("advancePayment")
-    public ResponseEntity<String> advancePayment(Integer id,String status){
-        Float aFloat = hospitalizationBillServer.updateHospitalizationBill(id,status);
-        if(aFloat > 0){
-            return new ResponseEntity<> ("OK", HttpStatus.OK);
+    public ResponseEntity<String> advancePayment(Integer id,String status,String token){
+        if(redisTemplate.delete(token)){
+            Float aFloat = hospitalizationBillServer.updateHospitalizationBill(id,status);
+            if(aFloat > 0){
+                return new ResponseEntity<> ("OK", HttpStatus.OK);
+            }else{
+                return new ResponseEntity<>(String.format("%.2f", aFloat),HttpStatus.OK);
+            }
         }else{
-            return new ResponseEntity<>(String.format("%.2f", aFloat),HttpStatus.OK);
+            return new ResponseEntity<>("err",HttpStatus.OK);
         }
     }
 
@@ -221,8 +233,17 @@ public class HospitalizationController {
         return new ResponseEntity<>(pageInfo,HttpStatus.OK);
     }
 
-//    @GetMapping("queryAllPayCount")
-//    public
+    @GetMapping("findCall")
+    public ResponseEntity<PageInfo<Call>> findCall(Call call,@RequestParam(value = "pageNum", defaultValue = "1", required = false) Integer pageNum,
+                                                   @RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize){
+        PageInfo<Call> pageInfo = callService.getCallPatient(pageNum,pageSize,call);
+        return new ResponseEntity<>(pageInfo,HttpStatus.OK);
+    }
+
+    @GetMapping("updateCallStatus")
+    public void updateCallStatus(Integer id){
+        callService.updateCallStatus(id);
+    }
 
 }
 

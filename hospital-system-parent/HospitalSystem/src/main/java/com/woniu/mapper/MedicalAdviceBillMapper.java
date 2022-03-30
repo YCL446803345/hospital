@@ -56,4 +56,10 @@ public interface MedicalAdviceBillMapper {
             "left join HOS_project p on a.project_id=p.id\n" +
             "where a.patient_id=#{id}")
     List<Project> getMedicalAdviceBill(Patient patient);
+
+    @Select("select sum(p.price) from HOS_medical_advice_bill b\n" +
+            " left join HOS_medical_advice a on b.medical_advice_id=b.id\n" +
+            " left join HOS_project p on a.project_id=p.id\n" +
+            " where a.patient_id=1 and b.status=#{id}")
+    Double getMedicalAdviceBillHavePay(Patient patient);
 }

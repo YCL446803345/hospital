@@ -40,10 +40,9 @@ public interface InHospitalTableMapper {
     @Update("update HOS_in_hospital_table set status='2' where id=#{id}")
     void updateInHospitalTable(InHospitalTable inHospitalTable);
 
+
     //根据手机号码查询病人预约情况
-    @Select("select i.*,b.code bedCode,d.name deptName from HOS_in_hospital_table i,HOS_bed b,HOS_dept d where i.bed_id=b.id and i.dept_id=d.id and telephone=#{telephone}")
-    List<InHospitalTable> selectByExample2(InHospitalTableExample inHospitalTableExample);
-    //根据手机号码查询病人预约情况
-    @Select("select i.*,b.code bedCode,d.name deptName from HOS_in_hospital_table i,HOS_bed b,HOS_dept d where i.bed_id=b.id and i.dept_id=d.id and telephone=#{telephone}")
+//    @Select("select i.*,b.code bedCode,d.name deptName from HOS_in_hospital_table i,HOS_bed b,HOS_dept d where i.bed_id=b.id and i.dept_id=d.id and telephone=#{telephone}")
+    @Select("select i.*,d.name deptName from HOS_in_hospital_table i,HOS_dept d where  i.dept_id=d.id and telephone=#{telephone}")
     List<InHospitalTable> getInHospitalTableByTelephone(String telephone);
 }

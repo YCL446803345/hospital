@@ -285,6 +285,6 @@
       <if test="leaveStatus != null and leaveStatus !=''">l.leave_status = #{leaveStatus}</if>
       <if test="startDate != null and startDate != ''">and l.leave_time &gt;= #{startDate}</if>
       <if test="endDate != null and endDate != ''">and l.leave_time &lt;= #{endDate}</if>
-    </where> and l.leave_status in(2,3,4) order by l.leave_time desc
+    </where> and l.leave_status = 2  order by l.leave_time desc
   </select>
 </mapper>

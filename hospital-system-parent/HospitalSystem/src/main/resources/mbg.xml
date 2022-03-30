@@ -5,7 +5,7 @@
 <generatorConfiguration>
 
     <!-- 数据库驱动包位置 -->
-    <classPathEntry location="D:\localRepository\mysql\mysql-connector-java\8.0.19\mysql-connector-java-8.0.19.jar"/>
+        <classPathEntry location="D:\localRepository\mysql\mysql-connector-java\8.0.19\mysql-connector-java-8.0.19.jar"/>
 
     <context id="root" targetRuntime="MyBatis3">
 
@@ -271,8 +271,24 @@
 <!--               enableDeleteByExample="true"-->
 <!--               enableSelectByExample="true"-->
 <!--        />-->
-            <table tableName="HOS_purchase" schema="hos"
-                   domainObjectName="Purchase"
+
+<!--            <table tableName="HOS_purchase" schema="hos"-->
+<!--                   domainObjectName="Purchase"-->
+<!--                   enableCountByExample="true"-->
+<!--                   enableUpdateByExample="true"-->
+<!--                   enableDeleteByExample="true"-->
+<!--                   enableSelectByExample="true"-->
+<!--            />-->
+        <table tableName="HOS_withdrawal_drug" schema="HOSPITAL"
+               domainObjectName="WithdrawalDrug"
+               enableCountByExample="true"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+        />
+
+            <table tableName="HOS_call" schema="HOSPITAL"
+                   domainObjectName="Call"
                    enableCountByExample="true"
                    enableUpdateByExample="true"
                    enableDeleteByExample="true"

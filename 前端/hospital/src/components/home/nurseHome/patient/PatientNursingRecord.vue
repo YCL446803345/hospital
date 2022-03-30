@@ -2,9 +2,9 @@
     <div>
         <!-- 面包xie导航 -->
         <el-breadcrumb separator="/">
-            <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item><a href="#/patientInfo">在院病人信息管理</a></el-breadcrumb-item>
-            <el-breadcrumb-item>在院病人信息管理列表</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: '/gotoHome' }">首页</el-breadcrumb-item>
+            <el-breadcrumb-item><a href="#/nurse/care">护理记录</a></el-breadcrumb-item>
+            <el-breadcrumb-item>护理记录</el-breadcrumb-item>
         </el-breadcrumb>
         <el-row style="margin-top:10px;margin-bottom:10px">
             <el-col :span="8">
@@ -597,7 +597,7 @@ export default {
    created(){
       var a = window.localStorage.getItem("roleId")
       
-      
+
       if(a=='4'){
         this.nurseDeptId = parseInt(window.localStorage.getItem("deptId"))
       }else if(a=='2'){
@@ -607,8 +607,6 @@ export default {
         this.nurseId=''
       }
 
-      console.log('nurseDeptId'+this.nurseDeptId)
-      console.log('nurseId'+this.nurseId)
 
       this.search();
    },

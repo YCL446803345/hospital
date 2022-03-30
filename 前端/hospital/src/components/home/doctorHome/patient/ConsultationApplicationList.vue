@@ -9,7 +9,7 @@
     <el-row style="margin-top: 10px; margin-bottom: 10px">
       <el-col :span="2">
         <el-select v-model="consultationEmergencyId" placeholder="会诊情况">
-          <el-option label="会诊情况" value=""></el-option>
+          <!-- <el-option label="会诊情况" value=""></el-option> -->
           <el-option label="紧急" value="1"></el-option>
           <el-option label="24小时" value="2"></el-option>
           <el-option label="一般" value="3"></el-option>
@@ -17,7 +17,7 @@
       </el-col>
       <el-col :span="2">
         <el-select v-model="consultationCategoryId" placeholder="会诊类别">
-          <el-option label="会诊类别" value=""></el-option>
+          <!-- <el-option label="会诊类别" value=""></el-option> -->
           <el-option label="它科会诊" value="1"></el-option>
           <el-option label="科内会诊" value="2"></el-option>
           <el-option label="院外会诊" value="3"></el-option>
@@ -25,10 +25,10 @@
       </el-col>
       <el-col :span="2">
         <el-select v-model="status" placeholder="会诊状态">
-          <el-option label="会诊状态" value=""></el-option>
+          <!-- <el-option label="会诊状态" value=""></el-option> -->
           <el-option label="待会诊" value="1"></el-option>
-          <el-option label="已执行" value="2"></el-option>
-          <el-option label="已取消" value="3"></el-option>
+          <el-option label="已会诊" value="2"></el-option>
+          <!-- <el-option label="已取消" value="3"></el-option> -->
         </el-select>
       </el-col>
 
@@ -56,12 +56,12 @@
       <el-table-column prop="doctorName" label="主治医生" width="80">
       </el-table-column>
 
-      <el-table-column prop="reason" label="原因" width="180">
+      <el-table-column prop="reason" label="会诊原因" width="180">
       </el-table-column>
 
-      <el-table-column prop="desc" label="描述" width="180"> </el-table-column>
+      <el-table-column prop="desc" label="病情描述" width="180"> </el-table-column>
 
-      <el-table-column prop="consultationEmergencyId" label="紧急度" width="180">
+      <el-table-column prop="consultationEmergencyId" label="紧急度" width="120">
           <template slot-scope="scope">
           <span v-if="scope.row.consultationEmergencyId=='1'">紧急</span>
           <span v-if="scope.row.consultationEmergencyId=='2'">24小时</span>
@@ -69,7 +69,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="consultationCategoryId" label="类别" width="180">
+      <el-table-column prop="consultationCategoryId" label="类别" width="120">
           <template slot-scope="scope">
           <span v-if="scope.row.consultationCategoryId=='1'">它科会诊</span>
           <span v-if="scope.row.consultationCategoryId=='2'">科内会诊</span>
@@ -80,11 +80,15 @@
       <el-table-column prop="consultationDate" label="会诊时间" width="180">
       </el-table-column>
 
-      <el-table-column prop="status" label="会诊状态" width="80">
+      <el-table-column prop="status" label="会诊状态" width="100">
         <template slot-scope="scope">
-          <span v-if="scope.row.status=='1'">待会诊</span>
-          <span v-if="scope.row.status=='2'">已会诊</span>
-          <span v-if="scope.row.status=='3'">已取消</span>
+          <span v-if="scope.row.status=='1'">
+            <el-tag type="danger">待会诊</el-tag>
+            </span>
+          <span v-if="scope.row.status=='2'">
+            <el-tag type="success">已会诊</el-tag>
+            </span>
+          <!-- <span v-if="scope.row.status=='3'">已取消</span> -->
         </template>
       </el-table-column>
 
@@ -103,10 +107,12 @@
             scope.row.doctorName,
             scope.row.patientId,
             scope.row.doctorId,
+
             scope.row.reason,
             scope.row.desc,
             scope.row.consultationEmergencyId,
             scope.row.consultationCategoryId
+
             )">下达医嘱</el-button>
           <el-button size="mini" type="primary" @click=" gotoUpdateConsultationApplication(
                 scope.row.id,
@@ -192,9 +198,10 @@
             <template slot="label"><i class="el-icon-user"></i>主治医生</template>
             {{ addMedicalAdvice.doctorName }}
           </el-descriptions-item>
+
           
           <el-descriptions-item>
-            <template slot="label"><i class="el-icon-user"></i>原因</template>
+            <template slot="label"><i class="el-icon-user"></i>下达原因</template>
             {{ addMedicalAdvice.reason }}
           </el-descriptions-item>
 
@@ -214,6 +221,7 @@
             {{ addMedicalAdvice.consultationCategoryId ==='1'?'它科会诊': 
                addMedicalAdvice.consultationCategoryId ==='2'?'科内会诊':'一般会诊' }}
           </el-descriptions-item>
+
 
         </el-descriptions>
       </template>
@@ -282,12 +290,14 @@ export default {
   },
   methods: {
     //打开下达医嘱列表
+
       gotoAddMedicalAdvice(patientName,doctorName,patientId,doctorId,reason,desc,consultationEmergencyId,consultationCategoryId) {
         this.addMedicalAdvice = {
         patientName: patientName,
         doctorName: doctorName,
         patientId: patientId,
         doctorId: doctorId,
+
         reason: reason,
         desc: desc,
         consultationEmergencyId: consultationEmergencyId,
@@ -329,33 +339,40 @@ export default {
       },
 
 
-
     //取消会诊
-    gotoCancelConsultationApplication(id) {
-        console.log(id)
-        this.$axios.post("/api/doctor/gotoCancelConsultationApplicationById",qs.stringify({'id':id}),{
+    gotoCancelConsultationApplication(id){
+           this.$confirm('确定要取消吗?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+            }).then(() => {
+                this.$axios.post("/api/doctor/gotoCancelConsultationApplicationById",qs.stringify({'id':id}),{
             params: { id: id }
-        }).then(res => {  
-          console.log(res.data)
-            if(res.status===200){
+            }).then(res=>{
+                    if(res.status==4001){
+                            this.$message({
+                            type: "error",
+                            message: "没有权限!",
+                             duration:2000
+                        });
+                     }else{
+                        this.$message({
+                            type: 'success',
+                            message: '取消成功!',
+                            duration:2000
+                        });
+                        this.search();
+                     }
+                })
+            }).catch(() => {
                 this.$message({
-                    showClose: true,
-                    message: "取消成功",
-                    type: "success",
-                    duration: 600
-                });
-                this.search();
-            }else if(res.status===4001){
-                this.$message({
-                    showClose: true,
-                    message: "没有权限",
-                    type: "error",
-                    duration: 600
-                });
-                this.search();
-            }
-        }); 
-    },
+                    type: 'info',
+                    message: '已取消操作',
+                     duration:2000
+                });          
+            });
+       },
+
+
 
       //执行修改
     doUpdateConsultationApplication() {

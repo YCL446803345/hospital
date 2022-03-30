@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface PrescriptionBillService {
     List<Drug> getPrescriptionBill(Patient patient);
+
+    Double getPrescriptionBillHavePay(Patient patient);
 }

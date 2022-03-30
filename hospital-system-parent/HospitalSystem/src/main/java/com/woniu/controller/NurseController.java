@@ -400,4 +400,55 @@ NurseController {
         bedService.addBed(deptId);
     }
 
+    /**
+     * 查询床位使用情况
+     * @return
+     */
+    @GetMapping("/getBedData")
+    public ResponseEntity<List<Integer>> getBedData(Integer deptId) {
+        final List<Integer> num = bedService.getBedData(deptId);
+        return new ResponseEntity<List<Integer>>(num,HttpStatus.OK);
+    }
+
+    /**
+     * 各部门床位占比
+     * @return
+     */
+    @GetMapping("/getBedsByDept")
+    public ResponseEntity<List<Integer>> getBedsByDept() {
+        final List<Integer> num = bedService.getBedsByDept();
+        return new ResponseEntity<List<Integer>>(num,HttpStatus.OK);
+    }
+
+    /**
+     * 各部门床使用数
+     * @return
+     */
+    @GetMapping("/getBedsInUseByDept")
+    public ResponseEntity<List<Integer>> getBedsInUseByDept() {
+        final List<Integer> num = bedService.getBedsInUseByDept();
+        return new ResponseEntity<List<Integer>>(num,HttpStatus.OK);
+    }
+
+    /**
+     * 查询已支付医嘱账单的金额
+     * @return
+     */
+    @GetMapping("/getMedicalAdviceBillHavePay")
+    public ResponseEntity<Double> getMedicalAdviceBillHavePay(@RequestBody Patient patient) {
+        Double num = medicalAdviceBillService.getMedicalAdviceBillHavePay(patient);
+        return new ResponseEntity<Double>(num,HttpStatus.OK);
+    }
+
+    /**
+     * 查询已支付处方账单的金额
+     * @return
+     */
+    @GetMapping("/getPrescriptionBillHavePay")
+    public ResponseEntity<Double> getPrescriptionBillHavePay(@RequestBody Patient patient) {
+        Double num = prescriptionBillService.getPrescriptionBillHavePay(patient);
+        return new ResponseEntity<Double>(num,HttpStatus.OK);
+    }
+
+
 }

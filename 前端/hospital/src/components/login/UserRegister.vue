@@ -67,7 +67,6 @@ back(){
               if(valid){
                 //发送axios请求
         this.$axios.post("/api/user/add", this.user).then((res) => {
-          console.log(res.data);
           if (res.data.status == 200) {
             this.$message({
               showClose: true,

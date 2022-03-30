@@ -27,9 +27,11 @@ public interface WorkerMapper {
     int updateByPrimaryKeySelective(Worker record);
     int updateByPrimaryKey(Worker record);
 
+    //根据用户名查询权限
     @Select("select p.percode from HOS_perms p inner join HOS_role_perm rp on(p.id=rp.perm_id)inner join HOS_worker w on(w.role_id=rp.role_id) where w.account=#{account}")
     List<String> selectPercodeByPerm(@Param("account") String account);
 
+    //模糊查询用户列表
     @Select("<script>" +"select w.*,r.name roleName,d.name deptName,s.worktime shift from\n" +
             "    HOS_worker w,HOS_dept d,HOS_role r,HOS_scheduling s\n" +
             "    where w.dept_id=d.id and w.role_id=r.id and w.spare1=s.id order by w.id asc \n"+

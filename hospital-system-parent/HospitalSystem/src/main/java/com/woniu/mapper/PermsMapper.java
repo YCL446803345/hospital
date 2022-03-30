@@ -43,16 +43,19 @@ public interface PermsMapper {
             "where w.account=#{account} and type='m'")
     List<Perms> byNamefindPerms(String account);
 
-
+    //根据用户角色获取权限树
     @Select("select perm_id from HOS_role_perm where role_id=#{id}")
     List<String> getPermByRoleId(Integer id);
 
+    //删除权限
     @Delete("delete from HOS_role_perm where role_id=#{id}")
     void deletePermsByRoleId(Integer id);
 
+    //修改权限
     @Insert("insert into HOS_role_perm(role_id,perm_id)values(#{roleId},#{permsId})")
     void updatePerms(@Param("roleId") Integer roleId, @Param("permsId") Integer  permsId);
 
+    //查询所有权限
     @Select("SELECT * FROM HOS_perms")
     List<Perms> findAllPerms();
 

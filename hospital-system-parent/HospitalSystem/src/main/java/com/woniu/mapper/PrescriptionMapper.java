@@ -42,12 +42,12 @@ public interface PrescriptionMapper {
             "left join HOS_worker w1 on w1.id=p.doctor_id\n"+
             "left join HOS_patient pa on pa.id=p.patient_id\n"+
             "left join HOS_worker w2 on w2.id=pa.nurse_id\n"+
-            "<where>"+
-            "<if test='doctorName != null and doctorName != \"\"'>and w1.name like '%${doctorName}'</if>"+
-            "<if test='nurseName != null and nurseName != \"\"'>and w2.name like '%${nurseName}'</if>"+
-            "<if test='preName != null and preName != \"\"'>and pa.name like '%${preName}'</if>"+
+            "where 1 = 1 "+
             "and p.prescription_status = 1"+
-            "</where>"+
+            "<if test='doctorName != null and doctorName != \"\"'>and w1.name like '%${doctorName}%'</if>"+
+            "<if test='nurseName != null and nurseName != \"\"'>and w2.name like '%${nurseName}%'</if>"+
+            "<if test='preName != null and preName != \"\"'>and pa.name like '%${preName}%'</if>"+
+            "group by id"+
             "</script>")
     List<Prescription> getPreDrugByMany(@Param("doctorName")String doctorName, @Param("nurseName")String nurseName,@Param("preName") String preName);
 

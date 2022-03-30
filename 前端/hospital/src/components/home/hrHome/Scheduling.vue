@@ -7,6 +7,7 @@
       <el-breadcrumb-item>职工列表</el-breadcrumb-item>
     </el-breadcrumb>
     <el-row style="margin-top: 10px; margin-bottom: 10px">
+
       <el-dialog title="个人排班" :visible.sync="dialogVisible" width="30%">
         <el-form :model="updateSchedulingForm">
 
@@ -17,6 +18,7 @@
               </el-select>
             </el-form-item>
         </el-form>
+
         <span slot="footer" class="dialog-footer">
           <el-button type="primary" @click="updateScheduling()">确 定</el-button>
           <el-button @click="dialogVisible = false">取 消</el-button>
@@ -96,8 +98,10 @@
         headers: {},
 
 
+
       };
     },
+
     created() {
       this.findWorkerList();
 
@@ -224,6 +228,59 @@
       handleCurrentChange(value) {
         this.findWorkerList(value);
       },
+      //添加排班
+  
+
+
+      // select(start, end, allDay) {
+      //       layer.open({
+      //           type: 1,
+      //           shade: false,
+      //           content: $box,
+      //           title: '选择班次',
+      //           btn: ['确认', '关闭'],
+      //           btn1: function() {
+      //               layer.closeAll();
+      //           },
+      //           yes: addCallback
+      //       });
+      //       function addCallback() {
+      //           var bgColor = $box.find("input[name=code]:checked").val();
+      //           var title = $box.find("input[name=code]:checked").next().text();
+      //           var text = $box.find("option:selected").text();
+
+      //           var json = {
+      //               title: text + ' - ' + title,
+      //               text: text,
+      //               allDay: allDay,
+      //               backgroundColor: bgColor,
+      //               start: start.format('YYYY-MM-DD'),
+      //               end: end.format('YYYY-MM-DD')
+      //           };
+
+      //           // test
+      //           $('#calendar').fullCalendar('renderEvent', json, true); // 添加日历
+
+      //           // 添加排班 post
+      //           function addEvent(data) {
+      //               if (data.title == null || data.title == '') {
+      //                   return false;
+      //               }
+      //               if (checkStr(data.title) == false) {
+      //                   alert("请不要输入非法字符！");
+      //                   return;
+      //               }
+
+      //               $.post("Canlendar/postEvent", data, function(data) {
+      //                   calendar.fullCalendar('renderEvent', json, true); // 添加日历
+      //               }, "json");
+      //           }
+
+      //           layer.closeAll();
+      //       }
+
+      //       calendar.fullCalendar('unselect');
+      //   }
     },
   };
 

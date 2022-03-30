@@ -19,7 +19,7 @@
 
       <el-col :span="2">
         <el-select v-model="gender" placeholder="性别">
-          <el-option label="性别" value=""></el-option>
+          <!-- <el-option label="性别" value=""></el-option> -->
           <el-option label="男" value="1"></el-option>
           <el-option label="女" value="2"></el-option>
         </el-select>
@@ -68,7 +68,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="age" label="年龄" width="50"> </el-table-column>
+      <el-table-column prop="age" label="年龄" width="80"> </el-table-column>
 
       <el-table-column prop="cardId" label="身份证号" width="180">
       </el-table-column>
@@ -76,12 +76,7 @@
       <el-table-column prop="phone" label="手机号" width="150">
       </el-table-column>
 
-      <el-table-column label="入院时间" width="150">
-        <template slot-scope="scope">
-          <i class="el-icon-time"></i>
-          <span style="margin-left: 10px">{{scope.row.appointmenttTime}}</span>
-        </template>
-      </el-table-column>
+      <el-table-column prop="appointmenttTime" label="入院时间" width="160"></el-table-column>
 
       <el-table-column prop="deptName" label="科室" width="80">
       </el-table-column>
@@ -105,7 +100,25 @@
 
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button size="mini" type="success" @click="gotoFindPatientInformation(scope.row.id)">患者详情</el-button>  
+          <el-button size="mini" type="primary" @click="gotoUpdatePatient(
+            scope.row.id,
+            scope.row.name,
+            scope.row.no,
+            scope.row.gender,
+            scope.row.age,
+            scope.row.cardId,
+            scope.row.phone,
+            scope.row.appointmenttTime,
+            scope.row.deptName,
+            scope.row.deptId,
+            scope.row.bedCode,
+            scope.row.bedId,
+            scope.row.nurseName,
+            scope.row.nurseId,
+            scope.row.doctorName,
+            scope.row.doctorId,
+            scope.row.baseDesc
+            )">编辑患者</el-button>  
           <el-button size="mini" type="danger" @click="gotoAddConsultationApplication(
             scope.row.id,
             scope.row.name ,
@@ -121,11 +134,16 @@
             scope.row.doctorId
             )">突发情况</el-button>
           
-          <el-button size="mini" type="primary" @click="gotoAddLeaveHospital(
+          <el-button size="mini" type="success" @click="gotoAddLeaveHospital(
               scope.row.id,
               scope.row.name,
               scope.row.doctorId,
-              scope.row.doctorName
+              scope.row.doctorName,
+              scope.row.no,
+              scope.row.gender,
+              scope.row.age,
+              scope.row.phone,
+              scope.row.cardId
               )">申请出院</el-button>
         </template>
       </el-table-column>
@@ -143,7 +161,7 @@
     >
     </el-pagination>
 
-    <!-- 提出院 -->
+    <!-- 申请出院 -->
     <el-dialog :visible.sync="addLeaveHospitalForm">
       <h1 align="center">申请出院</h1>
       <br />
@@ -154,10 +172,37 @@
             {{ addLeaveHospital.name }}
           </el-descriptions-item>
 
-          <el-descriptions-item>
+          <!-- <el-descriptions-item>
             <template slot="label"><i class="el-icon-user"></i>主治医生</template>
             {{ addLeaveHospital.doctorName }}
+          </el-descriptions-item> -->
+
+          <el-descriptions-item>
+            <template slot="label"><i class="el-icon-user"></i>编号</template>
+            {{ addLeaveHospital.no }}
           </el-descriptions-item>
+
+          <el-descriptions-item>
+            <template slot="label"><i class="el-icon-user"></i>身份证号</template>
+            {{ addLeaveHospital.cardId }}
+          </el-descriptions-item>
+
+          <el-descriptions-item>
+            <template slot="label"><i class="el-icon-user"></i>性别</template>
+            {{ addLeaveHospital.gender ==='1'?'男':'女'  }}
+          </el-descriptions-item>
+
+          <el-descriptions-item>
+            <template slot="label"><i class="el-icon-user"></i>年龄</template>
+            {{ addLeaveHospital.age }}
+          </el-descriptions-item>
+
+         <el-descriptions-item>
+            <template slot="label"><i class="el-icon-user"></i>电话</template>
+            {{ addLeaveHospital.phone }}
+          </el-descriptions-item>
+
+          
 
         </el-descriptions>
       </template>
@@ -166,7 +211,7 @@
 
       <el-form :model="addLeaveHospital">
 
-        <el-form-item label="描述" :label-width="formLabelWidth">
+        <el-form-item label="申请描述" :label-width="formLabelWidth">
           <el-input v-model="addLeaveHospital.leaveDescription" autocomplete="off"></el-input>
         </el-form-item>
 
@@ -248,7 +293,7 @@
             <el-radio v-model="addConsultationApplication.consultationCategoryId" label="3" value=3>一般会诊</el-radio>
         </el-form-item>
 
-        <el-form-item label="原因" :label-width="formLabelWidth">
+        <el-form-item label="申请原因" :label-width="formLabelWidth">
           <el-input v-model="addConsultationApplication.reason" autocomplete="off"></el-input>
         </el-form-item>
 
@@ -264,7 +309,65 @@
       </div>
     </el-dialog>
 
+    <!-- 编辑患者 -->
+    <el-dialog :visible.sync="updatePatientForm">
+      <h1 align="center">编辑患者信息</h1><br />
+      <el-form :model="updatePatient">
+        <el-form-item label="姓名" :label-width="formLabelWidth">
+          <el-input v-model="updatePatient.name" autocomplete="off" readonly="readonly"></el-input>
+        </el-form-item>
 
+        <!-- <el-form-item label="主治医生" :label-width="formLabelWidth">
+          <el-input v-model="updatePatient.doctorName" autocomplete="off" readonly="readonly"></el-input>
+        </el-form-item>
+
+        <el-form-item label="主治护士" :label-width="formLabelWidth">
+          <el-input v-model="updatePatient.nurseName" autocomplete="off" readonly="readonly"></el-input>
+        </el-form-item> -->
+
+        <el-form-item label="编号" :label-width="formLabelWidth">
+          <el-input v-model="updatePatient.no" autocomplete="off" readonly="readonly"></el-input>
+        </el-form-item>
+
+        <el-form-item label="性别" :label-width="formLabelWidth">
+                <el-radio v-model="updatePatient.gender" label="1" value=1>男</el-radio>
+                <el-radio v-model="updatePatient.gender" label="2" value=2>女</el-radio>
+            </el-form-item>
+
+        <el-form-item label="年龄" :label-width="formLabelWidth">
+          <el-input v-model="updatePatient.age" autocomplete="off"></el-input>
+        </el-form-item>
+
+        <el-form-item label="电话" :label-width="formLabelWidth">
+          <el-input v-model="updatePatient.phone" autocomplete="off"></el-input>
+        </el-form-item>
+
+        <el-form-item label="身份证号" :label-width="formLabelWidth">
+          <el-input v-model="updatePatient.cardId" autocomplete="off"></el-input>
+        </el-form-item>
+
+        <el-form-item label="入院时间" :label-width="formLabelWidth">
+          <el-input v-model="updatePatient.appointmenttTime" autocomplete="off" readonly="readonly"></el-input> 
+        </el-form-item>
+
+        <el-form-item label="科室" :label-width="formLabelWidth">
+          <el-input v-model="updatePatient.deptName" autocomplete="off" readonly="readonly"></el-input>
+        </el-form-item>
+
+        <el-form-item label="床位" :label-width="formLabelWidth">
+          <el-input v-model="updatePatient.bedCode" autocomplete="off" readonly="readonly"></el-input>
+        </el-form-item>
+
+        <el-form-item label="描述" :label-width="formLabelWidth">
+          <el-input v-model="updatePatient.baseDesc" autocomplete="off"></el-input>
+        </el-form-item>
+
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="doUpdatePatient">提 交</el-button>
+        <el-button @click="updatePatientForm = false;updatePatient={}">取 消</el-button>
+      </div>
+    </el-dialog>
 
   </div>
 </template>
@@ -290,6 +393,27 @@ export default {
       addConsultationApplication:{},
       addConsultationApplicationForm: false,
 
+      
+      updatePatientForm: false,
+      updatePatient:{
+        id:'',
+        name:'',
+        no:'',
+        gender:'',
+        age:'',
+        cardId:'',
+        phone:'',
+        appointmenttTime:'',
+        deptName:'',
+        deptId:'',
+        bedCode:'',
+        bedId:'',
+        nurseName:'',
+        nurseId:'',
+        doctorName:'',
+        doctorId:'',
+        baseDesc:''
+      },
 
     };
   },
@@ -298,6 +422,71 @@ export default {
     this.headers = { tokenStr: window.localStorage.getItem("tokenStr") };
   },
   methods: {
+      //执行修改
+    doUpdatePatient() {
+      var patient = this.updatePatient;
+
+      this.$axios.post("/api/doctor/updatePatient",patient)
+        .then((res) => {
+          if (res.status == 4001) {
+            this.$message({
+              type: "error",
+              message: "没有权限!",
+              duration: 2000,
+            });
+          } else {
+            this.$message({
+              type: "success",
+              message: "编辑成功!",
+              duration: 2000,
+            });
+            this.updatePatientForm = false;
+            this.search();
+          }
+        });
+    },
+    //准备修改
+    gotoUpdatePatient(
+        id,
+        name,
+        no,
+        gender,
+        age,
+        cardId,
+        phone,
+        appointmenttTime,
+        deptName,
+        deptId,
+        bedCode,
+        bedId,
+        nurseName,
+        nurseId,
+        doctorName,
+        doctorId,
+        baseDesc
+    ){
+      this.updatePatient = {
+        id:id,
+        name:name,
+        no:no,
+        gender:gender,
+        age:age,
+        cardId:cardId,
+        phone:phone,
+        appointmenttTime:appointmenttTime,
+        deptName:deptName,
+        deptId:deptId,
+        bedCode:bedCode,
+        bedId:bedId,
+        nurseName:nurseName,
+        nurseId:nurseId,
+        doctorName:doctorName,
+        doctorId:doctorId,
+        baseDesc:baseDesc
+      };
+      this.updatePatientForm = true;
+    },
+
     //打开下达医嘱列表
       gotoAddConsultationApplication(
         id,
@@ -365,13 +554,17 @@ export default {
 
 
       //准备出院
-      gotoAddLeaveHospital(id,name,doctorId,doctorName) {
+      gotoAddLeaveHospital(id,name,doctorId,doctorName,no,gender,age,phone,cardId) {
         this.addLeaveHospital = {
         id: id,
         name: name,
         doctorId: doctorId,
         doctorName: doctorName,
-        
+        no: no,
+        gender: gender,
+        age: age,
+        phone: phone,
+        cardId: cardId
       };
         this.addLeaveHospitalForm = true;
       },
@@ -433,7 +626,7 @@ export default {
     },
     changeSize(value) {
       this.pageSize = value;
-      this.pageNum = 1;
+      // this.pageNum = 1;
       this.search();
     },
     changePage(value) {

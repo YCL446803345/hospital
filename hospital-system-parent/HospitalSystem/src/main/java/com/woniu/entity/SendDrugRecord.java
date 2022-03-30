@@ -22,6 +22,9 @@ public class SendDrugRecord {
     private String spare2;
     private String spare3;
 
-
+    private String doctorName;
+    private String preName;
+    private String sdTime;
+    private Integer pid;
 
 }

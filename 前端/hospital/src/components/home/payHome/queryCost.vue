@@ -1,6 +1,7 @@
 <template>
     <div>
         <!-- 面包xie导航 -->
+        <br>
         <el-breadcrumb separator="/">
             <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
             <el-breadcrumb-item><a href="#/patientInfo">在院病人费用信息管理</a></el-breadcrumb-item>
@@ -99,7 +100,7 @@
 
             <el-table-column
                 label="入院时间"
-                width="180">
+                width="200">
                 <template slot-scope="scope">
                     <i class="el-icon-time"></i>
                     <span style="margin-left: 10px">{{ scope.row.appointmenttTime}}</span>
@@ -124,10 +125,10 @@
                   size="mini"
                   type="primary"
                   @click="findShow(scope.row)">查询病人费用详情</el-button>
-                <!-- <el-button
+                <el-button
                   size="mini"
                   type="primary"
-                  @click="myMethodCall(scope.row.id)">病人费用数据分析</el-button>  -->
+                  @click="showAnalysis(scope.row.id)">病人费用数据分析</el-button> 
                </template>
             </el-table-column>
         </el-table>
@@ -170,6 +171,31 @@
         </template>
 
         <template>
+             <!-- <el-form  label-width="100px" class="demo-ruleForm">
+            
+              <el-col :span="10">
+             <el-form-item label="申请时间" >
+              <el-col :span="11">
+                <el-form-item prop="startTime">
+                  <el-date-picker type="date" placeholder="选择日期" v-model="startTime" style="width: 100%;"  @change="getData()"></el-date-picker>
+                </el-form-item>
+              </el-col>
+              <el-col class="line" :span="2">-</el-col>
+              <el-col :span="11">
+                <el-form-item prop="endTime">
+                  <el-date-picker type="date" placeholder="选择日期" v-model="endTime" style="width: 100%;"  @change="getData()"></el-date-picker>
+                </el-form-item>
+              </el-col>
+            
+            </el-form-item>
+              </el-col>
+             <el-col :span="10">
+            <el-form-item>
+              <el-button type="primary" @click="getData()">查询</el-button>
+              <el-button @click="startTime='';endTime=''">重置</el-button>
+            </el-form-item>
+             </el-col>
+          </el-form>  -->
         <el-descriptions class="margin-top" title="" :column="1"  border>
 
             <el-descriptions-item>
@@ -207,8 +233,20 @@
                 </el-table-column>
              </el-table>
             </el-descriptions-item>
-        
         </el-descriptions>
+
+        <el-pagination
+            background
+            layout="prev, pager,next, sizes,->,total"
+            :total="Intotal"
+            :current-page='num'
+            :page-sizes=[5,10,15,20]
+            :page-size='size'
+            @size-change='changeInSize'
+            @current-change='changeInPage'
+           >
+        </el-pagination>
+
         </template>
 
             <div slot="footer" class="dialog-footer">
@@ -216,18 +254,22 @@
             </div>
         </el-dialog>
 
-        <!-- <el-dialog :visible.sync="analysisForm">
-             <el-row>
-            <el-col :span="10">
-                <div class="grid-content bg-purple" style="width:100%;height:500px;">
-                    <div style="width:500px;height:500px;" id="pie"></div>
-                </div>
-            </el-col>
+        <el-dialog :visible.sync="analysisForm"  @open="open">
+        <h1 align="center">缴费详情 </h1><br>
+        <template>
+            <el-row>
+                <el-col :span="10">
+                    <div class="grid-content bg-purple" style="width:700px;height:500px;" id="pies">
+                        <div style="width:500px;height:500px;" id="pie"></div>
+                    </div>
+                </el-col>
+            </el-row>
+        </template>
              <div slot="footer" class="dialog-footer">
+                 <!-- <el-button @click="getPie">显示</el-button> -->
                 <el-button @click="closeAnalysisForm">确定</el-button>
             </div>
-        </el-row>
-        </el-dialog> -->
+        </el-dialog>
 
     </div>
 </template>
@@ -247,7 +289,7 @@ export default {
         pageNum:1,
         pageSize:5,
         costViewForm:false,
-        // analysisForm:false,
+        analysisForm:false,
         paymentRecordList:[],
         patient:{
             name:"",
@@ -259,6 +301,12 @@ export default {
             { name: '医嘱', value: 30 },
             { name: '退药', value: 30 }
           ],
+            num:1,
+            size:5,
+          patientId:0,
+          Intotal:0,
+          startTime:"",
+          endTime:""
       }
    },
    created(){
@@ -298,20 +346,63 @@ export default {
             return (i+1)+this.pageSize*(this.pageNum-1);
          },
          findShow(patient){
-            this.$axios.get("/api/queryPayment",{params:{id:patient.id}}).then(res=>{
-                console.log(res.data);
+             this.patientId = patient.id
+            this.$axios.get("/api/queryPayment",{params:{
+                    pageNum:this.num,
+                    pageSize:this.size,
+                    id:this.patientId
+                }}).then(res=>{
                 this.patient.name = patient.name;
                 this.patient.no = patient.no;
-                this.paymentRecordList = res.data;
+                this.paymentRecordList = res.data.list;
+                this.Intotal = res.data.total;
                 this.costViewForm = true;
             })
          },
+        changeInPage(value){
+            this.num=value;
+            this.$axios.get("/api/queryPayment",{params:{
+                id:this.patientId,
+                pageNum:this.num,pageSize:this.size
+                  }})
+            .then(res=>{
+                this.paymentRecordList = res.data.list;
+                this.Intotal = res.data.total;
+                this.num = res.data.pageNum;
+                this.size = res.data.pageSize;
+            })
+        },
+        changeInSize(value){
+            this.size=value;
+            this.num=1;
+            this.$axios.get("/api/queryPayment",{params:{
+                id:this.patientId,
+                pageNum:this.num,pageSize:this.size
+                  }})
+            .then(res=>{
+                this.paymentRecordList = res.data.list;
+                this.Intotal = res.data.total;
+                this.num = res.data.pageNum;
+                this.size = res.data.pageSize;
+            })
+        },
+        // getData(){
+        // this.$axios.get("/api/queryPayment",{params:{
+
+        //             pageNum:this.num,
+        //             pageSize:this.size,
+        //             id:this.patientId
+        //         }}).then(res=>{
+
+        //         })
+        // },
+
          closeCostInfoForm(){
              this.costViewForm = false;
          },
         getPie() {
         // 绘制图表
-        var myChart = echarts.init(window.document.getElementById('pie'))
+        var myChart = echarts.init(window.document.getElementById('pie'));
         // 指定图表的配置项和数据
         var option = {
           //标题
@@ -335,6 +426,8 @@ export default {
           legend: {//图例  标注各种颜色代表的模块
             // orient: 'vertical',//图例的显示方式  默认横向显示
             bottom: 10,//控制图例出现的距离  默认左上角
+            type:'scroll',
+            orient:'horizontal',
             left: 'center',//控制图例的位置
             // itemWidth: 16,//图例颜色块的宽度和高度
             // itemHeight: 12,
@@ -369,30 +462,34 @@ export default {
 
         }
         // 使用刚指定的配置项和数据显示图表。
-        myChart.setOption(option)
+        myChart.setOption(option,true)
       },
 
-    //   showAnalysis(id){
-    //         this.$axios.get("/api/queryPersonalData",{params:{id:id}}).then(res=>{
-    //         this.data[0].value=res.data[0]
-    //         this.data[1].value=res.data[1]
-    //         this.data[2].value=res.data[2]
-    //         this.data[3].value=res.data[3]
-
-    //         // this.$watch(() => {
-    //         //     this.getPie()
-    //         // })
-    //         this.analysisForm = true;
-    //     })
-    //   },
-        // closeAnalysisForm(){
-        //     this.analysisForm = false;
-        // },
+      showAnalysis(id){
+            this.$axios.get("/api/queryPersonalData",{params:{id:id}}).then(res=>{
+            this.data[0].value=res.data[0]
+            this.data[1].value=res.data[1]
+            this.data[2].value=res.data[2]
+            this.data[3].value=res.data[3]
+            this.analysisForm = true;
+            // setTimeout(this.getPie(),2000)
+        })
+      },
+        closeAnalysisForm(){
+            echarts.init(window.document.getElementById('pie')).dispose()
+            // let pies = window.document.getElementById('pie');
+            // let pie = pies.childNodes[0];
+            // pie.removeChild(pie.childNodes[0]);
+            this.analysisForm = false;
+        },
         // myMethodCall(id){
-        //       this.$options.methods.showAnalysis(id).then(()=>{
-        //         this.getPie()
-        //     })
+        //     this.showAnalysis(id);
         // }
+        open(){
+            window.setTimeout(()=>{
+                this.getPie();
+            },0)
+        }
        
     },
    

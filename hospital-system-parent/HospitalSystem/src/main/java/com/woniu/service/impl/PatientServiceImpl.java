@@ -164,13 +164,12 @@ public class PatientServiceImpl implements PatientService {
         }
         double sumMoney=(double)day*200;
 
-        HospitalizationBill hospitalizationBill1 = new HospitalizationBill();
-        hospitalizationBill1.setPayDays(day);
+        hospitalizationBill.setNeedPayDays(day);
 
-        hospitalizationBill1.setSumMoney(sumMoney);
+        hospitalizationBill.setSumMoney(sumMoney);
 
 
-        return hospitalizationBill1;
+        return hospitalizationBill;
 
     }
 
@@ -193,6 +192,11 @@ public class PatientServiceImpl implements PatientService {
      */
     public void doOutHospital(Integer id) {
         patientMapper.doOutHospital(id);
+    }
+
+    @Override
+    public void updatePatientByDoctor(Patient patient) {
+        patientMapper.updatePatientByDoctor(patient);
     }
 }
 

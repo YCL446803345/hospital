@@ -14,4 +14,6 @@ public class DrugOutDrug {
     private Integer drugOutId;
     private Integer num;
 
+    private String drugName;
+    private Integer ddid;
 }

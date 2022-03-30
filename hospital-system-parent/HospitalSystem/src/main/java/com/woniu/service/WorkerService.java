@@ -16,8 +16,10 @@ public interface WorkerService {
     //添加职工
     void addWorker(Worker worker);
 
+    //删除职工
     void deleteWorkerById(Integer id);
 
+    //修改职工
     void updateWorker(Worker worker);
 
 

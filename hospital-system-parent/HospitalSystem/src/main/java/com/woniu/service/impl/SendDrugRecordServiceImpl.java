@@ -21,16 +21,11 @@ public class SendDrugRecordServiceImpl implements SendDrugRecordService {
     private SendDrugRecordMapper sdrMapper;
     @Autowired
     private PrescriptionDrugService prescriptionDrugService;
+
     //查询发药记录
     public List<SendDrugRecord> findAllSendDrug(String name) {
-        SendDrugRecordExample sendDrugRecordExample = new SendDrugRecordExample();
-        SendDrugRecordExample.Criteria criteria = sendDrugRecordExample.createCriteria();
-        if (!StringUtils.isEmpty(name)){
-            criteria.andSpare1Like("%"+name+"%");
-        }
-        List<SendDrugRecord> sendDrugRecordList = sdrMapper.selectByExample(sendDrugRecordExample);
+        List<SendDrugRecord> sendDrugRecordList =  sdrMapper.findAllSendRecord(name);
         return sendDrugRecordList;
     }
-
 
 }

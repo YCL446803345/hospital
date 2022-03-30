@@ -20,10 +20,10 @@ public class DeptServiceImpl implements DeptService {
     private DeptMapper deptMapper;
 
 
-    @Override
+    //查询部门列表
     public List<Dept> findDeptList() {
         List<Dept> deptList = deptMapper.selectByExample(new DeptExample());
-        System.out.println("IMPL"+deptList);
+
         return deptList;
     }
 

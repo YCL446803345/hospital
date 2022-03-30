@@ -10,6 +10,7 @@ import com.woniu.service.InHospitalTableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -53,5 +54,17 @@ public class InHospitalTableServiceImpl implements InHospitalTableService {
         patientMapper.addPatientByDoctor(patient);
         //审核预约通过,修改预约状态
         inHospitalTableMapper.updateInHospitalTable(inHospitalTable);
+    }
+
+    //添加住院通知单
+    public void addInHospitalTable(InHospitalTable inHospitalTable) {
+        inHospitalTable.setInHosptialTime(new Date());
+        inHospitalTable.setStatus("1");
+        inHospitalTableMapper.addInHospitalTable(inHospitalTable);
+    }
+
+    //驳回住院申请单
+    public void gotoDeleteInHospitalTableById(Integer id) {
+        inHospitalTableMapper.deleteByPrimaryKey(id);
     }
 }

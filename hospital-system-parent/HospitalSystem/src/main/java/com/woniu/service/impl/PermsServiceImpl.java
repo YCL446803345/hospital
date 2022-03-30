@@ -39,7 +39,7 @@ public class PermsServiceImpl implements PermsService {
         }
     }
 
-    @Override
+    //查询所有权限
     public List<Perms> findAllPerms() {
         List<Perms> allPerms = permsMapper.findAllPerms();
 

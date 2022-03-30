@@ -53,4 +53,19 @@ public interface BedMapper {
 
     @Insert("insert into HOS_bed(code,status,dept_id)values(#{code},1,#{deptId})")
     void addBed(Bed bed);
+
+    @Select("select count(*) from HOS_bed where status=1 and dept_id=#{deptId}")
+    Integer findBedsNotUseBydeptId(Integer deptId);
+
+    @Select("select count(*) from HOS_bed where status=2 and dept_id=#{deptId}")
+    Integer findBedsInUseBydeptId(Integer deptId);
+
+    @Select("select count(*) from HOS_bed where status=1 ")
+    Integer findBedsNotUse();
+
+    @Select("select count(*) from HOS_bed where status=2 ")
+    Integer findBedsInUse();
+
+    @Select("select count(*) from HOS_bed where dept_id=#{id} ")
+    Integer getBedsByDeptId(Integer id);
 }

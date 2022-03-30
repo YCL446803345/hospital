@@ -19,6 +19,7 @@
           <div align="center">
           <el-button type="primary" icon="el-icon-loading" @click="doLogin('loginForm')" >登录</el-button>
           <el-button type="primary" icon="el-icon-s-custom" @click="doRegister" >注册</el-button>
+          <el-button type="primary" icon="el-icon-close" @click="back" >返回</el-button>
           </div>
         </el-form>
       </div>
@@ -53,6 +54,10 @@ export default {
 
    },
    methods:{    
+
+     back(){
+  this.$router.push('/')
+},
        doRegister(){
  this.$router.push('/gotoUserRegister')
        },

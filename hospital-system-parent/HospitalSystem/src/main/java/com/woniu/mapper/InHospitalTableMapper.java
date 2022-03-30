@@ -3,6 +3,8 @@ package com.woniu.mapper;
 import com.woniu.entity.InHospitalTable;
 import com.woniu.entity.InHospitalTableExample;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
@@ -37,4 +39,9 @@ public interface InHospitalTableMapper {
     //审核预约住院信息
     @Update("update HOS_in_hospital_table set status='2' where id=#{id}")
     void updateInHospitalTable(InHospitalTable inHospitalTable);
+
+    //添加住院申请单
+    @Insert("insert into HOS_in_hospital_table(patient_name,patient_sex,patient_age,card_id,telephone,dept_id,reason,in_hosptial_time,status) " +
+            "values(#{patientName},#{patientSex},#{patientAge},#{cardId},#{telephone},#{deptId},#{reason},#{inHosptialTime},#{status})")
+    void addInHospitalTable(InHospitalTable inHospitalTable);
 }

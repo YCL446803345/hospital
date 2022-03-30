@@ -38,8 +38,6 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     public List<Prescription> getPresDrugByMany(String doctorName, String nurseName,String preName) {
 
         List<Prescription> prescriptionList2= prescriptionMapper.getPreDrugByMany(doctorName,nurseName,preName);
-
-
         return prescriptionList2;
     }
 
