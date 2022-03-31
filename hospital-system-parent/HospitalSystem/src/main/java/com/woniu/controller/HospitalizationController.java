@@ -6,6 +6,7 @@ import com.woniu.entity.*;
 import com.woniu.service.CallService;
 import com.woniu.service.HospitalizationBillServer;
 import com.woniu.service.PatientService;
+import com.woniu.service.UserService;
 import com.woniu.util.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -34,6 +35,9 @@ public class HospitalizationController {
 
     @Autowired
     private CallService callService;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping("createToken")
     public ResponseEntity<String> createToken(){
@@ -243,6 +247,12 @@ public class HospitalizationController {
     @GetMapping("updateCallStatus")
     public void updateCallStatus(Integer id){
         callService.updateCallStatus(id);
+    }
+
+    @GetMapping("getMyScheduling")
+    public ResponseEntity<List<WorkerScheduling>> getMyScheduling(String account){
+        List<WorkerScheduling> workerSchedulings = userService.getMyScheduling(account);
+        return new ResponseEntity<>(workerSchedulings,HttpStatus.OK);
     }
 
 }

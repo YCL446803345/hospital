@@ -3,6 +3,7 @@ package com.woniu.service.impl;
 import com.woniu.entity.ToEmail;
 import com.woniu.entity.User;
 import com.woniu.entity.UserExample;
+import com.woniu.entity.WorkerScheduling;
 import com.woniu.mapper.UserMapper;
 import com.woniu.service.UserService;
 import com.woniu.util.JwtTokenUitl;
@@ -116,5 +117,9 @@ public class UserServiceImpl implements UserService {
             mailSender.send(message);
         }
 
-
+    @Override
+    public List<WorkerScheduling> getMyScheduling (String account) {
+        List<WorkerScheduling> workerSchedulings = userMapper.getMyScheduling(account);
+        return workerSchedulings;
+    }
 }

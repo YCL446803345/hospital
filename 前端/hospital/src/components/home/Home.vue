@@ -78,7 +78,7 @@ export default {
    methods:{
       handleCommand(command){
          if (command == "workerCenter") {
-            
+            this.$router.push('/workerCenter')
          }
          if (command == "logout") {
                       this.$confirm('是否退出本系统?', '提示', {

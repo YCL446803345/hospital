@@ -70,8 +70,10 @@ import leaveHospital from '../components/home/payHome/leave.vue' //出院结算
 import dataAnalysis from '../components/home/payHome/dataAnalysis.vue' //数据分析
 import leaveCost from '../components/home/payHome/leaveCost.vue' //出院病人费用查询
 import pay from '../components/home/payHome/pay.vue' //入院缴费
-
 import test from '../components/home/payHome/test.vue' //测试柱状图
+
+import workerCenter from '../components/home/WorkerCenter'//个人中心,查看自己排班
+
 //配置路由规则
 var router = new VueRouter({
 
@@ -91,7 +93,7 @@ var router = new VueRouter({
 
 
             children: [
-
+                {path:"/workerCenter",component:workerCenter},
 
 
                 { path: "/nurse/admission", component: patientInfo },
