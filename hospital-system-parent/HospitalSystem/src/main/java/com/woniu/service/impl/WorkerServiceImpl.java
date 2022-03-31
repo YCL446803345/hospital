@@ -5,6 +5,7 @@ import com.woniu.entity.WorkerExample;
 import com.woniu.mapper.WorkerMapper;
 import com.woniu.service.WorkerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,6 +21,8 @@ public class WorkerServiceImpl implements WorkerService {
     @Autowired
     private WorkerMapper workerMapper;
 
+    @Autowired
+    private PasswordEncoder PasswordEncoder;
 
     //查询职工列表
     public List<Worker> findWorkerList(Worker worker) {
@@ -30,6 +33,9 @@ public class WorkerServiceImpl implements WorkerService {
 
     //添加职工
     public void addWorker(Worker worker) {
+        worker.setPassword(PasswordEncoder.encode(worker.getPassword()));
+        worker.setStatus("1");
+        worker.setSpare1("1");
         workerMapper.insert(worker);
     }
 

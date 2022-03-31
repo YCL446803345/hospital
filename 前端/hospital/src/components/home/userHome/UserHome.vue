@@ -29,16 +29,16 @@
 
 
         <div class="login">
-
+          <!-- 用户预约病人表 -->
           <div class="loginPart">
             <h2>万物皆虚,万事皆允</h2>
-            <el-form ref="loginForm" :model="inHospitalTable">
+            <el-form ref="loginForm" :model="inHospitalTable" >
               <el-form-item prop="patientName ">
                 <div class="inputElement">
-                  <el-input v-model="inHospitalTable.patientName" placeholder="请输入病人名字" prop="patientName"></el-input>
+                  <el-input v-model="inHospitalTable.patientName"></el-input>
                 </div>
               </el-form-item>
-              <el-form-item prop="patientSex ">
+              <el-form-item prop="patientSex">
                 <div class="inputElement">
                   <el-radio v-model="inHospitalTable.patientSex" label="男" style="color:white"></el-radio>
                   <el-radio v-model="inHospitalTable.patientSex" label="女" style="color:white"></el-radio>
@@ -46,17 +46,12 @@
               </el-form-item>
               <el-form-item prop="patientAge">
                 <div class="inputElement">
-                  <el-input v-model="inHospitalTable.patientAge" placeholder="请输入年龄" prop="patientAge"></el-input>
+                  <el-input v-model="inHospitalTable.patientAge" placeholder="请输入年龄" ></el-input>
                 </div>
               </el-form-item>
               <el-form-item prop="cardId">
                 <div class="inputElement">
-                  <el-input v-model="inHospitalTable.cardId" placeholder="请输入身份证号码" prop="cardId"></el-input>
-                </div>
-              </el-form-item>
-              <el-form-item prop="telephone">
-                <div class="inputElement">
-                  <el-input v-model="inHospitalTable.telephone"  placeholder="请输入当前用户手机号码" prop="telephone"></el-input>
+                  <el-input v-model="inHospitalTable.cardId" placeholder="请输入身份证号码"></el-input>
                 </div>
               </el-form-item>
               <el-form-item prop="deptId">
@@ -68,7 +63,7 @@
               </el-form-item>
               <el-form-item prop="reason">
                 <div class="inputElement">
-                  <el-input v-model="inHospitalTable.reason" placeholder="请输入病情" prop="reason"></el-input>
+                  <el-input v-model="inHospitalTable.reason" placeholder="请输入病情"></el-input>
                 </div>
               </el-form-item>
 
@@ -76,7 +71,7 @@
               <div align="center">
 
                 <div class="inputElement">
-                  <el-button type="info" icon="el-icon-user-solid" @click="addInHospitalTable()">病人预约</el-button>
+                  <el-button type="info" icon="el-icon-user-solid" @click="addInHospitalTable('loginForm')">病人预约</el-button>
                   <el-button type="info" icon="el-icon-user" @click="getInHospitalTableByTelephone()">预约查询</el-button>
                 </div>
               </div>
@@ -84,6 +79,7 @@
           </div>
         </div>
 
+<!-- 病人预约详情表 -->
         <el-dialog title="病人预约情况" :visible.sync="Visible" class="mydig" width="60%" :showClose="false" align="center">
 
           <el-table :data="inHospitalTableData">
@@ -131,9 +127,8 @@
 <script>
   export default {
     data() {
-
       return {
-    
+
         inHospitalTable: {
           patientName: "",
           patientSex: "",
@@ -157,6 +152,7 @@
         headers: "",
         menuDate: [],
         status:'2',
+           
       }
     },
     computed: {
@@ -172,7 +168,7 @@
     methods: {
       //缴纳手续费
       pay(value){
-        this.$axios.get("/api/pay",{params:{phone:value}}).then(res=>{
+        this.$axios.get("/test/pay",{params:{phone:value}}).then(res=>{
                         const divForm = document.getElementsByTagName("div");
                         if (divForm.length) {
                             document.body.removeChild(divForm[0]);
@@ -187,7 +183,7 @@
       //部门列表
       findDeptList() {
         //axios请求拿数据
-        this.$axios.get("/api/dept/list", {
+        this.$axios.get("/test/dept/list", {
             params: {},
           })
           .then((res) => {
@@ -204,7 +200,7 @@
       //床位列表
       findBedList() {
         //axios请求拿数据
-        this.$axios.get("/api/findBedList", {
+        this.$axios.get("/test/findBedList", {
             params: {},
           })
           .then(res => {
@@ -221,8 +217,7 @@
 
       //添加病人
       addInHospitalTable() {
-
-        this.$axios.get("/api/queryUserStatus",{params:{phone: this.telephone}}).then(res=>{ 
+        this.$axios.get("/test/queryUserStatus",{params:{phone: this.telephone}}).then(res=>{ 
           if (res.data == "1") {
               window.localStorage.setItem("status",2)
               window.localStorage.setItem("inHospitalTable",JSON.stringify(this.inHospitalTable))
@@ -234,7 +229,7 @@
             })
           }else {
              this.inHospitalTable.telephone = window.localStorage.getItem("telephone")
-            this.$axios.post("/api/inHospitalTable/add", this.inHospitalTable).then((res) => {
+            this.$axios.post("/test/inHospitalTable/add", this.inHospitalTable).then((res) => {
           if (res.data.status == 200) {
   
             this.$message({
@@ -244,7 +239,18 @@
               duration: 600,
             });
             this.inHospitalTable = {};
-          } else {
+          } else if (res.data.status == 2008) {
+                this.$message({
+                  showClose: true,
+                  message: "病人已存在",
+                  type: "error",
+                  duration: 600,
+                  duration: 2000,
+                  onClose: () => {
+                    this.user.spare2 = "";
+                  }
+                });
+              }  else {
             this.$message({
               showClose: true,
               message: "添加失败",
@@ -266,7 +272,7 @@
         //发送axios请求
         //axios请求拿数据
         this.$axios
-          .get("/api/inHospitalTable/getByTelephone", {
+          .get("/test/inHospitalTable/getByTelephone", {
             params: {
               telephone: this.telephone
             },
@@ -305,12 +311,12 @@
     
 
     
-    //  mounted: function() {
-    //         if (location.href.indexOf("#reloaded") == -1) {
-    //             location.href = location.href + "#reloaded";
-    //             location.reload();
-    //         }
-    //     },
+     mounted: function() {
+            if (location.href.indexOf("#reloaded") == -1) {
+                location.href = location.href + "#reloaded";
+                location.reload();
+            }
+        },
         
     created() {
 
@@ -320,7 +326,7 @@
       this.status = window.localStorage.getItem("status")
       
 
-      this.$axios.get("/api/perms/findMenuPerms", {
+      this.$axios.get("/test/perms/findMenuPerms", {
           params: {
             telephone: this.telephone
           }
@@ -339,7 +345,7 @@
         this.inHospitalTable = JSON.parse(window.localStorage.getItem("inHospitalTable")) 
         //发送axios请求
         this.inHospitalTable.telephone = window.localStorage.getItem("telephone")
-        this.$axios.post("/api/inHospitalTable/add", this.inHospitalTable).then((res) => {
+        this.$axios.post("/test/inHospitalTable/add", this.inHospitalTable).then((res) => {
           if (res.data.status == 200) {
             this.$message({
               showClose: true,

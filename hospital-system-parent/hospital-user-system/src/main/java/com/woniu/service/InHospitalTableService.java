@@ -16,4 +16,6 @@ public interface InHospitalTableService {
     void addInHospitalTableService(InHospitalTable inHospitalTable);
     //根据手机号码查询病人预约信息
     List<InHospitalTable> getInHospitalTableByTelephone(String telephone);
+    //根据身份证号码查询病人是否存在
+    InHospitalTable getByCardId(String cardId);
 }

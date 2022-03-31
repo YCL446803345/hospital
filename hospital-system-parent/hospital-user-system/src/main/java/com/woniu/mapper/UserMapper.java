@@ -19,6 +19,8 @@ public interface UserMapper {
     int insertSelective(User record);
 
     List<User> selectByExample(UserExample example);
+
+
     User selectByPrimaryKey(Integer id);
 
     int updateByExampleSelective(@Param("record") User record, @Param("example") UserExample example);
@@ -30,4 +32,7 @@ public interface UserMapper {
     @Select("select p.percode from HOS_perms p inner join HOS_user_perms up on(p.id=up.perms_id)\n" +
             "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tinner join HOS_user u on(u.id=up.user_id) where u.telephone=#{telephone}")
     List<String> selectPercodeByPerm(String telephone);
+
+    @Select("select * from HOS_user where telephone=#{telephone}")
+    User selectByTelephone(String telephone);
 }

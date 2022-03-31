@@ -16,6 +16,12 @@ public interface UserService {
 
     void commonEmail (String email);
 
+    //根据电话号码查询是否重复
+    User getByTelephone(String telephone);
+
+
+
+
 //    void deleteWorkerById(Integer id);
 //
 //    void updateWorker(Worker worker);

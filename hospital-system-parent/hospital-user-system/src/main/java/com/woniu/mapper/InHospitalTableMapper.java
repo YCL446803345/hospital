@@ -45,4 +45,8 @@ public interface InHospitalTableMapper {
 //    @Select("select i.*,b.code bedCode,d.name deptName from HOS_in_hospital_table i,HOS_bed b,HOS_dept d where i.bed_id=b.id and i.dept_id=d.id and telephone=#{telephone}")
     @Select("select i.*,d.name deptName from HOS_in_hospital_table i,HOS_dept d where  i.dept_id=d.id and telephone=#{telephone}")
     List<InHospitalTable> getInHospitalTableByTelephone(String telephone);
+
+    //根据身份证号码查询病人是否重复
+    @Select("select * from HOS_in_hospital_table where card_id=#{cardId}")
+    InHospitalTable selectByCardId(String cardId);
 }

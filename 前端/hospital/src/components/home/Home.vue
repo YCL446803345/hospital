@@ -87,7 +87,7 @@ export default {
           type: 'warning'
         }).then(() => {
            window.localStorage.removeItem("tokenStr");
-           this.$router.push("/gotoWorkesLogin");
+           this.$router.push("/");
         })
          }
 

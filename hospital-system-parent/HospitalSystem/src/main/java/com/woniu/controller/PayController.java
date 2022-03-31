@@ -5,18 +5,19 @@ import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradePagePayRequest;
-import com.woniu.entity.Patient;
+import com.woniu.entity.User;
+import com.woniu.entity.UserExample;
+import com.woniu.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
@@ -36,25 +37,18 @@ public class PayController {
 //    private final String NOTIFY_URL = "http://localhost:8081/#/register/manager";
     //支付宝同步通知路径,也就是当付款完毕后跳转本项目的页面,可以不是公网地址
     private String RETURN_URL = "http://localhost:8080/returnUrl";
-    private Patient patient;
+    private String phone;
 
+
+    @Autowired
+    private UserMapper userMapper;
 //    @Autowired
 //    private CashierCostService cashierCostService;
 
 
-    @PostMapping("/pay")
-    public void alipay(HttpServletResponse httpResponse) throws IOException, ParseException {
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-//        Date date = null;
-//        try {
-//            date = sdf.parse(time);
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-
-//        patient.setTime(date);
-//        this.patient = patient;
-//        SecureRandom r = new SecureRandom();
+    @GetMapping("/pay")
+    public void alipay(HttpServletResponse httpResponse, String phone) throws IOException, ParseException {
+        this.phone = phone;
         //实例化客户端,填入所需参数
         AlipayClient alipayClient = new DefaultAlipayClient(GATEWAY_URL, APP_ID, APP_PRIVATE_KEY, FORMAT, CHARSET, ALIPAY_PUBLIC_KEY, SIGN_TYPE);
         AlipayTradePagePayRequest request = new AlipayTradePagePayRequest();
@@ -113,17 +107,18 @@ public class PayController {
         boolean signVerified = AlipaySignature.rsaCheckV1(params, ALIPAY_PUBLIC_KEY, CHARSET, SIGN_TYPE); // 调用SDK验证签名
         //验证签名通过
         if (signVerified) {
+            UserExample userExample = new UserExample();
+            UserExample.Criteria criteria = userExample.createCriteria();
+            criteria.andTelephoneEqualTo(this.phone);
+            List<User> userList = userMapper.selectByExample(userExample);
+            User user = userList.get(0);
+            user.setSpare3("2");
+            userMapper.updateByPrimaryKeySelective(user);
 
-//            CashierCost cashierCost = new CashierCost();
-//
-//            cashierCost.setOldmoney(new BigDecimal(8));
-//            cashierCost.setTransmoney(new BigDecimal(8).negate());
-//            cashierCost.setTime(new Date());
-//            cashierCostService.add(patient,cashierCost);
             //发请求到前端告诉前端已经支付成功
-            response.sendRedirect("http://localhost:9090/#/pay/cost");
+            response.sendRedirect("http://localhost:9090/#/gotoUserHome");
         }else{
-            response.sendRedirect("http://localhost:9090/#/pay/cost");
+            response.sendRedirect("http://localhost:9090/#/gotoUserHome");
         }
 
     }
