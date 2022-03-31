@@ -2,8 +2,8 @@
   <div>
     <!-- 面包xie导航 -->
     <el-breadcrumb separator="/">
-      <el-breadcrumb-item :to="{ path: '/gotoHome' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item><a href="#/worker/manager">职工管理</a></el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item><a href="#/workers">职工管理</a></el-breadcrumb-item>
       <el-breadcrumb-item>职工列表</el-breadcrumb-item>
     </el-breadcrumb>
     <el-row style="margin-top: 10px; margin-bottom: 10px">
@@ -85,7 +85,7 @@
 
         <!-- 添加Form -->
 
-        <el-dialog title="添加职工" :visible.sync="addDialogWorkerFormVisible" >
+        <el-dialog title="添加职工" :visible.sync="addDialogWorkerFormVisible" :rules="rules">
           <el-form :model="worker" ref="loginForm">
             <el-form-item label="职工名字" :label-width="formLabelWidth"  prop="name">
               <el-input v-model="worker.name" autocomplete="off"  prop="name"></el-input>
@@ -118,7 +118,7 @@
 
           </el-form>
           <div slot="footer" class="dialog-footer">
-            <el-button type="primary" @click="addWorker">确 定</el-button>
+            <el-button type="primary" @click="addWorker('loginForm')">确 定</el-button>
             <el-button @click="addDialogWorkerFormVisible = false;worker={}">取 消</el-button>
           </div>
         </el-dialog>
@@ -347,14 +347,21 @@
       //打开添加职工列表
       openAddWorker() {
         this.$axios.post("/api/worker/add", this.worker).then((res) => {
-       
+          console.log(res.data);
 
-  
+          if (res.data.status == 4001) {
+            this.$message({
+              showClose: true,
+              message: res.data.msg,
+              type: 'error',
+              duration: 1000
+            });
+          } else {
             this.headers = {
               strToken: localStorage.getItem('strToken')
             }
             this.addDialogWorkerFormVisible = true;
-        
+          }
 
         });
 
@@ -364,11 +371,17 @@
 
 
       //添加职工
-      addWorker() {
+      addWorker(forName) {
+
+
+        this.$refs[forName].validate((valid) => {
+          //表单验证通过
+          if (valid) {
 
             //跨域后的url
             //发送axios请求
             this.$axios.post("/api/worker/add", this.worker).then((res) => {
+              console.log(res.data);
 
               if (res.data.status == 200) {
                 this.$message({
@@ -380,11 +393,11 @@
                 this.worker = {};
                 this.addDialogWorkerFormVisible = false;
                 this.findWorkerList(1); //刷新列表
-              } else if (res.data.status == 2008) {
+              } else if (res.data.status == 4001) {
                 this.$message({
                   showClose: true,
                   message: res.data.msg,
-                  type: "error",
+                  type: 'error',
                   duration: 1000
                 });
               } else {
@@ -399,16 +412,50 @@
               this.findWorkerList(1); //刷新列表
               this.$message({
                 showClose: true,
-                message:  res.data.msg,
+                message: '异常',
                 type: 'success',
                 duration: 1500
               });
               //跳转
             })
-          
-      
+          } else {
+            //验证不通过
+            return false;
+          }
+        })
 
 
+        //发送axios请求
+        this.$axios.post("/api/worker/add", this.worker).then((res) => {
+          console.log(res.data);
+
+          if (res.data.status == 200) {
+            this.$message({
+              showClose: true,
+              message: "添加成功",
+              type: "success",
+              duration: 600,
+            });
+            this.worker = {};
+            this.addDialogWorkerFormVisible = false;
+            this.findWorkerList(1); //刷新列表
+          } else if (res.data.status == 4001) {
+            this.$message({
+              showClose: true,
+              message: res.data.msg,
+              type: 'error',
+              duration: 1000
+            });
+          } else {
+            this.$message({
+              showClose: true,
+              message: "添加失败",
+              type: "error",
+              duration: 600,
+            });
+          }
+
+        });
       },
 
       //删除职工

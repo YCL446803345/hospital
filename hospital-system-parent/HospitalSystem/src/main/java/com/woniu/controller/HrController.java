@@ -43,11 +43,6 @@ public class HrController {
     @PostMapping("worker/add")
     @PreAuthorize("hasAnyAuthority('worker:add')")
     public ResponseResult<String> addWorker(@RequestBody Worker worker){
-
-        Worker account=workerService.getByAccount(worker.getAccount());
-        if (account != null) {
-            return new ResponseResult<String>(2008,"账号已存在");
-        }
         workerService.addWorker(worker);
         return new ResponseResult<String>(200,"添加成功");
     }

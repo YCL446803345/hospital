@@ -2,8 +2,8 @@
   <div>
     <!-- 面包xie导航 -->
     <el-breadcrumb separator="/">
-      <el-breadcrumb-item :to="{ path: '/gotoHome' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item><a href="#/worker/scheduling">排班管理</a></el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item><a href="#/workers">排班管理</a></el-breadcrumb-item>
       <el-breadcrumb-item>职工列表</el-breadcrumb-item>
     </el-breadcrumb>
     <el-row style="margin-top: 10px; margin-bottom: 10px">

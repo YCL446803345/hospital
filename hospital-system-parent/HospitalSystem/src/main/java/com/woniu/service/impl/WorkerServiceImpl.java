@@ -98,13 +98,4 @@ public class WorkerServiceImpl implements WorkerService {
         criteria.andRoleIdEqualTo(roleId);
         return workerMapper.selectByExample(workerExample);
     }
-
-    @Override
-    public Worker getByAccount(String account) {
-        WorkerExample workerExample = new WorkerExample();
-        WorkerExample.Criteria criteria = workerExample.createCriteria();
-        criteria.andAccountEqualTo(account);
-        Worker worker = workerMapper.selectByAccount(account);
-        return worker;
-    }
 }

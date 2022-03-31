@@ -2,7 +2,7 @@
     <div>
         <!-- 面包xie导航 -->
         <el-breadcrumb separator="/">
-            <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: '/gotoHome' }">首页</el-breadcrumb-item>
             <el-breadcrumb-item><a href="#/patientInfo">在院病人信息管理</a></el-breadcrumb-item>
             <el-breadcrumb-item>在院病人信息管理列表</el-breadcrumb-item>
         </el-breadcrumb>
@@ -233,7 +233,7 @@
         <el-divider></el-divider>
 
 
-        <el-form :model="endUpdateBed">
+        <el-form :model="endUpdateBed" :rules="rules" ref="form1">
 
 
             <!-- <el-form-item label="科室" :label-width="formLabelWidth" >
@@ -242,15 +242,15 @@
                 </el-select>
             </el-form-item> -->
 
-            <el-form-item label="空床位" :label-width="formLabelWidth" >
+            <el-form-item label="空床位" :label-width="formLabelWidth"  prop="bedId">
                 <el-select  v-model="endUpdateBed.bedId" placeholder="选择床位" >
                     <el-option v-for="bed in bedList" :key="bed.id" :label="bed.code" :value="bed.id"  ></el-option>
                 </el-select>
             </el-form-item>
            
             </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="updateBed1">修 改</el-button>
+            <div slot="footer" class="dialog-footer" >
+                <el-button type="primary" @click="updateBed1('form1')">修 改</el-button>
                 <el-button @click="closeUpdateBedForm">取 消</el-button>
             </div>
         </el-dialog>
@@ -304,14 +304,14 @@
 
         <el-divider></el-divider>
         
-        <el-form :model="updateDoctorOrNurse">
-            <el-form-item label="选择医生" :label-width="formLabelWidth" >
-                <el-select v-model="updateDoctorOrNurse.doctorId" placeholder="选择医生"  @change="getBedsByDeptId">
+        <el-form :model="updateDoctorOrNurse" :rules="rules1" ref="form2">
+            <el-form-item label="选择医生" :label-width="formLabelWidth" prop="doctorId" >
+                <el-select v-model="updateDoctorOrNurse.doctorId" placeholder="选择医生"  @change="getBedsByDeptId" >
                     <el-option v-for="doctor in doctorList" :key="doctor.id" :label="doctor.name" :value="doctor.id"  ></el-option>
                 </el-select>
             </el-form-item>
 
-            <el-form-item label="选择护士" :label-width="formLabelWidth" >
+            <el-form-item label="选择护士" :label-width="formLabelWidth" prop="nurseId" >
                 <el-select  v-model="updateDoctorOrNurse.nurseId" placeholder="选择护士" >
                     <el-option v-for="nurse in nurseList" :key="nurse.id" :label="nurse.name" :value="nurse.id"  ></el-option>
                 </el-select>
@@ -319,7 +319,7 @@
            
          </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="updateDoctorOrNurse1">修 改</el-button>
+                <el-button type="primary" @click="updateDoctorOrNurse1('form2')">修 改</el-button>
                 <el-button @click="closeUpdateDoctorOrNurse">取 消</el-button>
             </div>
         </el-dialog>
@@ -381,7 +381,23 @@ export default {
         formLabelWidth: '120px',
         doctorList:[],
         nurseList:[],
-        updateDoctorOrNurseForm:false
+        updateDoctorOrNurseForm:false,
+         rules:{ 
+            bedId:[
+                    { required: true, message: '不能为空', trigger: 'change' }
+            ],
+           
+            }, 
+
+        rules1:{ 
+            doctorId:[
+                    { required: true, message: '不能为空', trigger: 'change' }
+            ],
+            nurseId:[
+                    { required: true, message: '不能为空', trigger: 'change' }
+            ],
+           
+        }, 
       }
    },
    created(){
@@ -403,8 +419,10 @@ export default {
       this.headers={tokenStr:window.localStorage.getItem('tokenStr')};
    },
    methods:{
-       updateDoctorOrNurse1(){
-            var patient=this.updateDoctorOrNurse;
+       updateDoctorOrNurse1(form2){
+           this.$refs[form2].validate((valid)=>{
+                if(valid){
+                         var patient=this.updateDoctorOrNurse;
             this.$axios.post("/api/updateDoctorOrNurse",patient)
             .then(res=>{
                 if(res.data.status==4001){
@@ -423,7 +441,8 @@ export default {
                     this.search();
                 }
             })
-
+                }
+            })
        },
        closeUpdateDoctorOrNurse(){
            this.updateDoctorOrNurse={
@@ -462,8 +481,11 @@ export default {
                     };
             this.updateBedForm=false;
        },
-       updateBed1(){
-           var patient=this.endUpdateBed;
+       updateBed1(form1){
+            this.$refs[form1].validate((valid)=>{
+                if(valid){
+
+                    var patient=this.endUpdateBed;
             this.$axios.post("/api/updateBed",patient)
             .then(res=>{
                 if(res.data.status==4001){
@@ -486,6 +508,11 @@ export default {
                     
                 }
             })
+                }
+            
+            })
+
+          
        },
        getBedsByDeptId(){
             

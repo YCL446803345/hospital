@@ -11,7 +11,7 @@ module.exports = {
         assetsPublicPath: '/',
         proxyTable: {
             //用户前台系统
-            '/test': { 
+            '/test': {
                 target: 'http://localhost:8081',
                 changeOrigin: true,
                 pathRewrite: {

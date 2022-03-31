@@ -486,7 +486,7 @@
                 width="100">
                  <template slot-scope="scope">
                      <el-tag type="warning" disable-transitions>
-                         {{scope.row.spare1===''?'暂无修改':scope.row.spare1}}
+                         {{scope.row.spare1===null||scope.row.spare1===''?'暂无修改':scope.row.spare1}}
                      </el-tag>
                 </template>
             </el-table-column>
@@ -495,8 +495,7 @@
                 label="修改时间"
                 width="240">
                 <template slot-scope="scope">
-                    <i class="el-icon-time"></i>
-                    <span style="margin-left: 10px">{{scope.row.spare2===''?'暂无修改':scope.row.spare2}}</span>
+                    <span style="margin-left: 10px">{{scope.row.spare2===null||scope.row.spare2===''?'暂无修改':scope.row.spare2}}</span>
                 </template>
             </el-table-column>
 
