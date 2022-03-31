@@ -109,6 +109,7 @@ var router = new VueRouter({
                 { path: "/drug/send/drug", component: DrugRecord },
                 { path: "/medicine/home", component: DrugInfo },
                 { path: "/drug/storage/list", component: DrugManager },
+
 				{ path: "/purchase/manager", component: Purchase },
                 { path: "/pay/cost", component: costInfo },
 

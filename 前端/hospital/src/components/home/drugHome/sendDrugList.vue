@@ -31,7 +31,7 @@
             <el-table-column label="开方时间"  prop="createTime"></el-table-column>
             <el-table-column label="药方状态"  prop="prescriptionStatus">
                 <template slot-scope="scope">
-                    <el-tag v-if="scope.row.prescriptionStatus == 1" type="danger"
+                    <el-tag v-if="scope.row.prescriptionStatus == 2" type="danger"
                         disable-transitions>待发药</el-tag>
                 </template>
             </el-table-column>
@@ -161,7 +161,7 @@ export default {
             }else{
                 this.$message({
                     showClose: true,
-                    message: '撤销失败, 系统维护中',
+                    message: '很抱歉,'+res.data.msg,
                     type: 'warning',
                     duration:1500
                 });
@@ -217,7 +217,7 @@ export default {
                 }else{
                     this.$message({
                     showClose: true,
-                    message: '发药失败, 系统维护中',
+                    message: '很抱歉,'+res.data.msg,
                     type: 'warning',
                     duration:1500
                     });
@@ -256,7 +256,7 @@ export default {
             }else{
                 this.$message({
                     showClose: true,
-                    message: '发药失败, 系统维护中',
+                    message: '很抱歉,'+res.data.msg,
                     type: 'warning',
                     duration:1500
                 });

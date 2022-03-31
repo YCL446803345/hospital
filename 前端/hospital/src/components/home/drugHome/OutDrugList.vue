@@ -110,7 +110,7 @@ export default {
             this.did=''
             }else{
                 this.$message({
-                    message: '操作失败, 系统维护中',
+                    message: '很抱歉,'+res.data.msg,
                     type: 'warning',
                     duration:2000
                 });
@@ -166,7 +166,7 @@ export default {
                 }else{
                     this.$message({
                     showClose: true,
-                    message: '操作失败, 系统维护中',
+                    message: '很抱歉,'+res.data.msg,
                     type: 'warning',
                     duration:2000
                     });

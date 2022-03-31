@@ -15,9 +15,14 @@
             </el-col>
 
             <el-col :span="7"  style="margin-left:10px">
-                <el-select v-model="drugType" clearable placeholder="请选择药品类型" style="width:150px;margin-left:-290px">
-                    <el-option label="中药" value="中药"></el-option>
-                <el-option label="西药" value="西药"></el-option>
+                
+                <el-select v-model="drugType" clearable placeholder="请选择药品类别" style="width:150px;margin-left:-290px">
+                    <el-option 
+                    v-for="type in typeList"
+                    :key="type.id"
+                    :label="type.name"
+                    :value="type.name">
+                    </el-option>
                 </el-select>
             </el-col>
 
@@ -170,6 +175,7 @@ export default {
         drugData:[], //所有药品列表
         drugInfo:{},     //单个药品信息对象
         dialogTableVisible:false, //单个药品模态框控件
+        typeList:[],
       }
    },
    methods:{
@@ -198,7 +204,7 @@ export default {
             }else{
                 this.$message({
                 showClose: true,
-                message: '操作失败, '+res.data.msg,
+                message: '很抱歉,'+res.data.msg,
                 type: 'warning',
                 duration:2000
                 });
@@ -251,9 +257,15 @@ export default {
                 this.pageSize=res.data.data.pageSize
             }
         })
+    },
+    findAllType(){
+        this.$axios.get("api/drug/findAllType").then(res=>{
+                this.typeList=res.data.data
+        })
     }
    },
     created(){
+        this.findAllType();
         this.createMethods();
         // this.header={"tokenStr":window.localStorage.getItem("tokenStr")}
    }

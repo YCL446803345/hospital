@@ -3,7 +3,7 @@
             <!-- 面包屑导航 -->
         <el-breadcrumb separator-class="el-icon-arrow-right" class="mianbao">
             <el-breadcrumb-item :to="{ path: '/gotoHome' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item :to="{path: '/medicine/home'}">药品信息</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{path: '/drug/storage/list'}">药库管理</el-breadcrumb-item>
             <el-breadcrumb-item>药品详情</el-breadcrumb-item>
         </el-breadcrumb>
         <!-- 添加查询搜索栏 -->
@@ -14,17 +14,18 @@
             <el-col :span="6">
                 <el-select v-model="drugType" clearable placeholder="请选择药品类别" style="width:147px;margin-left:-213px">
                     <el-option 
-                    v-for="type in types"
-                    :key="type.value"
-                    :label="type"
-                    :value="type" >
+                    v-for="type in typeList"
+                    :key="type.id"
+                    :label="type.name"
+                    :value="type.name">
                     </el-option>
                 </el-select>
             </el-col>
             <el-col :span="8" style="margin-left:-483px;margin-top:1px">
                 <el-button size="medium" type="primary" @click="createMethods()">查询<i class="el-icon-search el-icon--right"></i></el-button>
                 <el-button size="medium" type="warning" @click="batchUnloadDrug">批量上架<i class="el-icon-upload2 el-icon--right"></i></el-button>
-                <el-button size="medium" type="success" @click="purTableVisible=true;">添加药品<i class="el-icon-plus el-icon--right"></i></el-button>
+                <el-button size="medium" type="success" @click="purTableVisible=true;">新增药品<i class="el-icon-plus el-icon--right"></i></el-button>
+                <el-button size="medium" type="success" @click="addpurTableVisible=true;">新增类别<i class="el-icon-plus el-icon--right"></i></el-button>
             </el-col>
         </el-row>
 
@@ -93,6 +94,7 @@
                     <el-button size="mini" type="info"    @click="gotoUpdateDrug(scope.row)">编辑<i class="el-icon-edit el-icon--right"></i></el-button>
                     <el-button size="mini" type="primary" @click="oppenAddStock(scope.row.id)">添加库存<i class="el-icon-plus el-icon--right"></i></el-button>
                     <el-button size="mini" type="warning" @click="drugUnload(scope.row.id)">上架<i class="el-icon-top el-icon--right"></i></el-button>
+                    <el-button size="mini" type="danger" @click="deleteDrug(scope.row.id)">删除<i class="el-icon-top el-icon--right"></i></el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -156,7 +158,7 @@
         </el-dialog>
 
         <!-- 添加库存模态框 -->
-        <el-dialog title="添加库存" :visible.sync="addStockdialogTableVisible" center>
+        <el-dialog title="添加库存" :visible.sync="addStockdialogTableVisible" center :close-on-click-modal="false">
             <!-- Form -->
             <el-form :model="addDrugStock"  ref="addStockForm" >            
                 <el-form-item label="库存数量" :label-width="formLabelWidth" prop="salePrice">
@@ -171,7 +173,7 @@
         </el-dialog>
 
         <!-- 添加药品模态框 -->
-        <el-dialog title="添加药品" :visible.sync="purTableVisible" center>
+        <el-dialog title="新加药品" :visible.sync="purTableVisible" center :close-on-click-modal="false">
             <el-form :model="purchaseDrug" :rules="rules" ref="Form" label-width="100px" class="demo-ruleForm">
 
                 <el-form-item label="药品名称" prop="name">
@@ -231,6 +233,20 @@
             </el-form>
         </el-dialog>
 
+            <!-- 添加药品类别模态框 -->
+        <el-dialog title="新增类别" :visible.sync="addpurTableVisible" center width="500px" :close-on-click-modal="false">
+            <el-form :model="drugtypes" :rules="rules5" ref="Form" label-width="100px" class="demo-ruleForm">
+                <el-form-item label="类别剂型" prop="name">
+                    <el-input v-model="drugtypes.name"></el-input>
+                </el-form-item>
+
+                <el-form-item>
+                    <el-button type="primary" @click="sumitAddTypes('Form')">确定</el-button>
+                    <el-button @click="addpurTableVisible = false;drugtypes={};">返回</el-button>
+                </el-form-item>
+            </el-form>
+        </el-dialog>
+
         <!-- 分页 -->
         <el-pagination 
         :current-page="pageNum"
@@ -264,6 +280,8 @@ export default {
         addImageUrl:'',
         header:{},
         types:[],
+        drugtypes:{},
+        addpurTableVisible:false,
         updateDrug:{    //编辑药品对象
             id:'',
             name:'',
@@ -296,6 +314,7 @@ export default {
             id:'',
             stock:''
         },
+        typeList:[],
         //编辑表单验证
         rules2:{
             name:[
@@ -331,6 +350,11 @@ export default {
             spare2:[
                 {required: true, message: '不能为空哦', trigger: 'blur'},
             ]
+        },
+        rules5:{
+            name:[
+                    {required: true, message: '不能为空哦', trigger: 'blur'},
+                ]
         }   
       }
    },
@@ -470,7 +494,7 @@ export default {
             }else{
                 this.$message({
                     showClose: true,
-                    message: '操作失败, 系统维护中',
+                    message: '很抱歉,'+res.data.msg,
                     type: 'warning',
                     duration:2000
                 });
@@ -511,7 +535,7 @@ export default {
                 }else{
                     this.$message({
                         showClose: true,
-                        message: '操作失败, 系统维护中',
+                        message: '很抱歉,'+res.data.msg,
                         type: 'warning',
                         duration:2000
                     });
@@ -548,7 +572,7 @@ export default {
                             this.createMethods(1);
                                 this.$message({
                                 showClose: true,
-                                message: '添加失败,系统维护中',
+                                message: '很抱歉,'+res.data.msg,
                                 type: 'warning',
                                 duration:2000
                             });
@@ -563,13 +587,82 @@ export default {
                }
            })
     },
+    //添加类别
+        sumitAddTypes(forName){
+           this.$refs[forName].validate((valid) =>{
+               if (valid) {
+                    this.$axios.post("api/drug/addType",this.drugtypes).then(res =>{
+                        if (res.data.status == 200) {
+                                this.$message({
+                                showClose: true,
+                                message: '操作成功',
+                                type: 'success',
+                                duration:2000
+                                });
+                            this.addpurTableVisible=false;
+                            this.createMethods(1);
+                            this.drugtypes={};
+                            this.findAllType();
+                        }else{
+                                this.$message({
+                                showClose: true,
+                                message: '很抱歉,'+res.data.msg,
+                                type: 'warning',
+                                duration:2000
+                            });
+                            this.createMethods(1);
+                            this.findAllType();
+                            this.addpurTableVisible=false
+                            this.drugtypes={};
+                        }
+                    })
+               }else{
+                   return false
+               }
+           })
+    },
     //打开添加库存模态框
     oppenAddStock(id){
         this.addStockdialogTableVisible=true
         this.addDrugStock.id=id
+    },
+    //删除药品
+    deleteDrug(id){
+        this.$confirm('是否删除该药品', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+        }).then(() => {
+            this.$axios.post("api/drug/delete",qs.stringify({'id':id})).then(res=>{
+                if (res.data.status == 200) {
+                    this.$message({
+                    showClose: true,
+                    message: '操作成功',
+                    type: 'success',
+                    duration:2000
+                    });
+                    this.createMethods(1);
+                }else{
+                    this.createMethods(1);
+                    this.$message({
+                    showClose: true,
+                    message: '很抱歉,'+res.data.msg,
+                    type: 'warning',
+                    duration:2000
+                });
+                }
+            })
+        })
+    },
+    findAllType(){
+        this.$axios.get("api/drug/findAllType").then(res=>{
+                this.typeList=res.data.data
+        })
     }
+
    },
     created(){
+        this.findAllType();
         this.createMethods();
         this.header={"tokenStr":window.localStorage.getItem("tokenStr")}
         //查询所有药品类别
