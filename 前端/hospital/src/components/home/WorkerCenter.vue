@@ -7,7 +7,7 @@
                 <p :class="data.isSelected ? 'is-selected' : ''">
                   {{ data.day.split('-').slice(1).join('-') }} {{ data.isSelected ? '✔️' : ''}}
                 </p>
-                  <el-col :span="5" v-for="Scheduling in SchedulingList" :key="Scheduling.schedulingId"  >
+                  <el-col :span="10" v-for="Scheduling in SchedulingList" :key="Scheduling.schedulingId"  >
                   <div style="padding: 0px" align="center">
                     <el-card :body-style="{ padding: '0px' }"  shadow="hover" v-if='Scheduling.time==data.day'>
                         <div style="padding: 0px">
@@ -15,11 +15,11 @@
                               <i class="el-icon-timer"></i>
                                <!-- <el-tag type="success" disable-transitions> -->
                                          <!-- <template slot-scope="scope"> -->
-                                            <span v-if="Scheduling.schedulingId == '1'" style="background-color:yellow">白班</span>
-                                            <span v-if="Scheduling.schedulingId == '2'" style="background-color:black">夜班</span>
-                                            <span v-if="Scheduling.schedulingId == '3'" style="background-color:green">轮休</span>
-                                            <span v-if="Scheduling.schedulingId == '4'" style="background-color:blue">病假</span>
-                                            <span v-if="Scheduling.schedulingId == '5'" style="background-color:brown">事假</span>
+                                            <span v-if="Scheduling.schedulingId == '1'" style="background-color:#E6A23C;font-family:萝莉体">白班</span>
+                                            <span v-if="Scheduling.schedulingId == '2'" style="background-color:#409EFF;font-family:萝莉体">夜班</span>
+                                            <span v-if="Scheduling.schedulingId == '3'" style="background-color:#67C23A;font-family:萝莉体">轮休</span>
+                                            <span v-if="Scheduling.schedulingId == '4'" style="background-color:#F56C6C;font-family:萝莉体">病假</span>
+                                            <span v-if="Scheduling.schedulingId == '5'" style="background-color:#909399;font-family:萝莉体">事假</span>
                                          <!-- </template> -->
                                <!-- </el-tag> -->
                               </div>
