@@ -66,7 +66,7 @@
             <el-table-column
                 prop="no"
                 label="病人编号"
-                width="180">
+                width="120">
             </el-table-column>
 
             <!-- <el-table-column
@@ -76,13 +76,18 @@
                     <img  :src="scope.row.avatar" class="a-avatar" >
                 </template>
             </el-table-column> -->
-            
+
             <el-table-column
                 prop="gender"
                 label="性别"
-                width="50">
+                width="80">
                 <template slot-scope="scope">
-                         {{scope.row.gender==='1'?'男':'女'}}
+                <span v-if="scope.row.gender=='2'">
+                  <el-tag type="danger">女</el-tag>
+                  </span>
+                <span v-if="scope.row.gender=='1'">
+                  <el-tag>男</el-tag>
+                  </span>
                 </template>
             </el-table-column>
 
@@ -90,7 +95,7 @@
             <el-table-column
                 prop="age"
                 label="年龄"
-                width="50">
+                width="80">
             </el-table-column>
 
             <el-table-column

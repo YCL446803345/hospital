@@ -19,7 +19,6 @@
 
       <el-col :span="2">
         <el-select v-model="patientSex" placeholder="性别">
-          <!-- <el-option label="性别" value=""></el-option> -->
           <el-option label="男" value="男"></el-option>
           <el-option label="女" value="女"></el-option>
         </el-select>
@@ -59,11 +58,21 @@
         label="姓名"
         width="80"
       ></el-table-column>
+
       <el-table-column
-        prop="patientSex"
-        label="性别"
-        width="80"
-      ></el-table-column>
+                prop="patientSex"
+                label="性别"
+                width="80">
+                <template slot-scope="scope">
+                <span v-if="scope.row.patientSex=='女'">
+                  <el-tag type="danger">女</el-tag>
+                  </span>
+                <span v-if="scope.row.patientSex=='男'">
+                  <el-tag>男</el-tag>
+                  </span>
+                </template>
+            </el-table-column>
+
       <el-table-column
         prop="patientAge"
         label="年龄"
@@ -73,14 +82,14 @@
       <el-table-column
         prop="telephone"
         label="联系方式"
-        width="180"
+        width="140"
       ></el-table-column>
       <el-table-column
         prop="deptName"
         label="预约部门"
         width="80"
       ></el-table-column>
-      <el-table-column prop="reason" label="病况" width="80"></el-table-column>
+      <el-table-column prop="reason" label="病况" width="140"></el-table-column>
       <el-table-column
         prop="inHosptialTime"
         label="预约时间"
@@ -99,15 +108,6 @@
             </span>
         </template>
       </el-table-column>
-      
-     
-      <!-- <el-table-column
-                label="头像"
-                width="100">
-                 <template slot-scope="scope">
-                    <img  :src="scope.row.avatar" class="a-avatar" >
-                </template>
-            </el-table-column> -->
 
       <el-table-column label="操作">
         <template slot-scope="scope">
@@ -192,7 +192,7 @@
           </el-descriptions-item>
 
           <el-descriptions-item>
-            <template slot="label"> <i class="el-icon-tickets"></i>病因</template>
+            <template slot="label"> <i class="el-icon-tickets"></i>状态</template>
             {{ updateInHospitalTable.status === "1" ? "待审核" : "已审核" }}
           </el-descriptions-item>
         </el-descriptions>
@@ -209,35 +209,42 @@
     <!-- 添加住院通知单 -->
     <el-dialog :visible.sync="addInHospitalForm">
       <h1 align="center">添加住院通知单</h1><br />
-      <el-form :model="addInHospital">
-        <el-form-item label="姓名" :label-width="formLabelWidth">
+      <el-form :model="addInHospital" :rules="rules" ref="addInHospital">
+        <el-form-item label="姓名" :label-width="formLabelWidth" prop="patientName">
           <el-input v-model="addInHospital.patientName" autocomplete="off"></el-input>
         </el-form-item>
 
-        <el-form-item label="性别" :label-width="formLabelWidth">
+        <!-- <el-form-item label="性别" :label-width="formLabelWidth" prop="patientSex">
           <el-radio v-model="addInHospital.patientSex" label="男" value='男'>男</el-radio>
           <el-radio v-model="addInHospital.patientSex" label="女" value='女'>女</el-radio>
+        </el-form-item> -->
+
+        <el-form-item label="性别" :label-width="formLabelWidth" prop="patientSex">
+          <el-select v-model="addInHospital.patientSex" placeholder="请选择性别">
+            <el-option label="男" value="男"></el-option>
+            <el-option label="女" value="女"></el-option>
+          </el-select>
         </el-form-item>
 
-        <el-form-item label="年龄" :label-width="formLabelWidth">
+        <el-form-item label="年龄" :label-width="formLabelWidth" prop="patientAge">
           <el-input v-model="addInHospital.patientAge" autocomplete="off" ></el-input>
         </el-form-item>
 
-        <el-form-item label="身份证号" :label-width="formLabelWidth">
+        <el-form-item label="身份证号" :label-width="formLabelWidth" prop="cardId">
           <el-input v-model="addInHospital.cardId" autocomplete="off" ></el-input>
         </el-form-item>
 
-        <el-form-item label="电话" :label-width="formLabelWidth">
+        <el-form-item label="电话" :label-width="formLabelWidth" prop="telephone">
           <el-input v-model="addInHospital.telephone" autocomplete="off"></el-input>
         </el-form-item>
 
-        <el-form-item label="部门" :label-width="formLabelWidth">
+        <el-form-item label="部门" :label-width="formLabelWidth" prop="deptId">
           <el-select v-model="addInHospital.deptId" placeholder="请选择部门">
             <el-option v-for="dept in deptList" :label="dept.name" :value="dept.id" :key="dept.id"></el-option>
           </el-select>
         </el-form-item>
 
-        <el-form-item label="原因" :label-width="formLabelWidth">
+        <el-form-item label="原因" :label-width="formLabelWidth" prop="reason">
           <el-input v-model="addInHospital.reason" autocomplete="off"></el-input>
         </el-form-item>
 
@@ -247,7 +254,8 @@
 
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="doAddInHospital">提 交</el-button>
+        <el-button type="primary" @click="doAddInHospital('addInHospital')">提 交</el-button>
+        <!-- <el-button @click="resetForm()">重 置</el-button> -->
         <el-button @click="addInHospitalForm = false;addInHospital={}">取 消</el-button>
       </div>
     </el-dialog>
@@ -270,7 +278,49 @@ export default {
 
       deptList:[],
 
-      addInHospital:{},
+      addInHospital:{
+        patientName: '',
+        patientSex:'',
+        patientAge:'',
+        cardId:'',
+        telephone:'',
+        deptId:'',
+        reason:''
+      },
+      rules: {
+          patientName: [
+            { required: true, message: '请输入患者名称', trigger: 'blur' },
+            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          ],
+          patientSex: [
+            { required: true, message: '请至少选择一个性别', trigger: 'change' }
+          ],
+          patientAge: [
+            { required: true, message: '年龄不能为空', trigger: 'blur' },
+            // { type: 'number', message: '年龄必须为数字', trigger: 'blur' }
+            // { type: 'number', required: true, message: '年龄必须是数字', trigger: 'change' }
+          ],
+          cardId: [
+            { required: true, message: '身份证号不能为空', trigger: 'blur' },
+            // { type: 'number', message: '身份证号必须是数字', trigger: 'blur' }
+            // { type: 'number', required: true, message: '身份证号必须是数字', trigger: 'change' }
+          ],
+          telephone: [
+            { required: true, message: '联系方式不能为空', trigger: 'blur' },
+            // { type: 'number', message: '联系方式必须是数字', trigger: 'blur' }
+            // { type: 'number', required: true, message: '联系方式必须是数字', trigger: 'change' }
+          ],
+          deptId: [
+            { required: true, message: '请输入预约部门', trigger: 'change' },
+            // { type: 'number', message: '部门必须是数字', trigger: 'change' }
+            // { required: true, message: '请选择活动资源', trigger: 'change' }
+          ],
+          reason: [
+            { required: true, message: '请输入描述原因', trigger: 'blur' },
+            // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+            // { required: true, message: '请填写活动形式', trigger: 'blur' }
+          ]
+        },
       addInHospitalForm: false,
 
       updateInHospitalTableForm: false, //控制是否显示审核对话框
@@ -297,6 +347,54 @@ export default {
     this.headers = { tokenStr: window.localStorage.getItem("tokenStr") };
   },
   methods: {
+
+    doAddInHospital(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            var inHospitalTable = this.addInHospital;
+        // this.$axios.get("api/doctor/addRedisToken").then(res=>{
+                // window.localStorage.setItem('redisToken',res.data.data)
+                this.$axios.post("apidoctor/addInHospitalTable", inHospitalTable).then(res=>{
+                    if(res.data.status ==200){
+                        this.$message({
+                          showClose: true,
+                          message: "添加成功",
+                          type: "success",
+                          duration: 600,
+                        });
+                        this.addInHospital = {};
+                        this.addInHospitalForm = false;
+                        this.search() //刷新列表
+                        // this.drugInfo=res.data.data
+                        // this.dialogTableVisible=true
+                    }else{
+                        this.$message({
+                        showClose: true,
+                        message: '查看失败, 系统维护中',
+                        type: 'warning',
+                        duration:2000
+                        });
+                    }
+                })
+        // })
+            // alert('submit!');
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+      },
+      resetForm() {
+        this.addInHospital={
+        patientName: '',
+        patientSex:'',
+        patientAge:'',
+        cardId:'',
+        telephone:'',
+        deptId:'',
+        reason:''
+      }
+      },
 
     //删除职工
     gotoDeleteInHospitalTable(id){
@@ -338,60 +436,34 @@ export default {
       },
 
       //添加职工
-    doAddInHospital(){
-      var inHospitalTable = this.addInHospital;
-        // this.$axios.get("api/doctor/addRedisToken").then(res=>{
-                // window.localStorage.setItem('redisToken',res.data.data)
-                this.$axios.post("apidoctor/addInHospitalTable", inHospitalTable).then(res=>{
-                    if(res.data.status ==200){
-                        this.$message({
-                          showClose: true,
-                          message: "添加成功",
-                          type: "success",
-                          duration: 600,
-                        });
-                        this.addInHospital = {};
-                        this.addInHospitalForm = false;
-                        this.search() //刷新列表
-                        // this.drugInfo=res.data.data
-                        // this.dialogTableVisible=true
-                    }else{
-                        this.$message({
-                        showClose: true,
-                        message: '查看失败, 系统维护中',
-                        type: 'warning',
-                        duration:2000
-                        });
-                    }
-                })
-        // })
-    },
-      //添加职工
-      // doAddInHospital() {
-      //   //发送axios请求
-      //   var inHospitalTable = this.addInHospital;
-      //   this.$axios.post("/api/doctor/addInHospitalTable", inHospitalTable).then((res) => {
-      //     console.log(res.data);
-      //     if (res.status == 200) {
-      //       this.$message({
-      //         showClose: true,
-      //         message: "添加成功",
-      //         type: "success",
-      //         duration: 600,
-      //       });
-      //       this.addInHospital = {};
-      //       this.addInHospitalForm = false;
-      //       this.search() //刷新列表
-      //     } else {
-      //       this.$message({
-      //         showClose: true,
-      //         message: "添加失败",
-      //         type: "error",
-      //         duration: 600,
-      //       });
-      //     }
-      //   });
-      // },
+    // doAddInHospital(){
+    //   var inHospitalTable = this.addInHospital;
+    //     // this.$axios.get("api/doctor/addRedisToken").then(res=>{
+    //             // window.localStorage.setItem('redisToken',res.data.data)
+    //             this.$axios.post("apidoctor/addInHospitalTable", inHospitalTable).then(res=>{
+    //                 if(res.data.status ==200){
+    //                     this.$message({
+    //                       showClose: true,
+    //                       message: "添加成功",
+    //                       type: "success",
+    //                       duration: 600,
+    //                     });
+    //                     this.addInHospital = {};
+    //                     this.addInHospitalForm = false;
+    //                     this.search() //刷新列表
+    //                     // this.drugInfo=res.data.data
+    //                     // this.dialogTableVisible=true
+    //                 }else{
+    //                     this.$message({
+    //                     showClose: true,
+    //                     message: '查看失败, 系统维护中',
+    //                     type: 'warning',
+    //                     duration:2000
+    //                     });
+    //                 }
+    //             })
+    //     // })
+    // },
 
 
     //部门列表

@@ -28,7 +28,7 @@
           <!-- <el-option label="会诊状态" value=""></el-option> -->
           <el-option label="待会诊" value="1"></el-option>
           <el-option label="已会诊" value="2"></el-option>
-          <!-- <el-option label="已取消" value="3"></el-option> -->
+          <el-option label="已取消" value="3"></el-option>
         </el-select>
       </el-col>
 
@@ -107,7 +107,8 @@
 
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click=" gotoUpdateConsultationApplication(
+          <el-button v-if='scope.row.status ==1'
+          size="mini" type="primary" @click=" gotoUpdateConsultationApplication(
                 scope.row.id,
                 scope.row.patientName,
                 scope.row.doctorName,
@@ -128,7 +129,7 @@
             scope.row.consultationCategoryId
             )">下达医嘱</el-button>
           
-          <el-button size="mini" type="danger" v-if='scope.row.status !=2 '
+          <el-button size="mini" type="danger" v-if='scope.row.status ==1 '
           @click="gotoCancelConsultationApplication(scope.row.id)">取消会诊</el-button>
         </template>
       </el-table-column>
@@ -179,7 +180,7 @@
         </el-form-item>
 
         <el-form-item label="会诊时间" :label-width="formLabelWidth">
-          <el-input v-model="updateConsultationApplication.consultationDate" autocomplete="off"></el-input>
+          <el-input v-model="updateConsultationApplication.consultationDate" autocomplete="off" readonly="readonly"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -233,22 +234,27 @@
 
       <el-divider></el-divider>
 
-      <el-form :model="addMedicalAdvice">
+      <el-form :model="addMedicalAdvice" :rules="rules" ref="addMedicalAdvice">
 
-        <el-form-item label="医嘱类型" :label-width="formLabelWidth">
-            <el-radio v-model="addMedicalAdvice.adviceCategory" label="1" value=1>长期医嘱</el-radio>
+        <el-form-item label="医嘱类型" :label-width="formLabelWidth" prop="adviceCategory">
+            <el-select v-model="addMedicalAdvice.adviceCategory" placeholder="请选择医嘱类型">
+              <el-option label="长期医嘱" value="1"></el-option>
+              <el-option label="临时医嘱" value="2"></el-option>
+              <el-option label="一般医嘱" value="3"></el-option>
+            </el-select>
+            <!-- <el-radio v-model="addMedicalAdvice.adviceCategory" label="1" value=1>长期医嘱</el-radio>
             <el-radio v-model="addMedicalAdvice.adviceCategory" label="2" value=2>临时医嘱</el-radio>
-            <el-radio v-model="addMedicalAdvice.adviceCategory" label="3" value=3>一般医嘱</el-radio>
+            <el-radio v-model="addMedicalAdvice.adviceCategory" label="3" value=3>一般医嘱</el-radio> -->
         </el-form-item>
 
-        <el-form-item label="医嘱描述" :label-width="formLabelWidth">
+        <el-form-item label="医嘱描述" :label-width="formLabelWidth" prop="adviceDescription">
           <el-input v-model="addMedicalAdvice.adviceDescription" autocomplete="off"></el-input>
         </el-form-item>
 
       </el-form>
 
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="doAddMedicalAdvice">下 达</el-button>
+        <el-button type="primary" @click="doAddMedicalAdvice('addMedicalAdvice')">下 达</el-button>
         <el-button @click="addMedicalAdviceForm = false;addMedicalAdvice={}">取 消</el-button>
       </div>
     </el-dialog>
@@ -270,7 +276,20 @@ export default {
       pageNum: 1,
       pageSize: 5,
 
-      addMedicalAdvice:{},
+      addMedicalAdvice:{
+        adviceCategory:'',
+        adviceDescription:''
+      },
+       rules: {
+          adviceCategory: [
+            { required: true, message: '请输入医嘱类型', trigger: 'change' },
+            // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          ],
+          adviceDescription: [
+            { required: true, message: '请输入医嘱描述', trigger: 'blur' },
+            // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          ]
+        },
       addMedicalAdviceForm: false, //控制是否显示下达医嘱对话框
       
     
@@ -294,6 +313,44 @@ export default {
     this.headers = { tokenStr: window.localStorage.getItem("tokenStr") };
   },
   methods: {
+    doAddMedicalAdvice(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            //发送axios请求
+            var medicalAdvice=this.addMedicalAdvice;
+            console.log("所说的上档次")
+            //  alert(medicalAdvice)
+            console.log(medicalAdvice)
+            this.$axios.post("/api/doctor/gotoAddMedicalAdvice",medicalAdvice).then((res) => {
+              console.log(res.data);
+              if (res.status == 200) {
+                this.$message({
+                  showClose: true,
+                  message: "下达成功",
+                  type: "success",
+                  duration: 600,
+                });
+                this.addMedicalAdvice = {};
+                this.addMedicalAdviceForm = false;
+                // this.search(); //刷新列表
+              } else {
+                this.$message({
+                  showClose: true,
+                  message: "下达失败",
+                  type: "error",
+                  duration: 600,
+                });
+              }
+            });
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+      },  
+
+
+
     //打开下达医嘱列表
 
       gotoAddMedicalAdvice(patientName,doctorName,patientId,doctorId,reason,desc,consultationEmergencyId,consultationCategoryId) {
@@ -312,36 +369,35 @@ export default {
       },
 
       //下达医嘱
-      doAddMedicalAdvice() {
-       
-        // console.log("=======================" + this.addMedicalAdvice);
-        //发送axios请求
-        var medicalAdvice=this.addMedicalAdvice;
-         console.log("所说的上档次")
-        //  alert(medicalAdvice)
-         console.log(medicalAdvice)
-        this.$axios.post("/api/doctor/gotoAddMedicalAdvice",medicalAdvice).then((res) => {
-          console.log(res.data);
-          if (res.status == 200) {
-            this.$message({
-              showClose: true,
-              message: "下达成功",
-              type: "success",
-              duration: 600,
-            });
-            this.addMedicalAdvice = {};
-            this.addMedicalAdviceForm = false;
-            // this.search(); //刷新列表
-          } else {
-            this.$message({
-              showClose: true,
-              message: "下达失败",
-              type: "error",
-              duration: 600,
-            });
-          }
-        });
-      },
+      // doAddMedicalAdvice() {
+
+      //   //发送axios请求
+      //   var medicalAdvice=this.addMedicalAdvice;
+      //    console.log("所说的上档次")
+      //   //  alert(medicalAdvice)
+      //    console.log(medicalAdvice)
+      //   this.$axios.post("/api/doctor/gotoAddMedicalAdvice",medicalAdvice).then((res) => {
+      //     console.log(res.data);
+      //     if (res.status == 200) {
+      //       this.$message({
+      //         showClose: true,
+      //         message: "下达成功",
+      //         type: "success",
+      //         duration: 600,
+      //       });
+      //       this.addMedicalAdvice = {};
+      //       this.addMedicalAdviceForm = false;
+      //       // this.search(); //刷新列表
+      //     } else {
+      //       this.$message({
+      //         showClose: true,
+      //         message: "下达失败",
+      //         type: "error",
+      //         duration: 600,
+      //       });
+      //     }
+      //   });
+      // },
 
 
     //取消会诊

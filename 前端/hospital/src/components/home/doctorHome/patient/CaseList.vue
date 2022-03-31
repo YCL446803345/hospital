@@ -45,9 +45,68 @@
             </el-table-column>
 
             <el-table-column
+                prop="patientName"
+                label="患者"
+                width="80">
+            </el-table-column>
+
+            <el-table-column
+                prop="no"
+                label="患者编号"
+                width="140">
+            </el-table-column>
+
+            <el-table-column
+                prop="gender"
+                label="性别"
+                width="80">
+                <template slot-scope="scope">
+                <span v-if="scope.row.gender=='2'">
+                  <el-tag type="danger">女</el-tag>
+                  </span>
+                <span v-if="scope.row.gender=='1'">
+                  <el-tag>男</el-tag>
+                  </span>
+                </template>
+            </el-table-column>
+
+            <el-table-column
+                prop="phone"
+                label="电话"
+                width="140">
+            </el-table-column>
+
+            <el-table-column
+                prop="doctorName"
+                label="主治医生"
+                width="80">
+            </el-table-column>
+
+            <el-table-column
+                prop="deptName"
+                label="科室"
+                width="80">
+            </el-table-column>
+
+            <el-table-column prop="bedCode" label="床位编号" width="80">
+                <template slot-scope="scope">
+                <el-tag :type="scope.row.bedCode === '未分配' ? 'danger' : 'primary'" disable-transitions>
+                    {{ scope.row.bedCode }}
+                </el-tag>
+                </template>
+            </el-table-column>
+
+
+            <el-table-column
                 prop="caseDescription"
                 label="症状描述"
                 width="180">
+            </el-table-column>
+
+            <el-table-column
+                prop="adviceDescription"
+                label="治疗"
+                width="120">
             </el-table-column>
 
             <el-table-column
@@ -61,7 +120,7 @@
             <el-table-column label="操作">
                <template slot-scope="scope">
                   <!-- <el-button size="mini" type="primary" @click="gotoUpdateConsultationApplication(scope.row.id)">编辑</el-button> -->
-                  <el-button size="mini" type="danger" @click="gotoPatient( scope.row.id)">患者详情</el-button>
+                  <el-button size="mini" type="danger" @click="gotoDeleteCase(scope.row.id)">撤 销</el-button>
                </template>
             </el-table-column>
         </el-table>
@@ -102,39 +161,39 @@ export default {
       this.headers={tokenStr:window.localStorage.getItem('tokenStr')};
    },
    methods:{
-       //取消会诊
-    // gotoCancelLeaveHospital(id){
-    //        this.$confirm('确定要撤销吗?', '提示', {
-    //             confirmButtonText: '确定',
-    //             cancelButtonText: '取消',
-    //         }).then(() => {
+     //撤销出院
+    gotoDeleteCase(id){
+           this.$confirm('确定要撤销吗?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+            }).then(() => {
                 
-    //             this.$axios.post("/api/doctor/gotoCancelLeaveHospitalById",qs.stringify({'id':id}),{
-    //         params: { id: id }
-    //         }).then(res=>{
-    //                 if(res.status==4001){
-    //                         this.$message({
-    //                         type: "error",
-    //                         message: "没有权限!",
-    //                          duration:2000
-    //                     });
-    //                  }else{
-    //                     this.$message({
-    //                         type: 'success',
-    //                         message: '撤销成功!',
-    //                         duration:2000
-    //                     });
-    //                     this.search();
-    //                  }
-    //             })
-    //         }).catch(() => {
-    //             this.$message({
-    //                 type: 'info',
-    //                 message: '已取消操作',
-    //                  duration:2000
-    //             });          
-    //         });
-    //    },
+                this.$axios.post("/api/doctor/gotoDeleteCase",qs.stringify({'id':id}),{
+            params: { id: id }
+            }).then(res=>{
+                    if(res.status==4001){
+                            this.$message({
+                            type: "error",
+                            message: "没有权限!",
+                             duration:2000
+                        });
+                     }else{
+                        this.$message({
+                            type: 'success',
+                            message: '撤销成功!',
+                            duration:2000
+                        });
+                        this.search();
+                     }
+                })
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '已取消操作',
+                     duration:2000
+                });          
+            });
+       },
 
 
 

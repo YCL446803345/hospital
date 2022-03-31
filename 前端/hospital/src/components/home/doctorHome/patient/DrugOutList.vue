@@ -65,7 +65,7 @@
             <el-table-column
                 prop="drugName"
                 label="药品"
-                width="180">
+                width="160">
             </el-table-column>
 
             <el-table-column

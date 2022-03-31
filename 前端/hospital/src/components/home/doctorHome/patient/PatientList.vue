@@ -53,22 +53,22 @@
 
       <el-table-column prop="no" label="病人编号" width="120">
       </el-table-column>
-
-      <!-- <el-table-column
-                label="头像"
-                width="100">
-                 <template slot-scope="scope">
-                    <img  :src="scope.row.avatar" class="a-avatar" >
+      
+      <el-table-column
+                prop="gender"
+                label="性别"
+                width="80">
+                <template slot-scope="scope">
+                <span v-if="scope.row.gender=='2'">
+                  <el-tag type="danger">女</el-tag>
+                  </span>
+                <span v-if="scope.row.gender=='1'">
+                  <el-tag>男</el-tag>
+                  </span>
                 </template>
-            </el-table-column> -->
+            </el-table-column>
 
-      <el-table-column prop="gender" label="性别" width="50">
-        <template slot-scope="scope">
-          {{ scope.row.gender === "1" ? "男" : "女" }}
-        </template>
-      </el-table-column>
-
-      <el-table-column prop="age" label="年龄" width="80"> </el-table-column>
+      <el-table-column prop="age" label="年龄" width="60"> </el-table-column>
 
       <el-table-column prop="cardId" label="身份证号" width="180">
       </el-table-column>
@@ -119,7 +119,7 @@
             scope.row.doctorId,
             scope.row.baseDesc
             )">编辑患者</el-button>  
-          <el-button size="mini" type="danger" @click="gotoAddConsultationApplication(
+          <el-button size="mini" type="warning" @click="gotoAddConsultationApplication(
             scope.row.id,
             scope.row.name ,
             scope.row.no ,
@@ -132,7 +132,7 @@
             scope.row.baseDesc,
             scope.row.doctorName,
             scope.row.doctorId
-            )">突发情况</el-button>
+            )">申请会诊</el-button>
           
           <el-button size="mini" type="success" @click="gotoAddLeaveHospital(
               scope.row.id,
@@ -209,16 +209,16 @@
 
       <el-divider></el-divider>
 
-      <el-form :model="addLeaveHospital">
+      <el-form :model="addLeaveHospital" :rules="rules" ref="addLeaveHospital">
 
-        <el-form-item label="申请描述" :label-width="formLabelWidth">
+        <el-form-item label="申请描述" :label-width="formLabelWidth" prop="leaveDescription">
           <el-input v-model="addLeaveHospital.leaveDescription" autocomplete="off"></el-input>
         </el-form-item>
 
       </el-form>
 
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="doAddLeaveHospital">下 达</el-button>
+        <el-button type="primary" @click="doAddLeaveHospital('addLeaveHospital')">下 达</el-button>
         <el-button @click="addLeaveHospitalForm = false;addLeaveHospital={}">取 消</el-button>
       </div>
     </el-dialog>
@@ -279,32 +279,42 @@
 
       <el-divider></el-divider>
 
-      <el-form :model="addConsultationApplication">
+      <el-form :model="addConsultationApplication" :rules="rules1" ref="addConsultationApplication">
 
-        <el-form-item label="紧急度" :label-width="formLabelWidth">
-            <el-radio v-model="addConsultationApplication.consultationEmergencyId" label="1" value=1>紧急</el-radio>
+        <el-form-item label="紧急度" :label-width="formLabelWidth" prop="consultationEmergencyId">
+          <el-select v-model="addConsultationApplication.consultationEmergencyId" placeholder="请选择紧急度">
+            <el-option label="紧急" value="1"></el-option>
+            <el-option label="24小时" value="2"></el-option>
+            <el-option label="一般" value="3"></el-option>
+          </el-select>
+            <!-- <el-radio v-model="addConsultationApplication.consultationEmergencyId" label="1" value=1>紧急</el-radio>
             <el-radio v-model="addConsultationApplication.consultationEmergencyId" label="2" value=2>24小时</el-radio>
-            <el-radio v-model="addConsultationApplication.consultationEmergencyId" label="3" value=3>一般</el-radio>
+            <el-radio v-model="addConsultationApplication.consultationEmergencyId" label="3" value=3>一般</el-radio> -->
         </el-form-item>
 
-        <el-form-item label="会诊类别" :label-width="formLabelWidth">
-            <el-radio v-model="addConsultationApplication.consultationCategoryId" label="1" value=1>它科会诊</el-radio>
+        <el-form-item label="会诊类别" :label-width="formLabelWidth" prop="consultationCategoryId">
+          <el-select v-model="addConsultationApplication.consultationCategoryId" placeholder="请选择会诊类别">
+            <el-option label="它科会诊" value="1"></el-option>
+            <el-option label="科内会诊" value="2"></el-option>
+            <el-option label="一般会诊" value="3"></el-option>
+          </el-select>
+            <!-- <el-radio v-model="addConsultationApplication.consultationCategoryId" label="1" value=1>它科会诊</el-radio>
             <el-radio v-model="addConsultationApplication.consultationCategoryId" label="2" value=2>科内会诊</el-radio>
-            <el-radio v-model="addConsultationApplication.consultationCategoryId" label="3" value=3>一般会诊</el-radio>
+            <el-radio v-model="addConsultationApplication.consultationCategoryId" label="3" value=3>一般会诊</el-radio> -->
         </el-form-item>
 
-        <el-form-item label="申请原因" :label-width="formLabelWidth">
+        <el-form-item label="申请原因" :label-width="formLabelWidth" prop="reason">
           <el-input v-model="addConsultationApplication.reason" autocomplete="off"></el-input>
         </el-form-item>
 
-        <el-form-item label="突发情况" :label-width="formLabelWidth">
+        <el-form-item label="突发情况" :label-width="formLabelWidth" prop="desc">
           <el-input v-model="addConsultationApplication.desc" autocomplete="off"></el-input>
         </el-form-item>
 
       </el-form>
 
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="doAddConsultationApplication">下 达</el-button>
+        <el-button type="primary" @click="doAddConsultationApplication('addConsultationApplication')">下 达</el-button>
         <el-button @click="addConsultationApplicationForm = false;addConsultationApplication={}">取 消</el-button>
       </div>
     </el-dialog>
@@ -350,8 +360,14 @@
           <el-input v-model="updatePatient.appointmenttTime" autocomplete="off" readonly="readonly"></el-input> 
         </el-form-item>
 
-        <el-form-item label="科室" :label-width="formLabelWidth">
+        <!-- <el-form-item label="科室" :label-width="formLabelWidth">
           <el-input v-model="updatePatient.deptName" autocomplete="off" readonly="readonly"></el-input>
+        </el-form-item> -->
+
+        <el-form-item label="科室" :label-width="formLabelWidth">
+          <el-select v-model="updatePatient.deptId" placeholder="请选择科室">
+            <el-option v-for="dept in deptList" :label="dept.name" :value="dept.id" :key="dept.id"></el-option>
+          </el-select>
         </el-form-item>
 
         <el-form-item label="床位" :label-width="formLabelWidth">
@@ -387,10 +403,40 @@ export default {
       pageSize: 5,
       headers: {},
       formLabelWidth: "80px",
-      addLeaveHospital:{},
+      addLeaveHospital:{
+        leaveDescription:''
+      },
+      rules: {
+          leaveDescription: [
+            { required: true, message: '请输入出院描述', trigger: 'blur' },
+            // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          ]
+        },
       addLeaveHospitalForm: false,
 
-      addConsultationApplication:{},
+      addConsultationApplication:{
+        consultationEmergencyId:'',
+        consultationCategoryId:'',
+        reason:'',
+        desc:''
+      },
+       rules1: {
+          consultationEmergencyId: [
+            { required: true, message: '请选择紧急度', trigger: 'change' },
+            // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          ],
+          consultationCategoryId: [
+            { required: true, message: '请选择会诊类别', trigger: 'change' }
+          ],
+          reason: [
+            { required: true, message: '请输入申请原因', trigger: 'blur' },
+          ],
+          desc: [
+            { required: true, message: '请输入突发情况', trigger: 'blur' },
+          ],
+        },
+
+
       addConsultationApplicationForm: false,
 
       
@@ -414,14 +460,109 @@ export default {
         doctorId:'',
         baseDesc:''
       },
+      deptList:[],
 
     };
   },
   created() {
     this.search();
+    this.findDeptList();
     this.headers = { tokenStr: window.localStorage.getItem("tokenStr") };
   },
   methods: {
+    doAddConsultationApplication(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+              //发送axios请求
+            var consultationApplication=this.addConsultationApplication;
+            console.log("所说的上档次")
+            //  alert(medicalAdvice)
+            console.log(consultationApplication)
+            this.$axios.post("/api/doctor/gotoAddConsultationApplication",consultationApplication).then((res) => {
+              console.log(res.data);
+              if (res.status == 200) {
+                this.$message({
+                  showClose: true,
+                  message: "下达成功",
+                  type: "success",
+                  duration: 600,
+                });
+                this.addConsultationApplication = {};
+                this.addConsultationApplicationForm = false;
+                // this.search(); //刷新列表
+              } else {
+                this.$message({
+                  showClose: true,
+                  message: "下达失败",
+                  type: "error",
+                  duration: 600,
+                });
+              }
+            });
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+      },  
+
+
+    doAddLeaveHospital(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+             //发送axios请求
+        var leaveHospital=this.addLeaveHospital;
+         console.log("所说的上档次")
+        //  alert(medicalAdvice)
+         console.log(leaveHospital)
+        this.$axios.post("/api/doctor/gotoAddLeaveHospital",leaveHospital).then((res) => {
+          console.log(res.data);
+          if (res.status == 200) {
+            this.$message({
+              showClose: true,
+              message: "下达成功",
+              type: "success",
+              duration: 600,
+            });
+            this.addLeaveHospital = {};
+            this.addLeaveHospitalForm = false;
+            // this.search(); //刷新列表
+          } else {
+            this.$message({
+              showClose: true,
+              message: "下达失败",
+              type: "error",
+              duration: 600,
+            });
+          }
+        });
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+      },
+
+    //部门列表
+      findDeptList() {
+        //axios请求拿数据
+        this.$axios
+          .get("/api/dept/list", {
+            params: {},
+          })
+          .then((res) => {
+            console.log(res.data.data);
+            //设置部门列表数据
+            this.deptList = res.data.data;
+          })
+          .catch((res) => {
+            this.$message({
+              type: "error",
+              message: "获取部门列表错误!",
+            });
+          });
+      },
+
       //执行修改
     doUpdatePatient() {
       var patient = this.updatePatient;
@@ -520,35 +661,35 @@ export default {
       },
 
       //执行突发情况
-      doAddConsultationApplication() {
+      // doAddConsultationApplication() {
       
-        //发送axios请求
-        var consultationApplication=this.addConsultationApplication;
-         console.log("所说的上档次")
-        //  alert(medicalAdvice)
-         console.log(consultationApplication)
-        this.$axios.post("/api/doctor/gotoAddConsultationApplication",consultationApplication).then((res) => {
-          console.log(res.data);
-          if (res.status == 200) {
-            this.$message({
-              showClose: true,
-              message: "下达成功",
-              type: "success",
-              duration: 600,
-            });
-            this.addConsultationApplication = {};
-            this.addConsultationApplicationForm = false;
-            // this.search(); //刷新列表
-          } else {
-            this.$message({
-              showClose: true,
-              message: "下达失败",
-              type: "error",
-              duration: 600,
-            });
-          }
-        });
-      },
+      //   //发送axios请求
+      //   var consultationApplication=this.addConsultationApplication;
+      //    console.log("所说的上档次")
+      //   //  alert(medicalAdvice)
+      //    console.log(consultationApplication)
+      //   this.$axios.post("/api/doctor/gotoAddConsultationApplication",consultationApplication).then((res) => {
+      //     console.log(res.data);
+      //     if (res.status == 200) {
+      //       this.$message({
+      //         showClose: true,
+      //         message: "下达成功",
+      //         type: "success",
+      //         duration: 600,
+      //       });
+      //       this.addConsultationApplication = {};
+      //       this.addConsultationApplicationForm = false;
+      //       // this.search(); //刷新列表
+      //     } else {
+      //       this.$message({
+      //         showClose: true,
+      //         message: "下达失败",
+      //         type: "error",
+      //         duration: 600,
+      //       });
+      //     }
+      //   });
+      // },
 
 
 
@@ -570,34 +711,34 @@ export default {
       },
 
       //执行出院
-      doAddLeaveHospital() {
-        //发送axios请求
-        var leaveHospital=this.addLeaveHospital;
-         console.log("所说的上档次")
-        //  alert(medicalAdvice)
-         console.log(leaveHospital)
-        this.$axios.post("/api/doctor/gotoAddLeaveHospital",leaveHospital).then((res) => {
-          console.log(res.data);
-          if (res.status == 200) {
-            this.$message({
-              showClose: true,
-              message: "下达成功",
-              type: "success",
-              duration: 600,
-            });
-            this.addLeaveHospital = {};
-            this.addLeaveHospitalForm = false;
-            // this.search(); //刷新列表
-          } else {
-            this.$message({
-              showClose: true,
-              message: "下达失败",
-              type: "error",
-              duration: 600,
-            });
-          }
-        });
-      },
+      // doAddLeaveHospital() {
+      //   //发送axios请求
+      //   var leaveHospital=this.addLeaveHospital;
+      //    console.log("所说的上档次")
+      //   //  alert(medicalAdvice)
+      //    console.log(leaveHospital)
+      //   this.$axios.post("/api/doctor/gotoAddLeaveHospital",leaveHospital).then((res) => {
+      //     console.log(res.data);
+      //     if (res.status == 200) {
+      //       this.$message({
+      //         showClose: true,
+      //         message: "下达成功",
+      //         type: "success",
+      //         duration: 600,
+      //       });
+      //       this.addLeaveHospital = {};
+      //       this.addLeaveHospitalForm = false;
+      //       // this.search(); //刷新列表
+      //     } else {
+      //       this.$message({
+      //         showClose: true,
+      //         message: "下达失败",
+      //         type: "error",
+      //         duration: 600,
+      //       });
+      //     }
+      //   });
+      // },
 
 
       

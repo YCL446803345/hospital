@@ -9,6 +9,7 @@ import com.woniu.service.CaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -22,5 +23,17 @@ public class CaseServiceImpl implements CaseService {
         List<Case> caseList = caseMapper.queryCaseList(c);
         PageInfo<Case> casePageInfo = new PageInfo<>(caseList);
         return casePageInfo;
+    }
+
+    //新增病例
+    public void addCase(Case cases) {
+        cases.setCreateTime(new Date());
+        cases.setAdviceId(cases.getId());
+        caseMapper.addCase(cases);
+    }
+
+    //撤销病例
+    public void gotoDeleteCaseById(Integer id) {
+        caseMapper.deleteByPrimaryKey(id);
     }
 }

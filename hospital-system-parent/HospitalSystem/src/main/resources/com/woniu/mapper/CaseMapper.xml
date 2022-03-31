@@ -244,12 +244,13 @@
   <!--queryCaseList-->
   <!--医生站分页模糊查询病例中心列表-->
   <select id="queryCaseList" resultType="Case">
-    select ca.spare1,ca.case_description,ca.create_time,ca.advice_id,ca.id,ma.patient_id patientId
-    from HOS_case ca
-    inner join HOS_medical_advice ma on ca.advice_id = ma.id
-    <where>
+    select ca.id,ca.spare1,ca.case_description,ca.create_time,ca.advice_id,ma.patient_id patientId,pa.name patientName,pa.phone phone,
+    ma.doctor_id doctorId,wo.name doctorName,pa.gender gender,pa.no no,de.name deptName,ma.advice_description,be.code bedCode
+    from HOS_case ca,HOS_medical_advice ma,HOS_patient pa,HOS_dept de,HOS_worker wo,HOS_bed be
+    where ca.advice_id = ma.id and ma.patient_id = pa.id and pa.dept_id=de.id and pa.doctor_id=wo.id and pa.bed_id=be.id
+
       <if test="spare1!=null and spare1 != ''">and ca.spare1 like '%${spare1}%'</if>
-    </where>  order by ca.create_time desc
+     order by ca.create_time desc
   </select>
 
 </mapper>

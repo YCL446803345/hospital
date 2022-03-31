@@ -56,13 +56,6 @@
                 width="150">
             </el-table-column>
 
-            
-            <el-table-column
-                prop="doctorName"
-                label="主治医生"
-                width="80">
-            </el-table-column>
-
             <el-table-column
                 prop="leaveGender"
                 label="性别"
@@ -75,7 +68,6 @@
                   <el-tag>男</el-tag>
                   </span>
                 </template>
-
             </el-table-column>
 
             <el-table-column
@@ -102,7 +94,11 @@
                 width="120">
             </el-table-column>
 
-
+            <el-table-column
+                prop="doctorName"
+                label="主治医生"
+                width="80">
+            </el-table-column>
 
             <el-table-column
                 prop="leaveDescription"

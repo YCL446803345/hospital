@@ -23,6 +23,15 @@ public class Case {
     private Date createTime;
 
     private Integer patientId;
+    private Integer doctorId;
+    private String patientName;
+    private String doctorName;
+    private String gender;
+    private String no;
+    private String deptName;
+    private String phone;
+    private String adviceDescription;
+    private String bedCode;
 
     private String spare1;
 
