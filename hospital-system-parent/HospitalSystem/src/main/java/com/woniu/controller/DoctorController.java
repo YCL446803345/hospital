@@ -98,6 +98,14 @@ public class DoctorController {
         return new ResponseResult<String>(200,"撤销退药成功");
     }
 
+    //撤销处方
+    @PostMapping("doctor/gotoStopPrescription")
+    public ResponseResult<String> gotoStopPrescription(Integer id){
+        prescriptionService.gotoStopPrescriptionById(id);
+        System.out.println("撤销处方成功");
+        return new ResponseResult<String>(200,"撤销处方成功");
+    }
+
 
     //申请退药
     @PostMapping("doctor/gotoAddDrugOut")
@@ -113,6 +121,22 @@ public class DoctorController {
         prescriptionService.addPrescription(prescription);
         System.out.println("处方下达成功");
         return new ResponseResult<String>(200,"下达成功");
+    }
+
+    //新增病例
+    @PostMapping("doctor/gotoAddCase")
+    public ResponseResult<String> gotoAddCase(@RequestBody Case cases){
+        caseService.addCase(cases);
+        System.out.println("新增成功");
+        return new ResponseResult<String>(200,"新增成功");
+    }
+
+    //撤销病例
+    @PostMapping("doctor/gotoDeleteCase")
+    public ResponseResult<String> gotoDeleteCase(Integer id){
+        caseService.gotoDeleteCaseById(id);
+        System.out.println("撤销病例成功");
+        return new ResponseResult<String>(200,"撤销病例成功");
     }
 
 
@@ -383,6 +407,6 @@ public class DoctorController {
     //编辑患者
     @PostMapping("doctor/updatePatient")
     public void updatePatient(@RequestBody Patient patient) {
-        patientService.updatePatient(patient);
+        patientService.updatePatientByDoctor(patient);
     }
 }

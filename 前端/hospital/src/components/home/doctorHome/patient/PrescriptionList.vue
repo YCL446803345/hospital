@@ -73,7 +73,7 @@
             <el-table-column
                 prop="drugTypeName"
                 label="类型"
-                width="50">
+                width="70">
             </el-table-column>
 
             <el-table-column
@@ -156,7 +156,8 @@
                       scope.row.spare2,
                       scope.row.prescriptionStatus
                       )">申请退药</el-button>
-                  <!-- <el-button size="mini" type="danger" @click="gotoCancelLeaveHospital( scope.row.id)">撤销处方</el-button> -->
+                  <el-button v-if='scope.row.prescriptionStatus ==1'
+                  size="mini" type="danger" @click="gotoStopPrescription( scope.row.id)">撤 销</el-button>
                </template>
             </el-table-column>
         </el-table>
@@ -223,24 +224,24 @@
 
       <el-divider></el-divider>
 
-      <el-form :model="addDrugOut">
+      <el-form :model="addDrugOut" :rules="rules" ref="addDrugOut">
 
-          <el-form-item label="药品" :label-width="formLabelWidth" >
+          <el-form-item label="药品" :label-width="formLabelWidth" prop="drugName">
             <el-input v-model="addDrugOut.drugName" autocomplete="off" readonly="readonly"></el-input>
         </el-form-item>
 
-        <el-form-item label="数量" :label-width="formLabelWidth">
+        <el-form-item label="数量" :label-width="formLabelWidth" prop="num">
           <el-input-number v-model="addDrugOut.num" @change="handleChange" :min="1" :max="addDrugOut.num" label="描述文字"></el-input-number>
         </el-form-item>
 
-        <el-form-item label="退药原因" :label-width="formLabelWidth" >
+        <el-form-item label="退药原因" :label-width="formLabelWidth" prop="outCause">
             <el-input v-model="addDrugOut.outCause" autocomplete="off" ></el-input>
         </el-form-item>
 
       </el-form>
 
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="doAddDrugOut">退 药</el-button>
+        <el-button type="primary" @click="doAddDrugOut('addDrugOut')">退 药</el-button>
         <el-button @click="addDrugOutForm = false;addDrugOut={}">取 消</el-button>
       </div>
     </el-dialog>
@@ -267,7 +268,20 @@ export default {
         headers:{},
         formLabelWidth: '120px',
         addDrugOutForm: false,
-        addDrugOut:{},
+        addDrugOut:{
+          num:'',
+          outCause:'',
+        },
+         rules: {
+          num: [
+            { required: true, message: '请输入药品数量', trigger: 'blur' },
+            // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          ],
+          outCause: [
+            { required: true, message: '请输入退药原因', trigger: 'blur' },
+            // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          ]
+        },
       }
    },
    created(){
@@ -275,6 +289,70 @@ export default {
       this.headers={tokenStr:window.localStorage.getItem('tokenStr')};
    },
    methods:{
+      doAddDrugOut(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            var DrugOut=this.addDrugOut;
+           console.log(DrugOut)
+            this.$axios.post("/api/doctor/gotoAddDrugOut",DrugOut)
+            .then(res=>{
+                if(res.status==4001){
+                     this.$message({
+                        type: "error",
+                         message: "没有权限!",
+                          duration:2000
+                     });
+                }else{
+                     this.$message({
+                        type: "success",
+                         message: "下达处方成功!",
+                         duration:2000
+                     });
+                    this.closeAddDrugOutForm();
+                    this.search();
+                }
+            })
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+      },    
+
+
+         //撤销处方
+    gotoStopPrescription(id){
+           this.$confirm('确定要撤销吗?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+            }).then(() => {
+                this.$axios.post("/api/doctor/gotoStopPrescription",qs.stringify({'id':id}),{
+            params: { id: id }
+            }).then(res=>{
+                    if(res.status==4001){
+                            this.$message({
+                            type: "error",
+                            message: "没有权限!",
+                             duration:2000
+                        });
+                     }else{
+                        this.$message({
+                            type: 'success',
+                            message: '撤销成功!',
+                            duration:2000
+                        });
+                        this.search();
+                     }
+                })
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '已取消操作',
+                     duration:2000
+                });          
+            });
+       },
+
        //药品数量
        handleChange(value) {
         console.log(value);
@@ -300,28 +378,28 @@ export default {
        },
     
     //执行申请退药
-       doAddDrugOut(){
-           var DrugOut=this.addDrugOut;
-           console.log(DrugOut)
-            this.$axios.post("/api/doctor/gotoAddDrugOut",DrugOut)
-            .then(res=>{
-                if(res.status==4001){
-                     this.$message({
-                        type: "error",
-                         message: "没有权限!",
-                          duration:2000
-                     });
-                }else{
-                     this.$message({
-                        type: "success",
-                         message: "下达处方成功!",
-                         duration:2000
-                     });
-                    this.closeAddDrugOutForm();
-                    this.search();
-                }
-            })
-       },
+      //  doAddDrugOut(){
+      //      var DrugOut=this.addDrugOut;
+      //      console.log(DrugOut)
+      //       this.$axios.post("/api/doctor/gotoAddDrugOut",DrugOut)
+      //       .then(res=>{
+      //           if(res.status==4001){
+      //                this.$message({
+      //                   type: "error",
+      //                    message: "没有权限!",
+      //                     duration:2000
+      //                });
+      //           }else{
+      //                this.$message({
+      //                   type: "success",
+      //                    message: "下达处方成功!",
+      //                    duration:2000
+      //                });
+      //               this.closeAddDrugOutForm();
+      //               this.search();
+      //           }
+      //       })
+      //  },
        //准备申请退药
        gotoAddDrugOut(id,patientName,doctorName,patientId,doctorId,drugName,drugId,drugTypeName,
             specificationsName,num,spare2,prescriptionStatus){

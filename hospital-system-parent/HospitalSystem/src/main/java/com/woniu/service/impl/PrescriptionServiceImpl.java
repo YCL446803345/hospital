@@ -220,4 +220,14 @@ public class PrescriptionServiceImpl implements PrescriptionService {
         prescriptionBillMapper.addPrescriptionBill(prescriptionBill);
 
     }
+
+    //撤销处方
+    public void gotoStopPrescriptionById(Integer id) {
+        //撤销删除处方表根据id
+        prescriptionMapper.deleteByPrimaryKey(id);
+        //同时撤销删除处方药品中间表的数据
+        PrescriptionDrug prescriptionDrug = new PrescriptionDrug();
+        prescriptionDrug.setPrescriptionId(id);
+        prescriptionDrugMapper.deleteByPrescriptionId(prescriptionDrug);
+    }
 }

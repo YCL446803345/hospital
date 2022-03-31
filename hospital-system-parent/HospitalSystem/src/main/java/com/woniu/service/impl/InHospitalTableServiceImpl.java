@@ -36,10 +36,10 @@ public class InHospitalTableServiceImpl implements InHospitalTableService {
         //随机生成no编号
         String val ="";
         Random random = new Random();
-        for (int i=0;i< 10;i++){
-            val +=String.valueOf(random.nextInt(10));
+        for (int i=0;i< 8;i++){
+            val +=String.valueOf(random.nextInt(8));
         }
-        String no = "no" + val;
+        String no = "NO" + val;
         Patient patient = new Patient();
         patient.setName(inHospitalTable.getPatientName());
         patient.setNo(no);
@@ -55,6 +55,8 @@ public class InHospitalTableServiceImpl implements InHospitalTableService {
         patient.setDeptId(inHospitalTable.getDeptId());
         patient.setBaseDesc(inHospitalTable.getReason());
         patient.setStatus("9");
+        patient.setDoctorId(4);
+        patient.setNurseId(7);
         //审核预约申请,新增患者列表信息
         patientMapper.addPatientByDoctor(patient);
         //审核预约通过,修改预约状态

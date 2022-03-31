@@ -34,8 +34,10 @@ public interface PrescriptionService {
 
     //分页模糊查询处方列表
     PageInfo<Prescription> queryPrescriptionList(Prescription prescription, Integer pageNum, Integer pageSize);
+
     //处方下达
     void addPrescription(Prescription prescription);
 
-
+    //撤销处方
+    void gotoStopPrescriptionById(Integer id);
 }

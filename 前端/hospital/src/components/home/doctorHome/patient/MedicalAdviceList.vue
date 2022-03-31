@@ -22,7 +22,7 @@
                     <el-option label="待校对" value="1" ></el-option>
                     <el-option label="待执行" value="2" ></el-option>
                     <el-option label="已执行" value="3" ></el-option>
-                    <!-- <el-option label="已停止" value="4" ></el-option> -->
+                    <el-option label="已停止" value="4" ></el-option>
                 </el-select>
             </el-col>
 
@@ -45,7 +45,7 @@
             <el-table-column prop="patientName" label="病人" width="80"></el-table-column>
             <el-table-column prop="no" label="病人编号" width="140"></el-table-column>
             <el-table-column prop="doctorName" label="主治医生" width="80"></el-table-column>
-            <el-table-column prop="adviceCategory" label="医嘱类型" width="180">
+            <el-table-column prop="adviceCategory" label="医嘱类型" width="130">
                 <template slot-scope="scope">
                     <span v-if="scope.row.adviceCategory=='1'">长期医嘱</span>
                     <span v-if="scope.row.adviceCategory=='2'">临时医嘱</span>
@@ -53,13 +53,32 @@
                 </template>
             </el-table-column>
 
-            <el-table-column prop="projectName" label="项目类型" width="180">
+            <el-table-column prop="projectId" label="项目类型" width="130">
+              <template slot-scope="scope">
+                    <span v-if="scope.row.projectId=='1'">肠胃科检查</span>
+                    <span v-if="scope.row.projectId=='2'">内科检查</span>
+                    <span v-if="scope.row.projectId=='3'">感冒检查</span>
+                    <span v-if="scope.row.projectId=='4'">失眠检查</span>
+                    <span v-if="scope.row.projectId=='5'">脑部检查</span>
+                    <span v-if="scope.row.projectId=='6'">肝部检查</span>
+                    <span v-if="scope.row.projectId=='7'">发热检查</span>
+                    <span v-if="scope.row.projectId=='8'">关节检查</span>
+                    <span v-if="scope.row.projectId=='9'">肾部检查</span>
+                    <span v-if="scope.row.projectId=='10'">开颅手术</span>
+                    <span v-if="scope.row.projectId=='11'">内科手术</span>
+                    <span v-if="scope.row.projectId=='12'">肠胃手术</span>
+                    <span v-if="scope.row.projectId=='13'">包皮切除手术</span>
+                    <span v-if="scope.row.projectId=='14'">肺部手术</span>
+                    <span v-if="scope.row.projectId=='15'">外科手术</span>
+                </template>
             </el-table-column>
+
+            
 
             <el-table-column prop="adviceDescription" label="医嘱描述" width="180">
             </el-table-column>
 
-            <el-table-column prop="adviceStatus" label="医嘱状态" width="180">
+            <el-table-column prop="adviceStatus" label="医嘱状态" width="110">
                 <template slot-scope="scope">
                 <span v-if="scope.row.adviceStatus=='1'">
                   <el-tag type="danger">待校对</el-tag>
@@ -113,6 +132,16 @@
                       scope.row.projectName,
                       scope.row.adviceDescription
                       )">下达处方</el-button>
+                  <el-button v-if='scope.row.adviceStatus==3' size="mini" type="warning" @click="gotoAddCase(
+                    scope.row.id,
+                    scope.row.patientName,
+                    scope.row.doctorName,
+                    scope.row.patientId,
+                    scope.row.doctorId,
+                    scope.row.projectId,
+                    scope.row.projectName,
+                    scope.row.adviceDescription
+                  )">添加病例</el-button>
                   <el-button size="mini" type="danger" v-if='scope.row.adviceStatus==1'
                   @click="gotoStopMedicalAdvice( scope.row.id)">停止医嘱</el-button>
                </template>
@@ -155,9 +184,9 @@
      
           <el-descriptions-item>
             <template slot="label"><i class="el-icon-tickets"></i>医嘱状态</template>
-            {{ updateMedicalAdvice.adviceStatus ==='1'?'待校对': 
-               updateMedicalAdvice.adviceStatus ==='2'?'待执行':
-               updateMedicalAdvice.adviceStatus ==='3'?'已执行':'已停止' }}
+            {{ updateMedicalAdvice.adviceStatus ===1?'待校对': 
+               updateMedicalAdvice.adviceStatus ===2?'待执行':
+               updateMedicalAdvice.adviceStatus ===3?'已执行':'已停止' }}
           </el-descriptions-item>
 
           <el-descriptions-item>
@@ -214,9 +243,21 @@
 
           <el-descriptions-item>
             <template slot="label"><i class="el-icon-tickets"></i>项目类型</template>
-            {{ addPrescription.projectName }}
+            {{ addPrescription.projecId ==='1'?'肠胃科检查':
+               addPrescription.projecId ==='2'?'内科检查':
+               addPrescription.projecId ==='3'?'感冒检查':
+               addPrescription.projecId ==='4'?'失眠检查':
+               addPrescription.projecId ==='5'?'脑部检查':
+               addPrescription.projecId ==='6'?'肝部检查':
+               addPrescription.projecId ==='7'?'发热检查':
+               addPrescription.projecId ==='8'?'关节检查':
+               addPrescription.projecId ==='9'?'肾部检查':
+               addPrescription.projecId ==='10'?'开颅手术':
+               addPrescription.projecId ==='11'?'内科手术':
+               addPrescription.projecId ==='12'?'肠胃手术':
+               addPrescription.projecId ==='13'?'包皮切除手术':
+               addPrescription.projecId ==='14'?'肺部手术':'外科手术'}}
           </el-descriptions-item>
-        
 
           <el-descriptions-item>
             <template slot="label"><i class="el-icon-user"></i>描述</template>
@@ -228,15 +269,15 @@
 
       <el-divider></el-divider>
 
-      <el-form :model="addPrescription">
+      <el-form :model="addPrescription" :rules="rules1" ref="addPrescription">
 
-          <el-form-item label="药品" :label-width="formLabelWidth" >
+          <el-form-item label="药品" :label-width="formLabelWidth" prop="drugId">
             <el-select v-model="addPrescription.drugId" placeholder="药品" >
                 <el-option v-for="drug in drugList" :key="drug.id" :label="drug.name" :value="drug.id"  ></el-option>
             </el-select>
         </el-form-item>
 
-        <el-form-item label="数量" :label-width="formLabelWidth">
+        <el-form-item label="数量" :label-width="formLabelWidth" prop="num">
           <!-- <el-input v-model="addPrescription.num" autocomplete="off"></el-input> -->
           <el-input-number v-model="addPrescription.num" @change="handleChange" :min="1" :max="20" label="描述文字"></el-input-number>
         </el-form-item>
@@ -244,12 +285,79 @@
       </el-form>
 
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="doAddPrescription">下 达</el-button>
+        <el-button type="primary" @click="doAddPrescription('addPrescription')">下 达</el-button>
         <el-button @click="addPrescriptionForm = false;addPrescription={}">取 消</el-button>
       </div>
     </el-dialog>
 
+    <!-- 添加病例 -->
+    <el-dialog :visible.sync="addCaseForm">
+      <h1 align="center">添加病例</h1>
+      <br />
+      <template>
+        <el-descriptions class="margin-top" title="" :column="3" border>
+          <el-descriptions-item>
+            <template slot="label"><i class="el-icon-user"></i>病人</template>
+            {{ addCase.patientName }}
+          </el-descriptions-item>
 
+          <el-descriptions-item>
+            <template slot="label"><i class="el-icon-user"></i>主治医生</template>
+            {{ addCase.doctorName }}
+          </el-descriptions-item>
+
+          <el-descriptions-item>
+            <template slot="label"><i class="el-icon-tickets"></i>医嘱类型</template>
+            {{ addCase.adviceCategory ==='1'?'长期医嘱': 
+               addCase.adviceCategory ==='2'?'临时医嘱':'一般医嘱' }}
+          </el-descriptions-item>
+
+          <el-descriptions-item>
+            <template slot="label"><i class="el-icon-tickets"></i>项目类型</template>
+            {{ addCase.projecId ==='1'?'肠胃科检查':
+               addCase.projecId ==='2'?'内科检查':
+               addCase.projecId ==='3'?'感冒检查':
+               addCase.projecId ==='4'?'失眠检查':
+               addCase.projecId ==='5'?'脑部检查':
+               addCase.projecId ==='6'?'肝部检查':
+               addCase.projecId ==='7'?'发热检查':
+               addCase.projecId ==='8'?'关节检查':
+               addCase.projecId ==='9'?'肾部检查':
+               addCase.projecId ==='10'?'开颅手术':
+               addCase.projecId ==='11'?'内科手术':
+               addCase.projecId ==='12'?'肠胃手术':
+               addCase.projecId ==='13'?'包皮切除手术':
+               addCase.projecId ==='14'?'肺部手术':'外科手术'}}
+          </el-descriptions-item>
+        
+
+          <el-descriptions-item>
+            <template slot="label"><i class="el-icon-user"></i>描述</template>
+            {{ addCase.adviceDescription }}
+          </el-descriptions-item>
+
+        </el-descriptions>
+      </template>
+
+      <el-divider></el-divider>
+
+      <el-form :model="addCase" :rules="rules" ref="addCase">
+
+        <el-form-item label="病症" :label-width="formLabelWidth" prop="spare1">
+          <el-input v-model="addCase.spare1" autocomplete="off"></el-input>
+        </el-form-item>
+
+        <el-form-item label="病例描述" :label-width="formLabelWidth" prop="caseDescription">
+          <el-input v-model="addCase.caseDescription" autocomplete="off"></el-input>
+        </el-form-item>
+
+      </el-form>
+
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="doAddCase('addCase')">提 交</el-button>
+        <el-button @click="addCaseForm = false;addCase={}">取 消</el-button>
+      </div>
+    </el-dialog>
 
     
 
@@ -281,14 +389,53 @@ export default {
             adviceStatus:'',
             createTime:'',
             adviceDescription:''
+            
         },
         projectList:[],
         formLabelWidth: '120px',
 
         addPrescriptionForm: false,
-        addPrescription:{},
+        addPrescription:{
+          drugId:'',
+          num:''
+        },
+         rules1: {
+          drugId: [
+            { required: true, message: '请选择药品', trigger: 'change' },
+            // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          ],
+          num: [
+            { required: true, message: '请输入数量', trigger: 'blur' },
+            // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          ]
+        },
+
         drugList:[],
         num:'',
+
+        addCaseForm:false,
+        addCase:{
+          id:'',
+          patientName:'',
+          doctorName:'',
+          patientId:'',
+          doctorId:'',
+          projectId:'',
+          projectName:'',
+          adviceDescription:'',
+          spare1:'',
+          caseDescription:''
+        },
+        rules: {
+          spare1: [
+            { required: true, message: '请输入病例症状', trigger: 'blur' },
+            // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          ],
+          caseDescription: [
+            { required: true, message: '请输入症状描述', trigger: 'blur' },
+            // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          ]
+        },
 
       }
    },
@@ -309,6 +456,110 @@ export default {
 
    },
    methods:{
+     
+     doAddPrescription(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            var prescription=this.addPrescription;
+           console.log(prescription)
+            this.$axios.post("/api/doctor/gotoAddPrescription",prescription)
+            .then(res=>{
+                if(res.status==4001){
+                     this.$message({
+                        type: "error",
+                         message: "没有权限!",
+                          duration:2000
+                     });
+                }else{
+                     this.$message({
+                        type: "success",
+                         message: "下达处方成功!",
+                         duration:2000
+                     });
+                    this.closeAddPrescriptionForm();
+                    this.search();
+                }
+            })
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+      },  
+
+
+     doAddCase(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            var cases = this.addCase;
+          //  console.log(prescription)
+            this.$axios.post("/api/doctor/gotoAddCase",cases)
+            .then(res=>{
+                if(res.status==4001){
+                     this.$message({
+                        type: "error",
+                         message: "没有权限!",
+                          duration:2000
+                     });
+                }else{
+                     this.$message({
+                        type: "success",
+                         message: "新增病例成功!",
+                         duration:2000
+                     });
+                     this.addCaseForm=false;
+                    this.search();
+                }
+            })
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+      },  
+
+
+
+
+      //执行添加病例
+      //  doAddCase(){
+      //      var cases = this.addCase;
+      //     //  console.log(prescription)
+      //       this.$axios.post("/api/doctor/gotoAddCase",cases)
+      //       .then(res=>{
+      //           if(res.status==4001){
+      //                this.$message({
+      //                   type: "error",
+      //                    message: "没有权限!",
+      //                     duration:2000
+      //                });
+      //           }else{
+      //                this.$message({
+      //                   type: "success",
+      //                    message: "新增病例成功!",
+      //                    duration:2000
+      //                });
+      //                this.addCaseForm=false;
+      //               this.search();
+      //           }
+      //       })
+      //  },
+       //准备下达处方
+       gotoAddCase(id,patientName,doctorName,patientId,doctorId,projectId,projectName,adviceDescription){
+           this.addCase={
+                id:id,
+                patientName:patientName,
+                doctorName:doctorName,
+                patientId:patientId,
+                doctorId:doctorId,
+                projectId:projectId,
+                projectName:projectName,
+                adviceDescription:adviceDescription
+           };
+           this.addCaseForm=true;
+       },
+
+
         handleChange(value) {
         console.log(value);
       },
@@ -328,31 +579,31 @@ export default {
             this.addPrescriptionForm=false;
        },
     
-    //执行医嘱项目
-       doAddPrescription(){
-           var prescription=this.addPrescription;
-           console.log(prescription)
-            this.$axios.post("/api/doctor/gotoAddPrescription",prescription)
-            .then(res=>{
-                if(res.status==4001){
-                     this.$message({
-                        type: "error",
-                         message: "没有权限!",
-                          duration:2000
-                     });
-                }else{
-                     this.$message({
-                        type: "success",
-                         message: "下达处方成功!",
-                         duration:2000
-                     });
-                    this.closeAddPrescriptionForm();
-                    this.search();
+    //执行处方项目
+      //  doAddPrescription(){
+      //      var prescription=this.addPrescription;
+      //      console.log(prescription)
+      //       this.$axios.post("/api/doctor/gotoAddPrescription",prescription)
+      //       .then(res=>{
+      //           if(res.status==4001){
+      //                this.$message({
+      //                   type: "error",
+      //                    message: "没有权限!",
+      //                     duration:2000
+      //                });
+      //           }else{
+      //                this.$message({
+      //                   type: "success",
+      //                    message: "下达处方成功!",
+      //                    duration:2000
+      //                });
+      //               this.closeAddPrescriptionForm();
+      //               this.search();
                     
 
-                }
-            })
-       },
+      //           }
+      //       })
+      //  },
        //准备下达处方
        gotoAddPrescription(id,patientName,doctorName,patientId,doctorId,adviceCategory,projectId,projectName,adviceDescription){
            this.addPrescription={

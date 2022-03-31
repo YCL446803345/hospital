@@ -3,6 +3,8 @@ package com.woniu.mapper;
 import com.woniu.entity.Case;
 import com.woniu.entity.CaseExample;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -32,4 +34,7 @@ public interface CaseMapper {
 
     //分页模糊查询病例列表
     List<Case> queryCaseList(Case c);
+    //新增病例
+    @Insert("insert into HOS_case(advice_id,case_description,create_time,spare1) values(#{adviceId},#{caseDescription},#{createTime},#{spare1})")
+    void addCase(Case cases);
 }

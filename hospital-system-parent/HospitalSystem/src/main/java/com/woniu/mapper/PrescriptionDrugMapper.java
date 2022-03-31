@@ -6,6 +6,7 @@ import com.woniu.entity.PrescriptionDrugExample;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -34,4 +35,8 @@ public interface PrescriptionDrugMapper {
     //下达处方,处方药品中间表新增数据
     @Insert("insert into HOS_prescription_drug(prescription_id,drug_id,num) values(#{prescriptionId},#{drugId},#{num})")
     void addPrescriptionDrug(PrescriptionDrug prescriptionDrug);
+
+    //撤销处方,同时撤销处方药品中间表数据
+    @Delete("delete from HOS_prescription_drug where prescription_id=#{prescriptionId}")
+    void deleteByPrescriptionId(PrescriptionDrug prescriptionDrug);
 }
