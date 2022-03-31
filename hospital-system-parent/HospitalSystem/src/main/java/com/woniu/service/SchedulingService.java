@@ -1,6 +1,7 @@
 package com.woniu.service;
 
 import com.woniu.entity.Scheduling;
+import com.woniu.entity.Worker;
 
 import java.util.List;
 
@@ -15,4 +16,10 @@ public interface SchedulingService {
     void updateScheduling(Scheduling scheduling);
 
     List<Scheduling> findSchedulings();
+
+    void scheduling(Worker worker);
+
+    List<Scheduling> findWorkersBySchedulingTime(String time);
+
+    List<Scheduling> findAllWorkersScheduling();
 }

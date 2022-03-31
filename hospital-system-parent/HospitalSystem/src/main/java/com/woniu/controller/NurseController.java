@@ -45,7 +45,6 @@ NurseController {
     @Autowired
     private MedicalAdviceService medicalAdviceService;
 
-
     @Autowired
     private PrescriptionService prescriptionService;
 
@@ -68,8 +67,6 @@ NurseController {
         return new ResponseEntity<Worker>(worker, HttpStatus.OK);
     }
 
-
-
     /**
      * 查询非待床病人信息，安排并修改病人床位
      */
@@ -80,7 +77,6 @@ NurseController {
         PageInfo<Patient> pageInfo = patientService.findPatients(patient, pageNum, pageSize);
         return new ResponseEntity<PageInfo<Patient>>(pageInfo, HttpStatus.OK);
     }
-
 
     /**
      * 查询所有病人信息，方便护士长跟换病人科室
@@ -113,8 +109,6 @@ NurseController {
         patientService.updatePatientDept(patient);
     }
 
-
-
     /**
      * 在入院管理中用来修改病人信息
      * @return
@@ -135,7 +129,6 @@ NurseController {
         return new ResponseEntity<PageInfo<Patient>>(pageInfo, HttpStatus.OK);
     }
 
-
     /**
      * 获得所有科室列表
      * @return
@@ -145,7 +138,6 @@ NurseController {
         List<Dept> depts = deptService.findDeptList();
         return new ResponseEntity<List<Dept>>(depts, HttpStatus.OK);
     }
-
 
     /**
      * 获得所有床位列表,在床位管理中使用
@@ -396,7 +388,6 @@ NurseController {
         patientService.doOutHospital(id);
     }
 
-
     /**
      * 添加床位
      * @return
@@ -485,4 +476,34 @@ NurseController {
         List<Worker> workers = workerService.findWorkersByDeptIdAndRoleId(deptId,roleId);
         return new ResponseEntity<List<Worker>>(workers,HttpStatus.OK);
     }
+
+    /**
+     * 给员工排班
+     * @return
+     */
+    @PostMapping("/scheduling")
+    public void scheduling(@RequestBody Worker worker) {
+        schedulingService.scheduling(worker);
+    }
+
+    /**
+     * 根据当天日期查询排版员工名单
+     * @return
+     */
+    @GetMapping("/findWorkersBySchedulingTime")
+    public ResponseEntity<List<Scheduling>> findWorkersBySchedulingTime(String time) {
+        List<Scheduling> schedulings = schedulingService.findWorkersBySchedulingTime(time);
+        return new ResponseEntity<List<Scheduling>>(schedulings,HttpStatus.OK);
+    }
+
+    /**
+     * 根据当天日期查询排版员工名单
+     * @return
+     */
+    @GetMapping("/findAllWorkersScheduling")
+    public ResponseEntity<List<Scheduling>> findAllWorkersScheduling() {
+        List<Scheduling> schedulings = schedulingService.findAllWorkersScheduling();
+        return new ResponseEntity<List<Scheduling>>(schedulings,HttpStatus.OK);
+    }
+
 }

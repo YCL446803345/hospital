@@ -65,7 +65,7 @@
             <el-table-column
                 prop="no"
                 label="病人编号"
-                width="100">
+                width="150">
             </el-table-column>
 
             <!-- <el-table-column
@@ -95,7 +95,7 @@
             <el-table-column
                 prop="cardId"
                 label="身份证号"
-                width="160">
+                width="180">
             </el-table-column>
 
             <el-table-column
@@ -106,7 +106,7 @@
 
             <el-table-column
                 label="入院时间"
-                width="140">
+                width="200">
                 <template slot-scope="scope">
                     <i class="el-icon-time"></i>
                     <span style="margin-left: 10px">{{ scope.row.appointmenttTime}}</span>

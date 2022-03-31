@@ -2,6 +2,7 @@ package com.woniu.service.impl;
 
 import com.woniu.entity.Scheduling;
 import com.woniu.entity.SchedulingExample;
+import com.woniu.entity.Worker;
 import com.woniu.mapper.SchedulingMapper;
 import com.woniu.service.SchedulingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,24 @@ public class SchedulingServiceImpl implements SchedulingService {
 
     @Override
     public List<Scheduling> findSchedulings() {
-        return schedulingMapper.selectByExample(null);
+        return schedulingMapper.findSchedulings();
+    }
+
+    @Override
+    public void scheduling(Worker worker) {
+        Integer num=schedulingMapper.getWorkerNumBySchedulingTimeAndWorkId(worker);
+        if(num==0){
+            schedulingMapper.scheduling(worker);
+        }
+    }
+
+    @Override
+    public List<Scheduling> findWorkersBySchedulingTime(String time) {
+        return schedulingMapper.findWorkersBySchedulingTime(time);
+    }
+
+    @Override
+    public List<Scheduling> findAllWorkersScheduling() {
+        return schedulingMapper.findAllWorkersScheduling();
     }
 }
