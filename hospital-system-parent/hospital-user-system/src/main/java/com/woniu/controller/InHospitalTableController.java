@@ -23,6 +23,12 @@ public class InHospitalTableController {
     @RequestMapping("inHospitalTable/add")
 //    @PreAuthorize("hasAnyAuthority('inHospitalTable:add')")
     public ResponseResult<String> addInHospitalTableService(@RequestBody InHospitalTable inHospitalTable){
+        InHospitalTable cardId=inHospitalTableService.getByCardId(inHospitalTable.getCardId());
+        if (cardId != null) {
+            return new ResponseResult<String>(2008,"身份证已存在");
+        }
+
+
         inHospitalTableService.addInHospitalTableService(inHospitalTable);
         return new ResponseResult<String>(200,"添加成功");
     }

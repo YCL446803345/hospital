@@ -34,7 +34,7 @@ public interface WorkerMapper {
     //模糊查询用户列表
     @Select("<script>" +"select w.*,r.name roleName,d.name deptName,s.worktime shift from\n" +
             "    HOS_worker w,HOS_dept d,HOS_role r,HOS_scheduling s\n" +
-            "    where w.dept_id=d.id and w.role_id=r.id and w.spare1=s.id order by w.id asc \n"+
+            "    where w.dept_id=d.id and w.role_id=r.id and w.spare1=s.id  \n"+
             "    <if test=\"name != null and name != ''\">\n" +
             "      and w.name  like  '%${name}%'\n" +
             "    </if>\n" +
@@ -47,6 +47,7 @@ public interface WorkerMapper {
             "  <if test=\"roleName != null and roleName != ''\">\n" +
             "      and r.name=#{roleName}\n" +
             "    </if>" +
+            "order by w.id asc"+
             "</script>")
     List<Worker> select(Worker worker);
 

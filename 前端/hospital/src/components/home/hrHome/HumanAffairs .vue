@@ -85,10 +85,16 @@
 
         <!-- 添加Form -->
 
-        <el-dialog title="添加职工" :visible.sync="addDialogWorkerFormVisible">
-          <el-form :model="worker">
-            <el-form-item label="职工名字" :label-width="formLabelWidth">
-              <el-input v-model="worker.name" autocomplete="off"></el-input>
+        <el-dialog title="添加职工" :visible.sync="addDialogWorkerFormVisible" :rules="rules">
+          <el-form :model="worker" ref="loginForm">
+            <el-form-item label="职工名字" :label-width="formLabelWidth"  prop="name">
+              <el-input v-model="worker.name" autocomplete="off"  prop="name"></el-input>
+            </el-form-item>
+            <el-form-item label="职工账号" :label-width="formLabelWidth">
+              <el-input v-model="worker.account" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="职工密码" :label-width="formLabelWidth">
+              <el-input v-model="worker.password" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="性别" :label-width="formLabelWidth">
               <el-radio v-model="worker.gender" label="1">男</el-radio>
@@ -108,14 +114,11 @@
             <el-form-item label="薪资" :label-width="formLabelWidth">
               <el-input v-model="worker.salary" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="状态" :label-width="formLabelWidth">
-              <el-radio v-model="worker.status" label="1">在职</el-radio>
-              <el-radio v-model="worker.status" label="2">离职</el-radio>
-            </el-form-item>
+
 
           </el-form>
           <div slot="footer" class="dialog-footer">
-            <el-button type="primary" @click="addWorker">确 定</el-button>
+            <el-button type="primary" @click="addWorker('loginForm')">确 定</el-button>
             <el-button @click="addDialogWorkerFormVisible = false;worker={}">取 消</el-button>
           </div>
         </el-dialog>
@@ -184,6 +187,7 @@
         worker: {},
         deptData: [],
         roleData: [],
+        schedulingData: [],
         addDialogWorkerFormVisible: false,
         editWorkerDialogFormVisible: false, //控制是否显示编辑职工对话框
         formLabelWidth: "120px",
@@ -196,7 +200,22 @@
           salary: "",
           status: ""
         },
+        rules: {
+          name: [{
+              required: true,
+              message: '请输入手机号',
+              trigger: 'blur'
+            },
+            {
+              min: 11,
+              max: 11,
+              message: '手机号不为11位数或不一致',
+              trigger: 'blur'
+            },
 
+          ],
+
+        },
         headers: {},
 
       };
@@ -205,6 +224,7 @@
       this.findWorkerList();
       this.findRoleList();
       this.findDeptList();
+      this.findSchedulingList();
     },
 
     methods: {
@@ -226,20 +246,20 @@
             },
           })
           .then((res) => {
-             if (res.data.status == 4001) {
-            this.$message({
-              showClose: true,
-              message: res.data.msg,
-              type: 'error',
-              duration: 1000
-            });
-          }else{
-            //设置职工列表数据
-            this.workerData = res.data.list;
-            this.currentPage = res.data.pageNum;
-            this.total = res.data.total; //设置总记录数
-          }
-          
+            if (res.data.status == 4001) {
+              this.$message({
+                showClose: true,
+                message: res.data.msg,
+                type: 'error',
+                duration: 1000
+              });
+            } else {
+              //设置职工列表数据
+              this.workerData = res.data.list;
+              this.currentPage = res.data.pageNum;
+              this.total = res.data.total; //设置总记录数
+            }
+
           })
           .catch((res) => {
             this.$message({
@@ -289,6 +309,28 @@
           });
       },
 
+      //班次列表
+      findSchedulingList() {
+        //axios请求拿数据
+        this.$axios
+          .get("/api/scheduling/list", {
+            params: {},
+          })
+          .then((res) => {
+
+            console.log(res.data.list);
+            //设置班次列表数据
+            this.schedulingData = res.data.list;
+          })
+          .catch((res) => {
+            this.$message({
+              type: "error",
+              message: "获取班次列表错误!",
+            });
+          });
+      },
+
+
       indexMethod(index) {
         return index + 1 + (this.currentPage - 1) * this.pageSize;
       },
@@ -329,7 +371,60 @@
 
 
       //添加职工
-      addWorker() {
+      addWorker(forName) {
+
+
+        this.$refs[forName].validate((valid) => {
+          //表单验证通过
+          if (valid) {
+
+            //跨域后的url
+            //发送axios请求
+            this.$axios.post("/api/worker/add", this.worker).then((res) => {
+              console.log(res.data);
+
+              if (res.data.status == 200) {
+                this.$message({
+                  showClose: true,
+                  message: "添加成功",
+                  type: "success",
+                  duration: 600,
+                });
+                this.worker = {};
+                this.addDialogWorkerFormVisible = false;
+                this.findWorkerList(1); //刷新列表
+              } else if (res.data.status == 4001) {
+                this.$message({
+                  showClose: true,
+                  message: res.data.msg,
+                  type: 'error',
+                  duration: 1000
+                });
+              } else {
+                this.$message({
+                  showClose: true,
+                  message: "添加失败",
+                  type: "error",
+                  duration: 600,
+                });
+              }
+            }).catch(res => {
+              this.findWorkerList(1); //刷新列表
+              this.$message({
+                showClose: true,
+                message: '异常',
+                type: 'success',
+                duration: 1500
+              });
+              //跳转
+            })
+          } else {
+            //验证不通过
+            return false;
+          }
+        })
+
+
         //发送axios请求
         this.$axios.post("/api/worker/add", this.worker).then((res) => {
           console.log(res.data);
@@ -378,15 +473,15 @@
                 },
               })
               .then((res) => {
-                 if (res.data.status === 4001) {
+                if (res.data.status === 4001) {
                   this.$message({
                     showClose: true,
                     message: "没有权限",
                     type: "error",
                     duration: 600,
                   });
-                }else if(res.data.status === 200){
-                     this.findWorkerList(1);
+                } else if (res.data.status === 200) {
+                  this.findWorkerList(1);
 
                   this.$message({
                     showClose: true,
@@ -395,9 +490,9 @@
                     duration: 600,
                   });
                   this.findWorkerList(1);
-                
+
                 }
-             
+
               })
               .catch((res) => {
                 this.$message({
@@ -420,7 +515,7 @@
 
       //编辑职工
       handleEdit(row) {
-       this.$axios.post("/api/worker/update", this.worker).then((res) => {
+        this.$axios.post("/api/worker/update", this.worker).then((res) => {
           console.log(res.data);
 
           if (res.data.status == 4001) {
@@ -431,29 +526,29 @@
               duration: 1000
             });
           } else {
-          let {
-                id,
-                name,
-                roleId,
-                deptId,
-                gender,
-                salary,
-                status
+            let {
+              id,
+              name,
+              roleId,
+              deptId,
+              gender,
+              salary,
+              status
 
-              } = row;
-              this.editWorkerForm.id = id;
-              this.editWorkerForm.name = name;
-              this.editWorkerForm.roleId = roleId;
-              this.editWorkerForm.deptId = deptId;
-              this.editWorkerForm.gender = gender;
-              this.editWorkerForm.salary = salary;
-              this.editWorkerForm.status = status
+            } = row;
+            this.editWorkerForm.id = id;
+            this.editWorkerForm.name = name;
+            this.editWorkerForm.roleId = roleId;
+            this.editWorkerForm.deptId = deptId;
+            this.editWorkerForm.gender = gender;
+            this.editWorkerForm.salary = salary;
+            this.editWorkerForm.status = status
 
 
-              //显示编辑对话框
-              this.editWorkerDialogFormVisible = true;
-            }
-          });
+            //显示编辑对话框
+            this.editWorkerDialogFormVisible = true;
+          }
+        });
       },
 
 

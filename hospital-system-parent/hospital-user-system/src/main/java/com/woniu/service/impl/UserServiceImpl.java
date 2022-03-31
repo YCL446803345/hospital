@@ -1,20 +1,16 @@
 package com.woniu.service.impl;
 
-import com.woniu.entity.ToEmail;
 import com.woniu.entity.User;
 import com.woniu.entity.UserExample;
 import com.woniu.entity.WorkerScheduling;
 import com.woniu.mapper.UserMapper;
 import com.woniu.service.UserService;
-import com.woniu.util.JwtTokenUitl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -63,38 +59,14 @@ public class UserServiceImpl implements UserService {
         return users.get(0);
     }
 
-//    @Override
-//    public void deleteWorkerById(Integer id) {
-//        workerMapper.deleteByPrimaryKey(id);
-//    }
-//
-//    @Override
-//    public void updateWorker(Worker worker) {
-//        workerMapper.updateByPrimaryKeySelective(worker);
-//    }
-//    public List<Worker> findDoctorsByDepeId(Integer deptId) {
-//        WorkerExample workerExample = new WorkerExample();
-//        WorkerExample.Criteria criteria = workerExample.createCriteria();
-//        ArrayList<Integer> list = new ArrayList<>();
-//        list.add(1);
-//        list.add(5);
-//        criteria.andRoleIdIn(list);
-//        criteria.andDeptIdEqualTo(deptId);
-//        return workerMapper.selectByExample(workerExample);
-//    }
-//
-//    @Override
-//    public List<Worker> findNursesByDepeId(Integer deptId) {
-//        WorkerExample workerExample = new WorkerExample();
-//        WorkerExample.Criteria criteria = workerExample.createCriteria();
-//        ArrayList<Integer> list = new ArrayList<>();
-//        list.add(2);
-//        list.add(4);
-//        criteria.andRoleIdIn(list);
-//        criteria.andDeptIdEqualTo(deptId);
-//        return workerMapper.selectByExample(workerExample);
-//
-//    }
+    @Override
+    public User getByTelephone(String telephone) {
+        UserExample userExample = new UserExample();
+        UserExample.Criteria criteria = userExample.createCriteria();
+        criteria.andTelephoneEqualTo(telephone);
+        User user = userMapper.selectByTelephone(telephone);
+        return user;
+    }
         public void commonEmail(String email){
             //创建简单邮件消息
             SimpleMailMessage message = new SimpleMailMessage();

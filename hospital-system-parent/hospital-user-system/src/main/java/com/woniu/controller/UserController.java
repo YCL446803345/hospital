@@ -29,6 +29,12 @@ public class UserController {
     @RequestMapping("user/add")
 //    @PreAuthorize("hasAnyAuthority('user:add')")
     public ResponseResult<String> addWorker(@RequestBody User user){
+        User telephone=userService.getByTelephone(user.getTelephone());
+        if (telephone != null) {
+            return new ResponseResult<String>(2008,"用户已存在");
+        }
+
+
         if(redisTemplate.delete(user.getSpare2())){
             userService.addUser(user);
             return new ResponseResult<String>(200,"添加成功");

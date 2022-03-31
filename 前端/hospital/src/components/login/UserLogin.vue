@@ -34,18 +34,18 @@ export default {
       return {
             imgSrc:require("../../assets/css/image/用户前台.gif"),   //背景图片
             user: {
-                telephone: "12344556677",
-                password: "123"
+                telephone: "",
+                password: ""
             },
             rules:{ 
                 telephone:[
                         {required: true, message: '请输入手机号', trigger: 'blur'},
-                        { maxlength: 11, message: '长度在 11 个字符', trigger: 'blur' },
+                        { min: 11, max: 11, message: '手机号不为11位数或不一致', trigger: 'blur' },
                         
                     ],
                 password:[
                         {required: true, message: '请输入密码', trigger: 'blur'},
-                        { min: 3, max: 12, message: '长度在 4 到 12 个字符', trigger: 'blur' }
+                        { min: 3, max: 3, message: '密码不为3位数或不一致', trigger: 'blur' }
                 ]
             }, 
       }
@@ -75,7 +75,7 @@ export default {
               if(valid){
                
                   //跨域后的url
-                  this.$axios.post("api/userLogin",reqUrl,{
+                  this.$axios.post("test/userLogin",reqUrl,{
                       Headers:{"Content-Type":"application/x-www/form-urlencoded"}
                   })
                   .then(res=>{

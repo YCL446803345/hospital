@@ -6,7 +6,7 @@ mybatis:
     #数据库下划线转实体类驼峰命名法
     map-underscore-to-camel-case: true
 server:
-  port: 8080
+  port: 8081
 spring:
   application:
     name: HospitalSystem
