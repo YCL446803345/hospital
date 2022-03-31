@@ -11,20 +11,9 @@ import java.util.List;
 public interface UserService {
 
 
-    //添加用户
-    void addUser(User User);
-
-
-    User selectUserByPhone (String phone);
-
-    void commonEmail (String email);
 
     List<WorkerScheduling> getMyScheduling (String account);
 
-//    void deleteWorkerById(Integer id);
-//
-//    void updateWorker(Worker worker);
-//
 
 
 }

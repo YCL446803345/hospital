@@ -191,10 +191,19 @@ export default {
             return (i+1)+this.pageSize*(this.pageNum-1);
          },
          pay(id){
+             let regu =  /^(\+)?\d+(\.\d+)?$/;
              this.$prompt('请输入充值金额', '支付宝充值', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
-                type: 'success'
+                type: 'success',
+                 inputErrorMessage:'只能输入正数字！',
+                inputValidator:(value)=>{
+                    if(regu.test(value)){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }
               }).then((value) => {
                     this.$axios.get("/api/gotoPay",{params:{patientId:id,newMoney:value.value,status:"1"}}).then(res=>{
                         const divForm = document.getElementsByTagName("div");
@@ -216,10 +225,19 @@ export default {
         },
         //现金支付
         payCash(id){
+            let regu =  /^(\+)?\d+(\.\d+)?$/;
             this.$prompt('请输入充值金额', '现金充值', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
-                type: 'success'
+                type: 'success',
+                 inputErrorMessage:'只能输入正数字！',
+                inputValidator:(value)=>{
+                    if(regu.test(value)){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }
               }).then((value) => {
                     this.$axios.get("/api/addMoney",{params:{id:id,money:value.value,status:"1"}}).then(res=>{
                         if(res.data === "OK"){

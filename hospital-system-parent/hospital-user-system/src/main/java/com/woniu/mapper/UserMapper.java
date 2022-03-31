@@ -2,6 +2,7 @@ package com.woniu.mapper;
 
 import com.woniu.entity.User;
 import com.woniu.entity.UserExample;
+import com.woniu.entity.WorkerScheduling;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
@@ -30,4 +31,9 @@ public interface UserMapper {
     @Select("select p.percode from HOS_perms p inner join HOS_user_perms up on(p.id=up.perms_id)\n" +
             "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tinner join HOS_user u on(u.id=up.user_id) where u.telephone=#{telephone}")
     List<String> selectPercodeByPerm(String telephone);
+
+    @Select("select ws.scheduling_id SchedulingId,ws.time\n" +
+            "from HOS_worker_scheduling ws,HOS_worker w\n" +
+            "where ws.worker_id = w.id and w.account = #{account} ")
+    List<WorkerScheduling> getMyScheduling (String account);
 }
