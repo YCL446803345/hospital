@@ -485,4 +485,35 @@ NurseController {
         List<Worker> workers = workerService.findWorkersByDeptIdAndRoleId(deptId,roleId);
         return new ResponseEntity<List<Worker>>(workers,HttpStatus.OK);
     }
+
+    /**
+     * 给员工排班
+     * @return
+     */
+    @PostMapping("/scheduling")
+    public void scheduling(@RequestBody Worker worker) {
+        schedulingService.scheduling(worker);
+    }
+
+
+    /**
+     * 根据当天日期查询排版员工名单
+     * @return
+     */
+    @GetMapping("/findWorkersBySchedulingTime")
+    public ResponseEntity<List<Scheduling>> findWorkersBySchedulingTime(String time) {
+        List<Scheduling> schedulings = schedulingService.findWorkersBySchedulingTime(time);
+        return new ResponseEntity<List<Scheduling>>(schedulings,HttpStatus.OK);
+    }
+
+    /**
+     * 根据当天日期查询排版员工名单
+     * @return
+     */
+    @GetMapping("/findAllWorkersScheduling")
+    public ResponseEntity<List<Scheduling>> findAllWorkersScheduling() {
+        List<Scheduling> schedulings = schedulingService.findAllWorkersScheduling();
+        return new ResponseEntity<List<Scheduling>>(schedulings,HttpStatus.OK);
+    }
+
 }

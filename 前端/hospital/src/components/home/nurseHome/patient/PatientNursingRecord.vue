@@ -107,7 +107,7 @@
 
             <el-table-column
                 label="入院时间"
-                width="180">
+                width="200">
                 <template slot-scope="scope">
                     <i class="el-icon-time"></i>
                     <span style="margin-left: 10px">{{ scope.row.appointmenttTime}}</span>
