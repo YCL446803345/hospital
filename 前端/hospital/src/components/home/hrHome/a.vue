@@ -75,26 +75,26 @@
         <el-dialog :visible.sync="schedulingForm" >
         <h1 align="center">员工排班 </h1><br>
               <el-form :model="worker" :rules="rules" ref="form1">
-                  <el-form-item label="科室" :label-width="formLabelWidth">
-                      <el-select v-model="worker.deptId" placeholder="科室" @change="getRoleList" prop="deptId">
+                  <el-form-item label="科室" :label-width="formLabelWidth"  prop="deptId">
+                      <el-select v-model="worker.deptId" placeholder="科室" @change="getRoleList">
                           <el-option v-for="dept in deptList" :key="dept.id" :label="dept.name" :value="dept.id"  ></el-option>
                       </el-select>
                   </el-form-item>
 
-                  <el-form-item label="职位" :label-width="formLabelWidth">
-                      <el-select v-model="worker.roleId" placeholder="职位" v-if="worker.deptId!=''" @change="getWorkerList" prop="roleId">
+                  <el-form-item label="职位" :label-width="formLabelWidth" prop="roleId">
+                      <el-select v-model="worker.roleId" placeholder="职位" v-if="worker.deptId!=''" @change="getWorkerList" >
                           <el-option v-for="role in roleList" :key="role.id" :label="role.name" :value="role.id"  ></el-option>
                       </el-select>
                   </el-form-item>
 
-                  <el-form-item label="员工" :label-width="formLabelWidth">
-                      <el-select v-model="worker.id" placeholder="员工" v-if="worker.roleId!=''" prop="id">
+                  <el-form-item label="员工" :label-width="formLabelWidth" prop="id">
+                      <el-select v-model="worker.id" placeholder="员工" v-if="worker.roleId!=''" >
                           <el-option v-for="worker in workerList" :key="worker.id" :label="worker.name" :value="worker.id"  ></el-option>
                       </el-select>
                   </el-form-item>
 
-                  <el-form-item label="班次" :label-width="formLabelWidth">
-                      <el-select v-model="worker.schedulingId" placeholder="班次" v-if="worker.id!=''"  prop="schedulingId">
+                  <el-form-item label="班次" :label-width="formLabelWidth"  prop="schedulingId">
+                      <el-select v-model="worker.schedulingId" placeholder="班次" v-if="worker.id!=''" >
                           <el-option v-for="scheduling in schedulingList" :key="scheduling.id" :label="scheduling.worktime" :value="scheduling.id"  ></el-option>
                       </el-select>
                   </el-form-item>
