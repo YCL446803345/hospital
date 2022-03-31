@@ -32,12 +32,11 @@
             </el-col>
            
             <el-col :span="1.5" style="margin-left:2px;">
-                <el-button type="success" @click="search1">查询</el-button>
-               
+                <el-button type="success" @click="search">查询</el-button>
             </el-col>
 
             <el-col :span="1" style="margin-left:2px;">
-                 <el-button type="warning" @click="name='',no='',paheNum=1,pageSize=5,gender='',cardId='',deptId=''">清空</el-button>
+                 <el-button type="warning" @click="name='',no='',paheNum=1,pageSize=5,gender='',cardId='',status=''">清空</el-button>
             </el-col>
             
         </el-row>
