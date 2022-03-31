@@ -57,6 +57,6 @@ public interface WorkerMapper {
     @Select("select name from HOS_worker where role_id=5")
     List<String> findAllDoctor();
 
-
-
+    @Select("select * from HOS_worker where account=#{account}")
+    Worker selectByAccount(String account);
 }

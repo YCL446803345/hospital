@@ -35,4 +35,6 @@ public interface WorkerService {
 
 
     List<Worker> findWorkersByDeptIdAndRoleId(Integer deptId, Integer roleId);
+
+    Worker getByAccount(String account);
 }
