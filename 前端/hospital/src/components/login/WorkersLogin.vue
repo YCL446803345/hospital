@@ -31,8 +31,8 @@ export default {
       return {
       imgSrc:require("../../assets/css/image/医院背景.jpg"),   //背景图片
       worker: {
-        account: "admin",
-        password: "123"
+        account: "",
+        password: ""
       },
       rules:{ 
         account:[

@@ -35,7 +35,7 @@
             <el-form ref="loginForm" :model="inHospitalTable" >
               <el-form-item prop="patientName ">
                 <div class="inputElement">
-                  <el-input v-model="inHospitalTable.patientName"></el-input>
+                  <el-input v-model="inHospitalTable.patientName" placeholder="请输入病人名字"></el-input>
                 </div>
               </el-form-item>
               <el-form-item prop="patientSex">
