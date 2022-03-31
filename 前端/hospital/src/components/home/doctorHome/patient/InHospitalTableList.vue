@@ -28,7 +28,7 @@
         <el-button type="success" @click="search">查询</el-button>
       </el-col>
 
-      <el-col :span="1" style="margin-left: 2px">
+      <el-col :span="1.5" style="margin-left: 2px">
         <el-button
           type="warning"
           @click="
@@ -41,7 +41,7 @@
           >清空</el-button
         >
       </el-col>
-      <el-col :span="1" style="margin-left: 2px">
+      <el-col :span="1.5" style="margin-left: 2px">
         <el-button type="primary" @click="gotoAddInHospital()">添加</el-button>
       </el-col>
     </el-row>
