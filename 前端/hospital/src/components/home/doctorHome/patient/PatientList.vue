@@ -223,7 +223,7 @@
       </div>
     </el-dialog>
 
-    <!-- 突发情况 -->
+    <!-- 申请会诊 -->
     <el-dialog :visible.sync="addConsultationApplicationForm">
       <h1 align="center">申请会诊</h1>
       <br />
@@ -287,9 +287,6 @@
             <el-option label="24小时" value="2"></el-option>
             <el-option label="一般" value="3"></el-option>
           </el-select>
-            <!-- <el-radio v-model="addConsultationApplication.consultationEmergencyId" label="1" value=1>紧急</el-radio>
-            <el-radio v-model="addConsultationApplication.consultationEmergencyId" label="2" value=2>24小时</el-radio>
-            <el-radio v-model="addConsultationApplication.consultationEmergencyId" label="3" value=3>一般</el-radio> -->
         </el-form-item>
 
         <el-form-item label="会诊类别" :label-width="formLabelWidth" prop="consultationCategoryId">
@@ -298,9 +295,6 @@
             <el-option label="科内会诊" value="2"></el-option>
             <el-option label="一般会诊" value="3"></el-option>
           </el-select>
-            <!-- <el-radio v-model="addConsultationApplication.consultationCategoryId" label="1" value=1>它科会诊</el-radio>
-            <el-radio v-model="addConsultationApplication.consultationCategoryId" label="2" value=2>科内会诊</el-radio>
-            <el-radio v-model="addConsultationApplication.consultationCategoryId" label="3" value=3>一般会诊</el-radio> -->
         </el-form-item>
 
         <el-form-item label="申请原因" :label-width="formLabelWidth" prop="reason">

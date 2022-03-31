@@ -117,6 +117,7 @@
                 scope.row.consultationEmergencyId,
                 scope.row.consultationCategoryId,
                 scope.row.consultationDate,
+                scope.row.status
               )">编辑会诊</el-button>
           <el-button v-if='scope.row.status==2'  size="mini" type="success" @click="gotoAddMedicalAdvice(
             scope.row.patientName,
@@ -181,6 +182,15 @@
 
         <el-form-item label="会诊时间" :label-width="formLabelWidth">
           <el-input v-model="updateConsultationApplication.consultationDate" autocomplete="off" readonly="readonly"></el-input>
+        </el-form-item>
+
+        <el-form-item label="会诊状态" :label-width="formLabelWidth">
+          <!-- <el-input v-model="updateConsultationApplication.prescriptionStatus" autocomplete="off" ></el-input> -->
+          <el-select v-model="updateConsultationApplication.status" placeholder="请选择会诊状态">
+            <el-option label="待会诊" value="1"></el-option>
+            <el-option label="已会诊" value="2"></el-option>
+            <el-option label="已取消" value="3"></el-option>
+          </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -304,6 +314,7 @@ export default {
         consultationEmergencyId: '',
         consultationCategoryId: '',
         consultationDate: "",
+        status:''
       },
       headers: {},
     };
@@ -367,37 +378,6 @@ export default {
       };
         this.addMedicalAdviceForm = true;
       },
-
-      //下达医嘱
-      // doAddMedicalAdvice() {
-
-      //   //发送axios请求
-      //   var medicalAdvice=this.addMedicalAdvice;
-      //    console.log("所说的上档次")
-      //   //  alert(medicalAdvice)
-      //    console.log(medicalAdvice)
-      //   this.$axios.post("/api/doctor/gotoAddMedicalAdvice",medicalAdvice).then((res) => {
-      //     console.log(res.data);
-      //     if (res.status == 200) {
-      //       this.$message({
-      //         showClose: true,
-      //         message: "下达成功",
-      //         type: "success",
-      //         duration: 600,
-      //       });
-      //       this.addMedicalAdvice = {};
-      //       this.addMedicalAdviceForm = false;
-      //       // this.search(); //刷新列表
-      //     } else {
-      //       this.$message({
-      //         showClose: true,
-      //         message: "下达失败",
-      //         type: "error",
-      //         duration: 600,
-      //       });
-      //     }
-      //   });
-      // },
 
 
     //取消会诊
@@ -473,6 +453,7 @@ export default {
         consultationEmergencyId: "",
         consultationCategoryId: "",
         consultationDate: "",
+        status:''
       };
       this.updateConsultationApplicationForm = false;
     },
@@ -485,7 +466,8 @@ export default {
       desc,
       consultationEmergencyId,
       consultationCategoryId,
-      consultationDate
+      consultationDate,
+      status
     ){
       this.updateConsultationApplication = {
         id: id,
@@ -496,6 +478,7 @@ export default {
         consultationEmergencyId: consultationEmergencyId,
         consultationCategoryId: consultationCategoryId,
         consultationDate: consultationDate,
+        status:status
       };
       this.updateConsultationApplicationForm = true;
     },
