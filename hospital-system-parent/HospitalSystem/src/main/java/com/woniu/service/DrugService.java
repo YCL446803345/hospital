@@ -37,4 +37,6 @@ public interface DrugService {
     void batchUpdateStock(String[] split,String account,Integer did);
 
     void batchUpdate(List<Integer> ids, String account);
+
+    void deleteDrugById(Integer id);
 }

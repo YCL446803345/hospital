@@ -169,6 +169,11 @@ public class DrugServiceImpl implements DrugService {
         withdrawalDrugMapper.insert(wd);
     }
 
+    //删除药品
+    public void deleteDrugById(Integer id) {
+        drugMapper.deleteByPrimaryKey(id);
+    }
+
     //批量退药、改状态、加库存、批量添加退药记录
     public void batchUpdate(List<Integer> ids, String account) {
         //查询操作人

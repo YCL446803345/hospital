@@ -9,6 +9,7 @@ import com.woniu.service.PrescriptionService;
 import com.woniu.service.WorkerService;
 import com.woniu.util.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,8 +31,9 @@ public class DrugPreController {
     private WorkerService workerService;
 
 
-    //查询处方列表+分页+模糊查询
+    //药房查询处方列表+分页+模糊查询
     @GetMapping("drug/prescription")
+    @PreAuthorize("hasAnyAuthority('drug:prescriptionList')")
     public ResponseResult<PageInfo<Prescription>> findAllPrescription(String doctorName,String nurseName,String preName,
                                                                       @RequestParam(name = "pageNum",defaultValue = "1")Integer pageNum,
                                                                       @RequestParam(name = "pageSize",defaultValue = "5")Integer pageSize){
@@ -50,6 +52,7 @@ public class DrugPreController {
 
     //药房撤销处方同时记录撤销人和当前撤销时间
     @PostMapping("drug/updatePreStatus")
+    @PreAuthorize("hasAnyAuthority('reject:prescription')")
     public ResponseResult updatePreDrugStatus(@RequestParam("pid") Integer pid,@RequestParam("account") String account){
         prescriptionService.updateStatusById(pid,account);
         return ResponseResult.ok();
@@ -59,6 +62,7 @@ public class DrugPreController {
     //同时添加发药记录
     //添加发药账单记录
     @PostMapping("drug/sendDrug")
+    @PreAuthorize("hasAnyAuthority('drug:sendDrug')")
     public ResponseResult<List<LinkedHashSet<String>>> updatePreDrugStatusAndAddSendDrug(@RequestParam("idStrs") String idStrs,@RequestParam("account") String account){
         List<String> list = Arrays.asList(idStrs.split(","));
         List<String> newlist = new ArrayList<String>(list);
@@ -79,7 +83,5 @@ public class DrugPreController {
     public ResponseResult<List<String>> findAllDoctor(){
         List<String> doctorList = workerService.findAllDoctor();
         return new ResponseResult<List<String>>(doctorList,"OK",200);
-
     }
-
 }

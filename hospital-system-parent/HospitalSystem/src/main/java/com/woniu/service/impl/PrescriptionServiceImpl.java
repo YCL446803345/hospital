@@ -119,7 +119,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
                 //药品库存大于发药数量可以进行发药修改操作
                 Prescription prescription = new Prescription();
                 prescription.setId(i);
-                prescription.setPrescriptionStatus(2);
+                prescription.setPrescriptionStatus(3);
                 prescription.setSpare1(worker.getName());
                 prescription.setSpare2(TimeUtil.getNowTime(new Date()));
                 prescriptionList.add(prescription);

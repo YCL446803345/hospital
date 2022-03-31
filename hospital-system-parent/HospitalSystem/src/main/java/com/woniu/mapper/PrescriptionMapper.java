@@ -43,7 +43,7 @@ public interface PrescriptionMapper {
             "left join HOS_patient pa on pa.id=p.patient_id\n"+
             "left join HOS_worker w2 on w2.id=pa.nurse_id\n"+
             "where 1 = 1 "+
-            "and p.prescription_status = 1"+
+            "and p.prescription_status = 2"+
             "<if test='doctorName != null and doctorName != \"\"'>and w1.name like '%${doctorName}%'</if>"+
             "<if test='nurseName != null and nurseName != \"\"'>and w2.name like '%${nurseName}%'</if>"+
             "<if test='preName != null and preName != \"\"'>and pa.name like '%${preName}%'</if>"+

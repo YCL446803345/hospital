@@ -279,16 +279,15 @@
 <!--                   enableDeleteByExample="true"-->
 <!--                   enableSelectByExample="true"-->
 <!--            />-->
-        <table tableName="HOS_withdrawal_drug" schema="HOSPITAL"
-               domainObjectName="WithdrawalDrug"
-               enableCountByExample="true"
-               enableUpdateByExample="true"
-               enableDeleteByExample="true"
-               enableSelectByExample="true"
-        />
-
-            <table tableName="HOS_call" schema="HOSPITAL"
-                   domainObjectName="Call"
+<!--        <table tableName="HOS_withdrawal_drug" schema="HOSPITAL"-->
+<!--               domainObjectName="WithdrawalDrug"-->
+<!--               enableCountByExample="true"-->
+<!--               enableUpdateByExample="true"-->
+<!--               enableDeleteByExample="true"-->
+<!--               enableSelectByExample="true"-->
+<!--        />-->
+            <table tableName="HOS_drug_type" schema="HOSPITAL"
+                   domainObjectName="DrugType"
                    enableCountByExample="true"
                    enableUpdateByExample="true"
                    enableDeleteByExample="true"

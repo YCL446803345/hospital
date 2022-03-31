@@ -7,6 +7,7 @@ import com.woniu.entity.SendDrugRecord;
 import com.woniu.service.SendDrugRecordService;
 import com.woniu.util.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,6 +26,7 @@ public class sendDrugController {
 
     //查询发药记录+分页+条件查询
     @GetMapping("drug/findAllSendDrug")
+    @PreAuthorize("hasAnyAuthority('drug:sendOut')")
     public ResponseResult<PageInfo<SendDrugRecord>> findAllPrescription(String name,
                                                                         @RequestParam(name = "pageNum",defaultValue = "1")Integer pageNum,
                                                                         @RequestParam(name = "pageSize",defaultValue = "5")Integer pageSize){
