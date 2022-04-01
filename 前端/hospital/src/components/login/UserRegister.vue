@@ -129,12 +129,23 @@
     methods: {
       //发送验证码
       sendCheck() {
-        this.$axios.get("/test/sendCheck", {
-          params: {
-            email: this.user.spare1
-          }
-        })
-        this.changeButton();
+        if(this.user.spare1!=null){
+            this.$axios.get("/test/sendCheck", {
+            params: {
+              email: this.user.spare1
+            }
+          })
+          this.changeButton();
+        }else{
+          this.$message({
+                  showClose: true,
+                  message: "邮箱不能为空",
+                  type: "error",
+                  duration: 600,
+                  duration: 2000,
+                });
+        }
+        
       },
       //验证码按钮变化
       changeButton() {
