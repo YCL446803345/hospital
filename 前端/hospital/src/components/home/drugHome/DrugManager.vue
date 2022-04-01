@@ -102,7 +102,7 @@
         <!-- 编辑模态框 -->
         <el-dialog title="编辑药品信息" :visible.sync="updatedialogTableVisible" center>
             <!-- Form -->
-            <el-form :model="updateDrug"  ref="updateForm" :rules="rules2">
+            <el-form :model="updateDrug"  ref="updateForm" status-icon :rules="rules2">
 
                 <el-form-item label="药品名称" :label-width="formLabelWidth" prop="name">
                 <el-input v-model="updateDrug.name" autocomplete="off"></el-input>
@@ -160,15 +160,15 @@
         <!-- 添加库存模态框 -->
         <el-dialog title="添加库存" :visible.sync="addStockdialogTableVisible" center :close-on-click-modal="false">
             <!-- Form -->
-            <el-form :model="addDrugStock"  ref="addStockForm" >            
-                <el-form-item label="库存数量" :label-width="formLabelWidth" prop="salePrice">
+            <el-form :model="addDrugStock"  ref="addStockForm" :rules="addRules">            
+                <el-form-item label="库存数量" :label-width="formLabelWidth" prop="stock">
                 <el-input-number v-model="addDrugStock.stock"  :min="1" ></el-input-number>
                 </el-form-item>
             </el-form>
 
             <div slot="footer" class="dialog-footer">
                 <el-button @click="addStockdialogTableVisible=false;addDrugStock={};">取消</el-button>
-                <el-button type="primary" @click="updateStock">确定</el-button>
+                <el-button type="primary" @click="updateStock('addStockForm')">确定</el-button>
             </div>
         </el-dialog>
 
@@ -192,11 +192,11 @@
                 </el-form-item>
 
                 <el-form-item label="输入进价" prop="makePrice">
-                    <el-input-number v-model="purchaseDrug.makePrice" :precision="2" :step="0.1"></el-input-number>
+                    <el-input-number v-model="purchaseDrug.makePrice" :min="1" :precision="2" :step="0.1"></el-input-number>
                 </el-form-item>
 
-                <el-form-item label="输入销售价格" prop="salePrice">
-                    <el-input-number v-model="purchaseDrug.salePrice" :precision="2" :step="0.1"></el-input-number>
+                <el-form-item label="输入销售价" prop="salePrice">
+                    <el-input-number v-model="purchaseDrug.salePrice" :min="1" :precision="2" :step="0.1"></el-input-number>
                 </el-form-item>
 
                 <el-form-item label="规格" prop="specifications">
@@ -226,9 +226,11 @@
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                         </el-upload>
                     </el-form-item>
+                    <span v-if="flag == 1" style="color:red">请上传药品图片</span>
                 <el-form-item>
+                
                     <el-button type="primary" @click="sumitAdd('Form')">确定</el-button>
-                    <el-button @click="purTableVisible = false;purchaseDrug={};addImageUrl='';">返回</el-button>
+                    <el-button @click="purTableVisible = false;purchaseDrug={};addImageUrl='';flag=0;">返回</el-button>
                 </el-form-item>
             </el-form>
         </el-dialog>
@@ -265,17 +267,8 @@
 import qs from 'qs'
 export default {
    data() {
-    var checksalePrice = (rule, value, callback) => {
-        if (!value) {
-          return callback(new Error('销售价格不能为空'));
-        }
-        setTimeout(() => {
-          if (value <= 0) {
-            callback(new Error('价格设置不合理'));
-          }
-        }, 1000);
-      };
       return {
+        flag:0,
         //分页属性
         pageNum:1,  //当前页
         total:0,  //总页数
@@ -325,6 +318,14 @@ export default {
             stock:''
         },
         typeList:[],
+        updateForm:{
+            name:'',
+            drugType:'',
+            salePrice:'',
+            specifications:'',
+            spare1:'',
+            spare2:''
+        },
         //编辑表单验证
         rules2:{
             name:[
@@ -334,7 +335,8 @@ export default {
                 {required: true, message: '请选择类别', trigger: 'blur'},
             ],
             salePrice:[
-                { validator :checksalePrice, trigger: 'blur'},
+                { required:true, message:'不能为空哦', trigger: 'blur'},
+                { pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/, message: '请输入正确的价格'}
             ],
             specifications:[
                 {required: true, message: '不能为空哦', trigger: 'blur'},
@@ -354,8 +356,20 @@ export default {
             drugType:[
                 {required: true, message: '请选择类别', trigger: 'blur'},
             ],
+            makePrice:[
+                { required:true, message:'不能为空哦', trigger: 'blur'},
+                { pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/, message: '请输入正确的价格'}
+            ],
+            salePrice:[
+                { required:true, message:'不能为空哦', trigger: 'blur'},
+                { pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/, message: '请输入正确的价格'}
+            ],
             specifications:[
                 {required: true, message: '不能为空哦', trigger: 'blur'},
+            ],
+            stock:[
+                { required:true, message:'不能为空哦', trigger: 'blur'},
+                { pattern: /^[+]{0,1}(\d+)$/, message: '请输入正确库存'}
             ],
             spare1:[
                 {required: true, message: '不能为空哦', trigger: 'blur'},
@@ -368,35 +382,49 @@ export default {
             name:[
                     {required: true, message: '不能为空哦', trigger: 'blur'},
                 ]
+        },
+        //添加库存表单验证
+        addRules:{
+                stock:[
+                { required:true, message:'不能为空哦', trigger: 'blur'},
+                { pattern: /^[+]{0,1}(\d+)$/, message: '请输入正确库存'}
+            ],
         }   
       }
    },
    methods:{
     //执行添加库存
-    updateStock(){
-        this.$axios.post("api/drug/byIdUpdateStock",this.addDrugStock).then(res=>{
-            if (res.data.status == 200) {
-                this.$message({
-                showClose: true,
-                message: '操作成功',
-                type: 'success',
-                duration:2000
-                });
-                this.createMethods(1);
-                this.addStockdialogTableVisible=false;
-                this.addDrugStock={};
-            }else{
-                this.$message({
-                showClose: true,
-                message: '操作失败,系统维护中',
-                type: 'warning',
-                duration:2000
-                });
-                this.createMethods(1);
-                this.addStockdialogTableVisible=false;
-                this.addDrugStock={};
-            }
+    updateStock(forName){
+        this.$refs[forName].validate((valid) =>{
+            if (valid) {    
+                this.$axios.post("api/drug/byIdUpdateStock",this.addDrugStock).then(res=>{
+                if (res.data.status == 200) {
+                    this.$message({
+                    showClose: true,
+                    message: '操作成功',
+                    type: 'success',
+                    duration:2000
+                    });
+                    this.createMethods(1);
+                    this.addStockdialogTableVisible=false;
+                    this.addDrugStock={};
+                }else{
+                    this.$message({
+                    showClose: true,
+                    message: '操作失败,系统维护中',
+                    type: 'warning',
+                    duration:2000
+                    });
+                    this.createMethods(1);
+                    this.addStockdialogTableVisible=false;
+                    this.addDrugStock={};
+                }
         })
+          
+               }else{
+                   return false
+               }
+           })
     },
     //头像上传成功处理
     handleAvatarSuccess(res, file) {
@@ -566,6 +594,9 @@ export default {
     sumitAdd(forName){
            this.$refs[forName].validate((valid) =>{
                if (valid) {
+                   if(this.addImageUrl == ''){
+                       this.flag=1
+                   }else{
                    this.purchaseDrug.spare3=this.addImageUrl
                     this.$axios.post("api/drug/addDrug",this.purchaseDrug).then(res =>{
                         if (res.data.status == 200) {
@@ -595,6 +626,7 @@ export default {
                             this.purTableVisible=false
                         }
                     })
+                    }
                }else{
                    return false
                }
