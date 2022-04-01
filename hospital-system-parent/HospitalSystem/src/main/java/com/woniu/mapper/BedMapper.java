@@ -68,4 +68,9 @@ public interface BedMapper {
 
     @Select("select count(*) from HOS_bed where dept_id=#{id} ")
     Integer getBedsByDeptId(Integer id);
+
+    @Select("select b.*\n" +
+            "from HOS_patient p,HOS_bed b\n" +
+            "where p.bed_id = b.id and p.id = #{id}")
+    Bed selectBedByPatientId (Integer id);
 }

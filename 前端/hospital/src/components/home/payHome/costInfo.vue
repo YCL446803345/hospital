@@ -3,8 +3,8 @@
         <!-- 面包xie导航 -->
         <br>
         <el-breadcrumb separator="/">
-            <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item><a href="#/costInfo">在院病人费用信息管理</a></el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: '/gotoHome' }">首页</el-breadcrumb-item>
+            <el-breadcrumb-item><a href="#/pay/cost">在院病人费用信息管理</a></el-breadcrumb-item>
             <el-breadcrumb-item>在院病人信息费用管理列表</el-breadcrumb-item>
         </el-breadcrumb>
         <el-row style="margin-top:10px;margin-bottom:10px">
@@ -567,11 +567,12 @@ export default {
                 this.patient.projectList = res.data.projectList;
                 this.patient.days = res.data.days;
                 this.patient.balance = res.data.balance;
-                this.patient.hospitalization = drugOut
-                this.patient.prescription = hospitalization
+                this.patient.hospitalization = hospitalization
+                this.patient.prescription = prescription
                 this.patient.medicalAdvice = medicalAdvice
-                this.patient.drugOut = prescription
+                this.patient.drugOut = drugOut
                 this.costSettlementForm = true;
+                console.log(this.patient);
                 this.$axios.get("/api/createToken").then(res=>{
                     this.token = res.data;
                 })

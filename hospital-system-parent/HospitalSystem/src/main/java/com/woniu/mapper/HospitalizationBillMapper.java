@@ -64,4 +64,9 @@ public interface HospitalizationBillMapper {
             " set hb.end_time = #{endTime} \n" +
             "where hb.patient_id = p.id and p.id = #{id} ")
     void updateEndTime (@Param("endTime") Date endTime, @Param("id")Integer id);
+
+    @Select("select h.id\n" +
+            "from HOS_patient p,HOS_hospitalization_bill h\n" +
+            "where p.id = h.patient_id and p.id = #{id}")
+    Integer selectIdByPatientId (Integer hospitalizationId);
 }

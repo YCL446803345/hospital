@@ -4,7 +4,7 @@
         <br>
         <el-breadcrumb separator="/">
             <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item><a href="#/costInfo">出院病人信息管理</a></el-breadcrumb-item>
+            <el-breadcrumb-item><a href="#/pay/leaveHospital">出院病人信息管理</a></el-breadcrumb-item>
             <el-breadcrumb-item>出院病人信息管理列表</el-breadcrumb-item>
         </el-breadcrumb>
         <el-row style="margin-top:10px;margin-bottom:10px">
@@ -575,6 +575,7 @@ export default {
                 this.patient.medicalAdvice = medicalAdvice
                 this.patient.drugOut = prescription
                 this.costSettlementForm = true;
+                console.log(this.patient);
                  this.$axios.get("/api/createToken").then(res=>{
                     this.token = res.data;
                 })
