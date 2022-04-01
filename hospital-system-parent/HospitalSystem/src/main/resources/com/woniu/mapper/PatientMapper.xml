@@ -434,13 +434,12 @@
   <!--医生站分页模糊查询患者列表-->
   <select id="queryPatientList" resultType="Patient">
     select p.id,p.name,p.no,p.age,p.card_id,p.phone,p.gender,p.base_desc,p.end_time,d.name deptName,b.code bedCode,
-           w1.name doctorName,w2.name nurseName,p.appointmentt_time,p.status,p.doctor_id,p.bed_id,p.nurse_id,p.dept_id
-
+    w1.name doctorName,w2.name nurseName,p.appointmentt_time,p.status,p.doctor_id,p.bed_id,p.nurse_id,p.dept_id
     from HOS_patient p
-    inner join HOS_dept d on p.dept_id = d.id
-    inner join HOS_bed b on p.bed_id = b.id
-    inner join HOS_worker w1 on p.doctor_id = w1.id
-    inner join HOS_worker w2 on p.nurse_id = w2.id
+    left join HOS_dept d on p.dept_id = d.id
+    left join HOS_bed b on p.bed_id = b.id
+    left join HOS_worker w1 on p.doctor_id = w1.id
+    left join HOS_worker w2 on p.nurse_id = w2.id
 
     <where>
       <if test="name!=null and name != ''">and p.name like '%${name}%'</if>
@@ -450,7 +449,9 @@
       <if test="status!=null and status != ''">and p.status = #{status}</if>
       <if test="startDate != null and startDate != ''">and p.appointmentt_time &gt;= #{startDate}</if>
       <if test="endDate != null and endDate != ''">and p.appointmentt_time &lt;= #{endDate}</if>
-    </where> and p.status in(1,2,3)  order by p.appointmentt_time desc
+         <if test="doctorId != null and doctorId != ''">and p.doctor_id = #{doctorId}</if>
+    </where>
+    and p.status in(1,2,4)  order by p.appointmentt_time desc
   </select>
 
 </mapper>

@@ -55,9 +55,9 @@ public class InHospitalTableServiceImpl implements InHospitalTableService {
         patient.setDeptId(inHospitalTable.getDeptId());
         patient.setBaseDesc(inHospitalTable.getReason());
         patient.setStatus("9");
-        patient.setDoctorId(4);
-        patient.setNurseId(7);
-        patient.setBedId(6);
+        patient.setDoctorId(9);
+        patient.setNurseId(9);
+//        patient.setBedId(6);
         //审核预约申请,新增患者列表信息
         patientMapper.addPatientByDoctor(patient);
         //审核预约通过,修改预约状态

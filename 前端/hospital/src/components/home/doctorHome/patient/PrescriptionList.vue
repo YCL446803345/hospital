@@ -305,7 +305,7 @@ export default {
                 }else{
                      this.$message({
                         type: "success",
-                         message: "下达处方成功!",
+                         message: "下达退药成功!",
                          duration:2000
                      });
                     this.closeAddDrugOutForm();
