@@ -125,8 +125,8 @@
                 label="床位编号"
                 width="80">
                  <template slot-scope="scope">
-                     <el-tag :type="scope.row.bedCode==='未分配'?'danger':'primary'" disable-transitions>
-                         {{scope.row.bedCode}}
+                     <el-tag :type="scope.row.bedCode===null?'danger':'primary'" disable-transitions>
+                         {{scope.row.bedCode===null?'未分配':scope.row.bedCode}}
                      </el-tag>
                 </template>
             </el-table-column>

@@ -511,7 +511,7 @@
                  <el-input v-model="nursingRecord.pulse" autocomplete="off"></el-input>
             </el-form-item>
 
-            <el-form-item label="是否受吃药" :label-width="formLabelWidth">
+            <el-form-item label="是否已吃药" :label-width="formLabelWidth">
                  <el-switch
                     v-model="nursingRecord.takeMedicine"
                     active-color="#13ce66"

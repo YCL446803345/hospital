@@ -227,10 +227,10 @@
         
         <el-form >
 
-            <el-col :span="8">
+            <!-- <el-col :span="8">
                 <el-input v-model="doctorName" placeholder="医生姓名">
                 </el-input>
-            </el-col>
+            </el-col> -->
 
             <el-col :span="3">
                 <el-select v-model="adviceCategory" placeholder="医嘱类型">
@@ -285,7 +285,7 @@
                 width="100">
                  <template slot-scope="scope">
                      <el-tag :type="scope.row.adviceCategory===1?'danger':scope.row.adviceCategory===2?'warning':'primary'" disable-transitions>
-                         {{scope.row.bedCode==1?'长期医嘱':scope.row.bedCode==2?'临时医嘱':'一般医嘱'}}
+                         {{scope.row.adviceCategory==1?'长期医嘱':scope.row.adviceCategory==2?'临时医嘱':'一般医嘱'}}
                      </el-tag>
                 </template>
             </el-table-column>
@@ -528,7 +528,7 @@
                    v-if='scope.row.prescriptionStatus==3'
                   size="mini"
                   type="warning"
-                  @click="doPrescription(scope.row.id)">执行医嘱</el-button>
+                  @click="doPrescription(scope.row.id)">执行处方</el-button>
 
                    <el-button
                    v-if='scope.row.prescriptionStatus==2'

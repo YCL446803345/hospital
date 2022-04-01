@@ -108,7 +108,7 @@
             <el-table-column
                 prop="appointmenttTime"
                 label="入院时间"
-                width="180">
+                width="200">
                 <template slot-scope="scope">
                     <i class="el-icon-time"></i>
                     <span style="margin-left: 10px">{{ scope.row.appointmenttTime}}</span>
@@ -122,9 +122,10 @@
             </el-table-column>
 
             <el-table-column
+                prop="bedCode"
                 label="床位编号"
                 width="80">
-                 <template slot-scope="scope">
+                <template slot-scope="scope">
                      <el-tag :type="scope.row.bedCode===null?'danger':'primary'" disable-transitions>
                          {{scope.row.bedCode===null?'未分配':scope.row.bedCode}}
                      </el-tag>
