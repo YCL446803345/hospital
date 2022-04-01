@@ -12,7 +12,7 @@
         </el-form-item>
         <el-form-item prop="password">
           <div class="inputElement">
-            <el-input v-model="user.password" placeholder="请输入密码" prop="password"></el-input>
+            <el-input v-model="user.password" placeholder="请输入密码" prop="password" show-password></el-input>
           </div>
         </el-form-item>
         <el-form-item prop="spare1">
@@ -129,7 +129,8 @@
     methods: {
       //发送验证码
       sendCheck() {
-        if(this.user.spare1!=null){
+ 
+        if(this.spare1!=null){
             this.$axios.get("/test/sendCheck", {
             params: {
               email: this.user.spare1
@@ -205,7 +206,7 @@
                   duration: 600,
                   duration: 2000,
                   onClose: () => {
-                    this.user.spare2 = "";
+                    
                   }
                 });
               } else {

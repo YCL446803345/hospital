@@ -12,7 +12,7 @@
           </el-form-item>
           <el-form-item prop="password">
           <div class="inputElement" >
-            <el-input v-model="worker.password" placeholder="请输入密码" prop="password"></el-input>
+            <el-input v-model="worker.password" placeholder="请输入密码" prop="password" show-password></el-input>
           </div>
           </el-form-item>
           <div align="center">
@@ -31,8 +31,8 @@ export default {
       return {
       imgSrc:require("../../assets/css/image/医院背景.jpg"),   //背景图片
       worker: {
-        account: "admin",
-        password: "123"
+        account: "",
+        password: ""
       },
       rules:{ 
         account:[

@@ -13,7 +13,7 @@
           </el-form-item>
           <el-form-item prop="password">
           <div class="inputElement" >
-            <el-input v-model="user.password" placeholder="请输入密码" prop="password"></el-input>
+            <el-input v-model="user.password" placeholder="请输入密码" prop="password" show-password></el-input>
           </div>
           </el-form-item>
           <div align="center">

@@ -4,7 +4,7 @@
       <!--default-active代表导航栏默认选中哪个index, :collapse决定导航栏是否展开，为boolean类型
             :router决定导航栏是否开启路由模式，即在菜单item上设置路由是否生效，值为boolean类型-->
       <el-menu default-active="0" class="el-menu-vertical-demo" :collapse="isCollapse" :router="true">
-   
+
       </el-menu>
     </el-aside>
 
@@ -18,7 +18,8 @@
             <h1>病人预约</h1>
           </el-col>
           <el-col :span="6" class="col_r">
-              <h1 style="color:red">用户：{{telephone}}  <el-button @click="logout">退出</el-button></h1>
+            <h1 style="color:red">用户：{{telephone}} <el-button @click="logout">退出</el-button>
+            </h1>
 
           </el-col>
         </el-row>
@@ -32,8 +33,8 @@
           <!-- 用户预约病人表 -->
           <div class="loginPart">
             <h2>万物皆虚,万事皆允</h2>
-            <el-form ref="loginForm" :model="inHospitalTable" >
-              <el-form-item prop="patientName ">
+            <el-form :model="inHospitalTable" :rules="rules" ref="ruleForm">
+              <el-form-item prop="patientName">
                 <div class="inputElement">
                   <el-input v-model="inHospitalTable.patientName" placeholder="请输入病人名字"></el-input>
                 </div>
@@ -46,7 +47,7 @@
               </el-form-item>
               <el-form-item prop="patientAge">
                 <div class="inputElement">
-                  <el-input v-model="inHospitalTable.patientAge" placeholder="请输入年龄" ></el-input>
+                  <el-input v-model="inHospitalTable.patientAge" placeholder="请输入年龄" onkeyup="this.value=this.value.replace(/\D|^0/g,'')" onafterpaste="this.value=this.value.replace(/\D|^0/g,'')"></el-input>
                 </div>
               </el-form-item>
               <el-form-item prop="cardId">
@@ -71,7 +72,7 @@
               <div align="center">
 
                 <div class="inputElement">
-                  <el-button type="info" icon="el-icon-user-solid" @click="addInHospitalTable('loginForm')">病人预约</el-button>
+                  <el-button type="info" icon="el-icon-user-solid" @click="addInHospitalTable('ruleForm')">病人预约</el-button>
                   <el-button type="info" icon="el-icon-user" @click="getInHospitalTableByTelephone()">预约查询</el-button>
                 </div>
               </div>
@@ -79,7 +80,7 @@
           </div>
         </div>
 
-<!-- 病人预约详情表 -->
+        <!-- 病人预约详情表 -->
         <el-dialog title="病人预约情况" :visible.sync="Visible" class="mydig" width="60%" :showClose="false" align="center">
 
           <el-table :data="inHospitalTableData">
@@ -128,6 +129,41 @@
   export default {
     data() {
       return {
+        rules: {
+          patientName: [{
+            required: true,
+            message: '请输入病人名字',
+            trigger: 'blur'
+          }, ],
+          patientSex: [{
+            required: true,
+            message: '请选择性别',
+            trigger: 'blur'
+          }, ],
+          patientAge: [{
+            required: true,
+            message: '请输入病人年龄',
+            trigger: 'blur'
+          }, ],
+          cardId: [{
+            required: true,
+            message: '请输入病人身份证号码',
+            trigger: 'blur'
+          }, ],
+          deptId: [{
+            required: true,
+            message: '请选择科室',
+            trigger: 'blur'
+          }, ],
+
+          reason: [{
+            required: true,
+            message: '请输入病情',
+            trigger: 'blur'
+          }, ]
+        },
+
+
 
         inHospitalTable: {
           patientName: "",
@@ -141,7 +177,7 @@
           inHosptialTime: "",
           status: "",
         },
-       
+
         deptData: [],
         bedData: [],
         inHospitalTableData: [],
@@ -151,8 +187,8 @@
         fits: 'scale-down',
         headers: "",
         menuDate: [],
-        status:'2',
-           
+        status: '2',
+
       }
     },
     computed: {
@@ -166,19 +202,25 @@
       }
     },
     methods: {
+
+
       //缴纳手续费
-      pay(value){
-        this.$axios.get("/test/pay",{params:{phone:value}}).then(res=>{
-                        const divForm = document.getElementsByTagName("div");
-                        if (divForm.length) {
-                            document.body.removeChild(divForm[0]);
-                        }
-                        const div = document.createElement("div");
-                        div.innerHTML = res.data;
-                        document.body.appendChild(div);
-                        document.forms[0].submit();
-                        document.forms[0].setAttribute("target", "_blank"); // 新开窗口跳转
-                    })
+      pay(value) {
+        this.$axios.get("/test/pay", {
+          params: {
+            phone: value
+          }
+        }).then(res => {
+          const divForm = document.getElementsByTagName("div");
+          if (divForm.length) {
+            document.body.removeChild(divForm[0]);
+          }
+          const div = document.createElement("div");
+          div.innerHTML = res.data;
+          document.body.appendChild(div);
+          document.forms[0].submit();
+          document.forms[0].setAttribute("target", "_blank"); // 新开窗口跳转
+        })
       },
       //部门列表
       findDeptList() {
@@ -216,33 +258,40 @@
 
 
       //添加病人
-      addInHospitalTable() {
-        this.$axios.get("/test/queryUserStatus",{params:{phone: this.telephone}}).then(res=>{ 
+      addInHospitalTable(formName) {
+
+         this.$refs[formName].validate((valid) => {
+          if (valid) {
+ this.$axios.get("/test/queryUserStatus", {
+          params: {
+            phone: this.telephone
+          }
+        }).then(res => {
           if (window.localStorage.getItem("status") == "1") {
-              window.localStorage.setItem("status",2)
-              window.localStorage.setItem("inHospitalTable",JSON.stringify(this.inHospitalTable))
-              this.$alert('请先缴纳手续费', '缴费', {
+            window.localStorage.setItem("status", 2)
+            window.localStorage.setItem("inHospitalTable", JSON.stringify(this.inHospitalTable))
+            this.$alert('请先缴纳手续费', '缴费', {
               confirmButtonText: '确定',
               callback: action => {
                 this.pay(this.telephone);
               }
             })
-          }else {
-             this.inHospitalTable.telephone = window.localStorage.getItem("telephone")
+          } else {
+            this.inHospitalTable.telephone = window.localStorage.getItem("telephone")
             this.$axios.post("/test/inHospitalTable/add", this.inHospitalTable).then((res) => {
-          if (res.data.status == 200) {
-  
-            this.$message({
-              showClose: true,
-              message: "添加成功",
-              type: "success",
-              duration: 600,
-            });
-            this.inHospitalTable = {};
-          } else if (res.data.status == 2008) {
+              if (res.data.status == 200) {
+
                 this.$message({
                   showClose: true,
-                  message: "病人已存在",
+                  message: "添加成功",
+                  type: "success",
+                  duration: 600,
+                });
+                this.inHospitalTable = {};
+              } else if (res.data.status == 2008) {
+                this.$message({
+                  showClose: true,
+                  message: res.data.msg,
                   type: "error",
                   duration: 600,
                   duration: 2000,
@@ -250,19 +299,24 @@
                     this.user.spare2 = "";
                   }
                 });
-              }  else {
-            this.$message({
-              showClose: true,
-              message: "添加失败",
-              type: "error",
-              duration: 600,
+              } else {
+                this.$message({
+                  showClose: true,
+                  message: "添加失败",
+                  type: "error",
+                  duration: 600,
+                });
+              }
             });
-          }
-        });
-      
+
           }
           this.status = res.data;
-      })
+        })
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
       },
 
       //查询病人预约
@@ -292,15 +346,15 @@
 
 
       logout() {
-          this.$confirm('是否退出本系统?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(() => {
-            window.localStorage.removeItem("tokenStr");
-            this.$router.push("/");
-          })
-        
+        this.$confirm('是否退出本系统?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          window.localStorage.removeItem("tokenStr");
+          this.$router.push("/");
+        })
+
 
       },
       changeCollapse: function () { // 更改左侧导航栏展示状态
@@ -308,23 +362,23 @@
       },
 
     },
-    
 
-    
-     mounted: function() {
-            if (location.href.indexOf("#reloaded") == -1) {
-                location.href = location.href + "#reloaded";
-                location.reload();
-            }
-        },
-        
+
+
+    mounted: function () {
+      if (location.href.indexOf("#reloaded") == -1) {
+        location.href = location.href + "#reloaded";
+        location.reload();
+      }
+    },
+
     created() {
 
       //从本地浏览器拿名字
       this.telephone = window.localStorage.getItem("telephone")
 
       this.status = window.localStorage.getItem("status")
-      
+
 
       this.$axios.get("/test/perms/findMenuPerms", {
           params: {
@@ -338,11 +392,11 @@
         }),
 
         this.findDeptList();
-       this.findBedList();
-        if(this.status == "2"){
+      this.findBedList();
+      if (this.status == "2") {
         this.status = "1"
-        window.localStorage.setItem("status",1)
-        this.inHospitalTable = JSON.parse(window.localStorage.getItem("inHospitalTable")) 
+        window.localStorage.setItem("status", 1)
+        this.inHospitalTable = JSON.parse(window.localStorage.getItem("inHospitalTable"))
         //发送axios请求
         this.inHospitalTable.telephone = window.localStorage.getItem("telephone")
         this.$axios.post("/test/inHospitalTable/add", this.inHospitalTable).then((res) => {
@@ -367,9 +421,6 @@
     }
 
   }
-
-  
-
 
 </script>
 
@@ -449,7 +500,7 @@
 
   /*左边导航栏具体样式*/
   .el-menu-vertical-demo.el-menu {
-    background: 	#FFDAC8;
+    background: #FFDAC8;
     padding-left: 20px;
     text-align: left;
     height: 100%;
