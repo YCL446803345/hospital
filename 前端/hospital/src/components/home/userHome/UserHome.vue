@@ -218,7 +218,7 @@
       //添加病人
       addInHospitalTable() {
         this.$axios.get("/test/queryUserStatus",{params:{phone: this.telephone}}).then(res=>{ 
-          if (res.data == "1") {
+          if (window.localStorage.getItem("status") == "1") {
               window.localStorage.setItem("status",2)
               window.localStorage.setItem("inHospitalTable",JSON.stringify(this.inHospitalTable))
               this.$alert('请先缴纳手续费', '缴费', {
