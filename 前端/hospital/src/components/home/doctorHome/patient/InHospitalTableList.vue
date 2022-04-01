@@ -78,7 +78,7 @@
         label="年龄"
         width="80"
       ></el-table-column>
-      <el-table-column prop="cardId" label="身份证号" width="180"></el-table-column>
+      <el-table-column prop="cardId" label="身份证号" width="200"></el-table-column>
       <el-table-column
         prop="telephone"
         label="联系方式"
@@ -87,7 +87,7 @@
       <el-table-column
         prop="deptName"
         label="预约部门"
-        width="80"
+        width="100"
       ></el-table-column>
       <el-table-column prop="reason" label="病况" width="140"></el-table-column>
       <el-table-column

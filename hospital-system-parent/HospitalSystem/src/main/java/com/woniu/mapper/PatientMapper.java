@@ -123,8 +123,8 @@ public interface PatientMapper {
     void doOutHospital(Integer id);
 
     //审核后新增患者信息
-    @Insert("insert into HOS_patient(name,no,age,card_id,phone,gender,dept_id,base_desc,status,doctor_id,nurse_id) " +
-            "values(#{name},#{no},#{age},#{cardId},#{phone},#{gender},#{deptId},#{baseDesc},#{status},#{doctorId},#{nurseId})")
+    @Insert("insert into HOS_patient(name,no,age,card_id,phone,gender,dept_id,base_desc,status,doctor_id,nurse_id,bed_id) " +
+            "values(#{name},#{no},#{age},#{cardId},#{phone},#{gender},#{deptId},#{baseDesc},#{status},#{doctorId},#{nurseId},#{bedId})")
     void addPatientByDoctor(Patient patient);
 
     //医生编辑患者信息

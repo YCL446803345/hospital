@@ -163,7 +163,7 @@ export default {
       //查询病人信息列表
         search(){
             this.$axios.get("/api/getAllInPatient",{params:{name:this.name,no:this.no,gender:this.gender,
-                  cardId:this.cardId,pageNum:1,pageSize:this.pageSize}})
+                  cardId:this.cardId,pageNum:this.pageNum,pageSize:this.pageSize}})
             .then(res=>{
                 this.patientList=res.data.list;
                 this.total=res.data.total;
@@ -178,14 +178,15 @@ export default {
         },
         changePage(value){
             this.pageNum=value;
-            this.$axios.get("/api/getAllInPatient",{params:{name:this.searchName,no:this.no,gender:this.gender,
-                  caedId:this.cardId,pageNum:this.pageNum,pageSize:this.pageSize}})
-            .then(res=>{
-                this.patientList=res.data.list;
-                this.total=res.data.total;
-                this.pageNum=res.data.pageNum;
-                this.pageSize=res.data.pageSize;
-            })
+            // this.$axios.get("/api/getAllInPatient",{params:{name:this.searchName,no:this.no,gender:this.gender,
+            //       caedId:this.cardId,pageNum:this.pageNum,pageSize:this.pageSize}})
+            // .then(res=>{
+            //     this.patientList=res.data.list;
+            //     this.total=res.data.total;
+            //     this.pageNum=res.data.pageNum;
+            //     this.pageSize=res.data.pageSize;
+            // })
+            this.search();
         },
           getIndex(i){
             return (i+1)+this.pageSize*(this.pageNum-1);
