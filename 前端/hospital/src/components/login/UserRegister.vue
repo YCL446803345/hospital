@@ -194,7 +194,7 @@
                   duration: 600,
                   duration: 2000,
                   onClose: () => {
-                    
+                    this.user.spare2 = "";
                   }
                 });
               } else {

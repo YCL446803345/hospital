@@ -220,25 +220,25 @@
         <el-divider></el-divider>
 
 
-        <el-form :model="nursingRecord">
+        <el-form :model="nursingRecord"  :rules="rules" ref="form1">
 
-            <el-form-item label="体温" :label-width="formLabelWidth">
+            <el-form-item label="体温" :label-width="formLabelWidth"  prop="temperature">
                  <el-input v-model="nursingRecord.temperature" autocomplete="off"></el-input>
             </el-form-item>
 
-            <el-form-item label="体重" :label-width="formLabelWidth">
+            <el-form-item label="体重" :label-width="formLabelWidth" prop="weight">
                  <el-input v-model="nursingRecord.weight" autocomplete="off"></el-input>
             </el-form-item>
 
-            <el-form-item label="呼吸" :label-width="formLabelWidth">
+            <el-form-item label="呼吸" :label-width="formLabelWidth" prop="breathe">
                  <el-input v-model="nursingRecord.breathe" autocomplete="off"></el-input>
             </el-form-item>
 
-            <el-form-item label="心率" :label-width="formLabelWidth">
+            <el-form-item label="心率" :label-width="formLabelWidth" prop="pulse">
                  <el-input v-model="nursingRecord.pulse" autocomplete="off"></el-input>
             </el-form-item>
 
-            <el-form-item label="是否受吃药" :label-width="formLabelWidth">
+            <el-form-item label="是否吃药" :label-width="formLabelWidth" >
                  <el-switch
                     v-model="nursingRecord.takeMedicine"
                     active-color="#13ce66"
@@ -246,7 +246,7 @@
                 </el-switch>
             </el-form-item>
             
-            <el-form-item label="护理等级" :label-width="formLabelWidth">
+            <el-form-item label="护理等级" :label-width="formLabelWidth" prop="nursingLevel">
                 <el-select v-model="nursingRecord.nursingLevel" placeholder="护理等级">
                     <el-option label="一般护理记录" value=1></el-option>
                     <el-option label="危重护理等级" value=2></el-option>
@@ -254,7 +254,7 @@
                 </el-select>
             </el-form-item>
 
-             <el-form-item label="描述" :label-width="formLabelWidth">
+             <el-form-item label="描述" :label-width="formLabelWidth" prop="decs">
                  <el-input
                         type="textarea"
                         :autosize="{ minRows: 2, maxRows: 4}"
@@ -266,7 +266,7 @@
             
         </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="addNursingRecord1">添 加</el-button>
+                <el-button type="primary" @click="addNursingRecord1('form1')">添 加</el-button>
                 <el-button @click="closeNursingRecordForm">取 消</el-button>
             </div>
         </el-dialog>
@@ -591,7 +591,27 @@ export default {
             takeMedicine:true
         },
         formLabelWidth: '120px',
-        nursingRecordList:[]
+        nursingRecordList:[],
+         rules:{ 
+            temperature:[
+                    {required: true, message: '不能为空', trigger: 'blur' }
+                ],
+            weight:[
+                    { required: true, message: '不能为空', trigger: 'blur'  }
+            ],
+            breathe:[
+                    {required: true, message: '不能为空', trigger: 'blur'  }
+            ],
+            pulse:[
+                    { required: true, message: '不能为空', trigger: 'blur' }
+            ],
+            nursingLevel:[
+                    { required: true, message: '不能为空', trigger: 'change' }
+            ],
+            decs:[
+                    { required: true, message: '不能为空', trigger: 'blur' }
+            ],
+      }, 
       }
    },
    created(){
@@ -758,7 +778,10 @@ export default {
            this.search1();
            this.nursingRecordViewForm=true;
        },
-       addNursingRecord1(){
+       addNursingRecord1(form1){
+           this.$refs[form1].validate((valid)=>{
+                if(valid){
+                    
            this.nursingRecord.patientId=this.addNursingRecord.id;
            this.nursingRecord.nurseId=parseInt(window.localStorage.getItem("workerId"))
             if(this.nursingRecord.takeMedicine){
@@ -785,6 +808,9 @@ export default {
                     this.search();
                 }
             })
+
+                }
+           })
 
        },
        closeNursingRecordForm(){

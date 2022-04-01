@@ -32,12 +32,11 @@
             </el-col>
            
             <el-col :span="1.5" style="margin-left:2px;">
-                <el-button type="success" @click="search1">查询</el-button>
-               
+                <el-button type="success" @click="search">查询</el-button>
             </el-col>
 
             <el-col :span="1" style="margin-left:2px;">
-                 <el-button type="warning" @click="name='',no='',paheNum=1,pageSize=5,gender='',cardId='',deptId=''">清空</el-button>
+                 <el-button type="warning" @click="name='',no='',paheNum=1,pageSize=5,gender='',cardId='',status=''">清空</el-button>
             </el-col>
             
         </el-row>
@@ -351,7 +350,7 @@
                    v-if='scope.row.adviceStatus==2'
                   size="mini"
                   type="warning"
-                  @click="doMedicalAdvice(scope.row.id)">执行医嘱</el-button>
+                  @click="doMedicalAdvice(scope.row.id,scope.row.projectName)">执行医嘱</el-button>
 
                    <el-button
                    v-if='scope.row.adviceStatus==3'
@@ -487,7 +486,7 @@
                 width="100">
                  <template slot-scope="scope">
                      <el-tag type="warning" disable-transitions>
-                         {{scope.row.spare1===''?'暂无修改':scope.row.spare1}}
+                         {{scope.row.spare1===null||scope.row.spare1===''?'暂无修改':scope.row.spare1}}
                      </el-tag>
                 </template>
             </el-table-column>
@@ -496,8 +495,7 @@
                 label="修改时间"
                 width="240">
                 <template slot-scope="scope">
-                    <i class="el-icon-time"></i>
-                    <span style="margin-left: 10px">{{scope.row.spare2===''?'暂无修改':scope.row.spare2}}</span>
+                    <span style="margin-left: 10px">{{scope.row.spare2===null||scope.row.spare2===''?'暂无修改':scope.row.spare2}}</span>
                 </template>
             </el-table-column>
 
@@ -961,13 +959,13 @@ export default {
 
 
         },
-        doMedicalAdvice(id){
+        doMedicalAdvice(id,projectName){
                  this.$confirm('是否完成执行?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 // type: 'warning'
             }).then(() => {
-                this.$axios.get("/api/doMedicalAdvice",{params:{id:id}})
+                this.$axios.post("/api/doMedicalAdvice",{id:id,projectName:projectName})
                 .then(res=>{
                 if(res.data.status==4001){
                      this.$message({

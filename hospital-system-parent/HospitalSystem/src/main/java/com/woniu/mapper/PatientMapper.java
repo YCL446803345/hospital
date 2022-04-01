@@ -119,7 +119,7 @@ public interface PatientMapper {
     int selectTotal (@Param("name") String name,@Param("no") String no);
 
 
-    @Update("update HOS_patient set status=3,doctor_id=9,nurse_id=9 where id =#{id}")
+    @Update("update HOS_patient set status=3,doctor_id=9,nurse_id=9,bed_id=null where id =#{id}")
     void doOutHospital(Integer id);
 
     //审核后新增患者信息
@@ -131,4 +131,7 @@ public interface PatientMapper {
     @Update("update HOS_patient set name=#{name},gender=#{gender},dept_id=#{deptId},phone=#{phone},age=#{age}," +
             "base_desc=#{baseDesc},card_id=#{cardId} where id=#{id}")
     void updatePatientByDoctor(Patient patient);
+
+    @Select("select bed_id from HOS_patient where id=#{id}")
+    Integer getBedIdById(Integer id);
 }
