@@ -350,7 +350,7 @@
                    v-if='scope.row.adviceStatus==2'
                   size="mini"
                   type="warning"
-                  @click="doMedicalAdvice(scope.row.id)">执行医嘱</el-button>
+                  @click="doMedicalAdvice(scope.row.id,scope.row.projectName)">执行医嘱</el-button>
 
                    <el-button
                    v-if='scope.row.adviceStatus==3'
@@ -959,13 +959,13 @@ export default {
 
 
         },
-        doMedicalAdvice(id){
+        doMedicalAdvice(id,projectName){
                  this.$confirm('是否完成执行?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 // type: 'warning'
             }).then(() => {
-                this.$axios.get("/api/doMedicalAdvice",{params:{id:id}})
+                this.$axios.post("/api/doMedicalAdvice",{id:id,projectName:projectName})
                 .then(res=>{
                 if(res.data.status==4001){
                      this.$message({
