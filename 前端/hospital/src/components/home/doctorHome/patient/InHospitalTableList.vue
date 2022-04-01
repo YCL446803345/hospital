@@ -78,7 +78,7 @@
         label="年龄"
         width="80"
       ></el-table-column>
-      <el-table-column prop="cardId" label="身份证号" width="180"></el-table-column>
+      <el-table-column prop="cardId" label="身份证号" width="200"></el-table-column>
       <el-table-column
         prop="telephone"
         label="联系方式"
