@@ -9,7 +9,7 @@ server:
   port: 8081
 spring:
   application:
-    name: HospitalSystem
+    name: HospitalUserSystem
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     password: root

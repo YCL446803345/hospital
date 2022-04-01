@@ -41,7 +41,7 @@ public interface MedicalAdviceMapper {
     @Select("  \n" +
             " select pr.name,pr.price\n" +
             " from HOS_medical_advice ma,HOS_project pr,HOS_patient p,HOS_medical_advice_bill mab\n" +
-            " where p.id = ma.patient_id and ma.project_id = pr.id and p.id = #{id} and mab.medical_advice_id = ma.id and mab.status = 1")
+            " where p.id = ma.patient_id and ma.project_id = pr.id and p.id = #{id} and mab.medical_advice_id = ma.id and mab.status = 1 and advice_status = 4")
     List<Project> selectProjectByPatientId (int id);
 
     //医生站分页模糊查询医嘱列表

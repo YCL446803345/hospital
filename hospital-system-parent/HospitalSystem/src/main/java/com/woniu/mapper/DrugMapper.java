@@ -28,9 +28,9 @@ public interface DrugMapper {
     int updateByPrimaryKeySelective(Drug record);
     int updateByPrimaryKey(Drug record);
 
-    @Select("  select d.name,d.sale_price,pd.num inNum\n" +
+    @Select("  select DISTINCT d.name,d.sale_price,pd.num inNum\n" +
             " from HOS_prescription pr, HOS_prescription_drug pd, HOS_drug d,HOS_patient p,HOS_prescription_bill pb\n" +
-            " where pr.patient_id = p.id and pr.id = pd.prescription_id and pd.drug_id = d.id and p.id = #{id} and pb.status = 1")
+            " where pr.patient_id = p.id and pr.id = pd.prescription_id and pd.drug_id = d.id and p.id = #{id} and pb.status = 1 and pr.prescription_status = 4" )
     List<Drug> selectDrugByPatientId(Integer id);
 
     @Select("  select d.name,d.sale_price,dod.num outNum\n" +

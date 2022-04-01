@@ -32,7 +32,8 @@
             </el-col>
 
             <el-col :span="1.5" style="margin-left:2px;">
-                <el-button type="warning" @click="call">叫号</el-button>
+                <el-button type="warning" v-if="callBtn == true"  @click="call()">叫号</el-button>
+                <el-button type="warning" v-if="callBtn == false" disabled  @click="call()">叫号</el-button>
             </el-col>
             
         </el-row>
@@ -125,6 +126,7 @@ export default {
         pageNum:1,
         pageSize:5,
         callMsg:'',
+        callBtn:true,
       }
    },
    created(){
@@ -161,6 +163,7 @@ export default {
              })
          },
          call(){
+            this.callBtn = false;
             let name = this.patientList[0].patientName
             let dept = this.patientList[0].deptName
             let msg = '请'+name+'到'+dept+'就诊'
@@ -175,11 +178,12 @@ export default {
             msg1.volume = 5;
             synth.speak(msg1);
             synth.speak(msg1);
-
+            
 
             this.patientList[0].status = "2"
              window.setTimeout(()=>{
                 this.callMsg = '';
+                this.callBtn = true;
                 this.$axios.get("/api/updateCallStatus",{params:{id:this.patientList[0].id}}).then(res=>{
                 this.search();
             })
