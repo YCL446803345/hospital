@@ -51,7 +51,7 @@ public class DrugOutServiceImpl implements DrugOutService {
     //申请退药
     public void addDrugOut(DrugOut drugOut) {
         drugOut.setCreateTime(new Date());
-        drugOut.setOutStatus(1);
+        drugOut.setOutStatus(2);
 //        drugOut.setOutCause("需退药");
         drugOutMapper.addDrugOut(drugOut);//新增退药申请记录
 
@@ -60,9 +60,6 @@ public class DrugOutServiceImpl implements DrugOutService {
         drugOutDrug.setDrugOutId(drugOut.getId());
         drugOutDrug.setNum(drugOut.getNum());
         drugOutDrugMapper.addDrugOutDrug(drugOutDrug);//新增退药药品中间表数据
-
-
-
 
     }
 
