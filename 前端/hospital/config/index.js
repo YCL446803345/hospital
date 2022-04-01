@@ -26,12 +26,10 @@ module.exports = {
                     '^/api': '/' // 4  请求发出到target目标服务器时,会将/api换/
                 }
             },
-
-
         },
 
         // Various Dev Server settings
-        host: 'localhost', // can be overwritten by process.env.HOST
+        host: '192.172.0.5', // can be overwritten by process.env.HOST
         port: 9090, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
         autoOpenBrowser: false,
         errorOverlay: true,
