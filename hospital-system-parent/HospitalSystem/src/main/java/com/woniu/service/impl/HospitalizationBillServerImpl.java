@@ -7,6 +7,7 @@ import com.woniu.entity.*;
 import com.woniu.mapper.*;
 import com.woniu.service.HospitalizationBillServer;
 import com.woniu.util.TimeUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -38,6 +39,12 @@ public class HospitalizationBillServerImpl implements HospitalizationBillServer 
     private final DrugMapper drugMapper;
     //医嘱
     private final MedicalAdviceMapper medicalAdviceMapper;
+
+    @Autowired
+    private LeaveHospitalMapper leaveHospitalMapper;
+
+    @Autowired
+    private BedMapper bedMapper;
 
     public HospitalizationBillServerImpl (HospitalizationBillMapper hospitalizationBillMapper, PatientMapper patientMapper, DrugOutBillMapper drugOutBillMapper, PrescriptionBillMapper prescriptionBillMapper, MedicalAdviceBillMapper medicalAdviceBillMapper, PaymentRecordMapper paymentRecordMapper, DrugMapper drugMapper, MedicalAdviceMapper medicalAdviceMapper) {
         this.hospitalizationBillMapper = hospitalizationBillMapper;
@@ -93,6 +100,23 @@ public class HospitalizationBillServerImpl implements HospitalizationBillServer 
         if(status!=null){
             newPatient.setEndTime(new Date());
             newPatient.setStatus("3");
+            newPatient.setBedId(null);
+            newPatient.setDoctorId(9);
+            newPatient.setNurseId(9);
+            Bed bed = bedMapper.selectBedByPatientId(id);
+            if(bed!=null) {
+                Patient bedPatient = new Patient();
+                bedPatient.setBedId(bed.getId());
+                bedMapper.changeBedStatusOff(bedPatient);
+            }
+            LeaveHospital leaveHospital = new LeaveHospital();
+            leaveHospital.setPatientId(id);
+            leaveHospital.setLeaveStatus(3);
+            leaveHospitalMapper.updateByPrimaryKeySelective(leaveHospital);
+            HospitalizationBill hospitalizationBill = new HospitalizationBill();
+            hospitalizationBill.setId(hospitalizationBillMapper.selectIdByPatientId(id));
+            hospitalizationBill.setEndTime(new Date());
+            hospitalizationBillMapper.updateByPrimaryKeySelective(hospitalizationBill);
         }
 //        newPatient.setBalance();
         query.setPatient(newPatient);
@@ -114,9 +138,10 @@ public class HospitalizationBillServerImpl implements HospitalizationBillServer 
             paymentRecordMapper.insert(paymentRecord);
         }
 
+
        if(prescriptionTotal!=0){
            //缴费后将处方表中的状态修改为已缴费状态
-           medicalAdviceBillMapper.updateStatus(id);
+           prescriptionBillMapper.updateStatus(id);
            //缴费后修改处方缴费时间
            prescriptionBillMapper.updateDate(TimeUtil.getNowTime(new Date()),id);
 
@@ -131,7 +156,7 @@ public class HospitalizationBillServerImpl implements HospitalizationBillServer 
 
         if(medicalAdviceTotal!=0){
             //缴费后将医嘱表中的状态修改为已缴费状态
-            prescriptionBillMapper.updateStatus(id);
+            medicalAdviceBillMapper.updateStatus(id);
             //缴费后修改医嘱缴费时间
             medicalAdviceBillMapper.updateDate(TimeUtil.getNowTime(new Date()),id);
 

@@ -114,7 +114,6 @@ var router = new VueRouter({
 
 				{ path: "/purchase/manager", component: Purchase },
                 { path: "/pay/cost", component: costInfo },
-
 				{path:"/pay/queryCost",component:queryCost},
                 {path:"/pay/leaveHospital",component:leaveHospital},
                 {path:"/pay/dataAnalysis",component:dataAnalysis},
