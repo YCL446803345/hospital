@@ -301,7 +301,7 @@ public class HospitalizationBillServerImpl implements HospitalizationBillServer 
             patient.setDeptId(9);
             patient.setStatus(status);
         }
-        if(patient.getAppointmenttTime()!=null){
+        if(patient.getAppointmenttTime()==null){
             patient.setAppointmenttTime(new Date());
         }
         patientMapper.updateByPrimaryKeySelective(patient);
