@@ -87,7 +87,7 @@
       <el-table-column
         prop="deptName"
         label="预约部门"
-        width="80"
+        width="100"
       ></el-table-column>
       <el-table-column prop="reason" label="病况" width="140"></el-table-column>
       <el-table-column
