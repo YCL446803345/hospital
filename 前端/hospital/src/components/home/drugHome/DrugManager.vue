@@ -265,6 +265,16 @@
 import qs from 'qs'
 export default {
    data() {
+    var checksalePrice = (rule, value, callback) => {
+        if (!value) {
+          return callback(new Error('销售价格不能为空'));
+        }
+        setTimeout(() => {
+          if (value <= 0) {
+            callback(new Error('价格设置不合理'));
+          }
+        }, 1000);
+      };
       return {
         //分页属性
         pageNum:1,  //当前页
@@ -322,6 +332,9 @@ export default {
             ],
             drugType:[
                 {required: true, message: '请选择类别', trigger: 'blur'},
+            ],
+            salePrice:[
+                { validator :checksalePrice, trigger: 'blur'},
             ],
             specifications:[
                 {required: true, message: '不能为空哦', trigger: 'blur'},
