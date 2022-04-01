@@ -2,8 +2,8 @@
   <div>
     <!-- 面包xie导航 -->
     <el-breadcrumb separator="/">
-      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item><a href="#/workers">职工管理</a></el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/gotoHome' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item><a href="#/worker/manager">职工管理</a></el-breadcrumb-item>
       <el-breadcrumb-item>职工列表</el-breadcrumb-item>
     </el-breadcrumb>
     <el-row style="margin-top: 10px; margin-bottom: 10px">
@@ -85,40 +85,40 @@
 
         <!-- 添加Form -->
 
-        <el-dialog title="添加职工" :visible.sync="addDialogWorkerFormVisible" :rules="rules">
-          <el-form :model="worker" ref="loginForm">
+        <el-dialog title="添加职工" :visible.sync="addDialogWorkerFormVisible"  >
+          <el-form :model="worker" :rules="rules" ref="ruleForm">
             <el-form-item label="职工名字" :label-width="formLabelWidth"  prop="name">
               <el-input v-model="worker.name" autocomplete="off"  prop="name"></el-input>
             </el-form-item>
-            <el-form-item label="职工账号" :label-width="formLabelWidth">
-              <el-input v-model="worker.account" autocomplete="off"></el-input>
+            <el-form-item label="职工账号" :label-width="formLabelWidth"  prop="account">
+              <el-input v-model="worker.account" autocomplete="off"  prop="account"></el-input>
             </el-form-item>
-            <el-form-item label="职工密码" :label-width="formLabelWidth">
-              <el-input v-model="worker.password" autocomplete="off"></el-input>
+            <el-form-item label="职工密码" :label-width="formLabelWidth" prop="password">
+              <el-input v-model="worker.password" autocomplete="off" show-password prop="password"></el-input>
             </el-form-item>
-            <el-form-item label="性别" :label-width="formLabelWidth">
+            <el-form-item label="性别" :label-width="formLabelWidth" prop="gender">
               <el-radio v-model="worker.gender" label="1">男</el-radio>
               <el-radio v-model="worker.gender" label="2">女</el-radio>
             </el-form-item>
-            <el-form-item label="角色" :label-width="formLabelWidth">
+            <el-form-item label="角色" :label-width="formLabelWidth" prop="roleId">
               <el-select v-model="worker.roleId" placeholder="请选择角色">
 
                 <el-option v-for="role in roleData" :label="role.name" :value="role.id" :key="role.id"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="部门" :label-width="formLabelWidth">
+            <el-form-item label="部门" :label-width="formLabelWidth" prop="deptId">
               <el-select v-model="worker.deptId" placeholder="请选择部门">
                 <el-option v-for="role in deptData" :label="role.name" :value="role.id" :key="role.id"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="薪资" :label-width="formLabelWidth">
-              <el-input v-model="worker.salary" autocomplete="off"></el-input>
+            <el-form-item label="薪资" :label-width="formLabelWidth" prop="salary">
+              <el-input v-model="worker.salary" autocomplete="off" prop="salary"></el-input>
             </el-form-item>
 
 
           </el-form>
           <div slot="footer" class="dialog-footer">
-            <el-button type="primary" @click="addWorker('loginForm')">确 定</el-button>
+            <el-button type="primary" @click="addWorker('ruleForm')">确 定</el-button>
             <el-button @click="addDialogWorkerFormVisible = false;worker={}">取 消</el-button>
           </div>
         </el-dialog>
@@ -203,17 +203,46 @@
         rules: {
           name: [{
               required: true,
-              message: '请输入手机号',
+              message: '请输入职工名字',
               trigger: 'blur'
-            },
-            {
-              min: 11,
-              max: 11,
-              message: '手机号不为11位数或不一致',
-              trigger: 'blur'
-            },
-
+            },   
           ],
+           account: [{
+              required: true,
+              message: '请输入职工账号',
+              trigger: 'blur'
+            },   
+          ],
+           password: [{
+              required: true,
+              message: '请输入职工密码',
+              trigger: 'blur'
+            },   
+          ],
+           gender: [{
+              required: true,
+              message: '请选择性别',
+              trigger: 'blur'
+            },   
+          ],
+           roleId: [{
+              required: true,
+              message: '请选择角色',
+              trigger: 'blur'
+            },   
+          ],
+           deptId: [{
+              required: true,
+              message: '请选择科室',
+              trigger: 'blur'
+            },   
+          ],
+           salary: [{
+              required: true,
+              message: '请输入薪资',
+              trigger: 'blur'
+            },   
+          ]
 
         },
         headers: {},
@@ -346,42 +375,23 @@
       },
       //打开添加职工列表
       openAddWorker() {
-        this.$axios.post("/api/worker/add", this.worker).then((res) => {
-          console.log(res.data);
-
-          if (res.data.status == 4001) {
-            this.$message({
-              showClose: true,
-              message: res.data.msg,
-              type: 'error',
-              duration: 1000
-            });
-          } else {
+       
             this.headers = {
               strToken: localStorage.getItem('strToken')
             }
             this.addDialogWorkerFormVisible = true;
-          }
-
-        });
-
-
+        
 
       },
 
 
       //添加职工
-      addWorker(forName) {
-
-
-        this.$refs[forName].validate((valid) => {
-          //表单验证通过
+      addWorker(formName) {
+  this.$refs[formName].validate((valid) => {
           if (valid) {
-
             //跨域后的url
             //发送axios请求
             this.$axios.post("/api/worker/add", this.worker).then((res) => {
-              console.log(res.data);
 
               if (res.data.status == 200) {
                 this.$message({
@@ -393,11 +403,11 @@
                 this.worker = {};
                 this.addDialogWorkerFormVisible = false;
                 this.findWorkerList(1); //刷新列表
-              } else if (res.data.status == 4001) {
+              } else if (res.data.status == 2008) {
                 this.$message({
                   showClose: true,
                   message: res.data.msg,
-                  type: 'error',
+                  type: "error",
                   duration: 1000
                 });
               } else {
@@ -412,51 +422,19 @@
               this.findWorkerList(1); //刷新列表
               this.$message({
                 showClose: true,
-                message: '异常',
+                message:  res.data.msg,
                 type: 'success',
                 duration: 1500
               });
               //跳转
             })
-          } else {
-            //验证不通过
+      } else {
+            console.log('error submit!!');
             return false;
           }
-        })
-
-
-        //发送axios请求
-        this.$axios.post("/api/worker/add", this.worker).then((res) => {
-          console.log(res.data);
-
-          if (res.data.status == 200) {
-            this.$message({
-              showClose: true,
-              message: "添加成功",
-              type: "success",
-              duration: 600,
-            });
-            this.worker = {};
-            this.addDialogWorkerFormVisible = false;
-            this.findWorkerList(1); //刷新列表
-          } else if (res.data.status == 4001) {
-            this.$message({
-              showClose: true,
-              message: res.data.msg,
-              type: 'error',
-              duration: 1000
-            });
-          } else {
-            this.$message({
-              showClose: true,
-              message: "添加失败",
-              type: "error",
-              duration: 600,
-            });
-          }
-
         });
       },
+
 
       //删除职工
       deleteWorker(id) {
