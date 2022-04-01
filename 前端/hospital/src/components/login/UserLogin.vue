@@ -40,7 +40,7 @@ export default {
             rules:{ 
                 telephone:[
                         {required: true, message: '请输入手机号', trigger: 'blur'},
-                        { min: 11, max: 11, message: '手机号不为11位数或不一致', trigger: 'blur' },
+                        { min: 11, max: 11, message: '手机号格式不正确', trigger: 'blur' },
                         
                     ],
                 password:[

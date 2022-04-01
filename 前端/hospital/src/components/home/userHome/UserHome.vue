@@ -93,9 +93,9 @@
             <el-table-column prop="patientAge" label="年龄" width="100"> </el-table-column>
             <el-table-column prop="cardId" label="身份证号码" width="200"> </el-table-column>
             <el-table-column prop="telephone" label="手机号码" width="130"> </el-table-column>
-            <el-table-column prop="deptName" label="部门" width="100"> </el-table-column>
+            <el-table-column prop="deptName" label="科室" width="100"> </el-table-column>
             <el-table-column prop="reason" label="病情" width="100"> </el-table-column>
-            <el-table-column prop="inHosptialTime" label="入院时间" width="100"> </el-table-column>
+            <el-table-column prop="inHosptialTime" label="预约时间" width="100"> </el-table-column>
             <el-table-column prop="status" label="状态" width="120">
               <template slot-scope="scope">
                 <span v-if="scope.row.status=='1'">已预约</span>
