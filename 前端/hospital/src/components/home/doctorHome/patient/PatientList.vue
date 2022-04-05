@@ -83,8 +83,8 @@
 
       <el-table-column prop="bedCode" label="床位编号" width="80">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.bedCode === '未分配' ? 'danger' : 'primary'" disable-transitions>
-            {{ scope.row.bedCode }}
+          <el-tag :type="scope.row.bedCode === null ? 'danger' : 'primary'" disable-transitions>
+            {{ scope.row.bedCode === null?'未分配' :scope.row.bedCode}}
           </el-tag>
         </template>
       </el-table-column>
@@ -287,9 +287,7 @@
             <el-option label="24小时" value="2"></el-option>
             <el-option label="一般" value="3"></el-option>
           </el-select>
-            <!-- <el-radio v-model="addConsultationApplication.consultationEmergencyId" label="1" value=1>紧急</el-radio>
-            <el-radio v-model="addConsultationApplication.consultationEmergencyId" label="2" value=2>24小时</el-radio>
-            <el-radio v-model="addConsultationApplication.consultationEmergencyId" label="3" value=3>一般</el-radio> -->
+
         </el-form-item>
 
         <el-form-item label="会诊类别" :label-width="formLabelWidth" prop="consultationCategoryId">
@@ -298,9 +296,6 @@
             <el-option label="科内会诊" value="2"></el-option>
             <el-option label="一般会诊" value="3"></el-option>
           </el-select>
-            <!-- <el-radio v-model="addConsultationApplication.consultationCategoryId" label="1" value=1>它科会诊</el-radio>
-            <el-radio v-model="addConsultationApplication.consultationCategoryId" label="2" value=2>科内会诊</el-radio>
-            <el-radio v-model="addConsultationApplication.consultationCategoryId" label="3" value=3>一般会诊</el-radio> -->
         </el-form-item>
 
         <el-form-item label="申请原因" :label-width="formLabelWidth" prop="reason">
@@ -461,13 +456,21 @@ export default {
         baseDesc:''
       },
       deptList:[],
-
+      doctorId:''
     };
   },
   created() {
-    this.search();
+
     this.findDeptList();
     this.headers = { tokenStr: window.localStorage.getItem("tokenStr") };
+
+    var roleId = window.localStorage.getItem("roleId")
+    if(roleId=='5'){
+        this.doctorId =  parseInt(window.localStorage.getItem("workerId"))
+      }else if(roleId=='9'){
+        this.doctorId=''
+      }
+       this.search();
   },
   methods: {
     doAddConsultationApplication(formName) {
@@ -660,40 +663,6 @@ export default {
         this.addConsultationApplicationForm = true;
       },
 
-      //执行突发情况
-      // doAddConsultationApplication() {
-      
-      //   //发送axios请求
-      //   var consultationApplication=this.addConsultationApplication;
-      //    console.log("所说的上档次")
-      //   //  alert(medicalAdvice)
-      //    console.log(consultationApplication)
-      //   this.$axios.post("/api/doctor/gotoAddConsultationApplication",consultationApplication).then((res) => {
-      //     console.log(res.data);
-      //     if (res.status == 200) {
-      //       this.$message({
-      //         showClose: true,
-      //         message: "下达成功",
-      //         type: "success",
-      //         duration: 600,
-      //       });
-      //       this.addConsultationApplication = {};
-      //       this.addConsultationApplicationForm = false;
-      //       // this.search(); //刷新列表
-      //     } else {
-      //       this.$message({
-      //         showClose: true,
-      //         message: "下达失败",
-      //         type: "error",
-      //         duration: 600,
-      //       });
-      //     }
-      //   });
-      // },
-
-
-
-
       //准备出院
       gotoAddLeaveHospital(id,name,doctorId,doctorName,no,gender,age,phone,cardId) {
         this.addLeaveHospital = {
@@ -710,44 +679,13 @@ export default {
         this.addLeaveHospitalForm = true;
       },
 
-      //执行出院
-      // doAddLeaveHospital() {
-      //   //发送axios请求
-      //   var leaveHospital=this.addLeaveHospital;
-      //    console.log("所说的上档次")
-      //   //  alert(medicalAdvice)
-      //    console.log(leaveHospital)
-      //   this.$axios.post("/api/doctor/gotoAddLeaveHospital",leaveHospital).then((res) => {
-      //     console.log(res.data);
-      //     if (res.status == 200) {
-      //       this.$message({
-      //         showClose: true,
-      //         message: "下达成功",
-      //         type: "success",
-      //         duration: 600,
-      //       });
-      //       this.addLeaveHospital = {};
-      //       this.addLeaveHospitalForm = false;
-      //       // this.search(); //刷新列表
-      //     } else {
-      //       this.$message({
-      //         showClose: true,
-      //         message: "下达失败",
-      //         type: "error",
-      //         duration: 600,
-      //       });
-      //     }
-      //   });
-      // },
-
-
-      
     //查询病人信息列表
     search() {
-      console.log("---" + this.cardId);
+      console.log(this.doctorId);
       this.$axios
         .get("/api/doctor/getPatientList", {
           params: {
+            doctorId:this.doctorId,
             name: this.name,
             no: this.no,
             gender: this.gender,

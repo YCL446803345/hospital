@@ -178,12 +178,20 @@ export default {
         pageNum:1,
         pageSize:5,
         // updateTeacherForm:false,
-        headers:{}
+        headers:{},
+        doctorId:'',
       }
    },
    created(){
-      this.search();
+
       this.headers={tokenStr:window.localStorage.getItem('tokenStr')};
+      var roleId = window.localStorage.getItem("roleId")
+    if(roleId=='5'){
+        this.doctorId =  parseInt(window.localStorage.getItem("workerId"))
+      }else if(roleId=='9'){
+        this.doctorId=''
+      }
+       this.search();
    },
    methods:{
        //撤销出院
@@ -228,13 +236,14 @@ export default {
             
             console.log("---")
             this.$axios.get("/api/doctor/getLeaveHospitalList",{params:{
+            doctorId:this.doctorId,
             leaveStatus:this.leaveStatus,
             pageNum:this.pageNum,
             pageSize:this.pageSize
             }})
             .then(res=>{
                  console.log("=========================");
-               console.log(res.data.data.list);
+
                 this.leaveHospitalList=res.data.data.list;
                 this.total=res.data.data.total;
                 this.pageNum=res.data.data.pageNum;

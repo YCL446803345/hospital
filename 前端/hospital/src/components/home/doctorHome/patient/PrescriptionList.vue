@@ -285,10 +285,19 @@ export default {
       }
    },
    created(){
-      this.search();
+      
       this.headers={tokenStr:window.localStorage.getItem('tokenStr')};
+
+      var roleId = window.localStorage.getItem("roleId")
+    if(roleId=='5'){
+        this.doctorId =  parseInt(window.localStorage.getItem("workerId"))
+      }else if(roleId=='9'){
+        this.doctorId=''
+      }
+      this.search();
    },
    methods:{
+     //执行退药
       doAddDrugOut(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -377,29 +386,7 @@ export default {
             this.addDrugOutForm=false;
        },
     
-    //执行申请退药
-      //  doAddDrugOut(){
-      //      var DrugOut=this.addDrugOut;
-      //      console.log(DrugOut)
-      //       this.$axios.post("/api/doctor/gotoAddDrugOut",DrugOut)
-      //       .then(res=>{
-      //           if(res.status==4001){
-      //                this.$message({
-      //                   type: "error",
-      //                    message: "没有权限!",
-      //                     duration:2000
-      //                });
-      //           }else{
-      //                this.$message({
-      //                   type: "success",
-      //                    message: "下达处方成功!",
-      //                    duration:2000
-      //                });
-      //               this.closeAddDrugOutForm();
-      //               this.search();
-      //           }
-      //       })
-      //  },
+
        //准备申请退药
        gotoAddDrugOut(id,patientName,doctorName,patientId,doctorId,drugName,drugId,drugTypeName,
             specificationsName,num,spare2,prescriptionStatus){
@@ -424,6 +411,7 @@ export default {
         search(){
             console.log("---")
             this.$axios.get("/api/doctor/getPrescriptionList",{params:{
+            doctorId:this.doctorId,
             prescriptionStatus:this.prescriptionStatus,
             pageNum:this.pageNum,
             pageSize:this.pageSize

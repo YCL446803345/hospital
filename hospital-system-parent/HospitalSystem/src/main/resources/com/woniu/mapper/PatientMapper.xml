@@ -449,7 +449,7 @@
       <if test="status!=null and status != ''">and p.status = #{status}</if>
       <if test="startDate != null and startDate != ''">and p.appointmentt_time &gt;= #{startDate}</if>
       <if test="endDate != null and endDate != ''">and p.appointmentt_time &lt;= #{endDate}</if>
-         <if test="doctorId != null and doctorId != ''">and p.doctor_id = #{doctorId}</if>
+      <if test="doctorId != null and doctorId != ''">and p.doctor_id = #{doctorId}</if>
     </where>
     and p.status in(1,2,4)  order by p.appointmentt_time desc
   </select>
