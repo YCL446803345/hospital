@@ -242,7 +242,7 @@ export default {
             pageSize:this.pageSize
             }})
             .then(res=>{
-                 console.log("=========================");
+                //  console.log("=========================");
 
                 this.leaveHospitalList=res.data.data.list;
                 this.total=res.data.data.total;
