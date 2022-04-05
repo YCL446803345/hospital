@@ -41,7 +41,7 @@
         </el-table>
 
         <!-- 退药详情模态框 -->
-            <el-dialog title="药品名称和数量" :visible.sync="updatedialogTableVisible">               
+            <el-dialog title="药品名称和数量" :visible.sync="updatedialogTableVisible" center>               
                   <el-table :data="drugND" style="width: 100%">
                       <el-table-column prop="drugName" label="药品名称" ></el-table-column>
                       <el-table-column prop="num" label="退药数量"></el-table-column>

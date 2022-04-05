@@ -31,20 +31,13 @@
             </el-table>
 
             <!-- 药方详情模态框 -->
-            <el-dialog title="药品信息" :visible.sync="updatedialogTableVisible" >
+            <el-dialog title="药品信息" :visible.sync="updatedialogTableVisible" center>
 
-                <!-- 药品名字和数量 -->
-                <el-collapse accordion>
-                    <el-collapse-item >
-                    <div>
-                        <el-table :data="drugNameAndNum"  style="width: 100%">
-                            <el-table-column prop="drugName" label="药品名称"></el-table-column>
-                            <el-table-column prop="num" label="已发药数量" ></el-table-column>
-                        </el-table>
-                    </div>
-                    </el-collapse-item>
-                </el-collapse>
-
+                <el-table :data="drugNameAndNum" style="width: 100%">
+                      <el-table-column prop="drugName" label="药品名称"></el-table-column>
+                      <el-table-column prop="num" label="退药数量"></el-table-column>
+                </el-table>
+                
                 <div slot="footer" class="dialog-footer">
                     <el-button @click="updatedialogTableVisible=false;drugNameAndNum=[];">返回</el-button>
                 </div>

@@ -111,10 +111,10 @@
                 <el-form-item label="药品类别" :label-width="formLabelWidth" prop="drugType">
                     <el-select v-model="updateDrug.drugType" clearable placeholder="请选择">
                         <el-option 
-                        v-for="type in types"
+                        v-for="type in typeList"
                         :key="type.value"
-                        :label="type"
-                        :value="type" >
+                        :label="type.name"
+                        :value="type.name" >
                         </el-option>
                     </el-select>
                 </el-form-item>
@@ -158,7 +158,7 @@
         </el-dialog>
 
         <!-- 添加库存模态框 -->
-        <el-dialog title="添加库存" :visible.sync="addStockdialogTableVisible" center :close-on-click-modal="false">
+        <el-dialog title="添加库存" :visible.sync="addStockdialogTableVisible" center :close-on-click-modal="false" center>
             <!-- Form -->
             <el-form :model="addDrugStock"  ref="addStockForm" :rules="addRules">            
                 <el-form-item label="库存数量" :label-width="formLabelWidth" prop="stock">
@@ -183,10 +183,10 @@
                 <el-form-item label="选择类型" prop="drugType">
                     <el-select v-model="purchaseDrug.drugType">
                             <el-option
-                            v-for="type in types"
+                            v-for="type in typeList"
                             :key="type.value"
-                            :label="type.label"
-                            :value="type">
+                            :label="type.name"
+                            :value="type.name">
                             </el-option>
                     </el-select>
                 </el-form-item>
@@ -703,7 +703,8 @@ export default {
         this.$axios.get("api/drug/findAllType").then(res=>{
                 this.typeList=res.data.data
         })
-    }
+    },
+    
 
    },
     created(){
