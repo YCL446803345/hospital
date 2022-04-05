@@ -22,8 +22,7 @@ public class DeptServiceImpl implements DeptService {
 
     @Override
     public List<Dept> findDeptList() {
-        List<Dept> deptList = deptMapper.selectByExample(new DeptExample());
-        System.out.println("IMPL"+deptList);
+        List<Dept> deptList = deptMapper.select2();
         return deptList;
     }
 
