@@ -2,8 +2,10 @@ package com.woniu.mapper;
 
 import com.woniu.entity.Dept;
 import com.woniu.entity.DeptExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface DeptMapper {
     long countByExample(DeptExample example);
@@ -16,7 +18,13 @@ public interface DeptMapper {
 
     int insertSelective(Dept record);
 
+
     List<Dept> selectByExample(DeptExample example);
+
+    @Select("\n" +
+            "select * from HOS_dept where name!='人事部' and name!='财务部'\n" +
+            "\t\t")
+    List<Dept> select2();
 
     Dept selectByPrimaryKey(Integer id);
 
