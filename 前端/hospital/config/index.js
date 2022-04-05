@@ -20,7 +20,7 @@ module.exports = {
             },
             //职工后台系统
             '/api': { // 1 表示前端如果要通过代理来请求服务器,必须使
-                target: 'http://localhost:8080', //2
+                target: 'http://localhost:8082', //2
                 changeOrigin: true, //3
                 pathRewrite: {
                     '^/api': '/' // 4  请求发出到target目标服务器时,会将/api换/
@@ -29,7 +29,7 @@ module.exports = {
         },
 
         // Various Dev Server settings
-        host: '192.172.0.5', // can be overwritten by process.env.HOST
+        host: 'localhost', // can be overwritten by process.env.HOST
         port: 9090, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
         autoOpenBrowser: false,
         errorOverlay: true,
