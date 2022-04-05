@@ -38,7 +38,7 @@ public interface ConsultationApplicationMapper {
 
     //医生站编辑会诊信息
     @Update("update HOS_consultation_application set consultation_date=#{consultationDate}, consultation_category_id=#{consultationCategoryId}," +
-            "consultation_emergency_id=#{consultationEmergencyId}, `desc`=#{desc} ,reason=#{reason} where id=#{id}")
+            "consultation_emergency_id=#{consultationEmergencyId}, `desc`=#{desc} ,reason=#{reason},status=#{status} where id=#{id}")
     void updateConsultationApplication(ConsultationApplication consultationApplication);
 
     //医生站取消会诊

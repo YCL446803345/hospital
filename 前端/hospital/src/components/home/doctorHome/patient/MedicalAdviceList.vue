@@ -413,6 +413,8 @@ export default {
         drugList:[],
         num:'',
 
+        doctorId:'',
+
         addCaseForm:false,
         addCase:{
           id:'',
@@ -440,23 +442,29 @@ export default {
       }
    },
    created(){
+      
+    this.$axios.get("/api/doctor/findProjectList")
+          .then(res=>{
+              console.log(res.data);
+              this.projectList=res.data;
+          }),
+    this.$axios.get("/api/doctor/findDrugList")
+          .then(res=>{
+              console.log(res.data);
+              this.drugList=res.data;
+          }),
+    this.headers={tokenStr:window.localStorage.getItem('tokenStr')};
+
+    var roleId = window.localStorage.getItem("roleId")
+    if(roleId=='5'){
+        this.doctorId =  parseInt(window.localStorage.getItem("workerId"))
+      }else if(roleId=='9'){
+        this.doctorId=''
+      }
       this.search();
-      this.$axios.get("/api/doctor/findProjectList")
-            .then(res=>{
-               console.log(res.data);
-                this.projectList=res.data;
-            }),
-      this.$axios.get("/api/doctor/findDrugList")
-            .then(res=>{
-               console.log(res.data);
-                this.drugList=res.data;
-            }),
-      this.headers={tokenStr:window.localStorage.getItem('tokenStr')};
-
-
    },
    methods:{
-     
+     //执行下达处方
      doAddPrescription(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -487,7 +495,7 @@ export default {
         });
       },  
 
-
+     //执行添加病例
      doAddCase(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -518,32 +526,6 @@ export default {
         });
       },  
 
-
-
-
-      //执行添加病例
-      //  doAddCase(){
-      //      var cases = this.addCase;
-      //     //  console.log(prescription)
-      //       this.$axios.post("/api/doctor/gotoAddCase",cases)
-      //       .then(res=>{
-      //           if(res.status==4001){
-      //                this.$message({
-      //                   type: "error",
-      //                    message: "没有权限!",
-      //                     duration:2000
-      //                });
-      //           }else{
-      //                this.$message({
-      //                   type: "success",
-      //                    message: "新增病例成功!",
-      //                    duration:2000
-      //                });
-      //                this.addCaseForm=false;
-      //               this.search();
-      //           }
-      //       })
-      //  },
        //准备下达处方
        gotoAddCase(id,patientName,doctorName,patientId,doctorId,projectId,projectName,adviceDescription){
            this.addCase={
@@ -579,31 +561,7 @@ export default {
             this.addPrescriptionForm=false;
        },
     
-    //执行处方项目
-      //  doAddPrescription(){
-      //      var prescription=this.addPrescription;
-      //      console.log(prescription)
-      //       this.$axios.post("/api/doctor/gotoAddPrescription",prescription)
-      //       .then(res=>{
-      //           if(res.status==4001){
-      //                this.$message({
-      //                   type: "error",
-      //                    message: "没有权限!",
-      //                     duration:2000
-      //                });
-      //           }else{
-      //                this.$message({
-      //                   type: "success",
-      //                    message: "下达处方成功!",
-      //                    duration:2000
-      //                });
-      //               this.closeAddPrescriptionForm();
-      //               this.search();
-                    
 
-      //           }
-      //       })
-      //  },
        //准备下达处方
        gotoAddPrescription(id,patientName,doctorName,patientId,doctorId,adviceCategory,projectId,projectName,adviceDescription){
            this.addPrescription={
@@ -657,8 +615,6 @@ export default {
             });
        },
 
-
-
         //关闭修改医嘱窗口
        closeupdateMedicalAdviceForm(){
             this.updateMedicalAdvice={
@@ -674,6 +630,7 @@ export default {
                     };
             this.updateMedicalAdviceForm=false;
        },
+
        //执行医嘱项目
        doUpdateMedicalAdvice(){
            var medicalAdvice=this.updateMedicalAdvice;
@@ -696,6 +653,7 @@ export default {
                 }
             })
        },
+
        //准备执行医嘱
        gotoUpdateMedicalAdvice(id,
                       patientName,
@@ -724,6 +682,7 @@ export default {
         search(){
             console.log("---")
             this.$axios.get("/api/doctor/getMedicalAdviceList",{params:{
+            doctorId:this.doctorId,
             adviceCategory:this.adviceCategory,
             adviceStatus:this.adviceStatus,
             pageNum:this.pageNum,

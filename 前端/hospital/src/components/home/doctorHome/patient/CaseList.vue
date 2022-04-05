@@ -153,12 +153,19 @@ export default {
         pageNum:1,
         pageSize:5,
         // updateTeacherForm:false,
-        headers:{}
+        headers:{},
+        doctorId:'',
       }
    },
    created(){
-      this.search();
       this.headers={tokenStr:window.localStorage.getItem('tokenStr')};
+       var roleId = window.localStorage.getItem("roleId")
+    if(roleId=='5'){
+        this.doctorId =  parseInt(window.localStorage.getItem("workerId"))
+      }else if(roleId=='9'){
+        this.doctorId=''
+      }
+       this.search();
    },
    methods:{
      //撤销出院
@@ -202,6 +209,7 @@ export default {
         search(){
             console.log("---")
             this.$axios.get("/api/doctor/getCaseList",{params:{
+            doctorId:this.doctorId,    
             spare1:this.spare1,
             pageNum:this.pageNum,
             pageSize:this.pageSize

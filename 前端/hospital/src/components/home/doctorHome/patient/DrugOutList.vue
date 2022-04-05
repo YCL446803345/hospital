@@ -246,10 +246,19 @@ export default {
       }
    },
    created(){
-      this.search();
+
       this.headers={tokenStr:window.localStorage.getItem('tokenStr')};
+
+      var roleId = window.localStorage.getItem("roleId")
+      if(roleId=='5'){
+          this.doctorId =  parseInt(window.localStorage.getItem("workerId"))
+        }else if(roleId=='9'){
+          this.doctorId=''
+        }
+        this.search();
    },
    methods:{
+     //执行退药
       doStopDrugOut() {
       var drugOut = this.stopDrugOut;
       console.log(drugOut)
@@ -274,6 +283,7 @@ export default {
         });
 
     },
+
     closeStopDrugOutForm() {
       this.stopDrugOut = {
         id:'',
@@ -290,6 +300,7 @@ export default {
       };
       this.stopDrugOutForm = false;
     },
+
     gotoStopDrugOut(
         id,
         patientName,
@@ -319,12 +330,11 @@ export default {
       this.stopDrugOutForm = true;
     },
 
-
-
       //查询处方列表
         search(){
             console.log("---")
             this.$axios.get("/api/doctor/getDrugOutList",{params:{
+            doctorId:this.doctorId,
             outStatus:this.outStatus,
             pageNum:this.pageNum,
             pageSize:this.pageSize
