@@ -98,9 +98,9 @@
               trigger: 'blur'
             },
             {
-              min: 3,
-              max: 3,
-              message: '长度为3 个字符',
+              min: 6,
+              max: 6,
+              message: '长度为6 个字符',
               trigger: 'blur'
             }
           ],
