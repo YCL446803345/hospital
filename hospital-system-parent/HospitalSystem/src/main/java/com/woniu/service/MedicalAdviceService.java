@@ -3,8 +3,6 @@ package com.woniu.service;
 import com.github.pagehelper.PageInfo;
 import com.woniu.entity.MedicalAdvice;
 
-import java.util.List;
-
 public interface MedicalAdviceService {
 
     //分页模糊查询医嘱列表
@@ -26,7 +24,7 @@ public interface MedicalAdviceService {
     //停止医嘱
     void gotoStopMedicalAdviceById(Integer id);
 
-    void doMedicalAdvice(Integer id);
+    void doMedicalAdvice(MedicalAdvice medicalAdvice);
 
     void stopMedicalAdvice(Integer id);
 

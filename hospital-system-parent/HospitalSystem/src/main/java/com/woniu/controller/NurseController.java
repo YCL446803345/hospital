@@ -74,7 +74,7 @@ NurseController {
     @ResponseBody
     public ResponseEntity<PageInfo<Patient>> findPatients(Patient patient, @RequestParam(value = "pageNum", defaultValue = "1", required = false) Integer pageNum,
                                                           @RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize) {
-        PageInfo<Patient> pageInfo = patientService.findPatients(patient, pageNum, pageSize);
+        PageInfo<Patient> pageInfo = patientService.findPatientsByChangeDept(patient, pageNum, pageSize);
         return new ResponseEntity<PageInfo<Patient>>(pageInfo, HttpStatus.OK);
     }
 
@@ -325,9 +325,9 @@ NurseController {
      * 执行医嘱
      * @return
      */
-    @GetMapping("/doMedicalAdvice")
-    public void doMedicalAdvice(Integer id) {
-        medicalAdviceService.doMedicalAdvice(id);
+    @PostMapping("/doMedicalAdvice")
+    public void doMedicalAdvice(@RequestBody MedicalAdvice medicalAdvice) {
+        medicalAdviceService.doMedicalAdvice(medicalAdvice);
     }
 
 
@@ -383,8 +383,8 @@ NurseController {
      * 审核出院
      * @return
      */
-    @GetMapping("/doOutHospital")
-    public void doOutHospital(Integer id) {
+    @PostMapping("/doOutHospital")
+    public void doOutHospital(Integer id,Integer projectId) {
         patientService.doOutHospital(id);
     }
 

@@ -3,7 +3,10 @@ package com.woniu.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.woniu.entity.MedicalAdvice;
+import com.woniu.entity.MedicalAdviceBill;
+import com.woniu.mapper.MedicalAdviceBillMapper;
 import com.woniu.mapper.MedicalAdviceMapper;
+import com.woniu.mapper.ProjectMapper;
 import com.woniu.service.MedicalAdviceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +20,12 @@ import java.util.List;
 public class MedicalAdviceServiceImpl implements MedicalAdviceService {
     @Autowired
     private MedicalAdviceMapper medicalAdviceMapper;
+
+    @Autowired
+    private ProjectMapper projectMapper;
+
+    @Autowired
+    private MedicalAdviceBillMapper medicalAdviceBillMapper;
 
 
 
@@ -84,10 +93,16 @@ public class MedicalAdviceServiceImpl implements MedicalAdviceService {
 
     /**
      * 执行医嘱
-     * @param id
+     * @param medicalAdvice
      */
-    public void doMedicalAdvice(Integer id) {
-        medicalAdviceMapper.doMedicalAdvice(id);
+    public void doMedicalAdvice(MedicalAdvice medicalAdvice) {
+        medicalAdviceMapper.doMedicalAdvice(medicalAdvice.getId());
+        Float price=projectMapper.getPriceByProjectName(medicalAdvice.getProjectName());
+        MedicalAdviceBill medicalAdviceBill = new MedicalAdviceBill();
+        medicalAdviceBill.setMedicalAdviceId(medicalAdvice.getId());
+        medicalAdviceBill.setMoney(price);
+        medicalAdviceBillMapper.addMedicalAdviceBill(medicalAdviceBill);
+
     }
 
     @Override

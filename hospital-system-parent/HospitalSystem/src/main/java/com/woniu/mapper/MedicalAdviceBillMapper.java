@@ -4,6 +4,7 @@ import com.woniu.entity.*;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -63,4 +64,8 @@ public interface MedicalAdviceBillMapper {
             "left join HOS_project p on a.project_id=p.id\n" +
             "where a.patient_id=#{id} and b.status=2 and a.project_id is not null")
     Double getMedicalAdviceBillHavePay(Patient patient);
+
+    @Insert("insert into HOS_medical_advice_bill(medical_advice_id,money,status)values " +
+            "(#{medicalAdviceId},#{money},1)")
+    void addMedicalAdviceBill(MedicalAdviceBill medicalAdviceBill);
 }

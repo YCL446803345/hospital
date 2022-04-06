@@ -42,4 +42,7 @@ public interface LeaveHospitalMapper {
     //申请出院
     @Insert("insert into HOS_leave_hospital(patient_id,doctor_id,leave_status,leave_time,leave_description) values(#{id},#{doctorId},#{leaveStatus},#{leaveTime},#{leaveDescription})")
     void addLeaveHospital(LeaveHospital leaveHospital);
+
+    @Update("update HOS_leave_hospital set status=4 where patient_id=#{id}")
+    void doOutHospital(Integer id);
 }

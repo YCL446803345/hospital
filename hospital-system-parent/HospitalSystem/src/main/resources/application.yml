@@ -14,11 +14,11 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
 
     password: root
-    url: jdbc:mysql://localhost/hos?useUincode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowMultiQueries=true
+    url: jdbc:mysql://192.172.0.5/HOSPITAL?useUincode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowMultiQueries=true
     username: root
     type: com.zaxxer.hikari.HikariDataSource
   redis:
-    host: localhost
+    host: 192.172.0.5
     port: 6379
 #sql语句日志输出
 logging:
