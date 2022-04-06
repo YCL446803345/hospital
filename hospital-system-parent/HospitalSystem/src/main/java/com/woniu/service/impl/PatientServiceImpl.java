@@ -208,9 +208,14 @@ public class PatientServiceImpl implements PatientService {
      * @param id
      */
     public void doOutHospital(Integer id) {
+        Integer bedId=patientMapper.getBedIdById(id);
         patientMapper.doOutHospital(id);
-        leaveHospitalMapper.doOutHospital(id);
 
+        if(bedId!=null){
+            Patient patient = new Patient();
+            patient.setBedId(bedId);
+            bedMapper.changeBedStatusOff(patient);
+        }
     }
 
     @Override

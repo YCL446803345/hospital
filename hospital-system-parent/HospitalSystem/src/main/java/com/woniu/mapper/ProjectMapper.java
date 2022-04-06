@@ -4,6 +4,7 @@ import com.woniu.entity.Project;
 import com.woniu.entity.ProjectExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -29,4 +30,6 @@ public interface ProjectMapper {
     int updateByPrimaryKeySelective(Project record);
 
     int updateByPrimaryKey(Project record);
+    @Select("select price from HOS_project where name =#{projectName}")
+    Float getPriceByProjectName(String projectName);
 }

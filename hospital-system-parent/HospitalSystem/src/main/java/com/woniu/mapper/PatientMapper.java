@@ -73,7 +73,7 @@ public interface PatientMapper {
     @Update("update HOS_patient set dept_id=#{deptId},bed_id=#{bedId} where id=#{id}")
     void updateBedByPatientWithOutBed(Patient patient);
 
-    @Update("update HOS_patient set dept_id=#{deptId},bed_id=null,doctor_id=9,nurse_id=9 where id=#{id}")
+    @Update("update HOS_patient set dept_id=#{deptId},bed_id=null where id=#{id}")
     void stopUseBed(Patient patient);
 
     //医生站分页模糊查询患者列表
@@ -119,7 +119,7 @@ public interface PatientMapper {
     int selectTotal (@Param("name") String name,@Param("no") String no);
 
 
-    @Update("update HOS_patient set status=4,doctor_id=9,nurse_id=9,bed_id=null where id =#{id}")
+    @Update("update HOS_patient set status=3,doctor_id=9,nurse_id=9,bed_id=null where id =#{id}")
     void doOutHospital(Integer id);
 
     //审核后新增患者信息
@@ -134,4 +134,8 @@ public interface PatientMapper {
 
     @Select("select bed_id from HOS_patient where id=#{id}")
     Integer getBedIdById(Integer id);
+
+    //申请出院,修改病人表状态为2
+    @Update("update HOS_patient set status=2 where id=#{id}")
+    void updateStatusBy(Patient patient);
 }

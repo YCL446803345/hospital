@@ -250,7 +250,6 @@
     where ca.advice_id = ma.id and ma.patient_id = pa.id and pa.dept_id=de.id and pa.doctor_id=wo.id and pa.bed_id=be.id
 
       <if test="spare1!=null and spare1 != ''">and ca.spare1 like '%${spare1}%'</if>
-      <if test="doctorId != null and doctorId != ''">and ma.doctor_id = #{doctorId}</if>
      order by ca.create_time desc
   </select>
 

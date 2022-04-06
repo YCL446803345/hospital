@@ -318,7 +318,6 @@
       <if test="outStatus != null and outStatus != ''">and hdo.out_status = #{outStatus}</if>
       <if test="startDate != null and startDate != ''">and hdo.create_time &gt;= #{startDate}</if>
       <if test="endDate != null and endDate != ''">and hdo.create_time &lt;= #{endDate}</if>
-    <if test="doctorId != null and doctorId != ''">and hdo.doctor_id = #{doctorId}</if>
 --     and hdo.out_status in(1,2)
     order by hdo.create_time desc
   </select>

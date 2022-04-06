@@ -27,8 +27,6 @@ public class MedicalAdviceServiceImpl implements MedicalAdviceService {
     @Autowired
     private MedicalAdviceBillMapper medicalAdviceBillMapper;
 
-
-
 //    分页模糊查询医嘱列表
     public PageInfo<MedicalAdvice> queryMedicalAdvice(MedicalAdvice medicalAdvice, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
@@ -112,4 +110,5 @@ public class MedicalAdviceServiceImpl implements MedicalAdviceService {
         PageInfo<MedicalAdvice> medicalAdvicePageInfo = new PageInfo<>(medicalAdviceList);
         return medicalAdvicePageInfo;
     }
+
 }

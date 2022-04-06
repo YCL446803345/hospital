@@ -336,7 +336,6 @@
     <if test="status != null and status != ''">c.status = #{status}</if>
     <if test="startDate != null and startDate != ''">and c.consultation_date &gt;= #{startDate}</if>
     <if test="endDate != null and endDate != ''">and c.consultation_date &lt;= #{endDate}</if>
-    <if test="doctorId != null and doctorId != ''">and c.doctor_id = #{doctorId}</if>
    </where>
 --     and c.status in (1,2)
     order by c.consultation_date desc

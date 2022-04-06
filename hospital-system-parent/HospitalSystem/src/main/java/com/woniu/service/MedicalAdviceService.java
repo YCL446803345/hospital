@@ -3,6 +3,8 @@ package com.woniu.service;
 import com.github.pagehelper.PageInfo;
 import com.woniu.entity.MedicalAdvice;
 
+import java.util.List;
+
 public interface MedicalAdviceService {
 
     //分页模糊查询医嘱列表
